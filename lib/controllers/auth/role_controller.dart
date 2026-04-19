@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jisr_platform/routes/app_routes.dart';
 
 enum UserRole {student, company }
 
@@ -27,7 +28,7 @@ class RoleController extends GetxController {
   if (selectedRole.value == UserRole.student) {
     Get.toNamed('/student-home');
   } else {
-    Get.toNamed('/company-home');
+    Get.toNamed(Routes.registerCompany);
   }
 }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:jisr_platform/core/app_colors.dart';
+import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/routes/app_pages.dart';
 
 void main() {

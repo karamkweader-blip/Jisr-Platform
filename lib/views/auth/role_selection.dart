@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/role_controller.dart';
-import 'package:jisr_platform/core/app_colors.dart';
+import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/rolecard.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 
