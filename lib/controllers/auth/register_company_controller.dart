@@ -106,6 +106,11 @@ class RegisterCompanyController extends GetxController {
         margin: const EdgeInsets.all(16),
         borderRadius: 14,
       );
+      
+//       if (Get.isRegistered<LoginController>()) {
+//   Get.delete<LoginController>(force: true);
+// }
+// Get.offAllNamed(Routes.login);
     } catch (e) {
       Get.snackbar(
         'خطأ',

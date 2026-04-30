@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/register_company_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/core/widgets/auth_header.dart';
 import 'package:jisr_platform/core/widgets/register_step_action_button.dart';
 import 'package:jisr_platform/core/widgets/step_indicator.dart';
 import 'package:jisr_platform/views/auth/company/company-components/register_company_step_one.dart';
@@ -22,7 +23,15 @@ class RegisterCompanyView extends GetView<RegisterCompanyController> {
           child: Column(
             children: [
               const SizedBox(height: 18),
-              _buildHeader(),
+              const AuthHeader(
+  title: 'إنشاء حساب شركة',
+  subtitle: 'أكمل الخطوات التالية لإنشاء حساب شركتك على منصة جسور.',
+  logoWithContainer: true,
+  logoContainerSize: 78,
+  logoSize: 58,
+  titleFontSize: 24,
+  spaceAfterLogo: 18,
+),
               const SizedBox(height: 24),
               Obx(
                 () => StepIndicator(
@@ -105,55 +114,6 @@ class RegisterCompanyView extends GetView<RegisterCompanyController> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Column(
-      children: [
-        Hero(
-          tag: 'logo',
-          child: Container(
-            width: 78,
-            height: 78,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primaryBlue.withOpacity(0.08),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Image.asset(
-              'assets/images/logo.png',
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-        const SizedBox(height: 18),
-        const Text(
-          'إنشاء حساب شركة',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w800,
-            color: AppColors.primaryBlue,
-          ),
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'أكمل الخطوات التالية لإنشاء حساب شركتك على منصة جسور.',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14,
-            color: AppColors.textGrey,
-            height: 1.5,
-          ),
-        ),
-      ],
     );
   }
 }

@@ -26,7 +26,7 @@ class RoleController extends GetxController {
   if (!isSelected) return;
 
   if (selectedRole.value == UserRole.student) {
-    Get.toNamed('/student-home');
+    Get.toNamed(Routes.registerStudent);
   } else {
     Get.toNamed(Routes.registerCompany);
   }

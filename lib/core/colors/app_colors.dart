@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // اللون الأساسي (فخامة وثقة)
-
-
-
-
+ 
   static const Color primaryBlue = Color(0xFF005792);
-
-
-  
   static const Color actionYellow = Color(0xFFF0A500);  
-
 
 
   // ألوان الخلفيات (ليست أبيض ناصع)

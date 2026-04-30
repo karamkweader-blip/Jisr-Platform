@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/login_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/validators/app_validators.dart';
+import 'package:jisr_platform/core/widgets/auth_header.dart';
+import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 import 'package:jisr_platform/core/widgets/jisr_text_field.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 class LoginView extends GetView<LoginController> {
@@ -22,47 +24,13 @@ class LoginView extends GetView<LoginController> {
               children: [
                 const SizedBox(height: 40),
 
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryBlue.withOpacity(0.1),
-                        blurRadius: 30,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Hero(
-                    tag: 'logo',
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      height: 100,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                const Text(
-                  'مرحباً بك مجدداً',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryBlue,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                const Text(
-                  'سجل دخولك للمتابعة في منصة جسور',
-                  style: TextStyle(
-                    color: AppColors.textGrey,
-                    fontSize: 14,
-                  ),
-                ),
+                const AuthHeader(
+  title: 'مرحباً بك مجدداً',
+  subtitle: 'سجل دخولك للمتابعة في منصة جسور',
+  logoSize: 100,
+  titleFontSize: 28,
+  spaceAfterLogo: 30,
+),
 
                 const SizedBox(height: 45),
 
@@ -100,7 +68,7 @@ class LoginView extends GetView<LoginController> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => Get.toNamed(Routes.forgotPassword),
                     child: const Text(
                       'نسيت كلمة المرور؟',
                       style: TextStyle(
@@ -112,71 +80,21 @@ class LoginView extends GetView<LoginController> {
                 ),
 
                 const SizedBox(height: 28),
-
-                Obx(
-                  () => Container(
-                    width: double.infinity,
-                    height: 58,
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradient,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primaryBlue.withOpacity(0.3),
-                          blurRadius: 15,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: ElevatedButton(
-                      onPressed: controller.isLoading.value
-                          ? null
-                          : () {
-                              final isValid =
-                                  controller.formKey.currentState?.validate() ??
-                                      false;
-
-                              if (isValid) {
-                                controller.login();
-                              }
-                            },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      child: controller.isLoading.value
-                          ? const SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Text(
-                              'تسجيل الدخول',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
+Obx(
+  () => JisrPrimaryButton(
+    text: 'تسجيل الدخول',
+    isLoading: controller.isLoading.value,
+    onPressed: controller.login
+   
+  ),
+),
 
                 const SizedBox(height: 40),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'ليس لديك حساب؟',
-                      style: TextStyle(color: AppColors.textGrey),
-                    ),
+                   
                     TextButton(
                       onPressed: () {
                         Get.toNamed(Routes.role);
@@ -188,6 +106,10 @@ class LoginView extends GetView<LoginController> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
+                     const Text(
+                      'ليس لديك حساب؟',
+                      style: TextStyle(color: AppColors.textGrey),
                     ),
                   ],
                 ),

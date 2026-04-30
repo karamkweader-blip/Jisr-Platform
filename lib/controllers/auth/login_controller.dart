@@ -16,6 +16,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
+if (!(formKey.currentState?.validate() ?? false)) return;
     try {
       isLoading.value = true;
 

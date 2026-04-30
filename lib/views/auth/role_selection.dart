@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/role_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/core/widgets/auth_header.dart';
 import 'package:jisr_platform/core/widgets/rolecard.dart';
-import 'package:jisr_platform/routes/app_routes.dart';
 
 class RoleSelectionPage extends GetView<RoleController> {
   const RoleSelectionPage({super.key});
@@ -20,46 +20,13 @@ class RoleSelectionPage extends GetView<RoleController> {
             children: [
 
               const SizedBox(height: 40),
-
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryBlue.withOpacity(0.1),
-                      blurRadius: 30,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: const Hero(
-                  tag: 'logo',
-                  child: Image(
-                    image: AssetImage('assets/images/logo.png'),
-                    height: 100,
-                  ),
-                ),
-              ),
-
-
-              const SizedBox(height: 30),
-
-              Text(
-                "كيف تريد الانضمام؟",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryBlue,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              const Text(
-                "اختر نوع حسابك لنبني تجربة مخصصة لك",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textGrey),
-              ),
+const AuthHeader(
+  title: 'كيف تريد الانضمام؟',
+  subtitle: 'اختر نوع حسابك لنبني تجربة مخصصة لك',
+  logoSize: 100,
+  titleFontSize: 24,
+  spaceAfterLogo: 30,
+),
 
               const SizedBox(height: 45),
 
@@ -134,14 +101,14 @@ const SizedBox(height: 60),
 }),
 
 
-              const SizedBox(height: 35),
 
-Row(
+     const SizedBox(height: 35),
+           Row(
     mainAxisAlignment: MainAxisAlignment.center,
   children: [
     TextButton(
-                        onPressed: () {
-                       Get.offAllNamed(Routes.login);
+                  onPressed: () {
+                       Get.back();
                         }, 
                         child: const Text(
                           "سجل دخول الآن",
