@@ -70,8 +70,8 @@ class LoginController extends GetxController {
         );
 
         Get.toNamed(
-          Routes.otpVerification,
-          arguments: {'email': emailController.text.trim(), 'otpMode': 'login'},
+          Routes.loginOtp,
+          arguments: {'email': emailController.text.trim()},
         );
       } else {
         Get.snackbar(
