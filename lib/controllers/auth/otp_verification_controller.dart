@@ -3,6 +3,12 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:jisr_platform/core/api/api_links.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:jisr_platform/core/api/api_links.dart';
 
 class OtpVerificationController extends GetxController {
   final otp = ''.obs;
@@ -46,7 +52,7 @@ class OtpVerificationController extends GetxController {
     startTimer();
   }
 
-  Future<void> verifyOtp() async {
+  Future verifyOtp() async {
     if (otp.value.length != 6) {
       JisrSnackbar.show(
         title: 'رمز غير مكتمل',
@@ -59,13 +65,55 @@ class OtpVerificationController extends GetxController {
     try {
       isLoading.value = true;
 
-      await Future.delayed(const Duration(seconds: 1));
+      final body = {'email': email, 'code': otp.value};
 
-      Get.toNamed(Routes.resetPassword);
-    } catch (_) {
+      print('VERIFY OTP BUTTON CLICKED');
+      print('VERIFY OTP URL: ${ApiLinks.verifyLoginOtp}');
+      print('VERIFY OTP BODY: $body');
+
+      final response = await http
+          .post(
+            Uri.parse(ApiLinks.verifyLoginOtp),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(body),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              throw Exception('Verify OTP timeout');
+            },
+          );
+
+      print('VERIFY OTP STATUS CODE: ${response.statusCode}');
+      print('VERIFY OTP RESPONSE BODY: ${response.body}');
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        JisrSnackbar.show(
+          title: 'تم تسجيل الدخول',
+          message: 'تم التحقق من الرمز بنجاح',
+          type: JisrSnackbarType.success,
+        );
+
+        // مؤقتاً لسا ما عنا Home
+        // Get.offAllNamed(Routes.home);
+      } else {
+        JisrSnackbar.show(
+          title: 'فشل التحقق',
+          message: data['message']?.toString() ?? response.body,
+          type: JisrSnackbarType.error,
+        );
+      }
+    } catch (e) {
+      print('VERIFY OTP ERROR: $e');
+
       JisrSnackbar.show(
-        title: 'حدث خطأ',
-        message: 'تعذر التحقق من الرمز، حاول مرة أخرى',
+        title: 'خطأ',
+        message: e.toString(),
         type: JisrSnackbarType.error,
       );
     } finally {

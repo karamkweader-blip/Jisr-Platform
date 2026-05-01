@@ -26,13 +26,13 @@ class RegisterStudentView extends GetView<RegisterStudentController> {
                   children: [
                     const SizedBox(height: 35),
 
-                  const AuthHeader(
-  title: 'إنشاء حساب طالب',
-  subtitle: 'أدخل بياناتك الأساسية للبدء في منصة جسور',
-  logoSize: 95,
-  titleFontSize: 26,
-  spaceAfterLogo: 28,
-),
+                    const AuthHeader(
+                      title: 'إنشاء حساب طالب',
+                      subtitle: 'أدخل بياناتك الأساسية للبدء في منصة جسور',
+                      logoSize: 95,
+                      titleFontSize: 26,
+                      spaceAfterLogo: 28,
+                    ),
 
                     const SizedBox(height: 38),
 
@@ -79,12 +79,10 @@ class RegisterStudentView extends GetView<RegisterStudentController> {
                         controller: controller.confirmPasswordController,
                         hintText: 'تأكيد كلمة المرور',
                         icon: Icons.verified_user_outlined,
-                        obscureText:
-                            !controller.isConfirmPasswordVisible.value,
+                        obscureText: !controller.isConfirmPasswordVisible.value,
                         textInputAction: TextInputAction.done,
                         validator: (value) {
-                          final passwordError =
-                              AppValidators.password(value);
+                          final passwordError = AppValidators.password(value);
 
                           if (passwordError != null) {
                             return passwordError;
@@ -97,8 +95,7 @@ class RegisterStudentView extends GetView<RegisterStudentController> {
                           return null;
                         },
                         suffixIcon: IconButton(
-                          onPressed:
-                              controller.isConfirmPasswordVisible.toggle,
+                          onPressed: controller.isConfirmPasswordVisible.toggle,
                           icon: Icon(
                             controller.isConfirmPasswordVisible.value
                                 ? Icons.visibility
@@ -111,26 +108,20 @@ class RegisterStudentView extends GetView<RegisterStudentController> {
 
                     const SizedBox(height: 4),
 
-                    const Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'سيتم إرسال رمز تحقق OTP إلى بريدك الإلكتروني.',
-                        style: TextStyle(
-                          color: AppColors.textGrey,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-
                     const SizedBox(height: 32),
 
-                   Obx(
-  () => JisrPrimaryButton(
-    text: 'إنشاء الحساب',
-    isLoading: controller.isLoading.value,
-    onPressed: controller.registerStudent,
-  ),
-),
+                    Obx(
+                      () => JisrPrimaryButton(
+                        text: 'إنشاء الحساب',
+                        isLoading: controller.isLoading.value,
+                        onPressed: controller.isLoading.value
+                            ? null
+                            : () {
+                                print('BUTTON FROM VIEW PRESSED');
+                                controller.registerStudent();
+                              },
+                      ),
+                    ),
 
                     const SizedBox(height: 34),
 
