@@ -13,12 +13,12 @@ import 'package:jisr_platform/views/auth/company/register_company_view.dart';
 import 'package:jisr_platform/views/auth/otp_verification_view.dart';
 import 'package:jisr_platform/views/auth/reset_password_view.dart';
 import 'package:jisr_platform/views/auth/role_selection.dart';
+import 'package:jisr_platform/views/auth/student/login_otp_view.dart';
 import 'package:jisr_platform/views/auth/student/register_student_view.dart';
-
+import 'package:jisr_platform/bindings/auth/login_otp_binding.dart';
 
 class AppPages {
   static final pages = [
-   
     GetPage(
       name: Routes.login,
       page: () => const LoginView(),
@@ -26,11 +26,11 @@ class AppPages {
     ),
 
     GetPage(
-  name: Routes.role,
-  page: () => const RoleSelectionPage(),
-  binding: RoleBinding(),
-),
-     GetPage(
+      name: Routes.role,
+      page: () => const RoleSelectionPage(),
+      binding: RoleBinding(),
+    ),
+    GetPage(
       name: Routes.registerCompany,
       page: () => const RegisterCompanyView(),
       binding: RegisterCompanyBinding(),
@@ -47,16 +47,22 @@ class AppPages {
       binding: ForgotPasswordBinding(),
     ),
 
-GetPage(
-  name: Routes.otpVerification,
-  page: () => const OtpVerificationView(),
-  binding: OtpVerificationBinding(),
-),
+    GetPage(
+      name: Routes.otpVerification,
+      page: () => const OtpVerificationView(),
+      binding: OtpVerificationBinding(),
+    ),
 
-GetPage(
-  name: Routes.resetPassword,
-  page: () => const ResetPasswordView(),
-  binding: ResetPasswordBinding(),
-),
+    GetPage(
+      name: Routes.resetPassword,
+      page: () => const ResetPasswordView(),
+      binding: ResetPasswordBinding(),
+    ),
+
+    GetPage(
+      name: Routes.loginOtp,
+      page: () => const LoginOtpView(),
+      binding: LoginOtpBinding(),
+    ),
   ];
 }
