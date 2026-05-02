@@ -1,5 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jisr_platform/models/auth/register_company_request.dart';
+import 'package:jisr_platform/services/auth/register_company_service.dart';
 
 class RegisterCompanyController extends GetxController {
   final RxInt currentStep = 0.obs;
@@ -20,6 +23,11 @@ class RegisterCompanyController extends GetxController {
   final TextEditingController locationController = TextEditingController();
   final TextEditingController websiteController = TextEditingController();
 
+
+final RegisterCompanyService _service = RegisterCompanyService();
+
+final RxnString selectedFilePath = RxnString();
+
   @override
   void onInit() {
     super.onInit();
@@ -29,6 +37,17 @@ class RegisterCompanyController extends GetxController {
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
+
+Future<void> pickFile() async {
+  final result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['pdf', 'txt', 'doc', 'docx'],
+  );
+
+  if (result != null && result.files.single.path != null) {
+    selectedFilePath.value = result.files.single.path!;
+  }
+}
 
   bool validateStep(int step) {
     switch (step) {
@@ -90,40 +109,45 @@ class RegisterCompanyController extends GetxController {
   }
 
   Future<void> submit() async {
-    if (!validateStep(1)) {
-      return;
-    }
+  if (!validateStep(1)) return;
 
-    try {
-      isLoading.value = true;
-
-      await Future.delayed(const Duration(seconds: 2));
-
-      Get.snackbar(
-        'تم',
-        'تم إرسال طلبك بنجاح',
-        snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 14,
-      );
-      
-//       if (Get.isRegistered<LoginController>()) {
-//   Get.delete<LoginController>(force: true);
-// }
-// Get.offAllNamed(Routes.login);
-    } catch (e) {
-      Get.snackbar(
-        'خطأ',
-        'حدث خطأ أثناء إرسال الطلب',
-        snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 14,
-      );
-    } finally {
-      isLoading.value = false;
-    }
+  if (selectedFilePath.value == null) {
+    Get.snackbar('تنبيه', 'يرجى رفع ملف التوثيق');
+    return;
   }
 
+  try {
+    isLoading.value = true;
+
+    final request = RegisterCompanyRequest(
+      name: companyNameController.text.trim(),
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+      location: locationController.text.trim(),
+      industry: companyFieldController.text.trim(),
+      website: websiteController.text.trim(),
+      documentationFilePath: selectedFilePath.value!,);
+
+    await _service.register(request);
+
+    Get.snackbar(
+      'تم',
+      'تم إنشاء حساب الشركة بنجاح',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+
+    Get.offAllNamed('/login');
+
+  } catch (e) {
+    Get.snackbar(
+      'خطأ',
+      e.toString(),
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  } finally {
+    isLoading.value = false;
+  }
+}
   @override
   void onClose() {
     pageController.dispose();

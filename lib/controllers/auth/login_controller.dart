@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:jisr_platform/core/api/api_links.dart';
+import 'package:jisr_platform/models/auth/login_request.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/services/auth/login_service.dart';
 
 class LoginController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -15,74 +13,38 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final LoginService _loginService = LoginService();
+
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  Future login() async {
+  Future<void> login() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    print('LOGIN BUTTON CLICKED');
-
-    if (!(formKey.currentState?.validate() ?? false)) {
-      print('LOGIN VALIDATION FAILED');
-      return;
-    }
+    if (!(formKey.currentState?.validate() ?? false)) return;
 
     try {
       isLoading.value = true;
 
-      final body = {
-        'email': emailController.text.trim(),
-        'password': passwordController.text,
-      };
+      final request = LoginRequest(
+        email: emailController.text.trim(),
+        password: passwordController.text,
+      );
 
-      print('LOGIN URL: ${ApiLinks.login}');
-      print('LOGIN BODY: $body');
+      final message = await _loginService.login(request);
 
-      final response = await http
-          .post(
-            Uri.parse(ApiLinks.login),
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode(body),
-          )
-          .timeout(
-            const Duration(seconds: 35),
-            onTimeout: () {
-              throw Exception(
-                'Login timeout: الباك تأخر بالرد، غالبًا إرسال OTP للإيميل عم يعلق',
-              );
-            },
-          );
-      print('LOGIN STATUS CODE: ${response.statusCode}');
-      print('LOGIN RESPONSE BODY: ${response.body}');
+      Get.snackbar(
+        'تم',
+        message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
 
-      final data = jsonDecode(response.body);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Get.snackbar(
-          'تم',
-          'تم تسجيل الدخول، تحقق من الرمز المرسل إلى بريدك',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-
-        Get.toNamed(
-          Routes.loginOtp,
-          arguments: {'email': emailController.text.trim()},
-        );
-      } else {
-        Get.snackbar(
-          'فشل تسجيل الدخول',
-          data['message']?.toString() ?? response.body,
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      }
+      Get.toNamed(
+        Routes.loginOtp,
+        arguments: {'email': emailController.text.trim()},
+      );
     } catch (e) {
-      print('LOGIN ERROR: $e');
-
       Get.snackbar(
         'خطأ بالاتصال',
         e.toString(),

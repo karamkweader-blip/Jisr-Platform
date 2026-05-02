@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/bindings/auth/company_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/forgot_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/login_binding.dart';
-import 'package:jisr_platform/bindings/auth/otp_verification_binding.dart';
+import 'package:jisr_platform/bindings/auth/forget-password/otp_verification_binding.dart';
 import 'package:jisr_platform/bindings/auth/register_student_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/reset_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/role_binding.dart';

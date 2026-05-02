@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:jisr_platform/controllers/auth/register_company_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
-class RegisterCompanyStepThree extends StatelessWidget {
-  const RegisterCompanyStepThree({super.key});
+class RegisterCompanyStepThree extends GetView<RegisterCompanyController> { 
+   const RegisterCompanyStepThree({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class RegisterCompanyStepThree extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         const Text(
-          'يمكنك رفع ملف توثيق الشركة الآن أو إضافته لاحقًا بعد إنشاء الحساب.',
+          'قم برفع ملف ترخيص الشركةأوالسجل التجاري ',
           style: TextStyle(
             fontSize: 14,
             color: AppColors.textGrey,
@@ -68,20 +73,10 @@ class RegisterCompanyStepThree extends StatelessWidget {
                   color: AppColors.textDark,
                 ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'الملف اختياري في هذه المرحلة.\nيمكن دعمه لاحقًا بصيغة PDF أو صورة.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textGrey,
-                  height: 1.6,
-                ),
-              ),
               const SizedBox(height: 20),
+
               OutlinedButton.icon(
-                onPressed: () {},
-                icon: const Icon(
+onPressed: () => Get.find<RegisterCompanyController>().pickFile(),                icon: const Icon(
                   Icons.attach_file_rounded,
                   color: AppColors.primaryBlue,
                 ),
@@ -106,6 +101,19 @@ class RegisterCompanyStepThree extends StatelessWidget {
                   backgroundColor: AppColors.background,
                 ),
               ),
+              const SizedBox(height: 12),
+Obx(
+  () => Text(
+    controller.selectedFilePath.value == null
+        ? 'لم يتم اختيار ملف'
+        : 'تم اختيار ملف التوثيق',
+    style: const TextStyle(
+      fontSize: 13,
+      color: AppColors.textGrey,
+      fontWeight: FontWeight.w600,
+    ),
+  ),
+),
             ],
           ),
         ),
