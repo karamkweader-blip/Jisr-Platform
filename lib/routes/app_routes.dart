@@ -8,4 +8,5 @@ abstract class Routes {
   static const otpVerification = '/otp-verification';
   static const resetPassword = '/reset-password';
   static const loginOtp = '/login-otp';
+  static const home = '/home';
 }
