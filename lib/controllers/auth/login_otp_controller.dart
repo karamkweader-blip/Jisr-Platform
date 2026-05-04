@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_links.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
+import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/services/auth/auth_service.dart';
+import 'package:jisr_platform/services/home/home_service.dart';
 
 class LoginOtpController extends GetxController {
   final otpController = TextEditingController();
@@ -65,14 +68,14 @@ class LoginOtpController extends GetxController {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        JisrSnackbar.show(
-          title: 'تم تسجيل الدخول',
-          message: 'تم التحقق من الرمز بنجاح',
-          type: JisrSnackbarType.success,
-        );
+        if (data['token'] != null) {
+          await AuthService().saveToken(data['token']);
+          print('TOKEN SAVED: ${data['token']}');
+        } else {
+          print('NO TOKEN IN VERIFY OTP RESPONSE');
+        }
 
-        // هون بعدين منحوّل عالهوم
-        // Get.offAllNamed(Routes.home);
+        Get.offAllNamed(Routes.home);
       } else {
         JisrSnackbar.show(
           title: 'فشل التحقق',
