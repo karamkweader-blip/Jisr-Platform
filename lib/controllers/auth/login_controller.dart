@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/auth/login_request.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
-import 'package:jisr_platform/services/auth/login_service.dart';
+import 'package:jisr_platform/services/auth/login/login_service.dart';
 
 class LoginController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

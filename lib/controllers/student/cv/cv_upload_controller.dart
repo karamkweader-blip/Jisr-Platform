@@ -1,8 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
-import 'package:jisr_platform/models/cv/cv_upload_response.dart';
-import 'package:jisr_platform/services/cv/cv_service.dart';
+import 'package:jisr_platform/models/student/cv/cv_upload_response.dart';
+import 'package:jisr_platform/services/student/cv/cv_service.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 
 class CvUploadController extends GetxController {

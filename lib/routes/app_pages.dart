@@ -6,22 +6,24 @@ import 'package:jisr_platform/bindings/auth/forget-password/otp_verification_bin
 import 'package:jisr_platform/bindings/auth/register_student_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/reset_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/role_binding.dart';
-import 'package:jisr_platform/bindings/cv/cv_upload_binding.dart';
+import 'package:jisr_platform/bindings/company/company_home_binding.dart';
+import 'package:jisr_platform/bindings/student/cv/cv_upload_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/views/auth/forget&reset/forgot_password_view.dart';
-import 'package:jisr_platform/views/auth/login.dart';
+import 'package:jisr_platform/views/auth/login/login.dart';
 import 'package:jisr_platform/views/auth/company/register_company_view.dart';
 import 'package:jisr_platform/views/auth/forget&reset/otp_verification_view.dart';
 import 'package:jisr_platform/views/auth/forget&reset/reset_password_view.dart';
 import 'package:jisr_platform/views/auth/role_selection.dart';
-import 'package:jisr_platform/views/home/home_view.dart';
-import 'package:jisr_platform/views/auth/student/login_otp_view.dart';
+import 'package:jisr_platform/views/company/company_home_view.dart';
+import 'package:jisr_platform/views/student/home/home_view.dart';
+import 'package:jisr_platform/views/auth/login/login_otp_view.dart';
 import 'package:jisr_platform/views/auth/student/register_student_view.dart';
 import 'package:jisr_platform/bindings/auth/login_otp_binding.dart';
-import 'package:jisr_platform/bindings/home/home_binding.dart';
-import 'package:jisr_platform/views/cv/cv_upload_view.dart';
-import 'package:jisr_platform/bindings/cv/cv_analysis_binding.dart';
-import 'package:jisr_platform/views/cv/cv_analysis_view.dart';
+import 'package:jisr_platform/bindings/student/home/home_binding.dart';
+import 'package:jisr_platform/views/student/cv/cv_upload_view.dart';
+import 'package:jisr_platform/bindings/student/cv/cv_analysis_binding.dart';
+import 'package:jisr_platform/views/student/cv/cv_analysis_view.dart';
 
 
 class AppPages {
@@ -73,7 +75,7 @@ class AppPages {
     ),
 
     GetPage(
-      name: Routes.home,
+      name: Routes.studentHome,
       page: () => const HomeView(),
       binding: HomeBinding(),
     ),
@@ -90,5 +92,10 @@ class AppPages {
       binding: CvAnalysisBinding(),
     ),
 
+  GetPage(
+  name: Routes.companyHome,
+  page: () => const CompanyHomeView(),
+  binding: CompanyHomeBinding(),
+  ),
   ];
 }

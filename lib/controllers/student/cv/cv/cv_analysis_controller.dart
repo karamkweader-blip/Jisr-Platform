@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
-import 'package:jisr_platform/models/cv/cv_analysis_response.dart';
-import 'package:jisr_platform/services/cv/cv_analysis_service.dart';
+import 'package:jisr_platform/models/student/cv/cv_analysis_response.dart';
+import 'package:jisr_platform/services/student/cv/cv_analysis_service.dart';
 
 class CvAnalysisController extends GetxController {
   final CvAnalysisService _analysisService = CvAnalysisService();

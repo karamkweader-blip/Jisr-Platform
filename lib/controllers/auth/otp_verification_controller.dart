@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
-import 'package:jisr_platform/services/auth/password_reset_service.dart';
+import 'package:jisr_platform/services/auth/forget&reset/password_reset_service.dart';
 
 class OtpVerificationController extends GetxController {
   final PasswordResetService _passwordResetService = PasswordResetService();

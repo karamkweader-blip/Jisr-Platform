@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
-import 'package:jisr_platform/services/auth/forgot_password_service.dart';
+import 'package:jisr_platform/services/auth/forget&reset/forgot_password_service.dart';
 
 class ForgotPasswordController extends GetxController {
   final emailController = TextEditingController();

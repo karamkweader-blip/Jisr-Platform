@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_links.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
-import 'package:jisr_platform/services/auth/auth_service.dart';
-import 'package:jisr_platform/services/home/home_service.dart';
+import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 
 class LoginOtpController extends GetxController {
   final otpController = TextEditingController();
@@ -67,15 +66,43 @@ class LoginOtpController extends GetxController {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        if (data['token'] != null) {
-          await AuthService().saveToken(data['token']);
-          print('TOKEN SAVED: ${data['token']}');
-        } else {
-          print('NO TOKEN IN VERIFY OTP RESPONSE');
-        }
+final token = data['token']?.toString();
+final roleName = _extractUserRole(data);
 
-        Get.offAllNamed(Routes.home);
-      } else {
+if (token == null || token.isEmpty) {
+  JisrSnackbar.show(
+    title: 'خطأ',
+    message: 'لم يتم استلام رمز الدخول',
+    type: JisrSnackbarType.error,
+  );
+  return;
+}
+
+if (roleName == null) {
+  JisrSnackbar.show(
+    title: 'خطأ',
+    message: 'نوع الحساب غير معروف',
+    type: JisrSnackbarType.error,
+  );
+  return;
+}
+
+await AuthService().saveAuthData(
+  token: token,
+  role: roleName,
+);
+
+if (roleName == 'student') {
+  Get.offAllNamed(Routes.studentHome);
+} else if (roleName == 'company') {
+  Get.offAllNamed(Routes.companyHome);
+} else {
+  JisrSnackbar.show(
+    title: 'خطأ',
+    message: 'نوع الحساب غير معروف',
+    type: JisrSnackbarType.error,
+  );
+}     } else {
         JisrSnackbar.show(
           title: 'فشل التحقق',
           message: data['message']?.toString() ?? response.body,
@@ -95,6 +122,16 @@ class LoginOtpController extends GetxController {
     }
   }
 
+
+String? _extractUserRole(Map<String, dynamic> data) {
+  final roles = data['user']?['roles'];
+
+  if (roles is List && roles.isNotEmpty) {
+    return roles.first['name']?.toString();
+  }
+
+  return null;
+}
   @override
   void onClose() {
     otpController.dispose();

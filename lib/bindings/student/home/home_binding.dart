@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
-import 'package:jisr_platform/controllers/home/home_controller.dart';
+import 'package:jisr_platform/controllers/student/home/home_controller.dart';
 
 class HomeBinding extends Bindings {
   @override
