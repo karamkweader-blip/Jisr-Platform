@@ -72,7 +72,9 @@ class OtpVerificationView extends GetView<OtpVerificationController> {
                           fontSize: 13,
                         ),
                       ),
+
                       const SizedBox(height: 6),
+
                       Text(
                         controller.email,
                         textAlign: TextAlign.center,
@@ -119,48 +121,35 @@ class OtpVerificationView extends GetView<OtpVerificationController> {
 
                       const SizedBox(height: 22),
 
-                      Obx(
-                        () => AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 250),
-                          child: controller.canResend
-                              ? TextButton.icon(
-                                  key: const ValueKey('resend_button'),
-                                  onPressed: controller.resendCode,
-                                  icon: const Icon(
-                                    Icons.refresh_rounded,
-                                    color: AppColors.actionYellow,
-                                    size: 20,
-                                  ),
-                                  label: const Text(
-                                    'إعادة إرسال الرمز',
-                                    style: TextStyle(
-                                      color: AppColors.actionYellow,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  key: const ValueKey('timer_box'),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        AppColors.primaryBlue.withOpacity(0.06),
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                  child: Text(
-                                    'إعادة الإرسال بعد ${controller.seconds.value} ثانية',
-                                    style: const TextStyle(
-                                      color: AppColors.textGrey,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                        ),
-                      ),
+                    Obx(
+  () => TextButton.icon(
+    onPressed: controller.isResending.value
+        ? null
+        : controller.resendCode,
+    icon: controller.isResending.value
+        ? const SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          )
+        : const Icon(
+            Icons.refresh_rounded,
+            color: AppColors.actionYellow,
+            size: 20,
+          ),
+    label: Text(
+      controller.isResending.value
+          ? 'جارٍ الإرسال...'
+          : 'إعادة إرسال الرمز',
+      style: TextStyle(
+        color: controller.isResending.value
+            ? AppColors.textGrey
+            : AppColors.actionYellow,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+),
                     ],
                   ),
                 ),
