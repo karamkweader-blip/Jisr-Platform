@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/services/auth/forgot_password_service.dart';
 
 class ForgotPasswordController extends GetxController {
   final emailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
   final isLoading = false.obs;
+
+  final ForgotPasswordService _forgotPasswordService =
+      ForgotPasswordService();
 
   Future<void> sendOtp() async {
     if (!formKey.currentState!.validate()) return;
@@ -15,11 +18,13 @@ class ForgotPasswordController extends GetxController {
     try {
       isLoading.value = true;
 
-      await Future.delayed(const Duration(seconds: 1));
+      final message = await _forgotPasswordService.sendOtp(
+        emailController.text.trim(),
+      );
 
       JisrSnackbar.show(
         title: 'تم إرسال الرمز',
-        message: 'تحقق من بريدك الإلكتروني لإدخال رمز التحقق',
+        message: message,
         type: JisrSnackbarType.success,
       );
 
@@ -29,10 +34,10 @@ class ForgotPasswordController extends GetxController {
           'email': emailController.text.trim(),
         },
       );
-    } catch (_) {
+    } catch (e) {
       JisrSnackbar.show(
         title: 'حدث خطأ',
-        message: 'تعذر إرسال رمز التحقق، حاول مرة أخرى',
+        message: e.toString(),
         type: JisrSnackbarType.error,
       );
     } finally {

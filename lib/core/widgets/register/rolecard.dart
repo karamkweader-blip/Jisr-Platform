@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/auth/role_controller.dart';
+import '../../../controllers/auth/role_controller.dart';
 
 class RoleCard extends GetView<RoleController> {
   final UserRole role;

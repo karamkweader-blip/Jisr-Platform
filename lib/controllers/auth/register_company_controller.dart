@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/auth/register_company_request.dart';
 import 'package:jisr_platform/services/auth/register_company_service.dart';
 
@@ -112,7 +113,11 @@ Future<void> pickFile() async {
   if (!validateStep(1)) return;
 
   if (selectedFilePath.value == null) {
-    Get.snackbar('تنبيه', 'يرجى رفع ملف التوثيق');
+  JisrSnackbar.show(
+  title: 'تنبيه',
+  message: 'يرجى رفع ملف التوثيق',
+  type: JisrSnackbarType.warning,
+);
     return;
   }
 
@@ -130,20 +135,20 @@ Future<void> pickFile() async {
 
     await _service.register(request);
 
-    Get.snackbar(
-      'تم',
-      'تم إنشاء حساب الشركة بنجاح',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+   JisrSnackbar.show(
+  title: 'نجاح',
+  message: 'تم إنشاء الحساب بنجاح',
+  type: JisrSnackbarType.success,
+);
 
     Get.offAllNamed('/login');
 
   } catch (e) {
-    Get.snackbar(
-      'خطأ',
-      e.toString(),
-      snackPosition: SnackPosition.BOTTOM,
-    );
+   JisrSnackbar.show(
+  title: 'خطأ',
+  message: 'حدث خطأ أثناء إنشاء الحساب',
+  type: JisrSnackbarType.error,
+);
   } finally {
     isLoading.value = false;
   }

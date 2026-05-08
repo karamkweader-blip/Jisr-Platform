@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/role_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/auth_header.dart';
-import 'package:jisr_platform/core/widgets/rolecard.dart';
+import 'package:jisr_platform/core/widgets/register/rolecard.dart';
 
 class RoleSelectionPage extends GetView<RoleController> {
   const RoleSelectionPage({super.key});

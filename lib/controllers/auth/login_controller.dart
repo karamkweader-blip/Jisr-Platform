@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/auth/login_request.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/auth/login_service.dart';
@@ -34,27 +35,32 @@ class LoginController extends GetxController {
 
       final message = await _loginService.login(request);
 
-      Get.snackbar(
-        'تم',
-        message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-
+     JisrSnackbar.show(
+  title: 'تم',
+  message: 'تم تسجيل الدخول بنجاح',
+  type: JisrSnackbarType.success,
+);
       Get.toNamed(
         Routes.loginOtp,
         arguments: {'email': emailController.text.trim()},
       );
     } catch (e) {
-      Get.snackbar(
-        'خطأ بالاتصال',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      JisrSnackbar.show(
+  title: 'خطأ',
+  message: 'حدث خطأ أثناء تسجيل الدخول',
+  type: JisrSnackbarType.error,
+);
     } finally {
       isLoading.value = false;
     }
   }
 
+  
+void clearFields() {
+  emailController.clear();
+  passwordController.clear();
+  isPasswordVisible.value = false;
+}
   @override
   void onClose() {
     emailController.dispose();
