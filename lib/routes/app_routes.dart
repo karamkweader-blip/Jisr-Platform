@@ -8,4 +8,10 @@ abstract class Routes {
   static const otpVerification = '/otp-verification';
   static const resetPassword = '/reset-password';
   static const loginOtp = '/login-otp';
+<<<<<<< Updated upstream
+=======
+  static const home = '/home';
+  static const cvUpload = '/cv-upload';
+  static const cvAnalysis = '/cv-analysis';
+>>>>>>> Stashed changes
 }

@@ -6,6 +6,7 @@ import 'package:jisr_platform/bindings/auth/otp_verification_binding.dart';
 import 'package:jisr_platform/bindings/auth/register_student_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/reset_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/role_binding.dart';
+import 'package:jisr_platform/bindings/cv/cv_upload_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/views/auth/forgot_password_view.dart';
 import 'package:jisr_platform/views/auth/login.dart';
@@ -16,6 +17,13 @@ import 'package:jisr_platform/views/auth/role_selection.dart';
 import 'package:jisr_platform/views/auth/student/login_otp_view.dart';
 import 'package:jisr_platform/views/auth/student/register_student_view.dart';
 import 'package:jisr_platform/bindings/auth/login_otp_binding.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:jisr_platform/bindings/home/home_binding.dart';
+import 'package:jisr_platform/views/cv/cv_upload_view.dart';
+import 'package:jisr_platform/bindings/cv/cv_analysis_binding.dart';
+import 'package:jisr_platform/views/cv/cv_analysis_view.dart';
+>>>>>>> Stashed changes
 
 class AppPages {
   static final pages = [
@@ -64,5 +72,25 @@ class AppPages {
       page: () => const LoginOtpView(),
       binding: LoginOtpBinding(),
     ),
+<<<<<<< Updated upstream
+=======
+
+    GetPage(
+      name: Routes.home,
+      page: () => const HomeView(),
+      binding: HomeBinding(),
+    ),
+
+    GetPage(
+      name: Routes.cvUpload,
+      page: () => const CvUploadView(),
+      binding: CvUploadBinding(),
+    ),
+    GetPage(
+      name: Routes.cvAnalysis,
+      page: () => const CvAnalysisView(),
+      binding: CvAnalysisBinding(),
+    ),
+>>>>>>> Stashed changes
   ];
 }

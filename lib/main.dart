@@ -3,8 +3,17 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/routes/app_pages.dart';
 
+<<<<<<< Updated upstream
 void main() {
   runApp(const MyApp());
+=======
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final token = await AuthService().getToken();
+
+  runApp(MyApp(initialRoute: token == null ? Routes.login : Routes.login));
+>>>>>>> Stashed changes
 }
 
 class MyApp extends StatelessWidget {
