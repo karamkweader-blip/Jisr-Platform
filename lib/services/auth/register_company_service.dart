@@ -11,7 +11,9 @@ class RegisterCompanyService {
       final uri = Uri.parse(ApiLinks.register);
 
       final multipartRequest = http.MultipartRequest('POST', uri);
-
+multipartRequest.headers.addAll({
+  'Accept': 'application/json',
+});
       // إضافة الحقول
       multipartRequest.fields.addAll(request.toFields());
 

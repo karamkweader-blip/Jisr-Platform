@@ -1,49 +1,45 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/services/auth/password_reset_service.dart';
 
 class OtpVerificationController extends GetxController {
+  final PasswordResetService _passwordResetService = PasswordResetService();
+
   final otp = ''.obs;
   final isLoading = false.obs;
-  final seconds = 45.obs;
+  final isResending = false.obs;
 
-  Timer? _timer;
   late final String email;
-
-  bool get canResend => seconds.value == 0;
 
   @override
   void onInit() {
     super.onInit();
     email = Get.arguments?['email'] ?? '';
-    startTimer();
-  }
-
-  void startTimer() {
-    _timer?.cancel();
-    seconds.value = 45;
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (seconds.value > 0) {
-        seconds.value--;
-      } else {
-        timer.cancel();
-      }
-    });
   }
 
   Future<void> resendCode() async {
-    if (!canResend) return;
+    if (isResending.value) return;
 
-    JisrSnackbar.show(
-      title: 'تم الإرسال',
-      message: 'تم إعادة إرسال رمز التحقق إلى بريدك الإلكتروني',
-      type: JisrSnackbarType.success,
-    );
+    try {
+      isResending.value = true;
 
-    startTimer();
+      await _passwordResetService.resendOtp(email: email);
+
+      JisrSnackbar.show(
+        title: 'تم الإرسال',
+        message: 'تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني',
+        type: JisrSnackbarType.success,
+      );
+    } catch (_) {
+      JisrSnackbar.show(
+        title: 'تعذر الإرسال',
+        message: 'تعذر إعادة إرسال الرمز، حاول مرة أخرى',
+        type: JisrSnackbarType.error,
+      );
+    } finally {
+      isResending.value = false;
+    }
   }
 
   Future<void> verifyOtp() async {
@@ -59,23 +55,26 @@ class OtpVerificationController extends GetxController {
     try {
       isLoading.value = true;
 
-      await Future.delayed(const Duration(seconds: 1));
+      final token = await _passwordResetService.verifyOtp(
+        email: email,
+        code: otp.value,
+      );
 
-      Get.toNamed(Routes.resetPassword);
+      Get.toNamed(
+        Routes.resetPassword,
+        arguments: {
+          'email': email,
+          'token': token,
+        },
+      );
     } catch (_) {
       JisrSnackbar.show(
-        title: 'حدث خطأ',
+        title: 'رمز غير صحيح',
         message: 'تعذر التحقق من الرمز، حاول مرة أخرى',
         type: JisrSnackbarType.error,
       );
     } finally {
       isLoading.value = false;
     }
-  }
-
-  @override
-  void onClose() {
-    _timer?.cancel();
-    super.onClose();
   }
 }
