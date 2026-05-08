@@ -6,10 +6,12 @@ import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/auth/auth_service.dart';
 import 'package:jisr_platform/services/home/home_service.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final token = await AuthService().getToken();
+
 
   runApp(MyApp(initialRoute: token == null ? Routes.login : Routes.home));
 }
