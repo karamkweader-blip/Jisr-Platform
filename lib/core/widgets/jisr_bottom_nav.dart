@@ -41,7 +41,7 @@ class JisrBottomNav extends StatelessWidget {
             isActive: activeTab == JisrBottomNavTab.home,
             onTap: () {
               if (activeTab != JisrBottomNavTab.home) {
-                Get.offNamed(Routes.home);
+                Get.offNamed(Routes.studentHome);
               }
             },
           ),

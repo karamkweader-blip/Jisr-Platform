@@ -6,24 +6,50 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   static const String tokenKey = 'token';
+  static const String roleKey = 'role';
+
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(tokenKey);
   }
 
-  Future<void> saveToken(String token) async {
+  Future<String?> getRole() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(tokenKey, token);
+    return prefs.getString(roleKey);
   }
 
-  Future<void> removeToken() async {
+
+  Future<Map<String, String?>> getAuthData() async {
     final prefs = await SharedPreferences.getInstance();
+
+    return {
+      'token': prefs.getString(tokenKey),
+      'role': prefs.getString(roleKey),
+    };
+  }
+
+  Future<void> saveAuthData({
+    required String token,
+    required String role,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(tokenKey, token);
+    await prefs.setString(roleKey, role);
+  }
+
+  Future<void> removeAuthData() async {
+    final prefs = await SharedPreferences.getInstance();
+
     await prefs.remove(tokenKey);
+    await prefs.remove(roleKey);
   }
 
   Future<Map<String, dynamic>> logout() async {
-    final token = await getToken();
+    final authData = await getAuthData();
+
+    final token = authData['token'];
 
     print('AUTH LOGOUT TOKEN: $token');
 
@@ -50,7 +76,9 @@ class AuthService {
   }
 
   Future<Map<String, dynamic>> logoutAllSessions() async {
-    final token = await getToken();
+    final authData = await getAuthData();
+
+    final token = authData['token'];
 
     print('AUTH LOGOUT ALL TOKEN: $token');
 

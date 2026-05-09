@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
-import 'package:jisr_platform/services/auth/auth_service.dart';
+import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 
 class AuthActionsController extends GetxController {
   final AuthService _authService = AuthService();
@@ -105,7 +105,7 @@ class AuthActionsController extends GetxController {
       final response = await request();
 
       if (response['statusCode'] == 200 || response['statusCode'] == 201) {
-        await _authService.removeToken();
+        await _authService.removeAuthData();
 
         Get.offAllNamed(Routes.login);
 

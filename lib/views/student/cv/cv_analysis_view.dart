@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jisr_platform/controllers/cv/cv/cv_analysis_controller.dart';
+import 'package:jisr_platform/controllers/student/cv/cv/cv_analysis_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_bottom_nav.dart';
 

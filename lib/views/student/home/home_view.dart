@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
-import 'package:jisr_platform/controllers/home/home_controller.dart';
+import 'package:jisr_platform/controllers/student/home/home_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_app_menu.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';

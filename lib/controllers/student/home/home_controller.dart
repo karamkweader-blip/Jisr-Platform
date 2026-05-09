@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:jisr_platform/models/home/home_model.dart';
+import 'package:jisr_platform/models/student/home/home_model.dart';
 
 class HomeController extends GetxController {
   final isLoading = false.obs;

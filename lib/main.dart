@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/routes/app_pages.dart';
-import 'package:jisr_platform/routes/app_routes.dart';
-import 'package:jisr_platform/services/auth/auth_service.dart';
-import 'package:jisr_platform/services/home/home_service.dart';
-
+import 'package:jisr_platform/services/auth/token&role_manage/initial_route_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final token = await AuthService().getToken();
+  final initialRoute = await InitialRouteService().getInitialRoute();
 
-
-  runApp(MyApp(initialRoute: token == null ? Routes.login : Routes.home));
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {

@@ -53,7 +53,8 @@ class LoginOtpView extends GetView<LoginOtpController> {
                     spaceAfterLogo: 28,
                   ),
 
-                  const SizedBox(height: 90),
+                  const SizedBox(height: 9
+                ),
 
                   Text(
                     controller.email,

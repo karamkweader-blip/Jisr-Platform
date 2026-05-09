@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_links.dart';
-import 'package:jisr_platform/models/cv/cv_analysis_response.dart';
-import 'package:jisr_platform/services/auth/auth_service.dart';
+import 'package:jisr_platform/models/student/cv/cv_analysis_response.dart';
+import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 
 class CvAnalysisService {
   final AuthService _authService = AuthService();

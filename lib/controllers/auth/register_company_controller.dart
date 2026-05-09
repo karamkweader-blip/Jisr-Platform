@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/auth/register_company_request.dart';
-import 'package:jisr_platform/services/auth/register_company_service.dart';
+import 'package:jisr_platform/services/auth/register/register_company_service.dart';
 
 class RegisterCompanyController extends GetxController {
   final RxInt currentStep = 0.obs;
