@@ -1,9 +1,11 @@
+
+/*
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/cv/cv/cv_analysis_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_bottom_nav.dart';
-import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 
 class CvAnalysisView extends GetView<CvAnalysisController> {
   const CvAnalysisView({super.key});
@@ -184,14 +186,6 @@ class CvAnalysisView extends GetView<CvAnalysisController> {
                     );
                   },
                 ),
-
-                const SizedBox(height: 24),
-
-                JisrPrimaryButton(
-                  text: 'بدء اختبار تحديد المستوى',
-                  icon: Icons.play_arrow_rounded,
-                  onPressed: controller.startAssessment,
-                ),
               ],
             ),
           );
@@ -244,7 +238,7 @@ class _AnalysisLoading extends StatelessWidget {
               ),
               SizedBox(height: 6),
               Text(
-                'استني لحظات',
+                'انتظر لحظات',
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   color: AppColors.textGrey,
@@ -435,3 +429,4 @@ class _AnimatedBar extends StatelessWidget {
     );
   }
 }
+*/

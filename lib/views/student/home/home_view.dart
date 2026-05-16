@@ -119,18 +119,28 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _BottomItem(icon: Icons.person_outline, title: 'ملف شخصي'),
+                    _BottomItem(
+                      icon: Icons.person_outline,
+                      title: 'ملف شخصي',
+                      onTap: () {
+                        // Get.toNamed(AppRoutes.profile);
+                      },
+                    ),
                     _BottomItem(
                       icon: Icons.home_rounded,
                       title: 'الرئيسية',
                       isActive: true,
+                      onTap: () {},
                     ),
                     _BottomItem(
                       icon: Icons.upload_file_outlined,
                       title: 'رفع CV',
+                      onTap: () {
+                        Get.toNamed('/cv-upload');
+                      },
                     ),
                   ],
                 ),
@@ -188,31 +198,40 @@ class _BottomItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final bool isActive;
+  final VoidCallback? onTap;
 
   const _BottomItem({
     required this.icon,
     required this.title,
     this.isActive = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          color: isActive ? AppColors.actionYellow : AppColors.textGrey,
+    final color = isActive ? AppColors.actionYellow : AppColors.textGrey;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: color),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: TextStyle(
+                color: color,
+                fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                fontSize: 12,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 4),
-        Text(
-          title,
-          style: TextStyle(
-            color: isActive ? AppColors.actionYellow : AppColors.textGrey,
-            fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-            fontSize: 12,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
