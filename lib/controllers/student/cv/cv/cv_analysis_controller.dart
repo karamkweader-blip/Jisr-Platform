@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/student/cv/cv_analysis_response.dart';
 import 'package:jisr_platform/services/student/cv/cv_analysis_service.dart';
+import 'package:jisr_platform/routes/app_routes.dart';
 
 class CvAnalysisController extends GetxController {
   final CvAnalysisService _analysisService = CvAnalysisService();
@@ -40,5 +41,30 @@ class CvAnalysisController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void startAssessment() {
+    final result = analysis.value;
+
+    if (result == null) return;
+
+    final skillIds = result.skills
+        .map((skill) => skill.skillId)
+        .where((id) => id != 0)
+        .toList();
+
+    final skillNames = {
+      for (final skill in result.skills) skill.skillId: skill.skillName,
+    };
+
+    Get.toNamed(
+      Routes.assessment,
+      arguments: {
+        'careerPathId': 1,
+        'cvId': result.cvId,
+        'skillIds': skillIds,
+        'skillNames': skillNames,
+      },
+    );
   }
 }

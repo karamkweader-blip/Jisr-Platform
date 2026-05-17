@@ -19,8 +19,8 @@ class CvAnalysisResponse {
     return CvAnalysisResponse(
       success: json['success'] == true,
       message: json['message']?.toString() ?? '',
-      analysisId: data['analysis_id'] ?? 0,
-      cvId: data['cv_id'] ?? 0,
+      analysisId: int.tryParse(data['analysis_id'].toString()) ?? 0,
+      cvId: int.tryParse(data['cv_id'].toString()) ?? 0,
       skills: (data['skills'] as List? ?? [])
           .map((item) => CvSkillModel.fromJson(item))
           .toList(),
@@ -29,12 +29,14 @@ class CvAnalysisResponse {
 }
 
 class CvSkillModel {
+  final int skillId;
   final String skillName;
   final String evidence;
   final double initialLevel;
   final double confidence;
 
   CvSkillModel({
+    required this.skillId,
     required this.skillName,
     required this.evidence,
     required this.initialLevel,
@@ -43,10 +45,11 @@ class CvSkillModel {
 
   factory CvSkillModel.fromJson(Map<String, dynamic> json) {
     return CvSkillModel(
+      skillId: int.tryParse(json['skill_id'].toString()) ?? 0,
       skillName: json['skill_name']?.toString() ?? '',
       evidence: json['evidence']?.toString() ?? '',
-      initialLevel: double.tryParse(json['initial_level'].toString()) ?? 0,
-      confidence: double.tryParse(json['confidence'].toString()) ?? 0,
+      initialLevel: double.tryParse(json['initial_level'].toString()) ?? 0.0,
+      confidence: double.tryParse(json['confidence'].toString()) ?? 0.0,
     );
   }
 }

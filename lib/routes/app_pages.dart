@@ -25,6 +25,10 @@ import 'package:jisr_platform/views/student/cv/cv_upload_view.dart';
 import 'package:jisr_platform/bindings/student/cv/cv_analysis_binding.dart';
 import 'package:jisr_platform/views/student/cv/cv_analysis_view.dart';
 
+import 'package:jisr_platform/bindings/student/assessment/assessment_binding.dart';
+import 'package:jisr_platform/views/student/assessment/assessment_view.dart';
+import 'package:jisr_platform/bindings/student/profile/student_profile_binding.dart';
+import 'package:jisr_platform/views/student/profile/student_profile_view.dart';
 
 class AppPages {
   static final pages = [
@@ -80,7 +84,6 @@ class AppPages {
       binding: HomeBinding(),
     ),
 
-
     GetPage(
       name: Routes.cvUpload,
       page: () => const CvUploadView(),
@@ -92,10 +95,22 @@ class AppPages {
       binding: CvAnalysisBinding(),
     ),
 
-  GetPage(
-  name: Routes.companyHome,
-  page: () => const CompanyHomeView(),
-  binding: CompanyHomeBinding(),
-  ),
+    GetPage(
+      name: Routes.companyHome,
+      page: () => const CompanyHomeView(),
+      binding: CompanyHomeBinding(),
+    ),
+
+    GetPage(
+      name: Routes.assessment,
+      page: () => const AssessmentView(),
+      binding: AssessmentBinding(),
+    ),
+
+    GetPage(
+      name: Routes.studentProfile,
+      page: () => const StudentProfileView(),
+      binding: StudentProfileBinding(),
+    ),
   ];
 }
