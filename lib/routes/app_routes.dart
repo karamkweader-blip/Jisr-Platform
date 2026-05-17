@@ -18,6 +18,8 @@ abstract class Routes {
   static const cvUpload = '/cv-upload';
   static const cvAnalysis = '/cv-analysis';
   static const assessment = '/assessment';
+  //ملف شخصي
+  static const studentProfile = '/student-profile';
 
   /////company
   static const companyHome = '/company-home';

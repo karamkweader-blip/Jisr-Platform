@@ -126,7 +126,7 @@ class HomeView extends GetView<HomeController> {
                       icon: Icons.person_outline,
                       title: 'ملف شخصي',
                       onTap: () {
-                        // Get.toNamed(AppRoutes.profile);
+                        Get.toNamed('/student-profile');
                       },
                     ),
                     _BottomItem(

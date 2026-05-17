@@ -32,6 +32,8 @@ class AssessmentController extends GetxController {
 
   int get currentSkillId => skillIds.isEmpty ? 0 : skillIds[currentSkillIndex];
 
+  bool get isLastSkill => currentSkillIndex >= skillIds.length - 1;
+
   String get currentSkillName {
     final question = currentQuestion.value;
     if (question != null && question.skillName.isNotEmpty) {
@@ -83,7 +85,6 @@ class AssessmentController extends GetxController {
       );
 
       session.value = response.data;
-
       isStarting.value = false;
 
       await loadNextQuestion();
@@ -114,7 +115,7 @@ class AssessmentController extends GetxController {
 
       if (result.isSkillCompleted) {
         isLoadingQuestion.value = false;
-        await moveToNextSkill();
+        await finishCurrentSkill();
         return;
       }
 
@@ -140,7 +141,7 @@ class AssessmentController extends GetxController {
 
       if (error.contains('already completed') ||
           error.contains('completedat')) {
-        await moveToNextSkill();
+        await finishCurrentSkill();
         return;
       }
 
@@ -194,7 +195,7 @@ class AssessmentController extends GetxController {
 
       if (lowerError.contains('already completed') ||
           lowerError.contains('completedat')) {
-        await moveToNextSkill();
+        await finishCurrentSkill();
         return;
       }
 
@@ -208,34 +209,38 @@ class AssessmentController extends GetxController {
     }
   }
 
-  Future<void> moveToNextSkill() async {
+  Future<void> finishCurrentSkill() async {
     isLoadingQuestion.value = false;
     currentQuestion.value = null;
     answerController.clear();
     lastResult.value = null;
 
-    if (currentSkillIndex < skillIds.length - 1) {
-      currentSkillIndex++;
-
-      JisrSnackbar.show(
-        title: 'تم إنهاء المهارة',
-        message: 'ننتقل الآن للمهارة التالية',
-        type: JisrSnackbarType.success,
-      );
-
-      await Future.delayed(const Duration(milliseconds: 700));
-      await loadNextQuestion();
-    } else {
+    if (isLastSkill) {
       await completeAssessmentSession();
+      return;
     }
+
+    currentSkillIndex++;
+
+    JisrSnackbar.show(
+      title: 'تم إنهاء المهارة',
+      message: 'ننتقل الآن للمهارة التالية',
+      type: JisrSnackbarType.success,
+    );
+
+    await Future.delayed(const Duration(milliseconds: 700));
+    await loadNextQuestion();
   }
 
   Future<void> completeAssessmentSession() async {
-    if (assessmentSessionId == 0) return;
+    if (assessmentSessionId == 0 || isCompleting.value || isCompleted.value) {
+      return;
+    }
 
     try {
       isCompleting.value = true;
       isLoadingQuestion.value = false;
+      isSubmitting.value = false;
       currentQuestion.value = null;
       answerController.clear();
       lastResult.value = null;
