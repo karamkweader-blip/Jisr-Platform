@@ -1,5 +1,5 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.50.40:8001/api';
+  static const String baseUrl = 'http://192.168.50.37:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -33,5 +33,17 @@ class ApiLinks {
       '$baseUrl/assessments/$assessmentSessionId/complete';
   static const String studentProfile = '$baseUrl/student/profile';
   static const String editStudentProfile = '$baseUrl/student/profile/edit';
+  //بروتفوليم
+  static const String portfolioProjects = '$baseUrl/student/portfolio-projects';
+
+  static String portfolioProjectDetails(int projectId) =>
+      '$baseUrl/student/portfolio-projects/$projectId';
+
+  static String updatePortfolioProject(int projectId) =>
+      '$baseUrl/student/portfolio-projects/$projectId';
+
+  static String deletePortfolioProject(int projectId) =>
+      '$baseUrl/student/portfolio-projects/$projectId';
+
   //////company
 }

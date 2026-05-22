@@ -29,6 +29,9 @@ import 'package:jisr_platform/bindings/student/assessment/assessment_binding.dar
 import 'package:jisr_platform/views/student/assessment/assessment_view.dart';
 import 'package:jisr_platform/bindings/student/profile/student_profile_binding.dart';
 import 'package:jisr_platform/views/student/profile/student_profile_view.dart';
+import 'package:jisr_platform/bindings/student/portfolio/student_portfolio_binding.dart';
+import 'package:jisr_platform/views/student/portfolio/student_portfolio_view.dart';
+import 'package:jisr_platform/views/student/portfolio/student_portfolio_details_view.dart';
 
 class AppPages {
   static final pages = [
@@ -111,6 +114,19 @@ class AppPages {
       name: Routes.studentProfile,
       page: () => const StudentProfileView(),
       binding: StudentProfileBinding(),
+    ),
+
+    //بروتفوليم
+    GetPage(
+      name: Routes.studentPortfolio,
+      page: () => const StudentPortfolioView(),
+      binding: StudentPortfolioBinding(),
+    ),
+
+    GetPage(
+      name: Routes.studentPortfolioDetails,
+      page: () => const StudentPortfolioDetailsView(),
+      binding: StudentPortfolioBinding(),
     ),
   ];
 }

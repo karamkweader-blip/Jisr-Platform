@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
 import 'package:jisr_platform/controllers/student/home/home_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_app_menu.dart';
-import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
+import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
+import 'package:jisr_platform/routes/app_routes.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -12,11 +14,12 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final authActionsController = Get.find<AuthActionsController>();
-    Get.find<AuthActionsController>();
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 1),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.background,
@@ -24,6 +27,7 @@ class HomeView extends GetView<HomeController> {
           title: const Text(
             'جسور',
             style: TextStyle(
+              fontFamily: 'Cairo',
               color: AppColors.primaryBlue,
               fontWeight: FontWeight.bold,
             ),
@@ -33,119 +37,125 @@ class HomeView extends GetView<HomeController> {
             onLogoutAllSessions: authActionsController.logoutAllSessions,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              const SizedBox(height: 24),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(24, 18, 24, 26),
+            child: Column(
+              children: [
+                _WelcomeCard(
+                      title: controller.homeData.title,
+                      subtitle: controller.homeData.subtitle,
+                    )
+                    .animate()
+                    .fadeIn(duration: 520.ms)
+                    .slideY(begin: .22, curve: Curves.easeOutBack)
+                    .scale(
+                      begin: const Offset(.96, .96),
+                      end: const Offset(1, 1),
+                    ),
 
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryBlue,
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryBlue.withOpacity(0.22),
-                      blurRadius: 22,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    const Icon(
-                      Icons.auto_awesome,
-                      color: AppColors.actionYellow,
-                      size: 42,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      controller.homeData.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      controller.homeData.subtitle,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 15,
-                        height: 1.6,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                const SizedBox(height: 28),
 
-              const SizedBox(height: 34),
-
-              Row(
-                children: const [
-                  Expanded(
-                    child: _HomeActionCard(
-                      icon: Icons.person_outline,
-                      title: 'ملفي الشخصي',
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: const Text(
+                    'خدمات الطالب',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.primaryBlue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: 14),
-                  Expanded(
-                    child: _HomeActionCard(
-                      icon: Icons.upload_file_outlined,
-                      title: 'رفع CV',
-                    ),
-                  ),
-                ],
-              ),
+                ).animate().fadeIn(delay: 120.ms).slideX(begin: .20),
 
-              const Spacer(),
+                const SizedBox(height: 16),
 
-              Container(
-                margin: const EdgeInsets.only(bottom: 18),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryBlue.withOpacity(0.08),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
+                  childAspectRatio: .82,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    _BottomItem(
-                      icon: Icons.person_outline,
-                      title: 'ملف شخصي',
-                      onTap: () {
-                        Get.toNamed('/student-profile');
-                      },
-                    ),
-                    _BottomItem(
-                      icon: Icons.home_rounded,
-                      title: 'الرئيسية',
-                      isActive: true,
-                      onTap: () {},
-                    ),
-                    _BottomItem(
-                      icon: Icons.upload_file_outlined,
-                      title: 'رفع CV',
-                      onTap: () {
-                        Get.toNamed('/cv-upload');
-                      },
-                    ),
+                    _HomeFeatureCard(
+                          icon: Icons.work_history_rounded,
+                          title: 'البورتفوليو',
+                          subtitle: 'مشاريعك وإنجازاتك',
+                          isEnabled: true,
+                          onTap: () => Get.toNamed(Routes.studentPortfolio),
+                        )
+                        .animate()
+                        .fadeIn(delay: 160.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
+
+                    _HomeFeatureCard(
+                          icon: Icons.smart_toy_rounded,
+                          title: 'الشات بوت',
+                          subtitle: 'قريباً',
+                          isEnabled: false,
+                          onTap: () {},
+                        )
+                        .animate()
+                        .fadeIn(delay: 240.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
+
+                    _HomeFeatureCard(
+                          icon: Icons.groups_rounded,
+                          title: 'المجتمع التقني',
+                          subtitle: 'قريباً',
+                          isEnabled: false,
+                          onTap: () {},
+                        )
+                        .animate()
+                        .fadeIn(delay: 320.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
+
+                    _HomeFeatureCard(
+                          icon: Icons.school_rounded,
+                          title: 'مساري التدريبي',
+                          subtitle: 'قريباً',
+                          isEnabled: false,
+                          onTap: () {},
+                        )
+                        .animate()
+                        .fadeIn(delay: 400.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
                   ],
                 ),
-              ),
-            ],
+
+                const SizedBox(height: 28),
+
+                Row(
+                      children: [
+                        Expanded(
+                          child: _QuickActionCard(
+                            icon: Icons.person_outline,
+                            title: 'ملفي الشخصي',
+                            onTap: () => Get.toNamed(Routes.studentProfile),
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: _QuickActionCard(
+                            icon: Icons.upload_file_outlined,
+                            title: 'رفع CV',
+                            onTap: () => Get.toNamed(Routes.cvUpload),
+                          ),
+                        ),
+                      ],
+                    )
+                    .animate()
+                    .fadeIn(delay: 500.ms)
+                    .slideY(begin: .22, curve: Curves.easeOutCubic),
+              ],
+            ),
           ),
         ),
       ),
@@ -153,39 +163,72 @@ class HomeView extends GetView<HomeController> {
   }
 }
 
-class _HomeActionCard extends StatelessWidget {
-  final IconData icon;
+class _WelcomeCard extends StatelessWidget {
   final String title;
+  final String subtitle;
 
-  const _HomeActionCard({required this.icon, required this.title});
+  const _WelcomeCard({required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 145,
+      width: double.infinity,
+      padding: const EdgeInsets.all(26),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: AppColors.primaryBlue.withOpacity(0.08)),
+        borderRadius: BorderRadius.circular(30),
+        gradient: const LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [AppColors.primaryBlue, Color(0xFF0077B6)],
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.07),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: AppColors.primaryBlue.withOpacity(0.22),
+            blurRadius: 26,
+            offset: const Offset(0, 13),
           ),
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: AppColors.primaryBlue, size: 38),
-          const SizedBox(height: 14),
+          Image.asset(
+                'assets/images/logo.png',
+                height: 64,
+                errorBuilder: (_, __, ___) {
+                  return const Icon(
+                    Icons.auto_awesome,
+                    color: AppColors.actionYellow,
+                    size: 48,
+                  );
+                },
+              )
+              .animate(onPlay: (c) => c.repeat(reverse: true))
+              .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.035, 1.035),
+                duration: 1800.ms,
+              )
+              .shimmer(duration: 2200.ms, color: Colors.white.withOpacity(.24)),
+          const SizedBox(height: 18),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: const TextStyle(
-              color: AppColors.primaryBlue,
-              fontSize: 16,
+              fontFamily: 'Cairo',
+              color: Colors.white,
+              fontSize: 27,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontFamily: 'Cairo',
+              color: Colors.white70,
+              fontSize: 15,
+              height: 1.6,
             ),
           ),
         ],
@@ -194,39 +237,135 @@ class _HomeActionCard extends StatelessWidget {
   }
 }
 
-class _BottomItem extends StatelessWidget {
+class _HomeFeatureCard extends StatelessWidget {
   final IconData icon;
   final String title;
-  final bool isActive;
-  final VoidCallback? onTap;
+  final String subtitle;
+  final bool isEnabled;
+  final VoidCallback onTap;
 
-  const _BottomItem({
+  const _HomeFeatureCard({
     required this.icon,
     required this.title,
-    this.isActive = false,
-    this.onTap,
+    required this.subtitle,
+    required this.isEnabled,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? AppColors.actionYellow : AppColors.textGrey;
-
     return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      onTap: isEnabled ? onTap : null,
+      borderRadius: BorderRadius.circular(28),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 260),
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: isEnabled
+                ? AppColors.actionYellow.withOpacity(.34)
+                : AppColors.primaryBlue.withOpacity(.08),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isEnabled
+                  ? AppColors.actionYellow.withOpacity(.12)
+                  : AppColors.primaryBlue.withOpacity(.06),
+              blurRadius: 18,
+              offset: const Offset(0, 9),
+            ),
+          ],
+        ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: color),
-            const SizedBox(height: 4),
+            Container(
+              height: 58,
+              width: 58,
+              decoration: BoxDecoration(
+                color: isEnabled
+                    ? AppColors.actionYellow.withOpacity(.14)
+                    : AppColors.primaryBlue.withOpacity(.06),
+                borderRadius: BorderRadius.circular(22),
+              ),
+              child: Icon(
+                icon,
+                color: isEnabled ? AppColors.actionYellow : AppColors.textGrey,
+                size: 34,
+              ),
+            ),
+            const SizedBox(height: 14),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: TextStyle(
-                color: color,
-                fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                fontFamily: 'Cairo',
+                color: isEnabled ? AppColors.primaryBlue : AppColors.textGrey,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: 'Cairo',
+                color: AppColors.textGrey,
                 fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _QuickActionCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const _QuickActionCard({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(26),
+      onTap: onTap,
+      child: Container(
+        height: 128,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(26),
+          border: Border.all(color: AppColors.primaryBlue.withOpacity(0.08)),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryBlue.withOpacity(0.07),
+              blurRadius: 18,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: AppColors.primaryBlue, size: 36),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: const TextStyle(
+                fontFamily: 'Cairo',
+                color: AppColors.primaryBlue,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],

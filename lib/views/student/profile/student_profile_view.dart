@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/profile/student_profile_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
+import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 
 class StudentProfileView extends GetView<StudentProfileController> {
   const StudentProfileView({super.key});
@@ -15,6 +16,7 @@ class StudentProfileView extends GetView<StudentProfileController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
         backgroundColor: AppColors.background,
         appBar: AppBar(
           elevation: 0,
@@ -170,7 +172,6 @@ class StudentProfileView extends GetView<StudentProfileController> {
                   ),
                 ),
               ),
-              const _StudentBottomNav(),
             ],
           );
         }),
@@ -441,99 +442,6 @@ class _ProfileTextField extends StatelessWidget {
               width: 1.6,
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StudentBottomNav extends StatelessWidget {
-  const _StudentBottomNav();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(22, 0, 22, 18),
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.08),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _BottomItem(
-            icon: Icons.person_outline,
-            title: 'ملف شخصي',
-            isActive: true,
-            onTap: () {},
-          ),
-          _BottomItem(
-            icon: Icons.home_rounded,
-            title: 'الرئيسية',
-            onTap: () => Get.offNamed('/home'),
-          ),
-          _BottomItem(
-            icon: Icons.upload_file_outlined,
-            title: 'رفع CV',
-            onTap: () => Get.offNamed('/cv-upload'),
-          ),
-        ],
-      ),
-    ).animate().fadeIn(delay: 250.ms).slideY(begin: .25);
-  }
-}
-
-class _BottomItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final bool isActive;
-  final VoidCallback? onTap;
-
-  const _BottomItem({
-    required this.icon,
-    required this.title,
-    this.isActive = false,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isActive ? AppColors.actionYellow : AppColors.textGrey;
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 260),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-        decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.actionYellow.withOpacity(.12)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: color, size: isActive ? 28 : 24),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              style: TextStyle(
-                color: color,
-                fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-                fontSize: 12,
-              ),
-            ),
-          ],
         ),
       ),
     );
