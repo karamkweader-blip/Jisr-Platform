@@ -1,6 +1,6 @@
 abstract class Routes {
   static const initial = '/';
-
+  static const HOME = '/home';
   /////authentication
   static const login = '/login';
   static const role = '/role';
@@ -20,6 +20,9 @@ abstract class Routes {
   static const assessment = '/assessment';
   //ملف شخصي
   static const studentProfile = '/student-profile';
+  //بروتفوليم
+  static const studentPortfolio = '/student-portfolio';
+  static const studentPortfolioDetails = '/student-portfolio-details';
 
   /////company
   static const companyHome = '/company-home';

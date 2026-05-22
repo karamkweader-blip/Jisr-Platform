@@ -4,6 +4,7 @@ import 'package:jisr_platform/controllers/student/cv/cv/cv_analysis_controller.d
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_bottom_nav.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
+import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 
 class CvAnalysisView extends GetView<CvAnalysisController> {
   const CvAnalysisView({super.key});
@@ -13,10 +14,7 @@ class CvAnalysisView extends GetView<CvAnalysisController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        bottomNavigationBar: const JisrBottomNav(
-          activeTab: JisrBottomNavTab.cv,
-        ),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.background,

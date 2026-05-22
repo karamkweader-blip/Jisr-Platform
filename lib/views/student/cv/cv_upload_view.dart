@@ -5,6 +5,7 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 import 'package:jisr_platform/core/widgets/jisr_bottom_nav.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 
 class CvUploadView extends GetView<CvUploadController> {
   const CvUploadView({super.key});
@@ -14,9 +15,7 @@ class CvUploadView extends GetView<CvUploadController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        bottomNavigationBar: const JisrBottomNav(
-          activeTab: JisrBottomNavTab.cv,
-        ),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         backgroundColor: AppColors.background,
         appBar: AppBar(
           elevation: 0,
