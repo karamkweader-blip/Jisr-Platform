@@ -44,6 +44,11 @@ class ApiLinks {
 
   static String deletePortfolioProject(int projectId) =>
       '$baseUrl/student/portfolio-projects/$projectId';
+  // tasks
+  static const String exploreTasks = '$baseUrl/student/tasks/explore';
 
+  static const String recommendedTasks = '$baseUrl/student/tasks/recommended';
+
+  static String taskDetails(int taskId) => '$baseUrl/student/tasks/$taskId';
   //////company
 }

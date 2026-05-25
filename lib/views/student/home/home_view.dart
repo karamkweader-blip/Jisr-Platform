@@ -93,6 +93,18 @@ class HomeView extends GetView<HomeController> {
                         .scale(begin: const Offset(.95, .95)),
 
                     _HomeFeatureCard(
+                          icon: Icons.task_alt_rounded,
+                          title: 'التاسكات',
+                          subtitle: 'مهام حقيقية من الشركات',
+                          isEnabled: true,
+                          onTap: () => Get.toNamed(Routes.studentTasks),
+                        )
+                        .animate()
+                        .fadeIn(delay: 240.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
+
+                    _HomeFeatureCard(
                           icon: Icons.smart_toy_rounded,
                           title: 'الشات بوت',
                           subtitle: 'قريباً',
@@ -100,7 +112,7 @@ class HomeView extends GetView<HomeController> {
                           onTap: () {},
                         )
                         .animate()
-                        .fadeIn(delay: 240.ms, duration: 520.ms)
+                        .fadeIn(delay: 320.ms, duration: 520.ms)
                         .slideY(begin: .25, curve: Curves.easeOutCubic)
                         .scale(begin: const Offset(.95, .95)),
 
@@ -112,7 +124,7 @@ class HomeView extends GetView<HomeController> {
                           onTap: () {},
                         )
                         .animate()
-                        .fadeIn(delay: 320.ms, duration: 520.ms)
+                        .fadeIn(delay: 400.ms, duration: 520.ms)
                         .slideY(begin: .25, curve: Curves.easeOutCubic)
                         .scale(begin: const Offset(.95, .95)),
 
@@ -124,7 +136,7 @@ class HomeView extends GetView<HomeController> {
                           onTap: () {},
                         )
                         .animate()
-                        .fadeIn(delay: 400.ms, duration: 520.ms)
+                        .fadeIn(delay: 480.ms, duration: 520.ms)
                         .slideY(begin: .25, curve: Curves.easeOutCubic)
                         .scale(begin: const Offset(.95, .95)),
                   ],
@@ -152,7 +164,7 @@ class HomeView extends GetView<HomeController> {
                       ],
                     )
                     .animate()
-                    .fadeIn(delay: 500.ms)
+                    .fadeIn(delay: 560.ms)
                     .slideY(begin: .22, curve: Curves.easeOutCubic),
               ],
             ),
@@ -259,7 +271,7 @@ class _HomeFeatureCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(28),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 260),
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(28),
@@ -282,21 +294,21 @@ class _HomeFeatureCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 58,
-              width: 58,
+              height: 52,
+              width: 52,
               decoration: BoxDecoration(
                 color: isEnabled
                     ? AppColors.actionYellow.withOpacity(.14)
                     : AppColors.primaryBlue.withOpacity(.06),
-                borderRadius: BorderRadius.circular(22),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
                 icon,
                 color: isEnabled ? AppColors.actionYellow : AppColors.textGrey,
-                size: 34,
+                size: 31,
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
             Text(
               title,
               textAlign: TextAlign.center,
@@ -307,14 +319,17 @@ class _HomeFeatureCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 5),
             Text(
               subtitle,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontFamily: 'Cairo',
                 color: AppColors.textGrey,
-                fontSize: 12,
+                fontSize: 11,
+                height: 1.3,
               ),
             ),
           ],
