@@ -23,7 +23,9 @@ abstract class Routes {
   //بروتفوليم
   static const studentPortfolio = '/student-portfolio';
   static const studentPortfolioDetails = '/student-portfolio-details';
-
+  //task
+  static const studentTasks = '/student-tasks';
+  static const studentTaskDetails = '/student-task-details';
   /////company
   static const companyHome = '/company-home';
 }
