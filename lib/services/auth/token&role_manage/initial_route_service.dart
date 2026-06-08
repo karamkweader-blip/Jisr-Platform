@@ -19,7 +19,7 @@ class InitialRouteService {
     }
 
     if (role == 'company') {
-      return Routes.companyHome;
+      return Routes.companyMain;
     }
 
     return Routes.login;

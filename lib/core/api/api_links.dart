@@ -1,5 +1,7 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.50.19:8001/api';
+
+  static const String baseUrl = 'http://192.168.1.104:8000/api';
+
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -67,5 +69,17 @@ class ApiLinks {
   static const String appliedTasks = '$baseUrl/student/tasks/applied';
   static const String acceptedTasks = '$baseUrl/student/tasks/accepted';
   static const String rejectedTasks = '$baseUrl/student/tasks/rejected';
+  
   //////company
+static const String companyHome = '$baseUrl/company/home';
+static const String companyTasks = '$baseUrl/company/tasks';
+static const String companyProfile = '$baseUrl/company/profile';
+static const String editCompanyProfile = '$baseUrl/company/profile/edit';
+
+
+static String publishCompanyTask(int taskId) =>
+    '$baseUrl/company/tasks/$taskId/publish';
+static const String skills = '$baseUrl/skills';
+
 }
+

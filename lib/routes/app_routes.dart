@@ -31,5 +31,8 @@ abstract class Routes {
   //تاسكاتي
   static const studentTaskApplications = '/student-task-applications';
   /////company
+  static const companyMain = '/company-main';
   static const companyHome = '/company-home';
+  static const editCompanyProfile = '/company/profile/edit';
+  static const createCompanyTask = '/company/tasks/create';
 }

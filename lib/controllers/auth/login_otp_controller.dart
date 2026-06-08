@@ -91,11 +91,11 @@ await AuthService().saveAuthData(
   token: token,
   role: roleName,
 );
-
+print(roleName);  
 if (roleName == 'student') {
   Get.offAllNamed(Routes.studentHome);
-} else if (roleName == 'company') {
-  Get.offAllNamed(Routes.companyHome);
+} else if (roleName == 'company') { 
+  Get.offAllNamed(Routes.companyMain);
 } else {
   JisrSnackbar.show(
     title: 'خطأ',

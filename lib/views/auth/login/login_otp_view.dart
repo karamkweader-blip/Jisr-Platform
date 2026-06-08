@@ -67,7 +67,6 @@ class LoginOtpView extends GetView<LoginOtpController> {
 
                   const SizedBox(height: 40),
 
-                  /// 🔥 مربعات OTP
                   Pinput(
                     controller: controller.otpController,
                     length: 6,
