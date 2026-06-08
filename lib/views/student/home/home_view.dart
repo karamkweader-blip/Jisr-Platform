@@ -105,17 +105,28 @@ class HomeView extends GetView<HomeController> {
                         .scale(begin: const Offset(.95, .95)),
 
                     _HomeFeatureCard(
-                          icon: Icons.smart_toy_rounded,
-                          title: 'الشات بوت',
-                          subtitle: 'قريباً',
-                          isEnabled: false,
-                          onTap: () {},
+                          icon: Icons.assignment_ind_rounded,
+                          title: 'مهامي المسندة',
+                          subtitle: 'مهام من المشرف',
+                          isEnabled: true,
+                          onTap: () => Get.toNamed(Routes.studentAssignedTasks),
                         )
                         .animate()
-                        .fadeIn(delay: 320.ms, duration: 520.ms)
+                        .fadeIn(delay: 560.ms, duration: 520.ms)
                         .slideY(begin: .25, curve: Curves.easeOutCubic)
                         .scale(begin: const Offset(.95, .95)),
-
+                    _HomeFeatureCard(
+                          icon: Icons.fact_check_rounded,
+                          title: 'تقديماتي',
+                          subtitle: 'حالة طلبات التقديم',
+                          isEnabled: true,
+                          onTap: () =>
+                              Get.toNamed(Routes.studentTaskApplications),
+                        )
+                        .animate()
+                        .fadeIn(delay: 480.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
                     _HomeFeatureCard(
                           icon: Icons.groups_rounded,
                           title: 'المجتمع التقني',

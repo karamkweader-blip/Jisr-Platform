@@ -102,4 +102,39 @@ class StudentTaskService {
 
     throw Exception(data['message'] ?? 'فشل جلب تفاصيل التاسك');
   }
+
+  Future<String> applyToTask({
+    required int taskId,
+    required String message,
+    required String portfolioUrl,
+    required String githubUrl,
+  }) async {
+    final response = await http
+        .post(
+          Uri.parse(ApiLinks.applyToTask(taskId)),
+          headers: await _headers(),
+          body: jsonEncode({
+            'message': message,
+            'portfolio_url': portfolioUrl,
+            'github_url': githubUrl,
+          }),
+        )
+        .timeout(
+          const Duration(seconds: 12),
+          onTimeout: () {
+            throw Exception('انتهت مهلة الاتصال أثناء إرسال طلب التقديم');
+          },
+        );
+
+    print('APPLY TASK STATUS: ${response.statusCode}');
+    print('APPLY TASK BODY: ${response.body}');
+
+    final data = _decodeBody(response);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return data['message']?.toString() ?? 'تم إرسال طلب التقديم بنجاح';
+    }
+
+    throw Exception(data['message'] ?? 'فشل إرسال طلب التقديم');
+  }
 }

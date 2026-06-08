@@ -19,7 +19,11 @@ class StudentTaskController extends GetxController {
   final RxList<StudentTaskModel> recommendedTasks = <StudentTaskModel>[].obs;
   final Rxn<StudentTaskDetailsModel> selectedTask =
       Rxn<StudentTaskDetailsModel>();
+  final applyMessageController = TextEditingController();
+  final portfolioUrlController = TextEditingController();
+  final githubUrlController = TextEditingController();
 
+  final RxBool isApplying = false.obs;
   Timer? _searchTimer;
 
   bool get isLoading => isLoadingRecommended.value && isLoadingExplore.value;
@@ -77,6 +81,77 @@ class StudentTaskController extends GetxController {
     await Future.wait([fetchRecommendedTasks(), fetchExploreTasks()]);
   }
 
+  void prepareApplyForm() {
+    applyMessageController.clear();
+    portfolioUrlController.clear();
+    githubUrlController.clear();
+  }
+
+  bool _isValidUrl(String value) {
+    final trimmed = value.trim();
+    return trimmed.startsWith('http://') || trimmed.startsWith('https://');
+  }
+
+  Future<void> applyToTask(int taskId) async {
+    final message = applyMessageController.text.trim();
+    final portfolioUrl = portfolioUrlController.text.trim();
+    final githubUrl = githubUrlController.text.trim();
+
+    if (message.isEmpty || portfolioUrl.isEmpty || githubUrl.isEmpty) {
+      JisrSnackbar.show(
+        title: 'حقول ناقصة',
+        message: 'رسالة التقديم ورابط البورتفوليو ورابط GitHub مطلوبة',
+        type: JisrSnackbarType.warning,
+      );
+      return;
+    }
+
+    if (!_isValidUrl(portfolioUrl)) {
+      JisrSnackbar.show(
+        title: 'رابط البورتفوليو غير صحيح',
+        message: 'يجب أن يبدأ الرابط بـ https:// أو http://',
+        type: JisrSnackbarType.warning,
+      );
+      return;
+    }
+
+    if (!_isValidUrl(githubUrl)) {
+      JisrSnackbar.show(
+        title: 'رابط GitHub غير صحيح',
+        message: 'يجب أن يبدأ الرابط بـ https:// أو http://',
+        type: JisrSnackbarType.warning,
+      );
+      return;
+    }
+
+    try {
+      isApplying.value = true;
+
+      final messageResponse = await _service.applyToTask(
+        taskId: taskId,
+        message: message,
+        portfolioUrl: portfolioUrl,
+        githubUrl: githubUrl,
+      );
+
+      Get.back();
+
+      JisrSnackbar.show(
+        title: 'تم التقديم',
+        message: messageResponse,
+        type: JisrSnackbarType.success,
+      );
+    } catch (e) {
+      JisrSnackbar.show(
+        title: 'فشل التقديم',
+        message: e.toString().replaceFirst('Exception: ', ''),
+        type: JisrSnackbarType.error,
+      );
+    } finally {
+      isApplying.value = false;
+    }
+  }
+
   Future<void> fetchTaskDetails(int taskId) async {
     try {
       isLoadingDetails.value = true;
@@ -118,6 +193,9 @@ class StudentTaskController extends GetxController {
   void onClose() {
     _searchTimer?.cancel();
     searchController.dispose();
+    applyMessageController.dispose();
+    portfolioUrlController.dispose();
+    githubUrlController.dispose();
     super.onClose();
   }
 }

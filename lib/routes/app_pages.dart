@@ -35,6 +35,10 @@ import 'package:jisr_platform/views/student/portfolio/student_portfolio_details_
 import 'package:jisr_platform/bindings/student/tasks/student_task_binding.dart';
 import 'package:jisr_platform/views/student/tasks/student_tasks_view.dart';
 import 'package:jisr_platform/views/student/tasks/student_task_details_view.dart';
+import 'package:jisr_platform/bindings/student/assigned_tasks/student_assigned_task_binding.dart';
+import 'package:jisr_platform/views/student/assigned_tasks/student_assigned_tasks_view.dart';
+import 'package:jisr_platform/bindings/student/task_applications/student_task_application_binding.dart';
+import 'package:jisr_platform/views/student/task_applications/student_task_applications_view.dart';
 
 class AppPages {
   static final pages = [
@@ -143,6 +147,16 @@ class AppPages {
       name: Routes.studentTaskDetails,
       page: () => const StudentTaskDetailsView(),
       binding: StudentTaskBinding(),
+    ),
+    GetPage(
+      name: Routes.studentAssignedTasks,
+      page: () => const StudentAssignedTasksView(),
+      binding: StudentAssignedTaskBinding(),
+    ),
+    GetPage(
+      name: Routes.studentTaskApplications,
+      page: () => const StudentTaskApplicationsView(),
+      binding: StudentTaskApplicationBinding(),
     ),
   ];
 }
