@@ -1,5 +1,5 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.50.37:8001/api';
+  static const String baseUrl = 'http://192.168.50.19:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -50,5 +50,22 @@ class ApiLinks {
   static const String recommendedTasks = '$baseUrl/student/tasks/recommended';
 
   static String taskDetails(int taskId) => '$baseUrl/student/tasks/$taskId';
+  static String applyToTask(int taskId) =>
+      '$baseUrl/student/tasks/$taskId/apply';
+  //مهامي المسندة
+  // assigned tasks
+  static const String assignedTasksMock = '';
+
+  static String startAssignedTask(int taskId) =>
+      '$baseUrl/supervisor/assignment-tasks/$taskId/start';
+
+  static String submitAssignedTask(int taskId) =>
+      '$baseUrl/supervisor/assignment-tasks/$taskId/submit';
+  // تاسكاتي
+  // my task applications
+  static const String allMyTasks = '$baseUrl/student/tasks/allMyTask';
+  static const String appliedTasks = '$baseUrl/student/tasks/applied';
+  static const String acceptedTasks = '$baseUrl/student/tasks/accepted';
+  static const String rejectedTasks = '$baseUrl/student/tasks/rejected';
   //////company
 }

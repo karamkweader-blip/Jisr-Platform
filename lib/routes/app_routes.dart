@@ -26,6 +26,10 @@ abstract class Routes {
   //task
   static const studentTasks = '/student-tasks';
   static const studentTaskDetails = '/student-task-details';
+  //مهمامي المسندة
+  static const studentAssignedTasks = '/student-assigned-tasks';
+  //تاسكاتي
+  static const studentTaskApplications = '/student-task-applications';
   /////company
   static const companyHome = '/company-home';
 }
