@@ -545,7 +545,8 @@ class _DynamicTextList extends StatelessWidget {
   }
 }
 
-class _SkillsSelector extends GetView<CreateCompanyTaskController> {
+class _SkillsSelector
+    extends GetView<CreateCompanyTaskController> {
   const _SkillsSelector();
 
   @override
@@ -555,7 +556,9 @@ class _SkillsSelector extends GetView<CreateCompanyTaskController> {
         return const Center(
           child: Padding(
             padding: EdgeInsets.all(20),
-            child: CircularProgressIndicator(color: AppColors.primaryBlue),
+            child: CircularProgressIndicator(
+              color: AppColors.primaryBlue,
+            ),
           ),
         );
       }
@@ -569,13 +572,55 @@ class _SkillsSelector extends GetView<CreateCompanyTaskController> {
           ),
           child: Column(
             children: [
+              const Icon(
+                Icons.error_outline_rounded,
+                color: AppColors.primaryBlue,
+                size: 30,
+              ),
+              const SizedBox(height: 8),
               Text(
                 controller.skillsError.value,
-                style: const TextStyle(color: AppColors.textGrey),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 13,
+                ),
               ),
-              TextButton(
+              const SizedBox(height: 8),
+              TextButton.icon(
                 onPressed: controller.fetchSkills,
-                child: const Text('إعادة المحاولة'),
+                icon: const Icon(
+                  Icons.refresh_rounded,
+                ),
+                label: const Text('إعادة المحاولة'),
+              ),
+            ],
+          ),
+        );
+      }
+
+      if (controller.availableSkills.isEmpty) {
+        return Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppColors.cardWhite,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: const Column(
+            children: [
+              Icon(
+                Icons.psychology_alt_outlined,
+                color: AppColors.textGrey,
+                size: 32,
+              ),
+              SizedBox(height: 10),
+              Text(
+                'لا توجد مهارات متاحة حاليًا',
+                style: TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -587,40 +632,95 @@ class _SkillsSelector extends GetView<CreateCompanyTaskController> {
         decoration: BoxDecoration(
           color: AppColors.cardWhite,
           borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: AppColors.primaryBlue.withOpacity(0.06),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryBlue.withOpacity(0.04),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
+            ),
+          ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'إضافة مهارة',
+              style: TextStyle(
+                color: AppColors.textDark,
+                fontSize: 15,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            const SizedBox(height: 5),
+            const Text(
+              'حدد المهارة ومستواها وأهميتها بالنسبة للمهمة.',
+              style: TextStyle(
+                color: AppColors.textGrey,
+                fontSize: 12.5,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 14),
+
             DropdownButtonFormField<int>(
               value: controller.selectedSkillId.value,
-              items: controller.availableSkills
-                  .map(
-                    (skill) => DropdownMenuItem<int>(
-                      value: skill.id,
-                      child: Text(skill.name),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) => controller.selectedSkillId.value = value,
+              isExpanded: true,
+              items: controller.availableSkills.map((skill) {
+                return DropdownMenuItem<int>(
+                  value: skill.id,
+                  child: _SkillDropdownItem(
+                    skill: skill,
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) {
+                controller.selectedSkillId.value = value;
+              },
               decoration: InputDecoration(
                 hintText: 'اختر مهارة',
+                prefixIcon: const Icon(
+                  Icons.code_rounded,
+                  color: AppColors.primaryBlue,
+                  size: 20,
+                ),
                 filled: true,
                 fillColor: AppColors.background,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
                   borderSide: BorderSide.none,
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: const BorderSide(
+                    color: AppColors.primaryBlue,
+                    width: 1.3,
+                  ),
+                ),
               ),
             ),
+
             const SizedBox(height: 12),
+
             DropdownButtonFormField<int>(
               value: controller.selectedRequiredLevel.value,
+              isExpanded: true,
               items: List.generate(
                 5,
                 (index) {
                   final level = index + 1;
+
                   return DropdownMenuItem<int>(
                     value: level,
-                    child: Text(controller.levelLabel(level)),
+                    child: Text(
+                      controller.levelLabel(level),
+                    ),
                   );
                 },
               ),
@@ -631,93 +731,459 @@ class _SkillsSelector extends GetView<CreateCompanyTaskController> {
               },
               decoration: InputDecoration(
                 hintText: 'المستوى المطلوب',
+                prefixIcon: const Icon(
+                  Icons.trending_up_rounded,
+                  color: AppColors.primaryBlue,
+                  size: 20,
+                ),
                 filled: true,
                 fillColor: AppColors.background,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
                   borderSide: BorderSide.none,
                 ),
-              ),
-            ),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              value: controller.selectedMandatory.value,
-              onChanged: (value) => controller.selectedMandatory.value = value,
-              activeColor: AppColors.primaryBlue,
-              title: const Text(
-                'مهارة أساسية',
-                style: TextStyle(
-                  color: AppColors.textDark,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              subtitle: const Text(
-                'فعّلها إذا كانت المهارة ضرورية لتنفيذ المهمة',
-                style: TextStyle(
-                  color: AppColors.textGrey,
-                  fontSize: 12.5,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: const BorderSide(
+                    color: AppColors.primaryBlue,
+                    width: 1.3,
+                  ),
                 ),
               ),
             ),
+
+            const SizedBox(height: 12),
+
+            _SkillWeightSelector(
+              weight: controller.selectedWeight.value,
+              onChanged: controller.updateSelectedWeight,
+            ),
+
+            const SizedBox(height: 8),
+
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: SwitchListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 2,
+                ),
+                value: controller.selectedMandatory.value,
+                onChanged: (value) {
+                  controller.selectedMandatory.value = value;
+                },
+                activeColor: AppColors.primaryBlue,
+                title: const Text(
+                  'مهارة أساسية',
+                  style: TextStyle(
+                    color: AppColors.textDark,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                subtitle: Text(
+                  controller.selectedMandatory.value
+                      ? 'يجب أن يمتلك الطالب هذه المهارة'
+                      : 'وجود المهارة مفضل لكنه ليس شرطًا',
+                  style: const TextStyle(
+                    color: AppColors.textGrey,
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
             SizedBox(
-              height: 44,
+              height: 46,
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: controller.addSelectedSkill,
-                icon: const Icon(Icons.add_rounded),
-                label: const Text('إضافة المهارة'),
+                icon: const Icon(
+                  Icons.add_rounded,
+                ),
+                label: const Text(
+                  'إضافة المهارة',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.primaryBlue,
-                  side: const BorderSide(color: AppColors.primaryBlue),
+                  side: const BorderSide(
+                    color: AppColors.primaryBlue,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
               ),
             ),
+
             if (controller.selectedSkills.isNotEmpty) ...[
-              const SizedBox(height: 14),
+              const SizedBox(height: 18),
+              const Divider(
+                color: AppColors.background,
+                thickness: 1.4,
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'المهارات المضافة',
+                style: TextStyle(
+                  color: AppColors.textDark,
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height: 10),
+
               ...List.generate(
                 controller.selectedSkills.length,
                 (index) {
-                  final item = controller.selectedSkills[index];
+                  final item =
+                      controller.selectedSkills[index];
 
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(14),
+                  return _SelectedSkillCard(
+                    item: item,
+                    levelLabel: controller.levelLabel(
+                      item.requiredLevel,
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '${item.skill.name} · ${controller.levelLabel(item.requiredLevel)} · ${item.mandatory ? 'أساسية' : 'مفضلة'}',
-                            style: const TextStyle(
-                              color: AppColors.primaryBlue,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () => controller.removeSelectedSkill(index),
-                          icon: const Icon(
-                            Icons.close_rounded,
-                            color: AppColors.primaryBlue,
-                            size: 20,
-                          ),
-                        ),
-                      ],
-                    ),
+                    onRemove: () {
+                      controller.removeSelectedSkill(index);
+                    },
                   );
                 },
-              ), 
+              ),
             ],
           ],
         ),
       );
     });
+  }
+}
+
+class _SkillDropdownItem extends StatelessWidget {
+  final AvailableSkillModel skill;
+
+  const _SkillDropdownItem({
+    required this.skill,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            skill.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: AppColors.textDark,
+              fontSize: 13.5,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        if (skill.category.trim().isNotEmpty) ...[
+          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.primaryBlue.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Text(
+              skill.category,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: AppColors.primaryBlue,
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _SkillWeightSelector extends StatelessWidget {
+  final int weight;
+  final ValueChanged<double> onChanged;
+
+  const _SkillWeightSelector({
+    required this.weight,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'وزن المهارة',
+                      style: TextStyle(
+                        color: AppColors.textDark,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    SizedBox(height: 3),
+                    Text(
+                      'مدى تأثير المهارة في مطابقة المرشحين',
+                      style: TextStyle(
+                        color: AppColors.textGrey,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                constraints: const BoxConstraints(
+                  minWidth: 52,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue.withOpacity(0.09),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '$weight%',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.primaryBlue,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Slider(
+            value: weight.toDouble(),
+            min: 10,
+            max: 100,
+            divisions: 18,
+            label: '$weight%',
+            activeColor: AppColors.primaryBlue,
+            inactiveColor:
+                AppColors.primaryBlue.withOpacity(0.15),
+            onChanged: onChanged,
+          ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'أقل أهمية',
+                style: TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 10.5,
+                ),
+              ),
+              Text(
+                'أعلى أهمية',
+                style: TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 10.5,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SelectedSkillCard extends StatelessWidget {
+  final SelectedTaskSkill item;
+  final String levelLabel;
+  final VoidCallback onRemove;
+
+  const _SelectedSkillCard({
+    required this.item,
+    required this.levelLabel,
+    required this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.primaryBlue.withOpacity(0.055),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          color: AppColors.primaryBlue.withOpacity(0.08),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 38,
+            width: 38,
+            decoration: BoxDecoration(
+              color: AppColors.cardWhite,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.code_rounded,
+              color: AppColors.primaryBlue,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 11),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item.skill.name,
+                        style: const TextStyle(
+                          color: AppColors.textDark,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: item.mandatory
+                            ? AppColors.actionYellow.withOpacity(0.12)
+                            : AppColors.primaryBlue.withOpacity(0.09),
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+                      child: Text(
+                        item.mandatory ? 'أساسية' : 'مفضلة',
+                        style: TextStyle(
+                          color: item.mandatory
+                              ? AppColors.actionYellow
+                              : AppColors.primaryBlue,
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 7),
+                Wrap(
+                  spacing: 7,
+                  runSpacing: 7,
+                  children: [
+                    _SelectedSkillInfoChip(
+                      icon: Icons.trending_up_rounded,
+                      label: levelLabel,
+                    ),
+                    _SelectedSkillInfoChip(
+                      icon: Icons.percent_rounded,
+                      label: 'الوزن ${item.weight}%',
+                    ),
+                    if (item.skill.category.trim().isNotEmpty)
+                      _SelectedSkillInfoChip(
+                        icon: Icons.category_outlined,
+                        label: item.skill.category,
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 4),
+          IconButton(
+            onPressed: onRemove,
+            tooltip: 'حذف المهارة',
+            icon: const Icon(
+              Icons.close_rounded,
+              color: AppColors.textGrey,
+              size: 20,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SelectedSkillInfoChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _SelectedSkillInfoChip({
+    required this.icon,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 5,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.cardWhite,
+        borderRadius: BorderRadius.circular(9),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: AppColors.primaryBlue,
+            size: 13,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.textGrey,
+              fontSize: 10.5,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
