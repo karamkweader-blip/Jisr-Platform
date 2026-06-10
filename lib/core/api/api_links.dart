@@ -67,5 +67,22 @@ class ApiLinks {
   static const String appliedTasks = '$baseUrl/student/tasks/applied';
   static const String acceptedTasks = '$baseUrl/student/tasks/accepted';
   static const String rejectedTasks = '$baseUrl/student/tasks/rejected';
+
+  // conversations
+  static const String taskConversations =
+      '$baseUrl/conversations/task-conversations';
+
+  static const String allConversations = '$baseUrl/conversations/all';
+
+  static const String closedConversations = '$baseUrl/conversations/closed';
+
+  static String conversationMessages(int conversationId) =>
+      '$baseUrl/conversations/messages/$conversationId';
+
+  static String updateConversationMessage(int messageId) =>
+      '$baseUrl/conversations/messages/update/$messageId';
+
+  static String markConversationAsRead(int conversationId) =>
+      '$baseUrl/conversations/$conversationId/read';
   //////company
 }

@@ -39,6 +39,9 @@ import 'package:jisr_platform/bindings/student/assigned_tasks/student_assigned_t
 import 'package:jisr_platform/views/student/assigned_tasks/student_assigned_tasks_view.dart';
 import 'package:jisr_platform/bindings/student/task_applications/student_task_application_binding.dart';
 import 'package:jisr_platform/views/student/task_applications/student_task_applications_view.dart';
+import 'package:jisr_platform/bindings/student/conversations/student_conversation_binding.dart';
+import 'package:jisr_platform/views/student/conversations/student_conversations_view.dart';
+import 'package:jisr_platform/views/student/conversations/student_chat_view.dart';
 
 class AppPages {
   static final pages = [
@@ -157,6 +160,18 @@ class AppPages {
       name: Routes.studentTaskApplications,
       page: () => const StudentTaskApplicationsView(),
       binding: StudentTaskApplicationBinding(),
+    ),
+
+    GetPage(
+      name: Routes.studentConversations,
+      page: () => const StudentConversationsView(),
+      binding: StudentConversationBinding(),
+    ),
+
+    GetPage(
+      name: Routes.studentChat,
+      page: () => const StudentChatView(),
+      binding: StudentConversationBinding(),
     ),
   ];
 }

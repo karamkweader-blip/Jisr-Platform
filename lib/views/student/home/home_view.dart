@@ -128,6 +128,17 @@ class HomeView extends GetView<HomeController> {
                         .slideY(begin: .25, curve: Curves.easeOutCubic)
                         .scale(begin: const Offset(.95, .95)),
                     _HomeFeatureCard(
+                          icon: Icons.forum_rounded,
+                          title: 'محادثاتي',
+                          subtitle: 'تواصل مع الشركات',
+                          isEnabled: true,
+                          onTap: () => Get.toNamed(Routes.studentConversations),
+                        )
+                        .animate()
+                        .fadeIn(delay: 560.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
+                    _HomeFeatureCard(
                           icon: Icons.groups_rounded,
                           title: 'المجتمع التقني',
                           subtitle: 'قريباً',
