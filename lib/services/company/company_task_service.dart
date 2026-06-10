@@ -109,35 +109,58 @@ class CompanyTaskService {
     );
   }
 
-  Future<List<AvailableSkillModel>> getAvailableSkills() async {
-    final response = await http
-        .get(
-          Uri.parse(ApiLinks.skills),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 15),
-          onTimeout: () => throw Exception('انتهت مهلة الاتصال بالخادم'),
-        );
+ Future<List<AvailableSkillModel>> getAvailableSkills() async {
+  final token = await _authService.getToken();
+  try {
+    final response = await http.get(
+      Uri.parse(ApiLinks.skills),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        if (token != null && token.isNotEmpty)
+          'Authorization': 'Bearer $token',
+      },
+    );
 
-    final decodedBody = response.body.isNotEmpty
-        ? jsonDecode(response.body) as Map<String, dynamic>
-        : <String, dynamic>{};
+    final decodedBody = jsonDecode(response.body);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      final data = decodedBody['data'] as List? ?? [];
-
-      return data
-          .map(
-            (item) => AvailableSkillModel.fromJson(
-              item as Map<String, dynamic>? ?? {},
-            ),
-          )
-          .toList();
+    if (decodedBody is! Map<String, dynamic>) {
+      throw Exception('استجابة المهارات غير صالحة');
     }
 
+    if (response.statusCode < 200 ||
+        response.statusCode >= 300) {
+      throw Exception(
+        decodedBody['message']?.toString() ??
+            'تعذر تحميل المهارات',
+      );
+    }
+
+    if (decodedBody['status'] != true) {
+      throw Exception(
+        decodedBody['message']?.toString() ??
+            'تعذر تحميل المهارات',
+      );
+    }
+
+    final data = decodedBody['data'];
+
+    if (data is! List) {
+      throw Exception('قائمة المهارات غير صالحة');
+    }
+
+    return data
+        .whereType<Map<String, dynamic>>()
+        .map(AvailableSkillModel.fromJson)
+        .where((skill) => skill.id > 0)
+        .toList();
+  } on FormatException {
+    throw Exception('تعذر قراءة استجابة المهارات');
+  } catch (e) {
     throw Exception(
-      decodedBody['message'] as String? ?? 'تعذر تحميل المهارات',
+      e.toString().replaceFirst('Exception: ', ''),
     );
   }
+}
+  
 }

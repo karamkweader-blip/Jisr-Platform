@@ -23,11 +23,18 @@ class CreateCompanyTaskController extends GetxController {
   final RxList<String> deliverables = <String>[].obs;
   final RxList<String> acceptanceCriteria = <String>[].obs;
 
-  final RxList<AvailableSkillModel> availableSkills = <AvailableSkillModel>[].obs;
-  final RxList<SelectedTaskSkill> selectedSkills = <SelectedTaskSkill>[].obs;
+  final RxList<AvailableSkillModel> availableSkills =
+      <AvailableSkillModel>[].obs;
+
+  final RxList<SelectedTaskSkill> selectedSkills =
+      <SelectedTaskSkill>[].obs;
 
   final RxnInt selectedSkillId = RxnInt();
   final RxInt selectedRequiredLevel = 3.obs;
+
+  // وزن المهارة المختارة حاليًا
+  final RxInt selectedWeight = 60.obs;
+
   final RxBool selectedMandatory = true.obs;
 
   final RxBool isLoadingSkills = false.obs;
@@ -56,9 +63,10 @@ class CreateCompanyTaskController extends GetxController {
       skillsError.value = '';
 
       final result = await _taskService.getAvailableSkills();
+
       availableSkills.assignAll(result);
     } catch (e) {
-      skillsError.value = e.toString().replaceFirst('Exception: ', '');
+      skillsError.value = _cleanError(e);
     } finally {
       isLoadingSkills.value = false;
     }
@@ -70,48 +78,64 @@ class CreateCompanyTaskController extends GetxController {
 
   void addDeliverable(String value) {
     final cleanValue = value.trim();
-    if (cleanValue.isEmpty) return;
+
+    if (cleanValue.isEmpty) {
+      return;
+    }
+
     deliverables.add(cleanValue);
   }
 
   void removeDeliverable(int index) {
+    if (index < 0 || index >= deliverables.length) {
+      return;
+    }
+
     deliverables.removeAt(index);
   }
 
   void addAcceptanceCriterion(String value) {
     final cleanValue = value.trim();
-    if (cleanValue.isEmpty) return;
+
+    if (cleanValue.isEmpty) {
+      return;
+    }
+
     acceptanceCriteria.add(cleanValue);
   }
 
   void removeAcceptanceCriterion(int index) {
+    if (index < 0 || index >= acceptanceCriteria.length) {
+      return;
+    }
+
     acceptanceCriteria.removeAt(index);
+  }
+
+  void updateSelectedWeight(double value) {
+    selectedWeight.value = value.round();
   }
 
   void addSelectedSkill() {
     final skillId = selectedSkillId.value;
 
     if (skillId == null) {
-      Get.snackbar(
-        'تنبيه',
-        'يرجى اختيار مهارة',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      _showWarning('يرجى اختيار مهارة');
       return;
     }
 
-    final alreadyExists = selectedSkills.any((item) => item.skill.id == skillId);
+    final alreadyExists = selectedSkills.any(
+      (item) => item.skill.id == skillId,
+    );
 
     if (alreadyExists) {
-      Get.snackbar(
-        'تنبيه',
-        'هذه المهارة مضافة مسبقًا',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      _showWarning('هذه المهارة مضافة مسبقًا');
       return;
     }
 
-    final skill = availableSkills.firstWhereOrNull((item) => item.id == skillId);
+    final skill = availableSkills.firstWhereOrNull(
+      (item) => item.id == skillId,
+    );
 
     if (skill == null) {
       Get.snackbar(
@@ -122,21 +146,38 @@ class CreateCompanyTaskController extends GetxController {
       return;
     }
 
+    final weight = selectedWeight.value;
+
+    if (weight < 10 || weight > 100) {
+      _showWarning('يجب أن يكون وزن المهارة بين 10 و100');
+      return;
+    }
+
     selectedSkills.add(
       SelectedTaskSkill(
         skill: skill,
         requiredLevel: selectedRequiredLevel.value,
+        weight: weight,
         mandatory: selectedMandatory.value,
       ),
     );
 
-    selectedSkillId.value = null;
-    selectedRequiredLevel.value = 3;
-    selectedMandatory.value = true;
+    _resetSkillSelection();
   }
 
   void removeSelectedSkill(int index) {
+    if (index < 0 || index >= selectedSkills.length) {
+      return;
+    }
+
     selectedSkills.removeAt(index);
+  }
+
+  void _resetSkillSelection() {
+    selectedSkillId.value = null;
+    selectedRequiredLevel.value = 3;
+    selectedWeight.value = 60;
+    selectedMandatory.value = true;
   }
 
   Future<void> pickDeadline(BuildContext context) async {
@@ -145,26 +186,44 @@ class CreateCompanyTaskController extends GetxController {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: deadline.value ?? now.add(const Duration(days: 3)),
-      firstDate: now,
+      firstDate: DateTime(
+        now.year,
+        now.month,
+        now.day,
+      ),
       lastDate: DateTime(now.year + 2),
     );
 
-    if (selectedDate == null || !context.mounted) return;
+    if (selectedDate == null || !context.mounted) {
+      return;
+    }
 
     final selectedTime = await showTimePicker(
       context: context,
-      initialTime: const TimeOfDay(hour: 23, minute: 59),
+      initialTime: const TimeOfDay(
+        hour: 23,
+        minute: 59,
+      ),
     );
 
-    if (selectedTime == null) return;
+    if (selectedTime == null) {
+      return;
+    }
 
-    deadline.value = DateTime(
+    final selectedDeadline = DateTime(
       selectedDate.year,
       selectedDate.month,
       selectedDate.day,
       selectedTime.hour,
       selectedTime.minute,
     );
+
+    if (!selectedDeadline.isAfter(DateTime.now())) {
+      _showWarning('يجب أن يكون موعد التسليم في المستقبل');
+      return;
+    }
+
+    deadline.value = selectedDeadline;
   }
 
   Future<void> createTaskAsDraft() async {
@@ -173,37 +232,52 @@ class CreateCompanyTaskController extends GetxController {
     }
 
     if (deadline.value == null) {
-      Get.snackbar(
-        'تنبيه',
-        'يرجى تحديد موعد التسليم النهائي',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      _showWarning('يرجى تحديد موعد التسليم النهائي');
+      return;
+    }
+
+    if (!deadline.value!.isAfter(DateTime.now())) {
+      _showWarning('يجب أن يكون موعد التسليم في المستقبل');
       return;
     }
 
     if (deliverables.isEmpty) {
-      Get.snackbar(
-        'تنبيه',
-        'يرجى إضافة مخرج واحد على الأقل',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      _showWarning('يرجى إضافة مخرج واحد على الأقل');
       return;
     }
 
     if (acceptanceCriteria.isEmpty) {
-      Get.snackbar(
-        'تنبيه',
-        'يرجى إضافة معيار قبول واحد على الأقل',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      _showWarning('يرجى إضافة معيار قبول واحد على الأقل');
       return;
     }
 
     if (selectedSkills.isEmpty) {
-      Get.snackbar(
-        'تنبيه',
-        'يرجى إضافة مهارة واحدة على الأقل',
-        snackPosition: SnackPosition.BOTTOM,
+      _showWarning('يرجى إضافة مهارة واحدة على الأقل');
+      return;
+    }
+
+    final durationDays = int.tryParse(
+      durationDaysController.text.trim(),
+    );
+
+    final maxApplicants = int.tryParse(
+      maxApplicantsController.text.trim(),
+    );
+
+    final maxAcceptedStudents = int.tryParse(
+      maxAcceptedStudentsController.text.trim(),
+    );
+
+    if (durationDays == null ||
+        maxApplicants == null ||
+        maxAcceptedStudents == null) {
+      _showWarning('يرجى التأكد من صحة الحقول الرقمية');
+      return;
+    }
+
+    if (maxAcceptedStudents > maxApplicants) {
+      _showWarning(
+        'عدد المقبولين لا يمكن أن يكون أكبر من عدد المتقدمين',
       );
       return;
     }
@@ -215,10 +289,10 @@ class CreateCompanyTaskController extends GetxController {
         title: titleController.text.trim(),
         description: descriptionController.text.trim(),
         difficultyLevel: difficultyLevel.value,
-        durationDays: int.parse(durationDaysController.text.trim()),
+        durationDays: durationDays,
         deadline: _formatDateTimeForApi(deadline.value!),
-        maxApplicants: int.parse(maxApplicantsController.text.trim()),
-        maxAcceptedStudents: int.parse(maxAcceptedStudentsController.text.trim()),
+        maxApplicants: maxApplicants,
+        maxAcceptedStudents: maxAcceptedStudents,
         deliverables: deliverables.toList(),
         acceptanceCriteria: acceptanceCriteria.toList(),
         submissionType: submissionType.value,
@@ -231,7 +305,7 @@ class CreateCompanyTaskController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'خطأ',
-        e.toString().replaceFirst('Exception: ', ''),
+        _cleanError(e),
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -245,8 +319,8 @@ class CreateCompanyTaskController extends GetxController {
 
       await _taskService.publishTask(taskId);
 
-      Get.back(); // close dialog
-      Get.back(result: true); // close create page
+      Get.back();
+      Get.back(result: true);
 
       Get.snackbar(
         'تم النشر',
@@ -256,7 +330,7 @@ class CreateCompanyTaskController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'خطأ',
-        e.toString().replaceFirst('Exception: ', ''),
+        _cleanError(e),
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -269,7 +343,8 @@ class CreateCompanyTaskController extends GetxController {
       AlertDialog(
         title: const Text('تم حفظ المهمة كمسودة'),
         content: const Text(
-          'يمكنك نشر المهمة الآن ليتمكن الطلاب من التقديم عليها، أو تركها كمسودة ونشرها لاحقًا.',
+          'يمكنك نشر المهمة الآن ليتمكن الطلاب من التقديم عليها، '
+          'أو تركها كمسودة ونشرها لاحقًا.',
         ),
         actions: [
           TextButton(
@@ -286,6 +361,14 @@ class CreateCompanyTaskController extends GetxController {
         ],
       ),
       barrierDismissible: false,
+    );
+  }
+
+  void _showWarning(String message) {
+    Get.snackbar(
+      'تنبيه',
+      message,
+      snackPosition: SnackPosition.BOTTOM,
     );
   }
 
@@ -308,16 +391,34 @@ class CreateCompanyTaskController extends GetxController {
 
   String formattedDeadline() {
     final value = deadline.value;
-    if (value == null) return 'حدد موعد التسليم';
 
-    return '${value.year}-${_twoDigits(value.month)}-${_twoDigits(value.day)} '
-        '${_twoDigits(value.hour)}:${_twoDigits(value.minute)}';
+    if (value == null) {
+      return 'حدد موعد التسليم';
+    }
+
+    return '${value.year}-'
+        '${_twoDigits(value.month)}-'
+        '${_twoDigits(value.day)} '
+        '${_twoDigits(value.hour)}:'
+        '${_twoDigits(value.minute)}';
   }
 
   String _formatDateTimeForApi(DateTime value) {
-    return '${value.year}-${_twoDigits(value.month)}-${_twoDigits(value.day)} '
-        '${_twoDigits(value.hour)}:${_twoDigits(value.minute)}:00';
+    return '${value.year}-'
+        '${_twoDigits(value.month)}-'
+        '${_twoDigits(value.day)} '
+        '${_twoDigits(value.hour)}:'
+        '${_twoDigits(value.minute)}:00';
   }
 
-  String _twoDigits(int value) => value.toString().padLeft(2, '0');
+  String _twoDigits(int value) {
+    return value.toString().padLeft(2, '0');
+  }
+
+  String _cleanError(Object error) {
+    return error
+        .toString()
+        .replaceFirst('Exception: ', '')
+        .trim();
+  }
 }

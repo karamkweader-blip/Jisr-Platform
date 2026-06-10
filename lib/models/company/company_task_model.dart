@@ -39,37 +39,42 @@ class CompanyTaskModel {
 
   factory CompanyTaskModel.fromJson(Map<String, dynamic> json) {
     return CompanyTaskModel(
-      id: json['id'] as int? ?? 0,
+      id: _parseInt(json['id']),
       company: TaskCompanyModel.fromJson(
-        json['company'] as Map<String, dynamic>? ?? {},
+        json['company'] is Map<String, dynamic>
+            ? json['company'] as Map<String, dynamic>
+            : <String, dynamic>{},
       ),
-      title: json['title'] as String? ?? '',
-      description: json['description'] as String? ?? '',
-      difficultyLevel: json['difficulty_level'] as String? ?? '',
-      durationDays: json['duration_days'] as int? ?? 0,
-      deadline: DateTime.tryParse(json['deadline'] as String? ?? ''),
-      maxApplicants: json['max_applicants'] as int? ?? 0,
-      maxAcceptedStudents: json['max_accepted_students'] as int? ?? 0,
+      title: json['title']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
+      difficultyLevel: json['difficulty_level']?.toString() ?? '',
+      durationDays: _parseInt(json['duration_days']),
+      deadline: _parseDateTime(json['deadline']),
+      maxApplicants: _parseInt(json['max_applicants']),
+      maxAcceptedStudents: _parseInt(
+        json['max_accepted_students'],
+      ),
       deliverables: (json['deliverables'] as List? ?? [])
           .map((item) => item.toString())
           .toList(),
-      acceptanceCriteria: (json['acceptance_criteria'] as List? ?? [])
-          .map((item) => item.toString())
-          .toList(),
-      submissionType: json['submission_type'] as String? ?? '',
-      status: json['status'] as String? ?? '',
-      publishedAt: DateTime.tryParse(json['published_at'] as String? ?? ''),
+      acceptanceCriteria:
+          (json['acceptance_criteria'] as List? ?? [])
+              .map((item) => item.toString())
+              .toList(),
+      submissionType: json['submission_type']?.toString() ?? '',
+      status: json['status']?.toString() ?? '',
+      publishedAt: _parseDateTime(json['published_at']),
       skills: (json['skills'] as List? ?? [])
-          .map((item) => TaskSkillModel.fromJson(
-                item as Map<String, dynamic>? ?? {},
-              ))
+          .whereType<Map<String, dynamic>>()
+          .map(TaskSkillModel.fromJson)
           .toList(),
-      createdAt: DateTime.tryParse(json['created_at'] as String? ?? ''),
-      updatedAt: DateTime.tryParse(json['updated_at'] as String? ?? ''),
+      createdAt: _parseDateTime(json['created_at']),
+      updatedAt: _parseDateTime(json['updated_at']),
     );
   }
 
   bool get isDraft => status == 'draft';
+
   bool get isPublished => status == 'published';
 }
 
@@ -86,9 +91,9 @@ class TaskCompanyModel {
 
   factory TaskCompanyModel.fromJson(Map<String, dynamic> json) {
     return TaskCompanyModel(
-      id: json['id'] as int? ?? 0,
-      name: json['name'] as String? ?? '',
-      industry: json['industry'] as String? ?? '',
+      id: _parseInt(json['id']),
+      name: json['name']?.toString() ?? '',
+      industry: json['industry']?.toString() ?? '',
     );
   }
 }
@@ -112,12 +117,15 @@ class TaskSkillModel {
 
   factory TaskSkillModel.fromJson(Map<String, dynamic> json) {
     return TaskSkillModel(
-      id: json['id'] as int? ?? 0,
-      name: json['name'] as String? ?? '',
-      category: json['category'] as String? ?? '',
-      requiredLevel: json['required_level'] as int? ?? 1,
-      weight: json['weight'] as int? ?? 0,
-      mandatory: json['mandatory'] as bool? ?? false,
+      id: _parseInt(json['id']),
+      name: json['name']?.toString() ?? '',
+      category: json['category']?.toString() ?? '',
+      requiredLevel: _parseInt(
+        json['required_level'],
+        fallback: 1,
+      ),
+      weight: _parseInt(json['weight']),
+      mandatory: _parseBool(json['mandatory']),
     );
   }
 }
@@ -133,11 +141,13 @@ class AvailableSkillModel {
     required this.category,
   });
 
-  factory AvailableSkillModel.fromJson(Map<String, dynamic> json) {
+  factory AvailableSkillModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return AvailableSkillModel(
-      id: json['id'] as int? ?? 0,
-      name: json['name'] as String? ?? '',
-      category: json['category'] as String? ?? '',
+      id: _parseInt(json['id']),
+      name: json['name']?.toString() ?? '',
+      category: json['category']?.toString() ?? '',
     );
   }
 }
@@ -145,15 +155,17 @@ class AvailableSkillModel {
 class SelectedTaskSkill {
   final AvailableSkillModel skill;
   final int requiredLevel;
+  final int weight;
   final bool mandatory;
 
   const SelectedTaskSkill({
     required this.skill,
     required this.requiredLevel,
+    required this.weight,
     required this.mandatory,
   });
 
-  Map<String, dynamic> toJsonWithWeight(int weight) {
+  Map<String, dynamic> toJson() {
     return {
       'skill_id': skill.id,
       'required_level': requiredLevel,
@@ -202,19 +214,44 @@ class CreateCompanyTaskRequest {
       'deliverables': deliverables,
       'acceptance_criteria': acceptanceCriteria,
       'submission_type': submissionType,
-      'skills': _skillsToJson(),
+      'skills': skills.map((skill) => skill.toJson()).toList(),
     };
   }
+}
 
-  List<Map<String, dynamic>> _skillsToJson() {
-    if (skills.isEmpty) return [];
-
-    final baseWeight = 100 ~/ skills.length;
-    final remaining = 100 - (baseWeight * skills.length);
-
-    return List.generate(skills.length, (index) {
-      final weight = index == 0 ? baseWeight + remaining : baseWeight;
-      return skills[index].toJsonWithWeight(weight);
-    });
+int _parseInt(
+  dynamic value, {
+  int fallback = 0,
+}) {
+  if (value is int) {
+    return value;
   }
+
+  if (value is num) {
+    return value.toInt();
+  }
+
+  return int.tryParse(value?.toString() ?? '') ?? fallback;
+}
+
+bool _parseBool(dynamic value) {
+  if (value is bool) {
+    return value;
+  }
+
+  if (value is int) {
+    return value == 1;
+  }
+
+  final normalized = value?.toString().toLowerCase();
+
+  return normalized == 'true' || normalized == '1';
+}
+
+DateTime? _parseDateTime(dynamic value) {
+  if (value == null) {
+    return null;
+  }
+
+  return DateTime.tryParse(value.toString());
 }
