@@ -6,7 +6,10 @@ import 'package:jisr_platform/bindings/auth/forget-password/otp_verification_bin
 import 'package:jisr_platform/bindings/auth/register_student_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/reset_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/role_binding.dart';
-import 'package:jisr_platform/bindings/company/company_home_binding.dart';
+import 'package:jisr_platform/bindings/company/company_main_binding.dart';
+import 'package:jisr_platform/bindings/company/create_company_task_binding.dart';
+import 'package:jisr_platform/bindings/company/edit_company_profile_binding.dart';
+
 import 'package:jisr_platform/bindings/student/cv/cv_upload_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/views/auth/forget&reset/forgot_password_view.dart';
@@ -15,7 +18,9 @@ import 'package:jisr_platform/views/auth/company/register_company_view.dart';
 import 'package:jisr_platform/views/auth/forget&reset/otp_verification_view.dart';
 import 'package:jisr_platform/views/auth/forget&reset/reset_password_view.dart';
 import 'package:jisr_platform/views/auth/role_selection.dart';
-import 'package:jisr_platform/views/company/company_home_view.dart';
+import 'package:jisr_platform/views/company/company_main_view.dart';
+import 'package:jisr_platform/views/company/profile/edit_company_profile_view.dart';
+import 'package:jisr_platform/views/company/tasks/create_company_task_view.dart';
 import 'package:jisr_platform/views/student/home/home_view.dart';
 import 'package:jisr_platform/views/auth/login/login_otp_view.dart';
 import 'package:jisr_platform/views/auth/student/register_student_view.dart';
@@ -45,6 +50,8 @@ import 'package:jisr_platform/views/student/conversations/student_chat_view.dart
 
 class AppPages {
   static final pages = [
+
+    /////////////AUTHENTICATION////////////////
     GetPage(
       name: Routes.login,
       page: () => const LoginView(),
@@ -90,7 +97,10 @@ class AppPages {
       page: () => const LoginOtpView(),
       binding: LoginOtpBinding(),
     ),
-
+//////////////////////
+///
+///
+////STUDENT///////////
     GetPage(
       name: Routes.studentHome,
       page: () => const HomeView(),
@@ -107,37 +117,28 @@ class AppPages {
       page: () => const CvAnalysisView(),
       binding: CvAnalysisBinding(),
     ),
-
-    GetPage(
-      name: Routes.companyHome,
-      page: () => const CompanyHomeView(),
-      binding: CompanyHomeBinding(),
-    ),
-
     GetPage(
       name: Routes.assessment,
       page: () => const AssessmentView(),
       binding: AssessmentBinding(),
     ),
-
     GetPage(
       name: Routes.studentProfile,
       page: () => const StudentProfileView(),
       binding: StudentProfileBinding(),
     ),
-
     //بروتفوليم
     GetPage(
       name: Routes.studentPortfolio,
       page: () => const StudentPortfolioView(),
       binding: StudentPortfolioBinding(),
     ),
-
     GetPage(
       name: Routes.studentPortfolioDetails,
       page: () => const StudentPortfolioDetailsView(),
       binding: StudentPortfolioBinding(),
     ),
+
 
     //task
     GetPage(
@@ -173,5 +174,32 @@ class AppPages {
       page: () => const StudentChatView(),
       binding: StudentConversationBinding(),
     ),
+
+
+    //////////////////////COMPANY//////////////////////
+    GetPage(
+      name: Routes.companyMain,
+      page: () => const CompanyMainView(),
+      binding: CompanyMainBinding(),
+    ),
+     GetPage(
+  name: Routes.createCompanyTask,
+  page: () => const CreateCompanyTaskView(),
+  binding: CreateCompanyTaskBinding(),
+),
+
+GetPage(
+  name: Routes.editCompanyProfile,
+  page: () => const EditCompanyProfileView(),
+  binding: EditCompanyProfileBinding(),
+),
+
+
+
+
+
+
+////////////////////////////
+
   ];
 }

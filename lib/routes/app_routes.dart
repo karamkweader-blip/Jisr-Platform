@@ -34,5 +34,8 @@ abstract class Routes {
   static const studentConversations = '/student-conversations';
   static const studentChat = '/student-chat';
   /////company
+  static const companyMain = '/company-main';
   static const companyHome = '/company-home';
+  static const editCompanyProfile = '/company/profile/edit';
+  static const createCompanyTask = '/company/tasks/create';
 }
