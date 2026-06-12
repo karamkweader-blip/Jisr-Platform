@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/bindings/auth/company_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/forgot_password_binding.dart';
@@ -163,6 +164,8 @@ class AppPages {
       binding: StudentTaskApplicationBinding(),
     ),
 
+    
+
     GetPage(
       name: Routes.studentConversations,
       page: () => const StudentConversationsView(),
@@ -186,6 +189,9 @@ class AppPages {
   name: Routes.createCompanyTask,
   page: () => const CreateCompanyTaskView(),
   binding: CreateCompanyTaskBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration: const Duration(milliseconds: 350),
+  curve: Curves.easeInOutCubic,
 ),
 
 GetPage(

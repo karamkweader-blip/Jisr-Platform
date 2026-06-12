@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jisr_platform/models/company/company_home_model.dart';
+import 'package:jisr_platform/routes/app_routes.dart'; // استيراد مسارات التطبيق
 import 'package:jisr_platform/services/company/company_home_service.dart';
 
 class CompanyHomeController extends GetxController {
@@ -31,19 +32,18 @@ class CompanyHomeController extends GetxController {
     }
   }
 
-  void onCreateTaskPressed() {
-    // TODO: اربطها لاحقًا مع Route إنشاء مهمة جديدة.
-    Get.snackbar(
-      'إنشاء مهمة',
-      'سيتم فتح صفحة إنشاء مهمة جديدة',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+  Future<void> onCreateTaskPressed() async {
+    final shouldRefresh = await Get.toNamed(
+      Routes.createCompanyTask,);
+      
+    if (shouldRefresh == true) {
+      await fetchCompanyHome();
+    }
   }
 
   void onRequiredActionPressed(CompanyRequiredAction action) {
     switch (action.targetType) {
       case 'task_application':
-        // targetId هنا هو application id
         Get.snackbar(
           'مراجعة الطلب',
           'سيتم فتح طلب التقديم رقم ${action.targetId}',
@@ -52,7 +52,6 @@ class CompanyHomeController extends GetxController {
         break;
 
       case 'task_applications':
-        // targetId هنا هو task id
         Get.snackbar(
           'طلبات المهمة',
           'سيتم فتح طلبات المهمة رقم ${action.targetId}',
@@ -72,7 +71,6 @@ class CompanyHomeController extends GetxController {
   void onRecentActivityPressed(CompanyRecentActivity activity) {
     switch (activity.targetType) {
       case 'task_applications':
-        // targetId هنا هو task id
         Get.snackbar(
           'طلبات المهمة',
           'سيتم فتح طلبات المهمة رقم ${activity.targetId}',
@@ -81,7 +79,6 @@ class CompanyHomeController extends GetxController {
         break;
 
       case 'task_application':
-        // targetId هنا هو application id
         Get.snackbar(
           'تفاصيل الطلب',
           'سيتم فتح طلب التقديم رقم ${activity.targetId}',

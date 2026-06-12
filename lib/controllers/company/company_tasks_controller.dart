@@ -35,7 +35,8 @@ class CompanyTasksController extends GetxController {
   }
 
   Future<void> goToCreateTask() async {
-    final shouldRefresh = await Get.toNamed(Routes.createCompanyTask);
+   final shouldRefresh = await Get.toNamed(
+      Routes.createCompanyTask,);
 
     if (shouldRefresh == true) {
       fetchTasks();
