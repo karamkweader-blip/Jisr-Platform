@@ -43,6 +43,25 @@ class AuthActionsController extends GetxController {
     );
   }
 
+
+Future<void> companyLogout({
+  required bool logoutAllSessions,
+}) async {
+  await _handleAuthAction(
+    request: logoutAllSessions
+        ? _authService.logoutAllSessions
+        : _authService.logout,
+    successTitle: logoutAllSessions
+        ? 'تم إنهاء الجلسات'
+        : 'تم تسجيل الخروج',
+    fallbackSuccessMessage: logoutAllSessions
+        ? 'تم إنهاء جميع الجلسات بنجاح'
+        : 'تم تسجيل خروجك بنجاح',
+    errorTitle: logoutAllSessions
+        ? 'فشل إنهاء الجلسات'
+        : 'فشل تسجيل الخروج',
+  );
+}
   Future<bool> _showConfirmDialog({
     required String title,
     required String message,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jisr_platform/controllers/company/company_tasks_controller.dart';
+import 'package:jisr_platform/controllers/company/tasks/company_tasks_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'widgets/tasks_header.dart';
 import 'widgets/company_task_card.dart';
@@ -53,9 +53,9 @@ class CompanyTasksView extends GetView<CompanyTasksController> {
                         statusLabel: controller.statusLabel(task.status),
                         difficultyLabel:
                             controller.difficultyLabel(task.difficultyLevel),
-                        onPublishPressed: task.isDraft
-                            ? () => controller.confirmPublishTask(task)
-                            : null,
+                              onTap: () => controller.goToTaskDetails(task.id),
+
+                        onPublishPressed:null,
                       ),
                     ),
                   ),

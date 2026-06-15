@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jisr_platform/controllers/company/company_home_controller.dart';
+import 'package:jisr_platform/controllers/company/home/company_home_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
 // استيراد المكونات الفرعية المحلية من المجلد المجاور مباشرة

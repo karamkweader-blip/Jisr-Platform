@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jisr_platform/models/company/company_task_model.dart';
-import 'package:jisr_platform/services/company/company_task_service.dart';
+import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
+import 'package:jisr_platform/services/company/tasks/company_task_service.dart';
 
 class CreateCompanyTaskController extends GetxController {
   final CompanyTaskService _taskService;

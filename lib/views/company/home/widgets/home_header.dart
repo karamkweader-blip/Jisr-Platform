@@ -12,22 +12,14 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final companyName = home.company.name.trim().isEmpty 
-        ? 'شركتك' 
+    final companyName = home.company.name.trim().isEmpty
+        ? 'شركتك'
         : home.company.name.trim();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'مرحباً، $companyName',
-          style: const TextStyle(
-            color: AppColors.textDark,
-            fontSize: 24,
-            fontWeight: FontWeight.w800,
-            height: 1.25,
-          ),
-        ),
+        _WelcomeTitle(companyName: companyName),
         const SizedBox(height: 8),
         Text(
           home.hasAnyActivity
@@ -42,5 +34,51 @@ class HomeHeader extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _WelcomeTitle extends StatelessWidget {
+  final String companyName;
+
+  const _WelcomeTitle({
+    required this.companyName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      textDirection: TextDirection.rtl,
+      alignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 6,
+      runSpacing: 2,
+      children: [
+        const Text(
+          'مرحباً،',
+          style: TextStyle(
+            color: AppColors.textDark,
+            fontSize: 24,
+            fontWeight: FontWeight.w800,
+            height: 1.25,
+          ),
+        ),
+        Text(
+          companyName,
+          textDirection: _containsArabic(companyName)
+              ? TextDirection.rtl
+              : TextDirection.ltr,
+          style: const TextStyle(
+            color: AppColors.textDark,
+            fontSize: 24,
+            fontWeight: FontWeight.w800,
+            height: 1.25,
+          ),
+        ),
+      ],
+    );
+  }
+
+  bool _containsArabic(String value) {
+    return RegExp(r'[\u0600-\u06FF]').hasMatch(value);
   }
 }

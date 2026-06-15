@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jisr_platform/controllers/company/company_profile_controller.dart';
+import 'package:jisr_platform/controllers/company/profile/company_profile_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/views/company/profile/widgets/profile_shared_widgets.dart';
 import 'package:jisr_platform/views/company/profile/widgets/profile_widgets.dart';
