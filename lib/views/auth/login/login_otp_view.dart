@@ -34,7 +34,7 @@ class LoginOtpView extends GetView<LoginOtpController> {
     );
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: AppColors.background,
         body: SafeArea(

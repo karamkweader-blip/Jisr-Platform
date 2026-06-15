@@ -87,16 +87,37 @@ class ApiLinks {
   static String markConversationAsRead(int conversationId) =>
       '$baseUrl/conversations/$conversationId/read';
   
-  //////company
+  //////company///////////////////////////////////////
+  ////////////////////////////////////////////////////
 static const String companyHome = '$baseUrl/company/home';
-static const String companyTasks = '$baseUrl/company/tasks';
+static const String skills = '$baseUrl/skills';
 static const String companyProfile = '$baseUrl/company/profile';
 static const String editCompanyProfile = '$baseUrl/company/profile/edit';
 
-
+static const String companyTasks = '$baseUrl/company/tasks';
 static String publishCompanyTask(int taskId) =>
     '$baseUrl/company/tasks/$taskId/publish';
-static const String skills = '$baseUrl/skills';
+// company task details
+static String companyTaskDetails(int taskId) =>
+    '$baseUrl/company/tasks/$taskId';
+    
+static String updateCompanyTask(int taskId) =>
+    '$baseUrl/company/tasks/$taskId';
+static String deleteCompanyTask(int taskId) =>
+    '$baseUrl/company/tasks/$taskId';
+
+//  للمتقدمين
+static String companyTaskApplications(int taskId) =>
+    '$baseUrl/company/tasks/$taskId/applications';
+
+static String companyTaskApplicantDetails(int applicationId) =>
+    '$baseUrl/company/tasks/applications/student/details/$applicationId';
+    
+    static String acceptTaskApplication(int applicationId) =>
+    '$baseUrl/company/tasks/applications/accept/$applicationId';
+
+static String rejectTaskApplication(int applicationId) =>
+    '$baseUrl/company/tasks/applications/reject/$applicationId';
 
 }
 

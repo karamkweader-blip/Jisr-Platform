@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jisr_platform/controllers/company/create_company_task_controller.dart';
+import 'package:jisr_platform/controllers/company/tasks/create_company_task_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
-import 'package:jisr_platform/models/company/company_task_model.dart';
+import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
 
 class CreateCompanyTaskView extends GetView<CreateCompanyTaskController> {
   const CreateCompanyTaskView({super.key});
