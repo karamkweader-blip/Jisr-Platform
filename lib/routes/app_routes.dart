@@ -42,4 +42,6 @@ abstract class Routes {
   static const companyTaskDetails = '/company/tasks/details';
   static const companyTaskApplicantDetails = '/company/tasks/applicant-details';
   static const companyTaskApplicants = '/company/tasks/applicants';
+  static const companyTaskAssignments = '/company/task-assignments';
+  static const companyTaskAssignmentWorkspace = '/company/task-assignments/workspace';
 }

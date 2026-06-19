@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/company/tasks/company_tasks_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
-import 'widgets/tasks_header.dart';
+
 import 'widgets/company_task_card.dart';
+import 'widgets/task_execution_monitoring_card.dart';
+import 'widgets/tasks_header.dart';
 import 'widgets/tasks_states_widgets.dart';
 
 class CompanyTasksView extends GetView<CompanyTasksController> {
@@ -17,11 +19,12 @@ class CompanyTasksView extends GetView<CompanyTasksController> {
         child: Obx(() {
           if (controller.isLoading.value) {
             return const Center(
-              child: CircularProgressIndicator(color: AppColors.primaryBlue),
+              child: CircularProgressIndicator(
+                color: AppColors.primaryBlue,
+              ),
             );
           }
 
-  
           if (controller.errorMessage.value.isNotEmpty) {
             return TasksErrorState(
               message: controller.errorMessage.value,
@@ -32,14 +35,31 @@ class CompanyTasksView extends GetView<CompanyTasksController> {
           return RefreshIndicator(
             onRefresh: controller.fetchTasks,
             child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(20, 18, 20, 28),
               children: [
                 TasksHeader(
                   onCreatePressed: controller.goToCreateTask,
                 ),
-                const SizedBox(height: 20),
-                
-                // Empty State
+                const SizedBox(height: 18),
+
+                TaskExecutionMonitoringCard(
+                  onTap: controller.goToTaskAssignments,
+                ),
+
+                const SizedBox(height: 26),
+
+                const Text(
+                  'كل المهام',
+                  style: TextStyle(
+                    color: AppColors.textDark,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
                 if (controller.tasks.isEmpty)
                   EmptyTasksState(
                     onCreatePressed: controller.goToCreateTask,
@@ -53,9 +73,8 @@ class CompanyTasksView extends GetView<CompanyTasksController> {
                         statusLabel: controller.statusLabel(task.status),
                         difficultyLabel:
                             controller.difficultyLabel(task.difficultyLevel),
-                              onTap: () => controller.goToTaskDetails(task.id),
-
-                        onPublishPressed:null,
+                        onTap: () => controller.goToTaskDetails(task.id),
+                        onPublishPressed: null,
                       ),
                     ),
                   ),
