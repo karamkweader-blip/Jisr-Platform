@@ -10,6 +10,8 @@ import 'package:jisr_platform/bindings/auth/role_binding.dart';
 import 'package:jisr_platform/bindings/company/company_main_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicant_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicants_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/company_task_assignment_workspace_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/company_task_assignments_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/create_company_task_binding.dart';
 import 'package:jisr_platform/bindings/company/profile/edit_company_profile_binding.dart';
@@ -26,6 +28,8 @@ import 'package:jisr_platform/views/company/company_main_view.dart';
 import 'package:jisr_platform/views/company/profile/edit_company_profile_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicant_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicants_view.dart';
+import 'package:jisr_platform/views/company/tasks/company_task_assignment_workspace_view.dart';
+import 'package:jisr_platform/views/company/tasks/company_task_assignments_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/create_company_task_view.dart';
 import 'package:jisr_platform/views/student/home/home_view.dart';
@@ -221,8 +225,16 @@ GetPage(
   binding: CompanyTaskApplicantDetailsBinding(),
 ),
 
-
-
+GetPage(
+  name: Routes.companyTaskAssignments,
+  page: () => const CompanyTaskAssignmentsView(),
+  binding: CompanyTaskAssignmentsBinding(),
+),
+GetPage(
+  name: Routes.companyTaskAssignmentWorkspace,
+  page: () => const CompanyTaskAssignmentWorkspaceView(),
+  binding: CompanyTaskAssignmentWorkspaceBinding(),
+),
 
 
 

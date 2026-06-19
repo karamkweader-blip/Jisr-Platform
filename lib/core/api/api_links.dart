@@ -97,6 +97,7 @@ static const String editCompanyProfile = '$baseUrl/company/profile/edit';
 static const String companyTasks = '$baseUrl/company/tasks';
 static String publishCompanyTask(int taskId) =>
     '$baseUrl/company/tasks/$taskId/publish';
+    
 // company task details
 static String companyTaskDetails(int taskId) =>
     '$baseUrl/company/tasks/$taskId';
@@ -118,6 +119,13 @@ static String companyTaskApplicantDetails(int applicationId) =>
 
 static String rejectTaskApplication(int applicationId) =>
     '$baseUrl/company/tasks/applications/reject/$applicationId';
+    
+ static const String companyTaskAssignments =
+    '$baseUrl/company/task-assignments';
+ static String companyTaskAssignmentDetails(int assignmentId) =>
+    '$baseUrl/company/task-assignments/$assignmentId';
+    static String companyTaskAssignmentProgress(int assignmentId) =>
+    '$baseUrl/company/task-assignments/$assignmentId/progress';
 
 }
 

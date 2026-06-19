@@ -53,6 +53,9 @@ class CompanyTasksController extends GetxController {
   }
 }
 
+void goToTaskAssignments() {
+  Get.toNamed(Routes.companyTaskAssignments);
+}
 
   // Future<void> confirmPublishTask(CompanyTaskModel task) async {
   //   final confirmed = await Get.dialog<bool>(
