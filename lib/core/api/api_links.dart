@@ -1,7 +1,5 @@
 class ApiLinks {
-
-  static const String baseUrl = 'http://192.168.1.104:8000/api';
-
+  static const String baseUrl = 'http://192.168.50.17:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -86,17 +84,20 @@ class ApiLinks {
 
   static String markConversationAsRead(int conversationId) =>
       '$baseUrl/conversations/$conversationId/read';
-  
+
+  // task assignment progress & final submission
+  static String taskAssignmentProgress(int assignmentId) =>
+      '$baseUrl/student/task-assignments/$assignmentId/progress';
+
+  static String taskAssignmentSubmission(int assignmentId) =>
+      '$baseUrl/student/task-assignments/$assignmentId/submission';
   //////company
-static const String companyHome = '$baseUrl/company/home';
-static const String companyTasks = '$baseUrl/company/tasks';
-static const String companyProfile = '$baseUrl/company/profile';
-static const String editCompanyProfile = '$baseUrl/company/profile/edit';
+  static const String companyHome = '$baseUrl/company/home';
+  static const String companyTasks = '$baseUrl/company/tasks';
+  static const String companyProfile = '$baseUrl/company/profile';
+  static const String editCompanyProfile = '$baseUrl/company/profile/edit';
 
-
-static String publishCompanyTask(int taskId) =>
-    '$baseUrl/company/tasks/$taskId/publish';
-static const String skills = '$baseUrl/skills';
-
+  static String publishCompanyTask(int taskId) =>
+      '$baseUrl/company/tasks/$taskId/publish';
+  static const String skills = '$baseUrl/skills';
 }
-

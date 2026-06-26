@@ -47,10 +47,11 @@ import 'package:jisr_platform/views/student/task_applications/student_task_appli
 import 'package:jisr_platform/bindings/student/conversations/student_conversation_binding.dart';
 import 'package:jisr_platform/views/student/conversations/student_conversations_view.dart';
 import 'package:jisr_platform/views/student/conversations/student_chat_view.dart';
+import 'package:jisr_platform/bindings/student/task_progress/student_task_progress_binding.dart';
+import 'package:jisr_platform/views/student/task_progress/student_task_progress_view.dart';
 
 class AppPages {
   static final pages = [
-
     /////////////AUTHENTICATION////////////////
     GetPage(
       name: Routes.login,
@@ -97,10 +98,10 @@ class AppPages {
       page: () => const LoginOtpView(),
       binding: LoginOtpBinding(),
     ),
-//////////////////////
-///
-///
-////STUDENT///////////
+    //////////////////////
+    ///
+    ///
+    ////STUDENT///////////
     GetPage(
       name: Routes.studentHome,
       page: () => const HomeView(),
@@ -139,7 +140,6 @@ class AppPages {
       binding: StudentPortfolioBinding(),
     ),
 
-
     //task
     GetPage(
       name: Routes.studentTasks,
@@ -175,31 +175,30 @@ class AppPages {
       binding: StudentConversationBinding(),
     ),
 
-
     //////////////////////COMPANY//////////////////////
     GetPage(
       name: Routes.companyMain,
       page: () => const CompanyMainView(),
       binding: CompanyMainBinding(),
     ),
-     GetPage(
-  name: Routes.createCompanyTask,
-  page: () => const CreateCompanyTaskView(),
-  binding: CreateCompanyTaskBinding(),
-),
+    GetPage(
+      name: Routes.createCompanyTask,
+      page: () => const CreateCompanyTaskView(),
+      binding: CreateCompanyTaskBinding(),
+    ),
 
-GetPage(
-  name: Routes.editCompanyProfile,
-  page: () => const EditCompanyProfileView(),
-  binding: EditCompanyProfileBinding(),
-),
+    GetPage(
+      name: Routes.editCompanyProfile,
+      page: () => const EditCompanyProfileView(),
+      binding: EditCompanyProfileBinding(),
+    ),
 
+    GetPage(
+      name: Routes.studentTaskProgress,
+      page: () => const StudentTaskProgressView(),
+      binding: StudentTaskProgressBinding(),
+    ),
 
-
-
-
-
-////////////////////////////
-
+    ////////////////////////////
   ];
 }

@@ -4,6 +4,7 @@ import 'package:jisr_platform/controllers/student/task_applications/student_task
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/task_applications/student_task_application_model.dart';
+import 'package:jisr_platform/routes/app_routes.dart';
 
 class StudentTaskApplicationsView
     extends GetView<StudentTaskApplicationController> {
@@ -65,12 +66,10 @@ class StudentTaskApplicationsView
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // الكرت العلوي التفاعلي الجديد (بديل التابات)
                 const _ApplicationsHeroInteractive(),
 
                 const SizedBox(height: 24),
 
-                // عنوان مرن يتغير حسب الفلتر المختار
                 Obx(
                   () => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -88,7 +87,6 @@ class StudentTaskApplicationsView
 
                 const SizedBox(height: 12),
 
-                // قائمة عرض الكروت الفلترية المحدثة بالـ Obx الآمن
                 Obx(() {
                   if (controller.isLoading.value) {
                     return const Padding(
@@ -104,12 +102,12 @@ class StudentTaskApplicationsView
                   final tasks = controller.currentTasks;
 
                   if (tasks.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 40),
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 40),
                       child: Center(
                         child: Text(
                           'لا يوجد تاسكات في هذا القسم حالياً',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Cairo',
                             color: AppColors.textGrey,
                             fontSize: 14,
@@ -138,7 +136,6 @@ class StudentTaskApplicationsView
   }
 }
 
-// الكارت العلوي التفاعلي الحديث جداً وبديل التابات المزعجة
 class _ApplicationsHeroInteractive
     extends GetView<StudentTaskApplicationController> {
   const _ApplicationsHeroInteractive();
@@ -192,8 +189,6 @@ class _ApplicationsHeroInteractive
             ),
           ),
           const SizedBox(height: 20),
-
-          // شبكة الإحصائيات التفاعلية البديلة عن التابات
           Obx(
             () => GridView.count(
               shrinkWrap: true,
@@ -243,7 +238,6 @@ class _ApplicationsHeroInteractive
   }
 }
 
-// ويدجت الكارت الإحصائي الصغير التفاعلي
 class _InteractiveStatCard extends GetView<StudentTaskApplicationController> {
   final String title;
   final int count;
@@ -316,7 +310,6 @@ class _InteractiveStatCard extends GetView<StudentTaskApplicationController> {
   }
 }
 
-// كارت التاسك المنفصل والنظيف
 class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
   final StudentTaskApplicationModel item;
 
@@ -328,6 +321,7 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
         return AppColors.actionYellow;
       case 'accepted':
       case 'working':
+      case 'submitted':
         return Colors.green;
       case 'rejected':
         return Colors.redAccent;
@@ -342,12 +336,19 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
         return Icons.hourglass_top_rounded;
       case 'accepted':
       case 'working':
+      case 'submitted':
         return Icons.check_circle_rounded;
       case 'rejected':
         return Icons.cancel_rounded;
       default:
         return Icons.info_rounded;
     }
+  }
+
+  bool get canTrackProgress {
+    return item.status == 'accepted' ||
+        item.status == 'working' ||
+        item.status == 'submitted';
   }
 
   @override
@@ -412,7 +413,9 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
               ),
             ],
           ),
+
           const SizedBox(height: 12),
+
           Text(
             task.description,
             maxLines: 3,
@@ -424,7 +427,9 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
               fontSize: 13,
             ),
           ),
+
           const SizedBox(height: 14),
+
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -451,6 +456,7 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
               ),
             ],
           ),
+
           if (task.skills.isNotEmpty) ...[
             const SizedBox(height: 12),
             Wrap(
@@ -481,6 +487,7 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
                   .toList(),
             ),
           ],
+
           if ((item.companyNotes ?? '').trim().isNotEmpty) ...[
             const SizedBox(height: 12),
             Container(
@@ -511,13 +518,60 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
               ),
             ),
           ],
+
+          if (canTrackProgress && item.assignmentId != null) ...[
+            const SizedBox(height: 16),
+            InkWell(
+              borderRadius: BorderRadius.circular(22),
+              onTap: () {
+                Get.toNamed(
+                  Routes.studentTaskProgress,
+                  arguments: item.assignmentId,
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue,
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primaryBlue.withOpacity(.16),
+                      blurRadius: 16,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.trending_up_rounded,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'متابعة التقدم والتسليم',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
 }
 
-// بطاقات الخصائص الصغيرة بأسفل كارت التاسك
 class _ApplicationBadge extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -531,6 +585,8 @@ class _ApplicationBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final shownText = text.trim().isEmpty ? 'غير محدد' : text;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
@@ -543,7 +599,7 @@ class _ApplicationBadge extends StatelessWidget {
           Icon(icon, color: color, size: 15),
           const SizedBox(width: 5),
           Text(
-            text,
+            shownText,
             style: TextStyle(
               fontFamily: 'Cairo',
               color: color,

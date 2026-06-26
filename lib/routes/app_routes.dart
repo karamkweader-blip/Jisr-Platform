@@ -30,6 +30,7 @@ abstract class Routes {
   static const studentAssignedTasks = '/student-assigned-tasks';
   //تاسكاتي
   static const studentTaskApplications = '/student-task-applications';
+  static const studentTaskProgress = '/student-task-progress';
   //محادثات
   static const studentConversations = '/student-conversations';
   static const studentChat = '/student-chat';
