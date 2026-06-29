@@ -38,5 +38,11 @@ abstract class Routes {
   static const companyMain = '/company-main';
   static const companyHome = '/company-home';
   static const editCompanyProfile = '/company/profile/edit';
+  /////tasks
   static const createCompanyTask = '/company/tasks/create';
+  static const companyTaskDetails = '/company/tasks/details';
+  static const companyTaskApplicantDetails = '/company/tasks/applicant-details';
+  static const companyTaskApplicants = '/company/tasks/applicants';
+  static const companyTaskAssignments = '/company/task-assignments';
+  static const companyTaskAssignmentWorkspace = '/company/task-assignments/workspace';
 }

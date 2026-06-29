@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_links.dart';
-import 'package:jisr_platform/models/company/company_task_model.dart';
+import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 
 class CompanyTaskService {

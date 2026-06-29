@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/bindings/auth/company_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/forgot_password_binding.dart';
@@ -7,8 +8,13 @@ import 'package:jisr_platform/bindings/auth/register_student_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/reset_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/role_binding.dart';
 import 'package:jisr_platform/bindings/company/company_main_binding.dart';
-import 'package:jisr_platform/bindings/company/create_company_task_binding.dart';
-import 'package:jisr_platform/bindings/company/edit_company_profile_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/company_task_applicant_details_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/company_task_applicants_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/company_task_assignment_workspace_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/company_task_assignments_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/company_task_details_binding.dart';
+import 'package:jisr_platform/bindings/company/tasks/create_company_task_binding.dart';
+import 'package:jisr_platform/bindings/company/profile/edit_company_profile_binding.dart';
 
 import 'package:jisr_platform/bindings/student/cv/cv_upload_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
@@ -20,6 +26,11 @@ import 'package:jisr_platform/views/auth/forget&reset/reset_password_view.dart';
 import 'package:jisr_platform/views/auth/role_selection.dart';
 import 'package:jisr_platform/views/company/company_main_view.dart';
 import 'package:jisr_platform/views/company/profile/edit_company_profile_view.dart';
+import 'package:jisr_platform/views/company/tasks/company_task_applicant_details_view.dart';
+import 'package:jisr_platform/views/company/tasks/company_task_applicants_view.dart';
+import 'package:jisr_platform/views/company/tasks/company_task_assignment_workspace_view.dart';
+import 'package:jisr_platform/views/company/tasks/company_task_assignments_view.dart';
+import 'package:jisr_platform/views/company/tasks/company_task_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/create_company_task_view.dart';
 import 'package:jisr_platform/views/student/home/home_view.dart';
 import 'package:jisr_platform/views/auth/login/login_otp_view.dart';
@@ -163,6 +174,8 @@ class AppPages {
       binding: StudentTaskApplicationBinding(),
     ),
 
+    
+
     GetPage(
       name: Routes.studentConversations,
       page: () => const StudentConversationsView(),
@@ -176,22 +189,57 @@ class AppPages {
     ),
 
     //////////////////////COMPANY//////////////////////
+    ///////////////////////////////////////////////////
     GetPage(
       name: Routes.companyMain,
       page: () => const CompanyMainView(),
       binding: CompanyMainBinding(),
     ),
-    GetPage(
-      name: Routes.createCompanyTask,
-      page: () => const CreateCompanyTaskView(),
-      binding: CreateCompanyTaskBinding(),
-    ),
+     GetPage(
+  name: Routes.createCompanyTask,
+  page: () => const CreateCompanyTaskView(),
+  binding: CreateCompanyTaskBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration: const Duration(milliseconds: 350),
+  curve: Curves.easeInOutCubic,
+),
+GetPage(
+  name: Routes.editCompanyProfile,
+  page: () => const EditCompanyProfileView(),
+  binding: EditCompanyProfileBinding(),
+),
+GetPage(
+  name: Routes.companyTaskDetails,
+  page: () => const CompanyTaskDetailsView(),
+  binding: CompanyTaskDetailsBinding(),
+),
+GetPage(
+  name: Routes.companyTaskApplicants,
+  page: () => const CompanyTaskApplicantsView(),
+  binding: CompanyTaskApplicantsBinding(),
+),
+GetPage(
+  name: Routes.companyTaskApplicantDetails,
+  page: () => const CompanyTaskApplicantDetailsView(),
+  binding: CompanyTaskApplicantDetailsBinding(),
+),
 
-    GetPage(
-      name: Routes.editCompanyProfile,
-      page: () => const EditCompanyProfileView(),
-      binding: EditCompanyProfileBinding(),
-    ),
+GetPage(
+  name: Routes.companyTaskAssignments,
+  page: () => const CompanyTaskAssignmentsView(),
+  binding: CompanyTaskAssignmentsBinding(),
+),
+GetPage(
+  name: Routes.companyTaskAssignmentWorkspace,
+  page: () => const CompanyTaskAssignmentWorkspaceView(),
+  binding: CompanyTaskAssignmentWorkspaceBinding(),
+),
+
+//     GetPage(
+//       name: Routes.editCompanyProfile,
+//       page: () => const EditCompanyProfileView(),
+//       binding: EditCompanyProfileBinding(),
+//     ),
 
     GetPage(
       name: Routes.studentTaskProgress,
