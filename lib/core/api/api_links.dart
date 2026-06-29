@@ -1,7 +1,5 @@
 class ApiLinks {
-
-  static const String baseUrl = 'http://192.168.1.104:8000/api';
-
+  static const String baseUrl = 'http://192.168.50.17:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -86,6 +84,13 @@ class ApiLinks {
 
   static String markConversationAsRead(int conversationId) =>
       '$baseUrl/conversations/$conversationId/read';
+
+  // task assignment progress & final submission
+  static String taskAssignmentProgress(int assignmentId) =>
+      '$baseUrl/student/task-assignments/$assignmentId/progress';
+
+  static String taskAssignmentSubmission(int assignmentId) =>
+      '$baseUrl/student/task-assignments/$assignmentId/submission';
   
   //////company///////////////////////////////////////
   ////////////////////////////////////////////////////
@@ -128,4 +133,3 @@ static String rejectTaskApplication(int applicationId) =>
     '$baseUrl/company/task-assignments/$assignmentId/progress';
 
 }
-
