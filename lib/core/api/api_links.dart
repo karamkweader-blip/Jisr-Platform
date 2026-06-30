@@ -1,5 +1,5 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.50.17:8001/api';
+  static const String baseUrl = 'http://192.168.1.104:8000/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -100,6 +100,8 @@ static const String companyProfile = '$baseUrl/company/profile';
 static const String editCompanyProfile = '$baseUrl/company/profile/edit';
 
 static const String companyTasks = '$baseUrl/company/tasks';
+static const String companyTasksIndex =
+    '$baseUrl/company/tasks/index';
 static String publishCompanyTask(int taskId) =>
     '$baseUrl/company/tasks/$taskId/publish';
     
@@ -109,9 +111,8 @@ static String companyTaskDetails(int taskId) =>
     
 static String updateCompanyTask(int taskId) =>
     '$baseUrl/company/tasks/$taskId';
-static String deleteCompanyTask(int taskId) =>
-    '$baseUrl/company/tasks/$taskId';
-
+static String cancelCompanyTask(int taskId) =>
+    '$baseUrl/company/tasks/$taskId/cancel';
 //  للمتقدمين
 static String companyTaskApplications(int taskId) =>
     '$baseUrl/company/tasks/$taskId/applications';
