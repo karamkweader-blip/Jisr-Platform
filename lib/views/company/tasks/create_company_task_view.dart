@@ -16,13 +16,15 @@ class CreateCompanyTaskView extends GetView<CreateCompanyTaskController> {
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: AppColors.textDark),
-        title: const Text(
-          'إنشاء مهمة',
-          style: TextStyle(
-            color: AppColors.textDark,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
+      title: Obx(
+  () => Text(
+    controller.pageTitle,
+    style: const TextStyle(
+      color: AppColors.textDark,
+      fontWeight: FontWeight.w800,
+    ),
+  ),
+),
       ),
       body: SafeArea(
         child: Form(
@@ -30,10 +32,16 @@ class CreateCompanyTaskView extends GetView<CreateCompanyTaskController> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 28),
             children: [
-              const _FormSectionTitle(
-                title: 'المعلومات الأساسية',
-                subtitle: 'عرّف المهمة بشكل واضح للطلاب.',
-              ),
+              Obx(
+  () => _FormSectionTitle(
+    title: controller.isEditing
+        ? 'تعديل بيانات المهمة'
+        : 'المعلومات الأساسية',
+    subtitle: controller.isEditing
+        ? 'عدّل الحقول المطلوبة فقط، وسيتم حفظ التغييرات التي أجريتها.'
+        : 'عرّف المهمة بشكل واضح للطلاب.',
+  ),
+),
               const SizedBox(height: 12),
               _TextInput(
                 controller: controller.titleController,
@@ -80,7 +88,7 @@ class CreateCompanyTaskView extends GetView<CreateCompanyTaskController> {
                   ],
                   onChanged: (value) {
                     if (value != null) {
-                      controller.difficultyLevel.value = value;
+                     controller.setDifficultyLevel(value);
                     }
                   },
                 ),
@@ -148,22 +156,26 @@ class CreateCompanyTaskView extends GetView<CreateCompanyTaskController> {
                   label: 'نوع التسليم',
                   value: controller.submissionType.value,
                   items: const [
-                    DropdownMenuItem(
-                      value: 'github_link',
-                      child: Text('رابط GitHub'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'file_upload',
-                      child: Text('رفع ملف'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'text',
-                      child: Text('نص / شرح'),
-                    ),
-                  ],
+  DropdownMenuItem(
+    value: 'github_link',
+    child: Text('رابط GitHub'),
+  ),
+  DropdownMenuItem(
+    value: 'zip_file',
+    child: Text('ملف ZIP'),
+  ),
+  DropdownMenuItem(
+    value: 'demo_link',
+    child: Text('رابط العرض التجريبي'),
+  ),
+  DropdownMenuItem(
+    value: 'mixed',
+    child: Text('تسليم مختلط'),
+  ),
+],
                   onChanged: (value) {
                     if (value != null) {
-                      controller.submissionType.value = value;
+                     controller.setSubmissionType(value);
                     }
                   },
                 ),
@@ -196,40 +208,40 @@ class CreateCompanyTaskView extends GetView<CreateCompanyTaskController> {
               const SizedBox(height: 12),
               const _SkillsSelector(),
               const SizedBox(height: 28),
-              Obx(
-                () => SizedBox(
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: controller.isSubmitting.value
-                        ? null
-                        : controller.createTaskAsDraft,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: controller.isSubmitting.value
-                        ? const SizedBox(
-                            height: 22,
-                            width: 22,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Text(
-                            'حفظ كمسودة',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                  ),
-                ),
+           Obx(
+  () => SizedBox(
+    height: 52,
+    child: ElevatedButton(
+      onPressed: controller.isSubmitting.value
+          ? null
+          : controller.submitTask,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primaryBlue,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      child: controller.isSubmitting.value
+          ? const SizedBox(
+              height: 22,
+              width: 22,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
               ),
+            )
+          : Text(
+              controller.submitButtonLabel,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+    ),
+  ),
+),
             ],
           ),
         ),

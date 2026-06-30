@@ -37,9 +37,25 @@ class CompanyTaskDetailsModel {
     required this.updatedAt,
   });
 
-  bool get isDraft => status == 'draft';
-  bool get isPublished => status == 'published';
-  bool get hasDeadline => deadline != null;
+ bool get isDraft => status == 'draft';
+
+bool get isPublished => status == 'published';
+
+bool get isInProgress => status == 'in_progress';
+
+bool get isClosed => status == 'closed';
+
+bool get isCancelled => status == 'cancelled';
+
+bool get canEdit {
+  return isDraft || isPublished;
+}
+
+bool get canCancel {
+  return isDraft || isPublished;
+}
+
+bool get hasDeadline => deadline != null;
 
   factory CompanyTaskDetailsModel.fromJson(Map<String, dynamic> json) {
     return CompanyTaskDetailsModel(

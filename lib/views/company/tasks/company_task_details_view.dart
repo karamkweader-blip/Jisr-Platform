@@ -61,9 +61,12 @@ class CompanyTaskDetailsView extends GetView<CompanyTaskDetailsController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _TopBar(
-                              onBack: controller.closePage,
-                              onSelected: controller.handleMenuAction,
-                            ),
+  onBack: controller.closePage,
+  onSelected: controller.handleMenuAction,
+  canEdit: task.canEdit,
+  canCancel: task.canCancel,
+  isCancelling: controller.isDeleting.value,
+),
                             const SizedBox(height: 18),
                             TweenAnimationBuilder<double>(
                               tween: Tween(begin: 0.94, end: 1),
@@ -145,10 +148,16 @@ class CompanyTaskDetailsView extends GetView<CompanyTaskDetailsController> {
 class _TopBar extends StatelessWidget {
   final VoidCallback onBack;
   final ValueChanged<String> onSelected;
+  final bool canEdit;
+  final bool canCancel;
+  final bool isCancelling;
 
   const _TopBar({
     required this.onBack,
     required this.onSelected,
+    required this.canEdit,
+    required this.canCancel,
+    required this.isCancelling,
   });
 
   @override
@@ -190,8 +199,8 @@ class _TopBar extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
-          itemBuilder: (context) => const [
-            PopupMenuItem(
+          itemBuilder: (context) => <PopupMenuEntry<String>>[
+            const PopupMenuItem(
               value: 'refresh',
               child: Row(
                 children: [
@@ -201,29 +210,36 @@ class _TopBar extends StatelessWidget {
                 ],
               ),
             ),
-            PopupMenuItem(
-              value: 'edit',
-              child: Row(
-                children: [
-                  Icon(Icons.edit_outlined, size: 18),
-                  SizedBox(width: 8),
-                  Text('تعديل المهمة'),
-                ],
+            if (canEdit)
+              const PopupMenuItem(
+                value: 'edit',
+                child: Row(
+                  children: [
+                    Icon(Icons.edit_outlined, size: 18),
+                    SizedBox(width: 8),
+                    Text('تعديل المهمة'),
+                  ],
+                ),
               ),
-            ),
-            PopupMenuItem(
-              value: 'delete',
-              child: Row(
-                children: [
-                  Icon(Icons.delete_outline, size: 18, color: Colors.red),
-                  SizedBox(width: 8),
-                  Text(
-                    'حذف المهمة',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ],
+            if (canCancel)
+              PopupMenuItem(
+                value: 'cancel',
+                enabled: !isCancelling,
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.cancel_outlined,
+                      size: 18,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      isCancelling ? 'جارٍ الإلغاء...' : 'إلغاء المهمة',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
           child: const _CircleIconButton(
             icon: Icons.more_horiz_rounded,

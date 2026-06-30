@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/company/tasks/company_tasks_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/views/company/tasks/widgets/task_status_filter_bar.dart';
 
 import 'widgets/company_task_card.dart';
 import 'widgets/task_execution_monitoring_card.dart';
@@ -47,23 +48,35 @@ class CompanyTasksView extends GetView<CompanyTasksController> {
                   onTap: controller.goToTaskAssignments,
                 ),
 
-                const SizedBox(height: 26),
+              const SizedBox(height: 22),
 
-                const Text(
-                  'كل المهام',
-                  style: TextStyle(
-                    color: AppColors.textDark,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
+TaskStatusFilterBar(
+  selectedFilter: controller.selectedStatusFilter.value,
+  onChanged: controller.selectStatusFilter,
+),
 
-                const SizedBox(height: 12),
+const SizedBox(height: 24),
 
+Text(
+  controller.tasksSectionTitle,
+  style: const TextStyle(
+    color: AppColors.textDark,
+    fontSize: 17,
+    fontWeight: FontWeight.w900,
+  ),
+),
+
+const SizedBox(height: 12),
                 if (controller.tasks.isEmpty)
                   EmptyTasksState(
-                    onCreatePressed: controller.goToCreateTask,
-                  )
+  onCreatePressed: controller.goToCreateTask,
+  title: controller.isShowingAllTasks
+      ? 'لا توجد مهام بعد'
+      : 'لا توجد مهام ضمن هذا الفلتر',
+  message: controller.isShowingAllTasks
+      ? 'ابدأ بإنشاء أول مهمة ليستطيع الطلاب المناسبون التقديم عليها.'
+      : 'جرّب اختيار حالة أخرى أو أنشئ مهمة جديدة.',
+)
                 else
                   ...controller.tasks.map(
                     (task) => Padding(

@@ -90,9 +90,9 @@ class CompanyTaskDetailsController extends GetxController {
       case 'edit':
         goToEditTask();
         break;
-      case 'delete':
-        confirmDeleteTask();
-        break;
+      case 'cancel':
+  confirmCancelTask();
+  break;
       case 'refresh':
         fetchTaskDetails();
         break;
@@ -103,14 +103,14 @@ class CompanyTaskDetailsController extends GetxController {
     final currentTask = task.value;
     if (currentTask == null) return;
 
-    if (!currentTask.isDraft) {
-      Get.snackbar(
-        'غير مسموح',
-        'لا يمكن تعديل المهمة بعد نشرها',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return;
-    }
+   if (!currentTask.canEdit) {
+  Get.snackbar(
+    'غير مسموح',
+    'لا يمكن تعديل المهمة في حالتها الحالية',
+    snackPosition: SnackPosition.BOTTOM,
+  );
+  return;
+}
 
     final shouldRefresh = await Get.toNamed(
       Routes.createCompanyTask,
@@ -191,70 +191,76 @@ class CompanyTaskDetailsController extends GetxController {
     }
   }
 
-  Future<void> confirmDeleteTask() async {
-    final currentTask = task.value;
-    if (currentTask == null) return;
+Future<void> confirmCancelTask() async {
+  final currentTask = task.value;
 
-    if (!currentTask.isDraft) {
-      Get.snackbar(
-        'غير مسموح',
-        'لا يمكن حذف المهمة بعد نشرها',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return;
-    }
+  if (currentTask == null) {
+    return;
+  }
 
-    final confirmed = await Get.dialog<bool>(
-      AlertDialog(
-        title: const Text('حذف المهمة'),
-        content: Text(
-          'هل تريد حذف مهمة "${currentTask.title}"؟\nلا يمكن التراجع عن هذا الإجراء.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(result: false),
-            child: const Text('إلغاء'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () => Get.back(result: true),
-            child: const Text('حذف'),
-          ),
-        ],
-      ),
+  if (!currentTask.canCancel) {
+    Get.snackbar(
+      'غير مسموح',
+      'لا يمكن إلغاء المهمة في حالتها الحالية',
+      snackPosition: SnackPosition.BOTTOM,
     );
-
-    if (confirmed == true) {
-      await deleteTask();
-    }
+    return;
   }
 
-  Future<void> deleteTask() async {
-    try {
-      isDeleting.value = true;
+  final confirmed = await Get.dialog<bool>(
+    AlertDialog(
+      title: const Text('إلغاء المهمة'),
+      content: Text(
+        'هل تريد إلغاء مهمة "${currentTask.title}"؟\n'
+        'ستتوقف المهمة عن استقبال المتقدمين وستصبح بحالة ملغاة.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Get.back(result: false),
+          child: const Text('تراجع'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+          ),
+          onPressed: () => Get.back(result: true),
+          child: const Text('تأكيد الإلغاء'),
+        ),
+      ],
+    ),
+  );
 
-      await _detailsService.deleteTask(taskId);
-
-      Get.snackbar(
-        'تم الحذف',
-        'تم حذف المهمة بنجاح',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-
-      Get.back(result: true);
-    } catch (e) {
-      Get.snackbar(
-        'خطأ',
-        e.toString().replaceFirst('Exception: ', ''),
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isDeleting.value = false;
-    }
+  if (confirmed == true) {
+    await cancelTask();
   }
+}
+
+Future<void> cancelTask() async {
+  try {
+    isDeleting.value = true;
+
+    final cancelledTask = await _detailsService.cancelTask(taskId);
+
+    task.value = cancelledTask;
+    hasChanges.value = true;
+    applications.clear();
+
+    Get.snackbar(
+      'تم الإلغاء',
+      'تم إلغاء المهمة بنجاح',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  } catch (e) {
+    Get.snackbar(
+      'تعذر الإلغاء',
+      e.toString().replaceFirst('Exception: ', ''),
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  } finally {
+    isDeleting.value = false;
+  }
+}
 
   void goToApplicants() {
   final currentTask = task.value;
@@ -302,6 +308,8 @@ class CompanyTaskDetailsController extends GetxController {
         return 'مكتملة';
       case 'closed':
         return 'مغلقة';
+      case 'cancelled':
+        return 'ملغاة';
       default:
         return status;
     }
@@ -333,18 +341,20 @@ class CompanyTaskDetailsController extends GetxController {
     }
   }
 
-  String submissionTypeLabel(String type) {
-    switch (type) {
-      case 'github_link':
-        return 'رابط GitHub';
-      case 'file':
-        return 'ملف';
-      case 'text':
-        return 'نص';
-      default:
-        return type;
-    }
+String submissionTypeLabel(String type) {
+  switch (type) {
+    case 'github_link':
+      return 'رابط GitHub';
+    case 'zip_file':
+      return 'ملف ZIP';
+    case 'demo_link':
+      return 'رابط العرض التجريبي';
+    case 'mixed':
+      return 'تسليم مختلط';
+    default:
+      return type;
   }
+}
 
   String formatDate(DateTime? date) {
     if (date == null) return 'غير محدد';

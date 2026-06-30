@@ -58,9 +58,9 @@ class CompanyTaskCard extends StatelessWidget {
                     ),
                   ),
                   _StatusChip(
-                    label: statusLabel,
-                    isDraft: isDraft,
-                  ),
+  label: statusLabel,
+  status: task.status,
+),
                 ],
               ),
               const SizedBox(height: 10),
@@ -158,27 +158,45 @@ class CompanyTaskCard extends StatelessWidget {
 
 class _StatusChip extends StatelessWidget {
   final String label;
-  final bool isDraft;
+  final String status;
 
   const _StatusChip({
     required this.label,
-    required this.isDraft,
+    required this.status,
   });
+
+  Color get _color {
+    switch (status) {
+      case 'draft':
+        return AppColors.actionYellow;
+      case 'published':
+        return AppColors.primaryBlue;
+      case 'in_progress':
+        return Colors.orange;
+      case 'closed':
+        return Colors.blueGrey;
+      case 'cancelled':
+        return Colors.red;
+      default:
+        return AppColors.textGrey;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final color = isDraft ? AppColors.actionYellow : AppColors.primaryBlue;
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 7,
+      ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.10),
+        color: _color.withOpacity(0.10),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         label,
         style: TextStyle(
-          color: color,
+          color: _color,
           fontSize: 12,
           fontWeight: FontWeight.w800,
         ),
