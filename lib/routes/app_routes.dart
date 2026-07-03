@@ -26,6 +26,9 @@ abstract class Routes {
   //task
   static const studentTasks = '/student-tasks';
   static const studentTaskDetails = '/student-task-details';
+  //فرص العمل
+  static const studentOpportunities = '/student-opportunities';
+  static const studentOpportunityDetails = '/student-opportunity-details';
   //مهمامي المسندة
   static const studentAssignedTasks = '/student-assigned-tasks';
   //تاسكاتي
@@ -44,5 +47,6 @@ abstract class Routes {
   static const companyTaskApplicantDetails = '/company/tasks/applicant-details';
   static const companyTaskApplicants = '/company/tasks/applicants';
   static const companyTaskAssignments = '/company/task-assignments';
-  static const companyTaskAssignmentWorkspace = '/company/task-assignments/workspace';
+  static const companyTaskAssignmentWorkspace =
+      '/company/task-assignments/workspace';
 }

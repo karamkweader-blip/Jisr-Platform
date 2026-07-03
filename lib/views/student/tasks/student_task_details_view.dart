@@ -671,11 +671,7 @@ class _ApplyButton extends GetView<StudentTaskController> {
   void _openApplySheet() {
     controller.prepareApplyForm();
 
-    Get.bottomSheet(
-      _ApplyTaskSheet(taskId: taskId),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
+    Get.to(() => _ApplyTaskSheet(taskId: taskId));
   }
 
   @override
@@ -726,127 +722,83 @@ class _ApplyTaskSheet extends GetView<StudentTaskController> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Container(
-        padding: EdgeInsets.only(
-          right: 22,
-          left: 22,
-          top: 18,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 22,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: AppColors.background,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: AppColors.primaryBlue),
+          title: const Text(
+            'طلب التقديم',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              color: AppColors.primaryBlue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
-        decoration: const BoxDecoration(
-          color: AppColors.background,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
-        ),
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child:
-              Column(
-                    children: [
-                      Container(
-                        width: 46,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: AppColors.textGrey.withOpacity(.25),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      const Icon(
-                            Icons.send_rounded,
-                            color: AppColors.actionYellow,
-                            size: 46,
-                          )
-                          .animate(onPlay: (c) => c.repeat(reverse: true))
-                          .scale(
-                            begin: const Offset(1, 1),
-                            end: const Offset(1.08, 1.08),
-                            duration: 1400.ms,
+          padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
+          child: Column(
+            children: [
+              _ApplyField(
+                controller: controller.githubUrlController,
+                label: 'رابط GitHub',
+                hint: 'https://github.com/username',
+                icon: Icons.code_rounded,
+              ),
+              _ApplyField(
+                controller: controller.portfolioUrlController,
+                label: 'رابط البورتفوليو',
+                hint: 'https://portfolio.example.com',
+                icon: Icons.work_history_rounded,
+              ),
+              _ApplyField(
+                controller: controller.applyMessageController,
+                label: 'رسالة التقديم',
+                hint: 'اكتب رسالة قصيرة مناسبة',
+                icon: Icons.message_rounded,
+                maxLines: 4,
+              ),
+              const SizedBox(height: 18),
+              Obx(
+                () => ElevatedButton.icon(
+                  onPressed: controller.isApplying.value
+                      ? null
+                      : () => controller.applyToTask(taskId),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryBlue,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                  ),
+                  icon: controller.isApplying.value
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
                           ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'طلب التقديم',
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          color: AppColors.primaryBlue,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'أدخل روابطك ورسالة مختصرة لإرسال الطلب للشركة.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
-                          height: 1.5,
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-
-                      _ApplyField(
-                        controller: controller.githubUrlController,
-                        label: 'رابط GitHub',
-                        hint: 'https://github.com/username',
-                        icon: Icons.code_rounded,
-                      ),
-
-                      _ApplyField(
-                        controller: controller.portfolioUrlController,
-                        label: 'رابط البورتفوليو',
-                        hint: 'https://portfolio.example.com',
-                        icon: Icons.work_history_rounded,
-                      ),
-
-                      _ApplyField(
-                        controller: controller.applyMessageController,
-                        label: 'رسالة التقديم',
-                        hint: 'اكتب رسالة قصيرة مناسبة',
-                        icon: Icons.message_rounded,
-                        maxLines: 4,
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      Obx(
-                        () => ElevatedButton.icon(
-                          onPressed: controller.isApplying.value
-                              ? null
-                              : () => controller.applyToTask(taskId),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryBlue,
-                            foregroundColor: Colors.white,
-                            minimumSize: const Size(double.infinity, 56),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                          ),
-                          icon: controller.isApplying.value
-                              ? const SizedBox(
-                                  width: 18,
-                                  height: 18,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Icon(Icons.send_rounded),
-                          label: Text(
-                            controller.isApplying.value
-                                ? 'جار إرسال الطلب...'
-                                : 'إرسال طلب التقديم',
-                            style: const TextStyle(
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                  .animate()
-                  .fadeIn(duration: 350.ms)
-                  .slideY(begin: .20, curve: Curves.easeOutCubic),
+                        )
+                      : const Icon(Icons.send_rounded),
+                  label: Text(
+                    controller.isApplying.value
+                        ? 'جار إرسال الطلب...'
+                        : 'إرسال طلب التقديم',
+                    style: const TextStyle(
+                      fontFamily: 'Cairo',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ).animate().fadeIn(duration: 350.ms).slideY(begin: .20),
         ),
       ),
     );

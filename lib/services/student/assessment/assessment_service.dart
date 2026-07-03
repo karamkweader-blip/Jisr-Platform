@@ -19,6 +19,26 @@ class NextQuestionResult {
 class AssessmentService {
   final AuthService _authService = AuthService();
 
+  bool _isTrue(dynamic value) {
+    final text = value?.toString().toLowerCase().trim();
+    return value == true || text == '1' || text == 'true';
+  }
+
+  bool _messageMeansSkillCompleted(String message) {
+    final lower = message.toLowerCase();
+
+    return lower.contains('already completed') ||
+        lower.contains('skill completed') ||
+        lower.contains('completedat') ||
+        lower.contains('completed') ||
+        message.contains('اكتمل') ||
+        message.contains('اكتملت') ||
+        message.contains('مكتمل') ||
+        message.contains('انتهت') ||
+        message.contains('انتهى') ||
+        message.contains('خلصت');
+  }
+
   Future<Map<String, String>> _headers() async {
     final token = (await _authService.getToken())?.trim();
 
@@ -77,23 +97,46 @@ class AssessmentService {
     final data = response.body.isNotEmpty ? jsonDecode(response.body) : {};
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      if (data['success'] == true &&
-          data['data'] == null &&
-          data['message'].toString().toLowerCase().contains(
-            'already completed',
-          )) {
+      final message = data['message']?.toString() ?? '';
+      final responseData = data['data'];
+
+      final hasCompletedFlag =
+          _isTrue(data['isSkillCompleted']) ||
+          _isTrue(data['is_skill_completed']) ||
+          _isTrue(data['skill_completed']) ||
+          (responseData is Map<String, dynamic> &&
+              (_isTrue(responseData['isSkillCompleted']) ||
+                  _isTrue(responseData['is_skill_completed']) ||
+                  _isTrue(responseData['skill_completed'])));
+
+      if (responseData is Map<String, dynamic> &&
+          responseData['attempt_id'] != null &&
+          responseData['question_id'] != null &&
+          responseData['question_text'] != null) {
         return NextQuestionResult(
-          question: null,
-          isSkillCompleted: true,
-          message: data['message'] ?? '',
+          question: AssessmentQuestion.fromJson(responseData),
+          isSkillCompleted: false,
+          message: message,
         );
       }
 
-      if (data['data'] is Map<String, dynamic>) {
+      if (hasCompletedFlag ||
+          (data['success'] == true &&
+              (responseData == null || responseData == false) &&
+              _messageMeansSkillCompleted(message))) {
         return NextQuestionResult(
-          question: AssessmentQuestion.fromJson(data['data']),
-          isSkillCompleted: false,
-          message: data['message'] ?? '',
+          question: null,
+          isSkillCompleted: true,
+          message: message,
+        );
+      }
+
+      if (responseData is Map<String, dynamic> &&
+          _messageMeansSkillCompleted(message)) {
+        return NextQuestionResult(
+          question: null,
+          isSkillCompleted: true,
+          message: message,
         );
       }
     }
@@ -144,5 +187,105 @@ class AssessmentService {
     }
 
     throw Exception(data['message'] ?? 'فشل إنهاء جلسة الاختبار');
+  }
+
+  Future<AssessmentSummaryResponse> getAssessmentSummary({
+    required int assessmentSessionId,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+        ApiLinks.assessmentSummary(assessmentSessionId: assessmentSessionId),
+      ),
+      headers: await _headers(),
+    );
+
+    final data = response.body.isNotEmpty ? jsonDecode(response.body) : {};
+
+    if (response.statusCode == 200) {
+      return AssessmentSummaryResponse.fromJson(data);
+    }
+
+    throw Exception(data['message'] ?? 'فشل جلب ملخص الاختبار');
+  }
+
+  Future<AssessmentSkillGapsResponse> getSkillGaps({
+    required int assessmentSessionId,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+        ApiLinks.assessmentSkillGaps(assessmentSessionId: assessmentSessionId),
+      ),
+      headers: await _headers(),
+    );
+
+    final data = response.body.isNotEmpty ? jsonDecode(response.body) : {};
+
+    if (response.statusCode == 200) {
+      return AssessmentSkillGapsResponse.fromJson(data);
+    }
+
+    throw Exception(data['message'] ?? 'فشل حساب فجوات المهارات');
+  }
+
+  Future<AssessmentLearningPathResponse> getLearningPath({
+    required int assessmentSessionId,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+        ApiLinks.assessmentLearningPath(
+          assessmentSessionId: assessmentSessionId,
+        ),
+      ),
+      headers: await _headers(),
+    );
+
+    final data = response.body.isNotEmpty ? jsonDecode(response.body) : {};
+
+    if (response.statusCode == 200) {
+      return AssessmentLearningPathResponse.fromJson(data);
+    }
+
+    throw Exception(data['message'] ?? 'فشل جلب خطة التعلم');
+  }
+
+  Future<AssessmentAiLearningPlanResponse> generateAiLearningPlan({
+    required int assessmentSessionId,
+    required int weeks,
+    required int hoursPerWeek,
+  }) async {
+    final response = await http.post(
+      Uri.parse(
+        ApiLinks.aiLearningPlan(assessmentSessionId: assessmentSessionId),
+      ),
+      headers: await _headers(),
+      body: jsonEncode({'weeks': weeks, 'hours_per_week': hoursPerWeek}),
+    );
+
+    final data = response.body.isNotEmpty ? jsonDecode(response.body) : {};
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return AssessmentAiLearningPlanResponse.fromJson(data);
+    }
+
+    throw Exception(data['message'] ?? 'فشل إنشاء خطة التعلم الذكية');
+  }
+
+  Future<AssessmentAiLearningPlanResponse> getLatestAiLearningPlan({
+    required int assessmentSessionId,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+        ApiLinks.latestAiLearningPlan(assessmentSessionId: assessmentSessionId),
+      ),
+      headers: await _headers(),
+    );
+
+    final data = response.body.isNotEmpty ? jsonDecode(response.body) : {};
+
+    if (response.statusCode == 200) {
+      return AssessmentAiLearningPlanResponse.fromJson(data);
+    }
+
+    throw Exception(data['message'] ?? 'فشل جلب آخر خطة تعلم');
   }
 }
