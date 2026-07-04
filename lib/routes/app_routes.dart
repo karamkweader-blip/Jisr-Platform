@@ -29,6 +29,10 @@ abstract class Routes {
   //فرص العمل
   static const studentOpportunities = '/student-opportunities';
   static const studentOpportunityDetails = '/student-opportunity-details';
+  static const studentOpportunityApplications =
+      '/student-opportunity-applications';
+  static const studentOpportunityApplicationDetails =
+      '/student-opportunity-application-details';
   //مهمامي المسندة
   static const studentAssignedTasks = '/student-assigned-tasks';
   //تاسكاتي

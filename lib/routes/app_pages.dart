@@ -54,6 +54,9 @@ import 'package:jisr_platform/views/student/tasks/student_task_details_view.dart
 import 'package:jisr_platform/bindings/student/opportunities/student_opportunity_binding.dart';
 import 'package:jisr_platform/views/student/opportunities/student_opportunities_view.dart';
 import 'package:jisr_platform/views/student/opportunities/student_opportunity_details_view.dart';
+import 'package:jisr_platform/bindings/student/opportunity_applications/student_opportunity_application_binding.dart';
+import 'package:jisr_platform/views/student/opportunity_applications/student_opportunity_applications_view.dart';
+import 'package:jisr_platform/views/student/opportunity_applications/student_opportunity_application_details_view.dart';
 import 'package:jisr_platform/bindings/student/assigned_tasks/student_assigned_task_binding.dart';
 import 'package:jisr_platform/views/student/assigned_tasks/student_assigned_tasks_view.dart';
 import 'package:jisr_platform/bindings/student/task_applications/student_task_application_binding.dart';
@@ -175,6 +178,16 @@ class AppPages {
       name: Routes.studentOpportunityDetails,
       page: () => const StudentOpportunityDetailsView(),
       binding: StudentOpportunityBinding(),
+    ),
+    GetPage(
+      name: Routes.studentOpportunityApplications,
+      page: () => const StudentOpportunityApplicationsView(),
+      binding: StudentOpportunityApplicationBinding(),
+    ),
+    GetPage(
+      name: Routes.studentOpportunityApplicationDetails,
+      page: () => const StudentOpportunityApplicationDetailsView(),
+      binding: StudentOpportunityApplicationBinding(),
     ),
     GetPage(
       name: Routes.studentAssignedTasks,

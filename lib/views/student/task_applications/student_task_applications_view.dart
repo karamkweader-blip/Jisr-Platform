@@ -33,6 +33,16 @@ class StudentTaskApplicationsView
             ),
           ),
           actions: [
+            IconButton(
+              tooltip: 'تقديمات فرص العمل',
+              onPressed: () {
+                Get.toNamed(Routes.studentOpportunityApplications);
+              },
+              icon: const Icon(
+                Icons.work_history_rounded,
+                color: AppColors.primaryBlue,
+              ),
+            ),
             Obx(
               () => IconButton(
                 onPressed: controller.isLoading.value
@@ -67,6 +77,10 @@ class StudentTaskApplicationsView
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const _ApplicationsHeroInteractive(),
+
+                const SizedBox(height: 16),
+
+                const _OpportunityApplicationsEntryCard(),
 
                 const SizedBox(height: 24),
 
@@ -233,6 +247,101 @@ class _ApplicationsHeroInteractive
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _OpportunityApplicationsEntryCard extends StatelessWidget {
+  const _OpportunityApplicationsEntryCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Get.toNamed(Routes.studentOpportunityApplications);
+      },
+      borderRadius: BorderRadius.circular(26),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(26),
+          border: Border.all(
+            color: AppColors.actionYellow.withOpacity(.35),
+            width: 1.2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.actionYellow.withOpacity(.12),
+              blurRadius: 18,
+              offset: const Offset(0, 9),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: const LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [AppColors.actionYellow, Color(0xFFFFD66B)],
+                ),
+              ),
+              child: const Icon(
+                Icons.work_history_rounded,
+                color: AppColors.primaryBlue,
+                size: 28,
+              ),
+            ),
+            const SizedBox(width: 14),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'تقديمات فرص العمل',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.primaryBlue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'اعرض طلبات الوظائف والتدريبات، تابع حالتها، أو اسحب الطلب.',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.textGrey,
+                      fontSize: 12,
+                      height: 1.45,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlue.withOpacity(.08),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: const Icon(
+                Icons.arrow_back_rounded,
+                color: AppColors.primaryBlue,
+                size: 20,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
