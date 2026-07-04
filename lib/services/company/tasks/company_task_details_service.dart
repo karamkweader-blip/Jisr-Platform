@@ -108,9 +108,18 @@ class CompanyTaskDetailsService {
   }
 
   Future<CompanyTaskDetailsModel> updateTask({
-    required int taskId,
-    required CreateCompanyTaskRequest request,
-  }) async {
+  required int taskId,
+  required UpdateCompanyTaskRequest request,
+}) async {
+  if (taskId <= 0) {
+    throw Exception('معرف المهمة غير صالح');
+  }
+
+  if (request.isEmpty) {
+    throw Exception('لم يتم إجراء أي تعديل على المهمة');
+  }
+
+  try {
     final response = await http
         .put(
           Uri.parse(ApiLinks.updateCompanyTask(taskId)),
@@ -125,20 +134,35 @@ class CompanyTaskDetailsService {
     final decodedBody = _decodeBody(response.body);
 
     if (_isSuccess(response.statusCode)) {
-      return CompanyTaskDetailsModel.fromJson(
-        decodedBody['data'] as Map<String, dynamic>? ?? {},
-      );
+      final data = decodedBody['data'];
+
+      if (data is! Map<String, dynamic>) {
+        throw Exception('صيغة بيانات المهمة المعدلة غير صحيحة');
+      }
+
+      return CompanyTaskDetailsModel.fromJson(data);
     }
 
     throw Exception(
-      decodedBody['message'] as String? ?? 'تعذر تعديل المهمة',
+      decodedBody['message']?.toString() ?? 'تعذر تعديل المهمة',
+    );
+  } on FormatException {
+    throw Exception('تعذر قراءة استجابة الخادم');
+  } catch (e) {
+    throw Exception(
+      e.toString().replaceFirst('Exception: ', ''),
     );
   }
+}
+  Future<CompanyTaskDetailsModel> cancelTask(int taskId) async {
+  if (taskId <= 0) {
+    throw Exception('معرف المهمة غير صالح');
+  }
 
-  Future<void> deleteTask(int taskId) async {
+  try {
     final response = await http
-        .delete(
-          Uri.parse(ApiLinks.deleteCompanyTask(taskId)),
+        .patch(
+          Uri.parse(ApiLinks.cancelCompanyTask(taskId)),
           headers: await _headers(),
         )
         .timeout(
@@ -148,14 +172,28 @@ class CompanyTaskDetailsService {
 
     final decodedBody = _decodeBody(response.body);
 
-    if (_isSuccess(response.statusCode)) {
-      return;
+    if (_isSuccess(response.statusCode) &&
+        decodedBody['status'] != false) {
+      final data = decodedBody['data'];
+
+      if (data is! Map<String, dynamic>) {
+        throw Exception('صيغة بيانات المهمة الملغاة غير صحيحة');
+      }
+
+      return CompanyTaskDetailsModel.fromJson(data);
     }
 
     throw Exception(
-      decodedBody['message'] as String? ?? 'تعذر حذف المهمة',
+      decodedBody['message']?.toString() ?? 'تعذر إلغاء المهمة',
+    );
+  } on FormatException {
+    throw Exception('تعذر قراءة استجابة الخادم');
+  } catch (e) {
+    throw Exception(
+      e.toString().replaceFirst('Exception: ', ''),
     );
   }
+}
 
   bool _isSuccess(int statusCode) {
     return statusCode >= 200 && statusCode < 300;
