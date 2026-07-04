@@ -11,21 +11,13 @@ class StudentTaskProgressView extends GetView<StudentTaskProgressController> {
   void _openAddProgressSheet() {
     controller.clearProgressForm();
 
-    Get.bottomSheet(
-      const _AddProgressSheet(),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
+    Get.to(() => const _AddProgressSheet());
   }
 
   void _openFinalSubmissionSheet() {
     controller.clearFinalForm();
 
-    Get.bottomSheet(
-      const _FinalSubmissionSheet(),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
+    Get.to(() => const _FinalSubmissionSheet());
   }
 
   @override
@@ -567,7 +559,7 @@ class _EmptyProgress extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            'ابدئي بإضافة أول تحديث للتقدم في التاسك.',
+            'ابدئ بإضافة أول تحديث للتقدم في التاسك.',
             textAlign: TextAlign.center,
             style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
           ),
@@ -582,10 +574,8 @@ class _AddProgressSheet extends GetView<StudentTaskProgressController> {
 
   @override
   Widget build(BuildContext context) {
-    return _BottomSheetWrapper(
+    return _ProgressFormPageWrapper(
       title: 'إضافة تحديث تقدم',
-      subtitle: 'اكتب ماذا أنجزت وأرفق الروابط أو الملفات إن وجدت.',
-      icon: Icons.trending_up_rounded,
       child: Column(
         children: [
           _SheetField(
@@ -667,10 +657,8 @@ class _FinalSubmissionSheet extends GetView<StudentTaskProgressController> {
 
   @override
   Widget build(BuildContext context) {
-    return _BottomSheetWrapper(
+    return _ProgressFormPageWrapper(
       title: 'التسليم النهائي',
-      subtitle: 'اكتبي ملاحظات التسليم، ثم أضيفي GitHub أو Demo أو ملف مضغوط.',
-      icon: Icons.cloud_upload_rounded,
       child: Column(
         children: [
           _SheetField(
@@ -716,78 +704,36 @@ class _FinalSubmissionSheet extends GetView<StudentTaskProgressController> {
   }
 }
 
-class _BottomSheetWrapper extends StatelessWidget {
+class _ProgressFormPageWrapper extends StatelessWidget {
   final String title;
-  final String subtitle;
-  final IconData icon;
   final Widget child;
 
-  const _BottomSheetWrapper({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.child,
-  });
+  const _ProgressFormPageWrapper({required this.title, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: SafeArea(
-        top: false,
-        child: Container(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * .88,
-          ),
-          padding: EdgeInsets.only(
-            right: 22,
-            left: 22,
-            top: 18,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 22,
-          ),
-          decoration: const BoxDecoration(
-            color: AppColors.background,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
-          ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Container(
-                  width: 46,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: AppColors.textGrey.withOpacity(.25),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Icon(icon, color: AppColors.actionYellow, size: 46),
-                const SizedBox(height: 10),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontFamily: 'Cairo',
-                    color: AppColors.primaryBlue,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  subtitle,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
-                    height: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 18),
-                child,
-              ],
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: AppColors.background,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: AppColors.primaryBlue),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontFamily: 'Cairo',
+              color: AppColors.primaryBlue,
+              fontWeight: FontWeight.bold,
             ),
           ),
+        ),
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
+          child: child.animate().fadeIn(duration: 350.ms).slideY(begin: .20),
         ),
       ),
     );

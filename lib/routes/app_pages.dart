@@ -51,6 +51,9 @@ import 'package:jisr_platform/views/student/portfolio/student_portfolio_details_
 import 'package:jisr_platform/bindings/student/tasks/student_task_binding.dart';
 import 'package:jisr_platform/views/student/tasks/student_tasks_view.dart';
 import 'package:jisr_platform/views/student/tasks/student_task_details_view.dart';
+import 'package:jisr_platform/bindings/student/opportunities/student_opportunity_binding.dart';
+import 'package:jisr_platform/views/student/opportunities/student_opportunities_view.dart';
+import 'package:jisr_platform/views/student/opportunities/student_opportunity_details_view.dart';
 import 'package:jisr_platform/bindings/student/assigned_tasks/student_assigned_task_binding.dart';
 import 'package:jisr_platform/views/student/assigned_tasks/student_assigned_tasks_view.dart';
 import 'package:jisr_platform/bindings/student/task_applications/student_task_application_binding.dart';
@@ -164,6 +167,16 @@ class AppPages {
       binding: StudentTaskBinding(),
     ),
     GetPage(
+      name: Routes.studentOpportunities,
+      page: () => const StudentOpportunitiesView(),
+      binding: StudentOpportunityBinding(),
+    ),
+    GetPage(
+      name: Routes.studentOpportunityDetails,
+      page: () => const StudentOpportunityDetailsView(),
+      binding: StudentOpportunityBinding(),
+    ),
+    GetPage(
       name: Routes.studentAssignedTasks,
       page: () => const StudentAssignedTasksView(),
       binding: StudentAssignedTaskBinding(),
@@ -173,8 +186,6 @@ class AppPages {
       page: () => const StudentTaskApplicationsView(),
       binding: StudentTaskApplicationBinding(),
     ),
-
-    
 
     GetPage(
       name: Routes.studentConversations,
@@ -195,52 +206,51 @@ class AppPages {
       page: () => const CompanyMainView(),
       binding: CompanyMainBinding(),
     ),
-     GetPage(
-  name: Routes.createCompanyTask,
-  page: () => const CreateCompanyTaskView(),
-  binding: CreateCompanyTaskBinding(),
-  transition: Transition.rightToLeftWithFade,
-  transitionDuration: const Duration(milliseconds: 350),
-  curve: Curves.easeInOutCubic,
-),
-GetPage(
-  name: Routes.editCompanyProfile,
-  page: () => const EditCompanyProfileView(),
-  binding: EditCompanyProfileBinding(),
-),
-GetPage(
-  name: Routes.companyTaskDetails,
-  page: () => const CompanyTaskDetailsView(),
-  binding: CompanyTaskDetailsBinding(),
-),
-GetPage(
-  name: Routes.companyTaskApplicants,
-  page: () => const CompanyTaskApplicantsView(),
-  binding: CompanyTaskApplicantsBinding(),
-),
-GetPage(
-  name: Routes.companyTaskApplicantDetails,
-  page: () => const CompanyTaskApplicantDetailsView(),
-  binding: CompanyTaskApplicantDetailsBinding(),
-),
+    GetPage(
+      name: Routes.createCompanyTask,
+      page: () => const CreateCompanyTaskView(),
+      binding: CreateCompanyTaskBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
+    ),
+    GetPage(
+      name: Routes.editCompanyProfile,
+      page: () => const EditCompanyProfileView(),
+      binding: EditCompanyProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.companyTaskDetails,
+      page: () => const CompanyTaskDetailsView(),
+      binding: CompanyTaskDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.companyTaskApplicants,
+      page: () => const CompanyTaskApplicantsView(),
+      binding: CompanyTaskApplicantsBinding(),
+    ),
+    GetPage(
+      name: Routes.companyTaskApplicantDetails,
+      page: () => const CompanyTaskApplicantDetailsView(),
+      binding: CompanyTaskApplicantDetailsBinding(),
+    ),
 
-GetPage(
-  name: Routes.companyTaskAssignments,
-  page: () => const CompanyTaskAssignmentsView(),
-  binding: CompanyTaskAssignmentsBinding(),
-),
-GetPage(
-  name: Routes.companyTaskAssignmentWorkspace,
-  page: () => const CompanyTaskAssignmentWorkspaceView(),
-  binding: CompanyTaskAssignmentWorkspaceBinding(),
-),
+    GetPage(
+      name: Routes.companyTaskAssignments,
+      page: () => const CompanyTaskAssignmentsView(),
+      binding: CompanyTaskAssignmentsBinding(),
+    ),
+    GetPage(
+      name: Routes.companyTaskAssignmentWorkspace,
+      page: () => const CompanyTaskAssignmentWorkspaceView(),
+      binding: CompanyTaskAssignmentWorkspaceBinding(),
+    ),
 
-//     GetPage(
-//       name: Routes.editCompanyProfile,
-//       page: () => const EditCompanyProfileView(),
-//       binding: EditCompanyProfileBinding(),
-//     ),
-
+    //     GetPage(
+    //       name: Routes.editCompanyProfile,
+    //       page: () => const EditCompanyProfileView(),
+    //       binding: EditCompanyProfileBinding(),
+    //     ),
     GetPage(
       name: Routes.studentTaskProgress,
       page: () => const StudentTaskProgressView(),

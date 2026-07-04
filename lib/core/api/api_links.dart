@@ -33,6 +33,20 @@ class ApiLinks {
       '$baseUrl/assessments/$assessmentSessionId/complete';
   static const String studentProfile = '$baseUrl/student/profile';
   static const String editStudentProfile = '$baseUrl/student/profile/edit';
+
+  static String assessmentSummary({required int assessmentSessionId}) =>
+      '$baseUrl/assessments/$assessmentSessionId/summary';
+
+  static String assessmentSkillGaps({required int assessmentSessionId}) =>
+      '$baseUrl/assessments/$assessmentSessionId/skill-gaps';
+
+  static String assessmentLearningPath({required int assessmentSessionId}) =>
+      '$baseUrl/assessments/$assessmentSessionId/learning-path';
+  static String aiLearningPlan({required int assessmentSessionId}) =>
+      '$baseUrl/assessments/$assessmentSessionId/ai-learning-plan';
+
+  static String latestAiLearningPlan({required int assessmentSessionId}) =>
+      '$baseUrl/assessments/$assessmentSessionId/ai-learning-plan/latest';
   //بروتفوليم
   static const String portfolioProjects = '$baseUrl/student/portfolio-projects';
 
@@ -52,6 +66,18 @@ class ApiLinks {
   static String taskDetails(int taskId) => '$baseUrl/student/tasks/$taskId';
   static String applyToTask(int taskId) =>
       '$baseUrl/student/tasks/$taskId/apply';
+  // opportunities
+  static const String studentRecommendedOpportunities =
+      '$baseUrl/student/opportunities/recommended';
+
+  static const String studentExploreOpportunities =
+      '$baseUrl/student/opportunities/explore';
+
+  static String studentOpportunityDetails(int opportunityId) =>
+      '$baseUrl/student/opportunities/$opportunityId';
+
+  static String applyToStudentOpportunity(int opportunityId) =>
+      '$baseUrl/student/opportunities/$opportunityId/apply';
   //مهامي المسندة
   // assigned tasks
   static const String assignedTasksMock = '';
@@ -91,7 +117,7 @@ class ApiLinks {
 
   static String taskAssignmentSubmission(int assignmentId) =>
       '$baseUrl/student/task-assignments/$assignmentId/submission';
-  
+
   //////company///////////////////////////////////////
   ////////////////////////////////////////////////////
 static const String companyHome = '$baseUrl/company/home';

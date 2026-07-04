@@ -5,6 +5,7 @@ import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
 import 'package:jisr_platform/controllers/student/home/home_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_app_menu.dart';
+import 'package:jisr_platform/core/widgets/company/jisr_animated_logo.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 
@@ -36,6 +37,12 @@ class HomeView extends GetView<HomeController> {
             onLogout: authActionsController.logout,
             onLogoutAllSessions: authActionsController.logoutAllSessions,
           ),
+          actions: const [
+            Padding(
+              padding: EdgeInsetsDirectional.only(end: 12),
+              child: Center(child: JisrAnimatedLogo(size: 38)),
+            ),
+          ],
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -104,6 +111,17 @@ class HomeView extends GetView<HomeController> {
                         .slideY(begin: .25, curve: Curves.easeOutCubic)
                         .scale(begin: const Offset(.95, .95)),
 
+                    _HomeFeatureCard(
+                          icon: Icons.work_outline_rounded,
+                          title: 'فرص العمل',
+                          subtitle: 'وظائف وتدريبات مناسبة',
+                          isEnabled: true,
+                          onTap: () => Get.toNamed(Routes.studentOpportunities),
+                        )
+                        .animate()
+                        .fadeIn(delay: 320.ms, duration: 520.ms)
+                        .slideY(begin: .25, curve: Curves.easeOutCubic)
+                        .scale(begin: const Offset(.95, .95)),
                     _HomeFeatureCard(
                           icon: Icons.assignment_ind_rounded,
                           title: 'مهامي المسندة',
@@ -225,25 +243,6 @@ class _WelcomeCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Image.asset(
-                'assets/images/logo.png',
-                height: 64,
-                errorBuilder: (_, __, ___) {
-                  return const Icon(
-                    Icons.auto_awesome,
-                    color: AppColors.actionYellow,
-                    size: 48,
-                  );
-                },
-              )
-              .animate(onPlay: (c) => c.repeat(reverse: true))
-              .scale(
-                begin: const Offset(1, 1),
-                end: const Offset(1.035, 1.035),
-                duration: 1800.ms,
-              )
-              .shimmer(duration: 2200.ms, color: Colors.white.withOpacity(.24)),
-          const SizedBox(height: 18),
           Text(
             title,
             textAlign: TextAlign.center,

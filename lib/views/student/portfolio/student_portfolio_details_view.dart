@@ -142,11 +142,7 @@ class StudentPortfolioDetailsView extends GetView<StudentPortfolioController> {
   }
 
   void _openEditSheet(BuildContext context) {
-    Get.bottomSheet(
-      const _EditProjectSheet(),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
+    Get.to(() => const _EditProjectSheet());
   }
 
   void _confirmDelete(BuildContext context) {
@@ -408,107 +404,89 @@ class _EditProjectSheet extends GetView<StudentPortfolioController> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Container(
-        padding: EdgeInsets.only(
-          right: 22,
-          left: 22,
-          top: 18,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 22,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: AppColors.background,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: AppColors.primaryBlue),
+          title: const Text(
+            'تعديل المشروع',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              color: AppColors.primaryBlue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
-        decoration: const BoxDecoration(
-          color: AppColors.background,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
-        ),
-        child: SingleChildScrollView(
-          child:
-              Column(
-                    children: [
-                      Container(
-                        width: 46,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: AppColors.textGrey.withOpacity(.25),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      const Text(
-                        'تعديل المشروع',
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          color: AppColors.primaryBlue,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      _SheetField(
-                        controller: controller.titleController,
-                        label: 'عنوان المشروع',
-                        icon: Icons.title_rounded,
-                      ),
-                      _SheetField(
-                        controller: controller.descriptionController,
-                        label: 'وصف المشروع',
-                        icon: Icons.description_rounded,
-                        maxLines: 3,
-                      ),
-                      _SheetField(
-                        controller: controller.projectUrlController,
-                        label: 'رابط المشروع',
-                        icon: Icons.link_rounded,
-                      ),
-                      _DatePickerField(
-                        controller: controller.completionDateController,
-                        label: 'تاريخ الإكمال',
-                        icon: Icons.calendar_month_rounded,
-                      ),
-                      _SheetField(
-                        controller: controller.gradeController,
-                        label: 'الدرجة',
-                        icon: Icons.star_rounded,
-                        keyboardType: TextInputType.number,
-                      ),
-                      const SizedBox(height: 12),
-                      Obx(
-                        () => ElevatedButton.icon(
-                          onPressed: controller.isSaving.value
-                              ? null
-                              : controller.saveProject,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryBlue,
-                            foregroundColor: Colors.white,
-                            minimumSize: const Size(double.infinity, 54),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22),
-                            ),
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
+          child: Column(
+            children: [
+              _SheetField(
+                controller: controller.titleController,
+                label: 'عنوان المشروع',
+                icon: Icons.title_rounded,
+              ),
+              _SheetField(
+                controller: controller.descriptionController,
+                label: 'وصف المشروع',
+                icon: Icons.description_rounded,
+                maxLines: 3,
+              ),
+              _SheetField(
+                controller: controller.projectUrlController,
+                label: 'رابط المشروع',
+                icon: Icons.link_rounded,
+              ),
+              _DatePickerField(
+                controller: controller.completionDateController,
+                label: 'تاريخ الإكمال',
+                icon: Icons.calendar_month_rounded,
+              ),
+              _SheetField(
+                controller: controller.gradeController,
+                label: 'الدرجة',
+                icon: Icons.star_rounded,
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 18),
+              Obx(
+                () => ElevatedButton.icon(
+                  onPressed: controller.isSaving.value
+                      ? null
+                      : controller.saveProject,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryBlue,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 54),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                  ),
+                  icon: controller.isSaving.value
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
                           ),
-                          icon: controller.isSaving.value
-                              ? const SizedBox(
-                                  width: 18,
-                                  height: 18,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Icon(Icons.save_rounded),
-                          label: Text(
-                            controller.isSaving.value
-                                ? 'جار الحفظ...'
-                                : 'حفظ التعديل',
-                            style: const TextStyle(
-                              fontFamily: 'Cairo',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                  .animate()
-                  .fadeIn(duration: 350.ms)
-                  .slideY(begin: .20, curve: Curves.easeOutCubic),
+                        )
+                      : const Icon(Icons.save_rounded),
+                  label: Text(
+                    controller.isSaving.value ? 'جار الحفظ...' : 'حفظ التعديل',
+                    style: const TextStyle(
+                      fontFamily: 'Cairo',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ).animate().fadeIn(duration: 350.ms).slideY(begin: .20),
         ),
       ),
     );
