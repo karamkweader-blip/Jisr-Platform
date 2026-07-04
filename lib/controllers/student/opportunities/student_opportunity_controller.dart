@@ -9,6 +9,7 @@ class StudentOpportunityController extends GetxController
   final StudentOpportunityService _service = StudentOpportunityService();
 
   late final TabController tabController;
+  final TextEditingController coverLetterController = TextEditingController();
 
   final RxBool isLoadingRecommended = false.obs;
   final RxBool isLoadingExplore = false.obs;
@@ -91,7 +92,7 @@ class StudentOpportunityController extends GetxController
     }
   }
 
-  Future<void> applyToOpportunity(int opportunityId) async {
+  Future<bool> applyToOpportunity(int opportunityId) async {
     final opportunity = selectedOpportunity.value;
 
     if (opportunity?.alreadyApplied == true) {
@@ -100,7 +101,7 @@ class StudentOpportunityController extends GetxController
         message: 'يوجد طلب تقديم سابق لهذه الفرصة',
         type: JisrSnackbarType.warning,
       );
-      return;
+      return false;
     }
 
     if (opportunity != null && !opportunity.canApply) {
@@ -109,13 +110,22 @@ class StudentOpportunityController extends GetxController
         message: opportunity.cannotApplyReason ?? 'هذه الفرصة غير متاحة للتقديم',
         type: JisrSnackbarType.warning,
       );
-      return;
+      return false;
     }
 
     try {
       isApplying.value = true;
 
-      final response = await _service.applyToOpportunity(opportunityId);
+      final coverLetter = coverLetterController.text.trim().isEmpty
+          ? 'I am interested in this opportunity'
+          : coverLetterController.text.trim();
+
+      final response = await _service.applyToOpportunity(
+        opportunityId,
+        coverLetter: coverLetter,
+      );
+
+      coverLetterController.clear();
 
       await fetchOpportunityDetails(opportunityId);
       await refreshOpportunities();
@@ -127,12 +137,14 @@ class StudentOpportunityController extends GetxController
             : response.message,
         type: JisrSnackbarType.success,
       );
+      return true;
     } catch (e) {
       JisrSnackbar.show(
         title: 'فشل التقديم',
         message: e.toString().replaceFirst('Exception: ', ''),
         type: JisrSnackbarType.error,
       );
+      return false;
     } finally {
       isApplying.value = false;
     }
@@ -200,6 +212,7 @@ class StudentOpportunityController extends GetxController
   @override
   void onClose() {
     tabController.dispose();
+    coverLetterController.dispose();
     super.onClose();
   }
 }

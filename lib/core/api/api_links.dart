@@ -1,5 +1,5 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.50.4:8001/api';
+  static const String baseUrl = 'http://192.168.137.205:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -78,6 +78,16 @@ class ApiLinks {
 
   static String applyToStudentOpportunity(int opportunityId) =>
       '$baseUrl/student/opportunities/$opportunityId/apply';
+
+  // opportunity applications
+  static const String studentOpportunityApplications =
+      '$baseUrl/student/applications';
+
+  static String studentOpportunityApplicationDetails(int applicationId) =>
+      '$baseUrl/student/applications/$applicationId';
+
+  static String withdrawStudentOpportunityApplication(int applicationId) =>
+      '$baseUrl/student/applications/$applicationId/withdraw';
   //مهامي المسندة
   // assigned tasks
   static const String assignedTasksMock = '';
