@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_links.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
@@ -10,6 +9,13 @@ class CompanyTaskService {
 
   CompanyTaskService(this._authService);
 
+static const Set<String> _allowedTaskStatuses = {
+  'draft',
+  'published',
+  'in_progress',
+  'closed',
+  'cancelled',
+};
   Future<Map<String, String>> _headers() async {
     final token = await _authService.getToken();
 
@@ -24,11 +30,27 @@ class CompanyTaskService {
     };
   }
 
-  Future<List<CompanyTaskModel>> getCompanyTasks() async {
+  Future<List<CompanyTaskModel>> getCompanyTasks({
+  String? status,
+}) async {
+  final normalizedStatus = status?.trim();
+
+  if (normalizedStatus != null &&
+      normalizedStatus.isNotEmpty &&
+      !_allowedTaskStatuses.contains(normalizedStatus)) {
+    throw Exception('حالة المهمة المحددة غير صالحة');
+  }
+
+  try {
     final response = await http
-        .get(
-          Uri.parse(ApiLinks.companyTasks),
+        .post(
+          Uri.parse(ApiLinks.companyTasksIndex),
           headers: await _headers(),
+          body: normalizedStatus == null || normalizedStatus.isEmpty
+              ? null
+              : jsonEncode({
+                  'status': normalizedStatus,
+                }),
         )
         .timeout(
           const Duration(seconds: 15),
@@ -36,25 +58,41 @@ class CompanyTaskService {
         );
 
     final decodedBody = response.body.isNotEmpty
-        ? jsonDecode(response.body) as Map<String, dynamic>
+        ? jsonDecode(response.body)
         : <String, dynamic>{};
 
+    if (decodedBody is! Map<String, dynamic>) {
+      throw Exception('استجابة قائمة المهام غير صالحة');
+    }
+
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      final data = decodedBody['data'] as List? ?? [];
+      final data = decodedBody['data'];
+
+      if (data is! List) {
+        return <CompanyTaskModel>[];
+      }
 
       return data
+          .whereType<Map>()
           .map(
             (item) => CompanyTaskModel.fromJson(
-              item as Map<String, dynamic>? ?? {},
+              Map<String, dynamic>.from(item),
             ),
           )
           .toList();
     }
 
     throw Exception(
-      decodedBody['message'] as String? ?? 'تعذر تحميل المهام',
+      decodedBody['message']?.toString() ?? 'تعذر تحميل المهام',
+    );
+  } on FormatException {
+    throw Exception('تعذر قراءة استجابة الخادم');
+  } catch (e) {
+    throw Exception(
+      e.toString().replaceFirst('Exception: ', ''),
     );
   }
+}
 
   Future<CompanyTaskModel> createTask(CreateCompanyTaskRequest request) async {
     final response = await http
@@ -77,10 +115,10 @@ class CompanyTaskService {
         decodedBody['data'] as Map<String, dynamic>? ?? {},
       );
     }
-
+   print(response.body); 
     throw Exception(
       decodedBody['message'] as String? ?? 'تعذر إنشاء المهمة',
-    );
+      );
   }
 
   Future<CompanyTaskModel> publishTask(int taskId) async {

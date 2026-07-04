@@ -110,16 +110,13 @@ class StudentOpportunityService {
   }
 
   Future<StudentOpportunityApplyResponse> applyToOpportunity(
-    int opportunityId, {
-    required String coverLetter,
-  }) async {
+    int opportunityId,
+  ) async {
     final response = await http
         .post(
           Uri.parse(ApiLinks.applyToStudentOpportunity(opportunityId)),
           headers: await _headers(),
-          body: jsonEncode({
-            'cover_letter': coverLetter.trim(),
-          }),
+          body: jsonEncode({}),
         )
         .timeout(
           const Duration(seconds: 12),
@@ -137,16 +134,6 @@ class StudentOpportunityService {
       return StudentOpportunityApplyResponse.fromJson(data);
     }
 
-    final message = data['message']?.toString() ?? '';
-
-    if (message.contains('match_score') ||
-        message.contains('Unknown column') ||
-        message.contains('SQLSTATE')) {
-      throw Exception(
-        'طلب التقديم وصل للخادم، لكن قاعدة البيانات في الباك ناقصها أعمدة match_score أو match_reasons. يجب تشغيل migration من طرف الباك.',
-      );
-    }
-
-    throw Exception(message.isEmpty ? 'فشل إرسال طلب التقديم' : message);
+    throw Exception(data['message'] ?? 'فشل إرسال طلب التقديم');
   }
 }

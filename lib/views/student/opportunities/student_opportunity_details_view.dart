@@ -366,7 +366,7 @@ class _InfoGrid extends GetView<StudentOpportunityController> {
       crossAxisCount: 2,
       crossAxisSpacing: 11,
       mainAxisSpacing: 11,
-      childAspectRatio: 1.18,
+      childAspectRatio: 1.55,
       physics: const NeverScrollableScrollPhysics(),
       children: [
         _MiniInfoCard(
@@ -759,7 +759,7 @@ class _ApplyOpportunityButton extends GetView<StudentOpportunityController> {
       () => ElevatedButton.icon(
         onPressed: disabled || controller.isApplying.value
             ? null
-            : () => _showApplySheet(context),
+            : () => controller.applyToOpportunity(opportunity.id),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryBlue,
           disabledBackgroundColor: AppColors.textGrey.withOpacity(.25),
@@ -787,143 +787,6 @@ class _ApplyOpportunityButton extends GetView<StudentOpportunityController> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> _showApplySheet(BuildContext context) async {
-    controller.coverLetterController.text =
-        controller.coverLetterController.text.trim().isEmpty
-            ? 'I am interested in this opportunity'
-            : controller.coverLetterController.text.trim();
-
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
-              decoration: const BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-              ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 44,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: AppColors.textGrey.withOpacity(.25),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    const Text(
-                      'تأكيد التقديم',
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        color: AppColors.primaryBlue,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      opportunity.title,
-                      style: const TextStyle(
-                        fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: controller.coverLetterController,
-                      minLines: 3,
-                      maxLines: 5,
-                      textDirection: TextDirection.ltr,
-                      style: const TextStyle(fontFamily: 'Cairo'),
-                      decoration: InputDecoration(
-                        labelText: 'رسالة التقديم',
-                        hintText: 'I am interested in this opportunity',
-                        labelStyle: const TextStyle(fontFamily: 'Cairo'),
-                        hintStyle: const TextStyle(
-                          fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(22),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Obx(
-                      () => ElevatedButton.icon(
-                        onPressed: controller.isApplying.value
-                            ? null
-                            : () async {
-                                final applied =
-                                    await controller.applyToOpportunity(
-                                  opportunity.id,
-                                );
-
-                                if (context.mounted && applied) {
-                                  Navigator.pop(context);
-                                }
-                              },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryBlue,
-                          disabledBackgroundColor:
-                              AppColors.textGrey.withOpacity(.25),
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size(double.infinity, 54),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(22),
-                          ),
-                        ),
-                        icon: controller.isApplying.value
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Icon(Icons.send_rounded),
-                        label: Text(
-                          controller.isApplying.value
-                              ? 'جار إرسال الطلب...'
-                              : 'إرسال طلب التقديم',
-                          style: const TextStyle(
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

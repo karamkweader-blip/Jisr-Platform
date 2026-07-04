@@ -250,7 +250,7 @@ class _EmptyFileState extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         const Text(
-          'اضغط لاختيار ملف CV',
+          'اضغطي لاختيار ملف CV',
           style: TextStyle(
             fontFamily: 'Cairo',
             color: AppColors.primaryBlue,

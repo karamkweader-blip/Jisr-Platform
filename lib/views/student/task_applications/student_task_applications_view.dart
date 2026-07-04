@@ -33,16 +33,6 @@ class StudentTaskApplicationsView
             ),
           ),
           actions: [
-            IconButton(
-              tooltip: 'تقديمات فرص العمل',
-              onPressed: () {
-                Get.toNamed(Routes.studentOpportunityApplications);
-              },
-              icon: const Icon(
-                Icons.work_history_rounded,
-                color: AppColors.primaryBlue,
-              ),
-            ),
             Obx(
               () => IconButton(
                 onPressed: controller.isLoading.value

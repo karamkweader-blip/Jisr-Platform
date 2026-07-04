@@ -3,10 +3,13 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 
 class EmptyTasksState extends StatelessWidget {
   final VoidCallback onCreatePressed;
-
+  final String title;
+  final String message;
   const EmptyTasksState({
     super.key,
     required this.onCreatePressed,
+    this.title = 'لا توجد مهام بعد',
+    this.message = 'ابدأ بإنشاء أول مهمة ليستطيع الطلاب المناسبون التقديم عليها.',
   });
 
   @override
@@ -34,8 +37,8 @@ class EmptyTasksState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          const Text(
-            'لا توجد مهام بعد',
+           Text(
+            title,
             style: TextStyle(
               color: AppColors.textDark,
               fontSize: 17,
@@ -43,8 +46,8 @@ class EmptyTasksState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'ابدأ بإنشاء أول مهمة ليستطيع الطلاب المناسبون التقديم عليها.',
+           Text(
+             message,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.textGrey,

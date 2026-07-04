@@ -219,6 +219,86 @@ class CreateCompanyTaskRequest {
   }
 }
 
+class UpdateCompanyTaskRequest {
+  final String? title;
+  final String? description;
+  final String? difficultyLevel;
+  final int? durationDays;
+  final String? deadline;
+  final int? maxApplicants;
+  final int? maxAcceptedStudents;
+  final List<String>? deliverables;
+  final List<String>? acceptanceCriteria;
+  final String? submissionType;
+  final List<SelectedTaskSkill>? skills;
+
+  const UpdateCompanyTaskRequest({
+    this.title,
+    this.description,
+    this.difficultyLevel,
+    this.durationDays,
+    this.deadline,
+    this.maxApplicants,
+    this.maxAcceptedStudents,
+    this.deliverables,
+    this.acceptanceCriteria,
+    this.submissionType,
+    this.skills,
+  });
+
+  bool get isEmpty => toJson().isEmpty;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+
+    if (title != null) {
+      data['title'] = title;
+    }
+
+    if (description != null) {
+      data['description'] = description;
+    }
+
+    if (difficultyLevel != null) {
+      data['difficulty_level'] = difficultyLevel;
+    }
+
+    if (durationDays != null) {
+      data['duration_days'] = durationDays;
+    }
+
+    if (deadline != null) {
+      data['deadline'] = deadline;
+    }
+
+    if (maxApplicants != null) {
+      data['max_applicants'] = maxApplicants;
+    }
+
+    if (maxAcceptedStudents != null) {
+      data['max_accepted_students'] = maxAcceptedStudents;
+    }
+
+    if (deliverables != null) {
+      data['deliverables'] = deliverables;
+    }
+
+    if (acceptanceCriteria != null) {
+      data['acceptance_criteria'] = acceptanceCriteria;
+    }
+
+    if (submissionType != null) {
+      data['submission_type'] = submissionType;
+    }
+
+    if (skills != null) {
+      data['skills'] = skills!.map((skill) => skill.toJson()).toList();
+    }
+
+    return data;
+  }
+}
+
 int _parseInt(
   dynamic value, {
   int fallback = 0,
