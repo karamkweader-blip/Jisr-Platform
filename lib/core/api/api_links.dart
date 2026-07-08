@@ -1,5 +1,5 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.137.205:8001/api';
+  static const String baseUrl = 'http://192.168.50.6:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -126,6 +126,27 @@ class ApiLinks {
 
   static String taskAssignmentSubmission(int assignmentId) =>
       '$baseUrl/student/task-assignments/$assignmentId/submission';
+
+  // community posts
+  static const String communityPosts = '$baseUrl/community/posts';
+
+  static String communityPostDetails(int postId) =>
+      '$baseUrl/community/posts/$postId';
+
+  static String communityPostLike(int postId) =>
+      '$baseUrl/community/posts/$postId/like';
+    
+static String communityPostComments(int postId) =>
+    '$baseUrl/community/posts/$postId/comments';
+
+static String communityCommentDetails(int commentId) =>
+    '$baseUrl/community/comments/$commentId';
+
+static String communityCommentReplies(int commentId) =>
+    '$baseUrl/community/comments/$commentId/replies';
+ // student points
+  static const String myPoints = '$baseUrl/me/points';
+  static const String myPointsHistory = '$baseUrl/me/points/history';
 
   //////company///////////////////////////////////////
   ////////////////////////////////////////////////////
