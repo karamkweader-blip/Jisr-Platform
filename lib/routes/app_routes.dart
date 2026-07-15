@@ -41,6 +41,10 @@ abstract class Routes {
   //محادثات
   static const studentConversations = '/student-conversations';
   static const studentChat = '/student-chat';
+  // بوستات مجتمع تقني
+  static const studentCommunityPosts = '/student-community-posts';
+  // نقاط الطالب
+  static const studentPoints = '/student-points';
   /////company
   static const companyMain = '/company-main';
   static const companyHome = '/company-home';

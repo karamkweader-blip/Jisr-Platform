@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/student/assessment/assessment_models.dart';
 import 'package:jisr_platform/services/student/assessment/assessment_service.dart';
+import 'package:jisr_platform/services/student/assessment/assessment_learning_plan_cache.dart';
 import 'package:jisr_platform/services/student/assessment/assessment_session_cache.dart';
 import 'package:jisr_platform/services/student/assessment/assessment_lock_service.dart';
 
 class AssessmentController extends GetxController with WidgetsBindingObserver {
   final AssessmentService _service = AssessmentService();
+  final AssessmentLearningPlanCache _learningPlanCache =
+      AssessmentLearningPlanCache();
 
   final TextEditingController answerController = TextEditingController();
   final AssessmentSessionCache _sessionCache = AssessmentSessionCache();
@@ -401,6 +404,11 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
       learningPath.assignAll(
         (results[2] as AssessmentLearningPathResponse).data,
       );
+
+      await _learningPlanCache.save(
+        assessmentSessionId: assessmentSessionId,
+        careerPath: assessmentSummary.value?.careerPath ?? '',
+      );
     } catch (e) {
       JisrSnackbar.show(
         title: 'تعذر جلب التقرير',
@@ -425,6 +433,11 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
         assessmentSessionId: assessmentSessionId,
         weeks: weeks,
         hoursPerWeek: hoursPerWeek,
+      );
+
+      await _learningPlanCache.save(
+        assessmentSessionId: assessmentSessionId,
+        careerPath: response.data.plan.careerPath,
       );
 
       return response.data;

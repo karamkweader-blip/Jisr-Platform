@@ -66,6 +66,10 @@ import 'package:jisr_platform/views/student/conversations/student_conversations_
 import 'package:jisr_platform/views/student/conversations/student_chat_view.dart';
 import 'package:jisr_platform/bindings/student/task_progress/student_task_progress_binding.dart';
 import 'package:jisr_platform/views/student/task_progress/student_task_progress_view.dart';
+import 'package:jisr_platform/bindings/student/community/community_posts_binding.dart';
+import 'package:jisr_platform/views/student/community/community_posts_view.dart';
+import 'package:jisr_platform/bindings/student/points/student_points_binding.dart';
+import 'package:jisr_platform/views/student/points/student_points_view.dart';
 
 class AppPages {
   static final pages = [
@@ -210,6 +214,27 @@ class AppPages {
       name: Routes.studentChat,
       page: () => const StudentChatView(),
       binding: StudentConversationBinding(),
+    ),
+
+    //بوست مجتمع تقني
+    GetPage(
+  name: Routes.studentCommunityPosts,
+  page: () => const CommunityPostsView(),
+  binding: CommunityPostsBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration: const Duration(milliseconds: 350),
+  curve: Curves.easeInOutCubic,
+),
+
+
+    //نقاط الطالب
+    GetPage(
+      name: Routes.studentPoints,
+      page: () => const StudentPointsView(),
+      binding: StudentPointsBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
     ),
 
     //////////////////////COMPANY//////////////////////
