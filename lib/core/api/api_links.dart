@@ -1,5 +1,5 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.137.162:8000/api';
+  static const String baseUrl = 'http://192.168.137.205:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -78,6 +78,15 @@ class ApiLinks {
 
   static String applyToStudentOpportunity(int opportunityId) =>
       '$baseUrl/student/opportunities/$opportunityId/apply';
+
+  static const String studentOpportunityApplications =
+      '$baseUrl/student/applications';
+
+  static String studentOpportunityApplicationDetails(int applicationId) =>
+      '$baseUrl/student/applications/$applicationId';
+
+  static String withdrawStudentOpportunityApplication(int applicationId) =>
+      '$baseUrl/student/applications/$applicationId/withdraw';
   //مهامي المسندة
   // assigned tasks
   static const String assignedTasksMock = '';
@@ -120,43 +129,41 @@ class ApiLinks {
 
   //////company///////////////////////////////////////
   ////////////////////////////////////////////////////
-static const String companyHome = '$baseUrl/company/home';
-static const String skills = '$baseUrl/skills';
-static const String companyProfile = '$baseUrl/company/profile';
-static const String editCompanyProfile = '$baseUrl/company/profile/edit';
+  static const String companyHome = '$baseUrl/company/home';
+  static const String skills = '$baseUrl/skills';
+  static const String companyProfile = '$baseUrl/company/profile';
+  static const String editCompanyProfile = '$baseUrl/company/profile/edit';
 
-static const String companyTasks = '$baseUrl/company/tasks';
-static const String companyTasksIndex =
-    '$baseUrl/company/tasks/index';
-static String publishCompanyTask(int taskId) =>
-    '$baseUrl/company/tasks/$taskId/publish';
-    
-// company task details
-static String companyTaskDetails(int taskId) =>
-    '$baseUrl/company/tasks/$taskId';
-    
-static String updateCompanyTask(int taskId) =>
-    '$baseUrl/company/tasks/$taskId';
-static String cancelCompanyTask(int taskId) =>
-    '$baseUrl/company/tasks/$taskId/cancel';
-//  للمتقدمين
-static String companyTaskApplications(int taskId) =>
-    '$baseUrl/company/tasks/$taskId/applications';
+  static const String companyTasks = '$baseUrl/company/tasks';
+  static const String companyTasksIndex = '$baseUrl/company/tasks/index';
+  static String publishCompanyTask(int taskId) =>
+      '$baseUrl/company/tasks/$taskId/publish';
 
-static String companyTaskApplicantDetails(int applicationId) =>
-    '$baseUrl/company/tasks/applications/student/details/$applicationId';
-    
-    static String acceptTaskApplication(int applicationId) =>
-    '$baseUrl/company/tasks/applications/accept/$applicationId';
+  // company task details
+  static String companyTaskDetails(int taskId) =>
+      '$baseUrl/company/tasks/$taskId';
 
-static String rejectTaskApplication(int applicationId) =>
-    '$baseUrl/company/tasks/applications/reject/$applicationId';
-    
- static const String companyTaskAssignments =
-    '$baseUrl/company/task-assignments';
- static String companyTaskAssignmentDetails(int assignmentId) =>
-    '$baseUrl/company/task-assignments/$assignmentId';
-    static String companyTaskAssignmentProgress(int assignmentId) =>
-    '$baseUrl/company/task-assignments/$assignmentId/progress';
+  static String updateCompanyTask(int taskId) =>
+      '$baseUrl/company/tasks/$taskId';
+  static String cancelCompanyTask(int taskId) =>
+      '$baseUrl/company/tasks/$taskId/cancel';
+  //  للمتقدمين
+  static String companyTaskApplications(int taskId) =>
+      '$baseUrl/company/tasks/$taskId/applications';
 
+  static String companyTaskApplicantDetails(int applicationId) =>
+      '$baseUrl/company/tasks/applications/student/details/$applicationId';
+
+  static String acceptTaskApplication(int applicationId) =>
+      '$baseUrl/company/tasks/applications/accept/$applicationId';
+
+  static String rejectTaskApplication(int applicationId) =>
+      '$baseUrl/company/tasks/applications/reject/$applicationId';
+
+  static const String companyTaskAssignments =
+      '$baseUrl/company/task-assignments';
+  static String companyTaskAssignmentDetails(int assignmentId) =>
+      '$baseUrl/company/task-assignments/$assignmentId';
+  static String companyTaskAssignmentProgress(int assignmentId) =>
+      '$baseUrl/company/task-assignments/$assignmentId/progress';
 }
