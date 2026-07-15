@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "613338648473",
+    "project_id": "jsor-platform",
+    "storage_bucket": "jsor-platform.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613338648473:android:57fea70fb736a0d2c4cd08",
+        "android_client_info": {
+          "package_name": "com.example.jisr_platform"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDG8xzDdrV_3Uml_Hzuf6CP3-LDxppTisI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
