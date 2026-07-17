@@ -1,12 +1,18 @@
 import 'package:get/get.dart';
 import 'package:jisr_platform/models/company/company_home_model.dart';
+import 'package:jisr_platform/models/company/tasks/company_task_assignment_model.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/company/company_home_service.dart';
+import 'package:jisr_platform/services/company/tasks/company_task_assignments_service.dart';
 
 class CompanyHomeController extends GetxController {
-  final CompanyHomeService _homeService;
+ final CompanyHomeService _homeService;
+final CompanyTaskAssignmentsService _assignmentsService;
 
-  CompanyHomeController(this._homeService);
+CompanyHomeController(
+  this._homeService,
+  this._assignmentsService,
+);
 
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
@@ -43,6 +49,13 @@ class CompanyHomeController extends GetxController {
   }
 
   Future<void> onRequiredActionPressed(CompanyRequiredAction action) async {
+//     debugPrint(
+//   'HOME REQUIRED ACTION => '
+//   'targetType: ${action.targetType}, '
+//   'targetId: ${action.targetId}, '
+//   'taskId: ${action.taskId}, '
+//   'actionLabel: ${action.actionLabel}',
+// );
     switch (action.targetType) {
       case 'task_application':
         await _openApplicantDetails(
@@ -61,12 +74,99 @@ class CompanyHomeController extends GetxController {
           taskId: action.targetId,
         );
         break;
-
+case 'task_submission':
+  await _openSubmittedTaskWorkspace(action);
+  break;
       default:
         _showUnsupportedAction();
     }
   }
+Future<void> _openSubmittedTaskWorkspace(
+  CompanyRequiredAction action,
+) async {
+  final assignment = await _findAssignmentForSubmissionAction(action);
 
+  if (assignment == null) {
+    Get.snackbar(
+      'تنبيه',
+      'تعذر تحديد مساحة العمل المرتبطة بهذا التسليم',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+    return;
+  }
+
+  await Get.toNamed(
+    Routes.companyTaskAssignmentWorkspace,
+    arguments: {
+      'assignmentId': assignment.assignmentId,
+      'studentName': assignment.student.name,
+      'studentEmail': assignment.student.email,
+      'studentProfilePictureUrl': assignment.student.profilePictureUrl,
+      'initialTab': 'submission',
+    },
+  );
+
+  await fetchCompanyHome();
+}
+
+Future<CompanyTaskAssignmentModel?> _findAssignmentForSubmissionAction(
+  CompanyRequiredAction action,
+) async {
+  final taskId = action.taskId ?? 0;
+  final studentUserId = action.studentUserId ?? 0;
+
+  if (taskId <= 0) {
+    return null;
+  }
+
+  try {
+    final assignments = await _assignmentsService.getTaskAssignments();
+
+    final submittedMatch = _firstMatchingAssignment(
+      assignments,
+      taskId: taskId,
+      studentUserId: studentUserId,
+      requireSubmitted: true,
+    );
+
+    if (submittedMatch != null) {
+      return submittedMatch;
+    }
+
+    return _firstMatchingAssignment(
+      assignments,
+      taskId: taskId,
+      studentUserId: studentUserId,
+      requireSubmitted: false,
+    );
+  } catch (_) {
+    return null;
+  }
+}
+
+CompanyTaskAssignmentModel? _firstMatchingAssignment(
+  List<CompanyTaskAssignmentModel> assignments, {
+  required int taskId,
+  required int studentUserId,
+  required bool requireSubmitted,
+}) {
+  for (final assignment in assignments) {
+    final isSameTask = assignment.task.id == taskId;
+
+    final isSameStudent =
+        studentUserId <= 0 || assignment.student.id == studentUserId;
+
+    final isSubmitted = assignment.isSubmitted || assignment.submittedAt != null;
+
+    if (isSameTask &&
+        isSameStudent &&
+        (!requireSubmitted || isSubmitted)) {
+      return assignment;
+    }
+  }
+
+  return null;
+}
   Future<void> onRecentActivityPressed(CompanyRecentActivity activity) async {
     switch (activity.targetType) {
       case 'task_applications':
@@ -139,7 +239,6 @@ class CompanyHomeController extends GetxController {
 
     await fetchCompanyHome();
   }
-
   Future<void> _openTaskDetails({
     required int taskId,
   }) async {
@@ -181,10 +280,12 @@ class CompanyHomeController extends GetxController {
         return 'عرض الطلبات';
       case 'task':
         return 'عرض المهمة';
-      case 'submission':
-        return 'مراجعة التسليم';
-      case 'conversation':
-        return 'فتح المحادثة';
+      case 'task_submission':
+      return 'مراجعة التسليم';
+
+    case 'conversation':
+      return 'فتح المحادثة';
+
       default:
         return fallbackLabel.trim().isNotEmpty ? fallbackLabel : 'عرض التفاصيل';
     }

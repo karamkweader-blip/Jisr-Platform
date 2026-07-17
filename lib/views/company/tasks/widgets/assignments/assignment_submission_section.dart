@@ -31,8 +31,12 @@ class AssignmentSubmissionSection extends StatelessWidget {
     }
 
     if (errorMessage.isNotEmpty && submission == null) {
+      if (_isMissingSubmissionMessage(errorMessage)) {
+        return const _EmptySubmissionState();
+      }
+
       return _SubmissionErrorState(
-        message: errorMessage,
+        message: _toFriendlyErrorMessage(errorMessage),
         onRetry: onRetry,
       );
     }
@@ -85,7 +89,7 @@ class AssignmentSubmissionSection extends StatelessWidget {
         if (finalSubmission.hasGithubUrl)
           _SubmissionLinkCard(
             title: 'مستودع GitHub',
-         subtitle: 'اضغط لنسخ رابط الكود المرفق',
+            subtitle: 'اضغط لنسخ رابط الكود المرفق',
             icon: Icons.code_rounded,
             onTap: () => onOpenLink(
               finalSubmission.githubUrl!,
@@ -93,22 +97,20 @@ class AssignmentSubmissionSection extends StatelessWidget {
           ),
 
         if (finalSubmission.hasGithubUrl &&
-            (finalSubmission.hasDemoUrl ||
-                finalSubmission.hasZipFile))
+            (finalSubmission.hasDemoUrl || finalSubmission.hasZipFile))
           const SizedBox(height: 10),
 
         if (finalSubmission.hasDemoUrl)
           _SubmissionLinkCard(
             title: 'العرض التجريبي',
             subtitle: 'اضغط لنسخ رابط العرض أو النسخة التجريبية',
-            icon: Icons.open_in_new_rounded,
+            icon: Icons.play_circle_outline_rounded,
             onTap: () => onOpenLink(
               finalSubmission.demoUrl!,
             ),
           ),
 
-        if (finalSubmission.hasDemoUrl &&
-            finalSubmission.hasZipFile)
+        if (finalSubmission.hasDemoUrl && finalSubmission.hasZipFile)
           const SizedBox(height: 10),
 
         if (finalSubmission.hasZipFile)
@@ -175,6 +177,60 @@ class AssignmentSubmissionSection extends StatelessWidget {
       ],
     );
   }
+
+  static bool _isMissingSubmissionMessage(String message) {
+    final normalizedMessage = message.toLowerCase();
+
+    return normalizedMessage.contains('no submission') ||
+        normalizedMessage.contains('no final submission') ||
+        normalizedMessage.contains('final submission') ||
+        normalizedMessage.contains('not found') ||
+        normalizedMessage.contains('لا يوجد') ||
+        normalizedMessage.contains('لا توجد') ||
+        normalizedMessage.contains('غير موجود') ||
+        normalizedMessage.contains('غير موجودة') ||
+        normalizedMessage.contains('لم يتم العثور');
+  }
+
+  static String _toFriendlyErrorMessage(String message) {
+    final normalizedMessage = message.toLowerCase().trim();
+
+    if (normalizedMessage.isEmpty) {
+      return 'حدث خطأ غير متوقع أثناء تحميل بيانات التسليم. يرجى المحاولة مرة أخرى.';
+    }
+
+    if (normalizedMessage.contains('socket') ||
+        normalizedMessage.contains('connection') ||
+        normalizedMessage.contains('network') ||
+        normalizedMessage.contains('failed host lookup')) {
+      return 'تعذر الاتصال بالخادم. تأكد من اتصال الإنترنت ثم حاول مرة أخرى.';
+    }
+
+    if (normalizedMessage.contains('timeout') ||
+        normalizedMessage.contains('انتهت مهلة')) {
+      return 'استغرق الاتصال وقتاً أطول من المتوقع. حاول مرة أخرى بعد لحظات.';
+    }
+
+    if (normalizedMessage.contains('unauthenticated') ||
+        normalizedMessage.contains('unauthorized') ||
+        normalizedMessage.contains('401')) {
+      return 'انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.';
+    }
+
+    if (normalizedMessage.contains('forbidden') ||
+        normalizedMessage.contains('403')) {
+      return 'لا تملك صلاحية الوصول إلى بيانات هذا التسليم.';
+    }
+
+    final arabicPart = message.split('|').first.trim();
+    final hasArabicLetters = RegExp(r'[\u0600-\u06FF]').hasMatch(arabicPart);
+
+    if (hasArabicLetters && arabicPart.length <= 120) {
+      return arabicPart;
+    }
+
+    return 'تعذر تحميل بيانات التسليم النهائي حالياً. يرجى المحاولة مرة أخرى.';
+  }
 }
 
 class _SubmissionSummaryCard extends StatelessWidget {
@@ -192,13 +248,7 @@ class _SubmissionSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.cardWhite,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.08),
-        ),
-      ),
+      decoration: _cardDecoration(),
       child: Column(
         children: [
           _SummaryRow(
@@ -294,13 +344,7 @@ class _SubmissionLinkCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.cardWhite,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: AppColors.primaryBlue.withOpacity(0.08),
-            ),
-          ),
+          decoration: _cardDecoration(radius: 18),
           child: Row(
             children: [
               Container(
@@ -336,16 +380,26 @@ class _SubmissionLinkCard extends StatelessWidget {
                         color: AppColors.textGrey,
                         fontSize: 12,
                         height: 1.4,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(
-  Icons.copy_rounded,
-  color: AppColors.primaryBlue,
-  size: 20,
-),
+              const SizedBox(width: 10),
+              Container(
+                height: 34,
+                width: 34,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.copy_rounded,
+                  color: AppColors.primaryBlue,
+                  size: 18,
+                ),
+              ),
             ],
           ),
         ),
@@ -368,26 +422,14 @@ class _StudentNotesCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.cardWhite,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.08),
-        ),
-      ),
+      decoration: _cardDecoration(),
       child: Text(
-        hasNotes
-            ? notes
-            : 'لم يضف الطالب ملاحظات مع التسليم النهائي.',
+        hasNotes ? notes : 'لم يضف الطالب ملاحظات مع التسليم النهائي.',
         style: TextStyle(
-          color: hasNotes
-              ? AppColors.textDark
-              : AppColors.textGrey,
+          color: hasNotes ? AppColors.textDark : AppColors.textGrey,
           fontSize: 13,
           height: 1.6,
-          fontWeight: hasNotes
-              ? FontWeight.w600
-              : FontWeight.w500,
+          fontWeight: hasNotes ? FontWeight.w600 : FontWeight.w500,
         ),
       ),
     );
@@ -409,13 +451,7 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.cardWhite,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.08),
-        ),
-      ),
+      decoration: _cardDecoration(radius: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -486,13 +522,7 @@ class _NoLinksState extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.cardWhite,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.08),
-        ),
-      ),
+      decoration: _cardDecoration(radius: 18),
       child: const Row(
         children: [
           Icon(
@@ -521,41 +551,69 @@ class _EmptySubmissionState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const _SubmissionStateCard(
+      icon: Icons.assignment_late_outlined,
+      title: 'لا يوجد تسليم نهائي حتى الآن',
+      message:
+          'عند إرسال الطالب للتسليم النهائي ستظهر هنا الروابط والملفات والملاحظات الخاصة به.',
+    );
+  }
+}
+
+class _SubmissionStateCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String message;
+
+  const _SubmissionStateCard({
+    required this.icon,
+    required this.title,
+    required this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.cardWhite,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.08),
-        ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 18,
+        vertical: 24,
       ),
-      child: const Column(
+      decoration: _cardDecoration(radius: 22),
+      child: Column(
         children: [
-          Icon(
-            Icons.assignment_late_outlined,
-            color: AppColors.primaryBlue,
-            size: 46,
+          Container(
+            width: 58,
+            height: 58,
+            decoration: BoxDecoration(
+              color: AppColors.primaryBlue.withOpacity(0.08),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: AppColors.primaryBlue,
+              size: 28,
+            ),
           ),
-          SizedBox(height: 14),
+          const SizedBox(height: 14),
           Text(
-            'لم يرسل الطالب التسليم النهائي بعد',
+            title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.textDark,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
-            'سيظهر هنا ملف التسليم أو الروابط والملاحظات بعد أن يرسل الطالب المهمة.',
+            message,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.textGrey,
-              fontSize: 13,
-              height: 1.5,
+              fontSize: 12.5,
+              height: 1.6,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
@@ -569,12 +627,34 @@ class _SubmissionLoadingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 40),
-      child: Center(
-        child: CircularProgressIndicator(
-          color: AppColors.primaryBlue,
-        ),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 18,
+        vertical: 36,
+      ),
+      decoration: _cardDecoration(radius: 22),
+      child: const Column(
+        children: [
+          SizedBox(
+            width: 34,
+            height: 34,
+            child: CircularProgressIndicator(
+              color: AppColors.primaryBlue,
+              strokeWidth: 3,
+            ),
+          ),
+          SizedBox(height: 14),
+          Text(
+            'جاري تحميل بيانات التسليم النهائي...',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textGrey,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -593,24 +673,30 @@ class _SubmissionErrorState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: AppColors.cardWhite,
-        borderRadius: BorderRadius.circular(22),
-      ),
+      padding: const EdgeInsets.all(18),
+      decoration: _cardDecoration(radius: 22),
       child: Column(
         children: [
-          const Icon(
-            Icons.error_outline_rounded,
-            color: AppColors.primaryBlue,
-            size: 42,
+          Container(
+            width: 58,
+            height: 58,
+            decoration: BoxDecoration(
+              color: AppColors.primaryBlue.withOpacity(0.08),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.cloud_off_rounded,
+              color: AppColors.primaryBlue,
+              size: 28,
+            ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           const Text(
-            'تعذر تحميل التسليم النهائي',
+            'تعذر تحميل بيانات التسليم',
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.textDark,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
           ),
@@ -620,18 +706,62 @@ class _SubmissionErrorState extends StatelessWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: AppColors.textGrey,
-              fontSize: 13,
-              height: 1.5,
+              fontSize: 12.5,
+              height: 1.6,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: onRetry,
-            icon: const Icon(Icons.refresh_rounded),
-            label: const Text('إعادة المحاولة'),
+          const SizedBox(height: 18),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(
+                Icons.refresh_rounded,
+                size: 18,
+              ),
+              label: const Text(
+                'إعادة تحميل البيانات',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 13,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
+}
+
+BoxDecoration _cardDecoration({
+  double radius = 20,
+}) {
+  return BoxDecoration(
+    color: AppColors.cardWhite,
+    borderRadius: BorderRadius.circular(radius),
+    border: Border.all(
+      color: AppColors.primaryBlue.withOpacity(0.08),
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: AppColors.primaryBlue.withOpacity(0.05),
+        blurRadius: 16,
+        offset: const Offset(0, 8),
+      ),
+    ],
+  );
 }
