@@ -27,28 +27,39 @@ class AssignmentWorkspaceTabs extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _WorkspaceTabItem(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _WorkspaceTabItem(
               label: 'نظرة عامة',
               icon: Icons.dashboard_outlined,
-              isSelected:
-                  selectedTab == AssignmentWorkspaceTab.overview,
+              isSelected: selectedTab == AssignmentWorkspaceTab.overview,
               onTap: () => onSelected(AssignmentWorkspaceTab.overview),
             ),
-          ),
-          const SizedBox(width: 6),
-          Expanded(
-            child: _WorkspaceTabItem(
+            const SizedBox(width: 6),
+            _WorkspaceTabItem(
               label: 'التقدم',
               icon: Icons.timeline_rounded,
-              isSelected:
-                  selectedTab == AssignmentWorkspaceTab.progress,
+              isSelected: selectedTab == AssignmentWorkspaceTab.progress,
               onTap: () => onSelected(AssignmentWorkspaceTab.progress),
             ),
-          ),
-        ],
+            const SizedBox(width: 6),
+            _WorkspaceTabItem(
+              label: 'التسليم النهائي',
+              icon: Icons.assignment_turned_in_outlined,
+              isSelected: selectedTab == AssignmentWorkspaceTab.submission,
+              onTap: () => onSelected(AssignmentWorkspaceTab.submission),
+            ),
+            const SizedBox(width: 6),
+            _WorkspaceTabItem(
+              label: 'التقييم',
+              icon: Icons.fact_check_outlined,
+              isSelected: selectedTab == AssignmentWorkspaceTab.evaluation,
+              onTap: () => onSelected(AssignmentWorkspaceTab.evaluation),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -69,41 +80,42 @@ class _WorkspaceTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: isSelected
-          ? AppColors.primaryBlue
-          : Colors.transparent,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        onTap: onTap,
+    return SizedBox(
+      width: 132,
+      child: Material(
+        color: isSelected ? AppColors.primaryBlue : Colors.transparent,
         borderRadius: BorderRadius.circular(14),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 11,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 18,
-                color: isSelected
-                    ? Colors.white
-                    : AppColors.textGrey,
-              ),
-              const SizedBox(width: 7),
-              Text(
-                label,
-                style: TextStyle(
-                  color: isSelected
-                      ? Colors.white
-                      : AppColors.textGrey,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w900,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(14),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 11,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 18,
+                  color: isSelected ? Colors.white : AppColors.textGrey,
                 ),
-              ),
-            ],
+                const SizedBox(width: 7),
+                Flexible(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : AppColors.textGrey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,10 @@
 class ApiLinks {
-  static const String baseUrl = 'http://192.168.50.6:8001/api';
+
+//karam link
+  static const String baseUrl = 'http://192.168.1.104:8000/api';
+
+  //baraa link
+ // static const String baseUrl = 'http://192.168.50.6:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -187,4 +192,10 @@ static String communityCommentReplies(int commentId) =>
       '$baseUrl/company/task-assignments/$assignmentId';
   static String companyTaskAssignmentProgress(int assignmentId) =>
       '$baseUrl/company/task-assignments/$assignmentId/progress';
+
+      static String companyTaskAssignmentSubmission(int assignmentId) =>
+    '$baseUrl/company/task-assignments/$assignmentId/submission';
+
+static String companyTaskSubmissionReview(int submissionId) =>
+    '$baseUrl/company/tasks/review/$submissionId';
 }

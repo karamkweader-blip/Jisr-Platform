@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/company/tasks/company_task_assignment_workspace_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_evaluation_section.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_overview_section.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_progress_timeline.dart';
+import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_submission_section.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_workspace_header.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_workspace_tabs.dart';
 
@@ -73,7 +75,8 @@ AssignmentWorkspaceTabs(
   },
 ),
                   const SizedBox(height: 24),
-                 if (controller.selectedTab.value == AssignmentWorkspaceTab.overview) ...[
+           if (controller.selectedTab.value ==
+    AssignmentWorkspaceTab.overview) ...[
   const Text(
     'نظرة عامة',
     style: TextStyle(
@@ -88,7 +91,8 @@ AssignmentWorkspaceTabs(
     difficultyLabel: controller.difficultyLabel,
     formatDate: controller.formatDate,
   ),
-] else ...[
+] else if (controller.selectedTab.value ==
+    AssignmentWorkspaceTab.progress) ...[
   AssignmentProgressTimeline(
     progressData: controller.assignmentProgress.value,
     isLoading: controller.isProgressLoading.value,
@@ -102,8 +106,52 @@ AssignmentWorkspaceTabs(
       );
     },
   ),
+] else if (controller.selectedTab.value ==
+    AssignmentWorkspaceTab.submission) ...[
+  AssignmentSubmissionSection(
+    submission: controller.assignmentSubmission.value,
+    isLoading: controller.isSubmissionLoading.value,
+    errorMessage: controller.submissionErrorMessage.value,
+    statusLabel: controller.submissionStatusLabel,
+    submissionTypeLabel: controller.submissionTypeLabel,
+    formatDateTime: controller.formatDateTime,
+    onOpenLink: (url) {
+      controller.copySubmissionLink(url);
+    },
+    onRetry: () {
+      controller.fetchTaskAssignmentSubmission(
+        forceRefresh: true,
+      );
+    },
+  ),
+]
+else if (controller.selectedTab.value ==
+    AssignmentWorkspaceTab.evaluation) ...[
+  AssignmentEvaluationSection(
+    submission: controller.assignmentSubmission.value,
+    review: controller.submissionReview.value,
+    isSubmissionLoading: controller.isSubmissionLoading.value,
+    isReviewLoading: controller.isReviewLoading.value,
+    isSubmittingReview: controller.isSubmittingReview.value,
+    submissionErrorMessage: controller.submissionErrorMessage.value,
+    reviewErrorMessage: controller.reviewErrorMessage.value,
+    formKey: controller.reviewFormKey,
+    qualityScoreController: controller.qualityScoreController,
+    commitmentScoreController: controller.commitmentScoreController,
+    communicationScoreController: controller.communicationScoreController,
+    feedbackController: controller.feedbackController,
+    selectedFinalDecision: controller.selectedFinalDecision.value,
+    scoreValidator: controller.scoreValidator,
+    feedbackValidator: controller.feedbackValidator,
+    onDecisionChanged: controller.setFinalDecision,
+    onSubmit: controller.submitReview,
+    onRetry: () {
+      controller.refreshWorkspace();
+    },
+    decisionLabel: controller.reviewDecisionLabel,
+    formatDateTime: controller.formatDateTime,
+  ),
 ],
-
                 ],
               ),
             );
