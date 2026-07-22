@@ -34,9 +34,9 @@ class HomeController extends GetxController {
     loadLatestLearningPlan();
   }
 
-  Future<void> loadLatestLearningPlan() async {
+  Future<void> loadLatestLearningPlan({bool silent = false}) async {
     try {
-      isLoadingLatestLearningPlan.value = true;
+      if (!silent) isLoadingLatestLearningPlan.value = true;
 
       final cached = await _learningPlanCache.read();
       latestLearningPlanCache.value = cached;
@@ -47,13 +47,30 @@ class HomeController extends GetxController {
         return;
       }
 
+      // أولاً: اعرض النسخة الكاملة المحفوظة، حتى لا تختفي المهارات المناسبة.
+      latestRoadmap.assignAll(cached.roadmap);
+
       try {
         final roadmapResponse = await _assessmentService.getLearningPath(
           assessmentSessionId: cached.assessmentSessionId,
         );
-        latestRoadmap.assignAll(roadmapResponse.data);
+
+        if (roadmapResponse.data.isNotEmpty) {
+          await _learningPlanCache.mergeRoadmap(
+            assessmentSessionId: cached.assessmentSessionId,
+            careerPath: cached.careerPath,
+            careerPathId: cached.careerPathId,
+            cvId: cached.cvId,
+            updatedItems: roadmapResponse.data,
+          );
+
+          final refreshed = await _learningPlanCache.read();
+          latestLearningPlanCache.value = refreshed ?? cached;
+          latestRoadmap.assignAll(refreshed?.roadmap ?? cached.roadmap);
+        }
       } catch (_) {
-        latestRoadmap.clear();
+        // لا نمسح الخريطة من الواجهة إذا فشل الباك أو رجع فقط المهارات الضعيفة.
+        latestRoadmap.assignAll(cached.roadmap);
       }
 
       try {
@@ -65,7 +82,7 @@ class HomeController extends GetxController {
         latestAiLearningPlan.value = null;
       }
     } finally {
-      isLoadingLatestLearningPlan.value = false;
+      if (!silent) isLoadingLatestLearningPlan.value = false;
     }
   }
 

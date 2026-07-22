@@ -40,7 +40,10 @@ class HomeView extends GetView<HomeController> {
         icon: Icons.route_rounded,
         title: 'خريطة التطوير',
         subtitle: 'خطتك للوصول إلى هدفك',
-        onTap: () => _showRoadmapSheet(context, controller),
+        onTap: () async {
+          await controller.loadLatestLearningPlan(silent: true);
+          if (context.mounted) _showRoadmapSheet(context, controller);
+        },
       ),
       _StudentHomeFeature(
         icon: Icons.assignment_ind_rounded,
@@ -560,6 +563,241 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
     );
   }
 
+  Future<void> _showRetestSkillsPicker(BuildContext context) async {
+    await controller.loadLatestLearningPlan(silent: true);
+    final cache = controller.latestLearningPlanCache.value;
+    final roadmap = controller.latestRoadmap;
+
+    if (cache == null || roadmap.isEmpty) {
+      controller.showNoLearningPlanMessage();
+      return;
+    }
+
+    final selectedSkillIds = <int>{};
+
+    final result = await showModalBottomSheet<List<int>>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                height: MediaQuery.of(context).size.height * .82,
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 22),
+                decoration: const BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 44,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: AppColors.textGrey.withOpacity(.25),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'اختر المهارات لإعادة الاختبار',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        color: AppColors.primaryBlue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    const Text(
+                      'حدد مهارة أو أكثر من خريطة التطوير، وبعدها سنبدأ اختبار تحديد مستوى جديد لهذه المهارات فقط.',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        color: AppColors.textGrey,
+                        height: 1.55,
+                        fontSize: 12.5,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Expanded(
+                      child: ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: roadmap.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 10),
+                        itemBuilder: (context, index) {
+                          final item = roadmap[index];
+                          final isSelected = selectedSkillIds.contains(item.skillId);
+
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(22),
+                            onTap: () {
+                              setState(() {
+                                if (isSelected) {
+                                  selectedSkillIds.remove(item.skillId);
+                                } else {
+                                  selectedSkillIds.add(item.skillId);
+                                }
+                              });
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 180),
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? const Color(0xFF16A34A)
+                                      : AppColors.primaryBlue.withOpacity(.07),
+                                  width: isSelected ? 1.4 : 1,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primaryBlue.withOpacity(.05),
+                                    blurRadius: 14,
+                                    offset: const Offset(0, 7),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 180),
+                                    width: 42,
+                                    height: 42,
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? const Color(0xFF16A34A)
+                                          : AppColors.primaryBlue.withOpacity(.09),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      isSelected
+                                          ? Icons.check_rounded
+                                          : Icons.school_rounded,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : AppColors.primaryBlue,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item.skillName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontFamily: 'Cairo',
+                                            color: AppColors.primaryBlue,
+                                            fontSize: 15.5,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          _levelLineText(item),
+                                          style: const TextStyle(
+                                            fontFamily: 'Cairo',
+                                            color: AppColors.textGrey,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  _PlanMiniChip(
+                                    icon: _roadmapStatusIcon(item),
+                                    text: _roadmapStatusText(item),
+                                    color: _roadmapStatusColor(item),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    ElevatedButton.icon(
+                      onPressed: selectedSkillIds.isEmpty
+                          ? null
+                          : () {
+                              Navigator.pop(
+                                context,
+                                selectedSkillIds.toList(),
+                              );
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF16A34A),
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: AppColors.textGrey.withOpacity(.25),
+                        minimumSize: const Size(double.infinity, 54),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                      ),
+                      icon: const Icon(Icons.play_arrow_rounded),
+                      label: Text(
+                        selectedSkillIds.isEmpty
+                            ? 'اختر مهارة للبدء'
+                            : 'ابدأ الاختبار (${selectedSkillIds.length})',
+                        style: const TextStyle(
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+
+    if (result == null || result.isEmpty) return;
+
+    final selectedItems = roadmap
+        .where((item) => result.contains(item.skillId))
+        .toList(growable: false);
+
+    final skillNames = <int, String>{
+      for (final item in selectedItems) item.skillId: item.skillName,
+    };
+
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+
+    await Future.delayed(const Duration(milliseconds: 160));
+
+    Get.toNamed(
+      Routes.assessment,
+      arguments: {
+        'careerPathId': cache.careerPathId,
+        'cvId': cache.cvId,
+        'skillIds': result,
+        'skillNames': skillNames,
+        'isRetest': true,
+        'forceNewSession': true,
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -701,6 +939,18 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                     ),
                   ],
                 ),
+                if (roadmap.isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  _CuteHomeRoadmapButton(
+                    text: 'إعادة تحديد المستوى',
+                    icon: Icons.psychology_alt_rounded,
+                    color: const Color(0xFF16A34A),
+                    isLoading: false,
+                    onTap: () {
+                      _showRetestSkillsPicker(context);
+                    },
+                  ),
+                ],
                 const SizedBox(height: 18),
                 if (controller.isLoadingLatestLearningPlan.value)
                   const Padding(
@@ -772,6 +1022,10 @@ class _HomeRoadmapItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isReady = item.targetLevel > 0 && item.currentLevel >= item.targetLevel;
+    final statusColor = _roadmapStatusColor(item);
+    final statusIcon = _roadmapStatusIcon(item);
+
     return Stack(
       children: [
         PositionedDirectional(
@@ -866,15 +1120,15 @@ class _HomeRoadmapItem extends StatelessWidget {
                             ),
                           ),
                           _PlanMiniChip(
-                            icon: Icons.priority_high_rounded,
-                            text: _priorityText(item.priority),
-                            color: AppColors.actionYellow,
+                            icon: statusIcon,
+                            text: _roadmapStatusText(item),
+                            color: statusColor,
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'من ${item.currentLevel.toStringAsFixed(1)} إلى ${item.targetLevel.toStringAsFixed(1)}',
+                        _levelLineText(item),
                         style: const TextStyle(
                           fontFamily: 'Cairo',
                           color: AppColors.textGrey,
@@ -883,11 +1137,17 @@ class _HomeRoadmapItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       if (item.resources.isEmpty)
-                        const Text(
-                          'لا توجد مصادر مقترحة حالياً.',
+                        Text(
+                          isReady
+                              ? 'مناسبة لسوق العمل حالياً. يمكنك إعادة اختبارها لاحقاً إذا طورت نفسك أكثر.'
+                              : item.currentLevel <= 0
+                                  ? 'لم يتم حفظ نتيجة دقيقة لهذه المهارة بعد. أعد الاختبار ليتم تحديث مستواك.'
+                                  : 'لا توجد مصادر مقترحة حالياً.',
                           style: TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textGrey,
+                            color: isReady ? const Color(0xFF16A34A) : AppColors.textGrey,
+                            height: 1.45,
+                            fontWeight: FontWeight.w700,
                           ),
                         )
                       else
@@ -1163,14 +1423,65 @@ class _HomeSmallRoundButton extends StatelessWidget {
   }
 }
 
+
+bool _isMarketReadyItem(AssessmentLearningPathItem item) {
+  return item.currentLevel > 0 &&
+      item.targetLevel > 0 &&
+      item.currentLevel >= item.targetLevel;
+}
+
+bool _isUnknownLevelItem(AssessmentLearningPathItem item) {
+  return item.currentLevel <= 0;
+}
+
+String _levelLineText(AssessmentLearningPathItem item) {
+  if (_isUnknownLevelItem(item)) {
+    if (item.targetLevel > 0) {
+      return 'المستوى الحالي غير محفوظ · الهدف ${item.targetLevel.toStringAsFixed(1)}';
+    }
+    return 'المستوى الحالي غير محفوظ';
+  }
+
+  if (item.targetLevel <= 0) {
+    return 'حاليًا ${item.currentLevel.toStringAsFixed(1)}';
+  }
+
+  return 'حاليًا ${item.currentLevel.toStringAsFixed(1)} · الهدف ${item.targetLevel.toStringAsFixed(1)}';
+}
+
+String _roadmapStatusText(AssessmentLearningPathItem item) {
+  if (_isMarketReadyItem(item)) return 'مناسبة';
+  if (_isUnknownLevelItem(item)) return 'غير محفوظة';
+  return _priorityText(item.priority);
+}
+
+Color _roadmapStatusColor(AssessmentLearningPathItem item) {
+  if (_isMarketReadyItem(item)) return const Color(0xFF16A34A);
+  if (_isUnknownLevelItem(item)) return AppColors.textGrey;
+  return AppColors.actionYellow;
+}
+
+IconData _roadmapStatusIcon(AssessmentLearningPathItem item) {
+  if (_isMarketReadyItem(item)) return Icons.check_circle_rounded;
+  if (_isUnknownLevelItem(item)) return Icons.help_outline_rounded;
+  return Icons.priority_high_rounded;
+}
+
 String _priorityText(String priority) {
-  switch (priority) {
+  switch (priority.toLowerCase().trim()) {
+    case 'market_ready':
+    case 'ready':
+    case 'suitable':
+      return 'مناسبة';
     case 'high':
       return 'عالية';
     case 'medium':
       return 'متوسطة';
     case 'low':
       return 'منخفضة';
+    case 'unknown':
+    case 'not_saved':
+      return 'غير محفوظة';
     default:
       return 'تطوير';
   }

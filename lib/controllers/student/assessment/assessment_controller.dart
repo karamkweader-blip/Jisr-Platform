@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
+import 'package:jisr_platform/controllers/student/home/home_controller.dart';
 import 'package:jisr_platform/models/student/assessment/assessment_models.dart';
 import 'package:jisr_platform/services/student/assessment/assessment_service.dart';
 import 'package:jisr_platform/services/student/assessment/assessment_learning_plan_cache.dart';
@@ -36,6 +37,7 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
 
   late final int careerPathId;
   late final int cvId;
+  late final bool isRetest;
   late final List<int> skillIds;
   late final Map<int, String> skillNames;
   final RxBool isLoadingReport = false.obs;
@@ -83,9 +85,16 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     final args = Get.arguments as Map<String, dynamic>;
 
-    careerPathId = args['careerPathId'] as int;
-    cvId = args['cvId'] as int;
-    skillIds = List<int>.from(args['skillIds'] ?? []);
+    careerPathId = int.tryParse(args['careerPathId']?.toString() ?? '') ?? 0;
+    cvId = int.tryParse(args['cvId']?.toString() ?? '') ?? 0;
+    isRetest = args['isRetest'] == true ||
+        args['forceNewSession'] == true ||
+        args['is_retest']?.toString().toLowerCase().trim() == 'true';
+    skillIds = List<int>.from(
+      (args['skillIds'] as List? ?? [])
+          .map((item) => int.tryParse(item.toString()) ?? 0)
+          .where((id) => id > 0),
+    );
     skillNames = Map<int, String>.from(args['skillNames'] ?? {});
 
     startAssessment();
@@ -153,9 +162,16 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
       isCompleted.value = false;
       isCompleting.value = false;
       isAssessmentLocked.value = true;
-      isAssessmentLocked.value = true;
 
-      final cached = await _sessionCache.read();
+      if (isRetest) {
+        await _sessionCache.clear();
+        _cachedAssessmentSessionId = null;
+        session.value = null;
+        currentSkillIndex = 0;
+        exitAttempts.value = 0;
+      }
+
+      final cached = isRetest ? null : await _sessionCache.read();
 
       if (cached != null &&
           cached.matches(
@@ -176,7 +192,7 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
 
       final response = await _service.createAssessment(
         careerPathId: careerPathId,
-        cvId: cvId,
+        cvId: cvId > 0 ? cvId : null,
         skillIds: skillIds,
       );
 
@@ -369,6 +385,29 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
       );
 
       completedAssessment.value = response.data;
+
+      // /complete قد يرجع in_progress أو needs_review، وهذا يعني أن الاختبار لم ينتهِ بعد.
+      if (!response.data.isReadyToShowFinalResults) {
+        AssessmentCompleteSkill? nextSkill;
+        for (final skill in response.data.skills) {
+          if (skill.needsMoreQuestions) {
+            nextSkill = skill;
+            break;
+          }
+        }
+
+        if (nextSkill != null) {
+          final nextIndex = skillIds.indexOf(nextSkill.skillId);
+          if (nextIndex != -1) currentSkillIndex = nextIndex;
+        }
+
+        isCompleting.value = false;
+        await _saveActiveSession();
+        await Future.delayed(const Duration(milliseconds: 350));
+        await loadNextQuestion();
+        return;
+      }
+
       isAssessmentLocked.value = false;
       await _lockService.stopLock();
       await _sessionCache.clear();
@@ -401,14 +440,30 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
 
       assessmentSummary.value = (results[0] as AssessmentSummaryResponse).data;
       skillGaps.assignAll((results[1] as AssessmentSkillGapsResponse).gaps);
-      learningPath.assignAll(
-        (results[2] as AssessmentLearningPathResponse).data,
+      final rawLearningPath = (results[2] as AssessmentLearningPathResponse).data;
+
+      final mergedSnapshot = _buildRoadmapSnapshot(
+        summary: assessmentSummary.value,
+        gaps: skillGaps,
+        learningPathItems: rawLearningPath,
       );
 
-      await _learningPlanCache.save(
+      learningPath.assignAll(mergedSnapshot);
+
+      await _learningPlanCache.mergeRoadmap(
         assessmentSessionId: assessmentSessionId,
         careerPath: assessmentSummary.value?.careerPath ?? '',
+        careerPathId: careerPathId,
+        cvId: cvId > 0 ? cvId : null,
+        updatedItems: mergedSnapshot,
       );
+
+      // مهم جداً: إذا كان المستخدم راجع من إعادة تحديد المستوى، حدّث خريطة التطوير
+      // الموجودة بالرئيسية فوراً بدل ما تبقى تعرض مستويات الجلسة القديمة.
+      if (Get.isRegistered<HomeController>()) {
+        final homeController = Get.find<HomeController>();
+        await homeController.loadLatestLearningPlan(silent: true);
+      }
     } catch (e) {
       JisrSnackbar.show(
         title: 'تعذر جلب التقرير',
@@ -418,6 +473,100 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
     } finally {
       isLoadingReport.value = false;
     }
+  }
+
+
+  List<AssessmentLearningPathItem> _buildRoadmapSnapshot({
+    required AssessmentSummaryData? summary,
+    required List<AssessmentSkillGap> gaps,
+    required List<AssessmentLearningPathItem> learningPathItems,
+  }) {
+    final byPath = <int, AssessmentLearningPathItem>{
+      for (final item in learningPathItems)
+        if (item.skillId > 0) item.skillId: item,
+    };
+
+    final byGap = <int, AssessmentSkillGap>{
+      for (final gap in gaps)
+        if (gap.skillId > 0) gap.skillId: gap,
+    };
+
+    final result = <AssessmentLearningPathItem>[];
+    final used = <int>{};
+
+    final summarySkills = summary?.skills ?? const <AssessmentSummarySkill>[];
+
+    for (final skill in summarySkills) {
+      if (skill.skillId <= 0) continue;
+
+      final pathItem = byPath[skill.skillId];
+      final gap = byGap[skill.skillId];
+
+      final currentFromSummary = _bestCurrentLevel(skill);
+      final currentFromGap = gap?.actualLevel ?? 0;
+      final currentFromPath = pathItem?.currentLevel ?? 0;
+      final current = currentFromSummary > 0
+          ? currentFromSummary
+          : (currentFromGap > 0
+              ? currentFromGap
+              : (currentFromPath > 0 ? currentFromPath : 0.0));
+
+      final targetFromPath = pathItem?.targetLevel ?? 0;
+      final targetFromGap = gap?.requiredLevel ?? 0;
+      final target = targetFromPath > 0
+          ? targetFromPath
+          : (targetFromGap > 0 ? targetFromGap : current);
+
+      final ready = target > 0 && current >= target;
+
+      result.add(
+        AssessmentLearningPathItem(
+          skillId: skill.skillId,
+          skillName: skill.skillName.isNotEmpty
+              ? skill.skillName
+              : (pathItem?.skillName ?? gap?.skillName ?? 'مهارة'),
+          currentLevel: current,
+          targetLevel: target > 0 ? target : current,
+          priority: ready
+              ? 'market_ready'
+              : (current <= 0
+                  ? 'unknown'
+                  : (pathItem?.priority.isNotEmpty == true
+                      ? pathItem!.priority
+                      : (gap?.priority.isNotEmpty == true ? gap!.priority : 'medium'))),
+          resources: ready ? <AssessmentLearningResource>[] : (pathItem?.resources ?? const []),
+        ),
+      );
+      used.add(skill.skillId);
+    }
+
+    for (final item in learningPathItems) {
+      if (item.skillId <= 0 || used.contains(item.skillId)) continue;
+      final current = item.currentLevel < 0 ? 0.0 : item.currentLevel;
+      final target = item.targetLevel > 0 ? item.targetLevel : current;
+      final ready = target > 0 && current >= target;
+      result.add(
+        item.copyWith(
+          currentLevel: current,
+          targetLevel: target,
+          priority: ready
+              ? 'market_ready'
+              : (current <= 0 ? 'unknown' : (item.priority.isEmpty ? 'medium' : item.priority)),
+          resources: ready ? <AssessmentLearningResource>[] : item.resources,
+        ),
+      );
+    }
+
+    return result;
+  }
+
+  double _bestCurrentLevel(AssessmentSummarySkill skill) {
+    if (skill.finalLevel != null && skill.finalLevel! > 0) {
+      return skill.finalLevel!;
+    }
+    if (skill.currentLevel > 0) return skill.currentLevel;
+    if (skill.initialLevel > 0) return skill.initialLevel;
+    return 0;
   }
 
   Future<AssessmentAiLearningPlan?> generateAiLearningPlan({
@@ -438,6 +587,8 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
       await _learningPlanCache.save(
         assessmentSessionId: assessmentSessionId,
         careerPath: response.data.plan.careerPath,
+        careerPathId: careerPathId,
+        cvId: cvId > 0 ? cvId : null,
       );
 
       return response.data;

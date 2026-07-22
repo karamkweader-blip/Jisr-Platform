@@ -681,10 +681,6 @@ class _SkillResultTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final level = skill.finalLevel ?? skill.currentLevel;
     final progressValue = (level / 5).clamp(0.0, 1.0);
-    final confidence = skill.confidenceScore == null
-        ? 'غير محددة'
-        : '${(skill.confidenceScore! * 100).round()}%';
-
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: Duration(milliseconds: 520 + (index * 90)),
@@ -752,7 +748,7 @@ class _SkillResultTile extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'المستوى الأولي: ${skill.initialLevel.toStringAsFixed(1)} · الثقة: $confidence',
+              'المستوى الأولي: ${skill.initialLevel.toStringAsFixed(1)}',
               style: const TextStyle(
                 fontFamily: 'Cairo',
                 color: AppColors.textGrey,
