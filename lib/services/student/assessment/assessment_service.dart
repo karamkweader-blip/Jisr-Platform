@@ -55,17 +55,24 @@ class AssessmentService {
 
   Future<AssessmentSessionResponse> createAssessment({
     required int careerPathId,
-    required int cvId,
+    int? cvId,
     required List<int> skillIds,
   }) async {
+    final body = <String, dynamic>{
+      'career_path_id': careerPathId,
+      'skill_ids': skillIds,
+    };
+
+    // إعادة تحديد المستوى لا تحتاج رفع/تحليل CV من جديد.
+    // إذا كان cvId محفوظاً نرسله، وإذا غير محفوظ نترك الباك يعتمد على آخر CV/جلسة للطالب.
+    if (cvId != null && cvId > 0) {
+      body['cv_id'] = cvId;
+    }
+
     final response = await http.post(
       Uri.parse(ApiLinks.createAssessment),
       headers: await _headers(),
-      body: jsonEncode({
-        'career_path_id': careerPathId,
-        'cv_id': cvId,
-        'skill_ids': skillIds,
-      }),
+      body: jsonEncode(body),
     );
 
     final data = response.body.isNotEmpty ? jsonDecode(response.body) : {};

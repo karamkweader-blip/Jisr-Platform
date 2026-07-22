@@ -3,6 +3,7 @@ import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/student/cv/cv_analysis_response.dart';
 import 'package:jisr_platform/services/student/cv/cv_analysis_service.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/services/student/assessment/assessment_learning_plan_cache.dart';
 
 class CvAnalysisController extends GetxController {
   final CvAnalysisService _analysisService = CvAnalysisService();
@@ -43,7 +44,7 @@ class CvAnalysisController extends GetxController {
     }
   }
 
-  void startAssessment() {
+  Future<void> startAssessment() async {
     final result = analysis.value;
 
     if (result == null) return;
@@ -56,6 +57,11 @@ class CvAnalysisController extends GetxController {
     final skillNames = {
       for (final skill in result.skills) skill.skillId: skill.skillName,
     };
+
+    await AssessmentLearningPlanCache().saveRetestSeed(
+      careerPathId: 1,
+      cvId: result.cvId,
+    );
 
     Get.toNamed(
       Routes.assessment,

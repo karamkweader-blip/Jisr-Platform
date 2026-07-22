@@ -35,11 +35,14 @@ class AssessmentSessionData {
 
   factory AssessmentSessionData.fromJson(Map<String, dynamic> json) {
     return AssessmentSessionData(
-      assessmentSessionId:
-          int.tryParse(json['AssessmentSessionID'].toString()) ?? 0,
-      cvId: int.tryParse(json['CvID'].toString()) ?? 0,
-      careerPathId: int.tryParse(json['CareerPathID'].toString()) ?? 0,
-      status: json['Status']?.toString() ?? '',
+      assessmentSessionId: int.tryParse(
+            (json['AssessmentSessionID'] ?? json['assessment_session_id'] ?? json['id'] ?? 0).toString(),
+          ) ??
+          0,
+      cvId: int.tryParse((json['CvID'] ?? json['cv_id'] ?? 0).toString()) ?? 0,
+      careerPathId:
+          int.tryParse((json['CareerPathID'] ?? json['career_path_id'] ?? 0).toString()) ?? 0,
+      status: (json['Status'] ?? json['status'])?.toString() ?? '',
       skillSessions: (json['skill_sessions'] as List? ?? [])
           .map((e) => AssessmentSkillSession.fromJson(e))
           .toList(),
@@ -70,8 +73,10 @@ class AssessmentSkillSession {
     return AssessmentSkillSession(
       assessmentSkillSessionId:
           int.tryParse(json['AssessmentSkillSessionID'].toString()) ?? 0,
-      assessmentSessionId:
-          int.tryParse(json['AssessmentSessionID'].toString()) ?? 0,
+      assessmentSessionId: int.tryParse(
+            (json['AssessmentSessionID'] ?? json['assessment_session_id'] ?? 0).toString(),
+          ) ??
+          0,
       skillId: int.tryParse(json['SkillID'].toString()) ?? 0,
       initialLevel: double.tryParse(json['InitialLevel'].toString()) ?? 0.0,
       currentEstimatedLevel:
@@ -80,6 +85,39 @@ class AssessmentSkillSession {
       status: json['Status']?.toString() ?? '',
     );
   }
+}
+
+
+dynamic _firstJsonValue(Map<String, dynamic> json, List<String> keys) {
+  for (final key in keys) {
+    if (json.containsKey(key) && json[key] != null) return json[key];
+  }
+  return null;
+}
+
+int _jsonInt(Map<String, dynamic> json, List<String> keys) {
+  final value = _firstJsonValue(json, keys);
+  return int.tryParse(value?.toString() ?? '') ?? 0;
+}
+
+double _jsonDouble(Map<String, dynamic> json, List<String> keys) {
+  final value = _firstJsonValue(json, keys);
+  return double.tryParse(value?.toString() ?? '') ?? 0.0;
+}
+
+String _jsonString(Map<String, dynamic> json, List<String> keys) {
+  final value = _firstJsonValue(json, keys);
+  return value?.toString() ?? '';
+}
+
+List<T> _jsonList<T>(
+  Map<String, dynamic> json,
+  List<String> keys,
+  T Function(dynamic item) mapper,
+) {
+  final value = _firstJsonValue(json, keys);
+  if (value is! List) return <T>[];
+  return value.map(mapper).toList();
 }
 
 class AssessmentQuestion {
@@ -118,6 +156,7 @@ class AssessmentAnswerResult {
   final double normalizedScore;
   final String feedback;
   final bool isSkillCompleted;
+  final bool needsReview;
 
   AssessmentAnswerResult({
     required this.success,
@@ -126,6 +165,7 @@ class AssessmentAnswerResult {
     required this.normalizedScore,
     required this.feedback,
     required this.isSkillCompleted,
+    required this.needsReview,
   });
 
   factory AssessmentAnswerResult.fromJson(Map<String, dynamic> json) {
@@ -150,6 +190,9 @@ class AssessmentAnswerResult {
           completedValue == true ||
           completedText == '1' ||
           completedText == 'true',
+      needsReview: data['needs_review'] == true ||
+          data['needs_review']?.toString().toLowerCase().trim() == 'true' ||
+          data['needs_review']?.toString().trim() == '1',
     );
   }
 }
@@ -177,26 +220,91 @@ class AssessmentCompleteResponse {
 class AssessmentCompleteData {
   final int assessmentSessionId;
   final String status;
-  final String completedAt;
+  final String? completedAt;
+  final bool finalResultsAvailable;
+  final bool hasSkillsNeedingReview;
+  final List<AssessmentCompleteSkill> skills;
   final List<AssessmentFinalResult> finalResults;
 
   AssessmentCompleteData({
     required this.assessmentSessionId,
     required this.status,
     required this.completedAt,
+    required this.finalResultsAvailable,
+    required this.hasSkillsNeedingReview,
+    required this.skills,
     required this.finalResults,
   });
 
+  static bool _asBool(dynamic value) {
+    final text = value?.toString().toLowerCase().trim();
+    return value == true || text == '1' || text == 'true';
+  }
+
   factory AssessmentCompleteData.fromJson(Map<String, dynamic> json) {
+    final oldFinalResults = (json['FinalResultsJson'] as List? ?? [])
+        .map((e) => AssessmentFinalResult.fromJson(e))
+        .toList();
+
+    final newSkills = (json['skills'] as List? ?? [])
+        .map((e) => AssessmentCompleteSkill.fromJson(e))
+        .toList();
+
+    final rawStatus = json['status'] ?? json['Status'];
+    final status = rawStatus?.toString() ?? '';
+    final completedAt = json['completed_at']?.toString() ??
+        json['CompletedAt']?.toString();
+
     return AssessmentCompleteData(
-      assessmentSessionId:
-          int.tryParse(json['AssessmentSessionID'].toString()) ?? 0,
-      status: json['Status']?.toString() ?? '',
-      completedAt: json['CompletedAt']?.toString() ?? '',
-      finalResults: (json['FinalResultsJson'] as List? ?? [])
-          .map((e) => AssessmentFinalResult.fromJson(e))
-          .toList(),
+      assessmentSessionId: int.tryParse(
+            (json['session_id'] ?? json['AssessmentSessionID'] ?? 0).toString(),
+          ) ??
+          0,
+      status: status,
+      completedAt: completedAt,
+      finalResultsAvailable: _asBool(json['final_results_available']) ||
+          oldFinalResults.isNotEmpty ||
+          status.toLowerCase() == 'completed',
+      hasSkillsNeedingReview: _asBool(json['has_skills_needing_review']),
+      skills: newSkills,
+      finalResults: oldFinalResults,
     );
+  }
+
+  bool get isReadyToShowFinalResults =>
+      finalResultsAvailable || status.toLowerCase() == 'completed';
+}
+
+class AssessmentCompleteSkill {
+  final int skillSessionId;
+  final int skillId;
+  final String status;
+  final double? finalLevel;
+  final int questionCount;
+
+  AssessmentCompleteSkill({
+    required this.skillSessionId,
+    required this.skillId,
+    required this.status,
+    required this.finalLevel,
+    required this.questionCount,
+  });
+
+  factory AssessmentCompleteSkill.fromJson(Map<String, dynamic> json) {
+    return AssessmentCompleteSkill(
+      skillSessionId: int.tryParse(json['skill_session_id'].toString()) ?? 0,
+      skillId: int.tryParse(json['skill_id'].toString()) ?? 0,
+      status: json['status']?.toString() ?? '',
+      finalLevel: json['final_level'] == null
+          ? null
+          : double.tryParse(json['final_level'].toString()),
+      questionCount: int.tryParse(json['question_count'].toString()) ?? 0,
+    );
+  }
+
+  bool get needsMoreQuestions {
+    final normalized = status.toLowerCase().trim();
+    return normalized == 'in_progress' || normalized == 'needs_review';
   }
 }
 
@@ -290,22 +398,64 @@ class AssessmentSummarySkill {
   });
 
   factory AssessmentSummarySkill.fromJson(Map<String, dynamic> json) {
+    final finalLevelValue = _firstJsonValue(json, [
+      'final_level',
+      'FinalLevel',
+      'finalLevel',
+    ]);
+
     return AssessmentSummarySkill(
-      skillId: int.tryParse(json['skill_id'].toString()) ?? 0,
-      skillName: json['skill_name']?.toString() ?? '',
-      initialLevel: double.tryParse(json['initial_level'].toString()) ?? 0,
-      currentLevel: double.tryParse(json['current_level'].toString()) ?? 0,
-      finalLevel: json['final_level'] == null
+      skillId: _jsonInt(json, ['skill_id', 'SkillID', 'skillId', 'id']),
+      skillName: _jsonString(json, [
+        'skill_name',
+        'SkillName',
+        'skillName',
+        'name',
+        'Name',
+      ]),
+      initialLevel: _jsonDouble(json, [
+        'initial_level',
+        'InitialLevel',
+        'initialLevel',
+      ]),
+      currentLevel: _jsonDouble(json, [
+        'current_level',
+        'CurrentLevel',
+        'currentLevel',
+        'current_estimated_level',
+        'CurrentEstimatedLevel',
+        'currentEstimatedLevel',
+        'actual_level',
+        'ActualLevel',
+        'actualLevel',
+        'level',
+        'Level',
+      ]),
+      finalLevel: finalLevelValue == null
           ? null
-          : double.tryParse(json['final_level'].toString()),
-      confidenceScore: json['confidence_score'] == null
+          : double.tryParse(finalLevelValue.toString()),
+      confidenceScore: _firstJsonValue(json, [
+        'confidence_score',
+        'ConfidenceScore',
+        'confidenceScore',
+      ]) == null
           ? null
-          : double.tryParse(json['confidence_score'].toString()),
-      questionCount: int.tryParse(json['question_count'].toString()) ?? 0,
-      status: json['status']?.toString() ?? '',
-      attempts: (json['attempts'] as List? ?? [])
-          .map((item) => AssessmentSummaryAttempt.fromJson(item))
-          .toList(),
+          : double.tryParse(_firstJsonValue(json, [
+              'confidence_score',
+              'ConfidenceScore',
+              'confidenceScore',
+            ]).toString()),
+      questionCount: _jsonInt(json, [
+        'question_count',
+        'QuestionCount',
+        'questionCount',
+      ]),
+      status: _jsonString(json, ['status', 'Status']),
+      attempts: _jsonList<AssessmentSummaryAttempt>(json, ['attempts', 'Attempts'], (item) {
+        return AssessmentSummaryAttempt.fromJson(
+          Map<String, dynamic>.from(item as Map),
+        );
+      }),
     );
   }
 }
@@ -372,14 +522,38 @@ class AssessmentSkillGap {
 
   factory AssessmentSkillGap.fromJson(Map<String, dynamic> json) {
     return AssessmentSkillGap(
-      skillId: int.tryParse(json['skill_id'].toString()) ?? 0,
-      skillName: json['skill_name']?.toString() ?? '',
-      requiredLevel: double.tryParse(json['required_level'].toString()) ?? 0,
-      actualLevel: double.tryParse(json['actual_level'].toString()) ?? 0,
-      gap: double.tryParse(json['gap'].toString()) ?? 0,
-      priority: json['priority']?.toString() ?? '',
-      status: json['status']?.toString() ?? '',
-      reliability: json['assessment_reliability']?.toString() ?? '',
+      skillId: _jsonInt(json, ['skill_id', 'SkillID', 'skillId', 'id']),
+      skillName: _jsonString(json, [
+        'skill_name',
+        'SkillName',
+        'skillName',
+        'name',
+        'Name',
+      ]),
+      requiredLevel: _jsonDouble(json, [
+        'required_level',
+        'RequiredLevel',
+        'requiredLevel',
+        'target_level',
+        'TargetLevel',
+        'targetLevel',
+      ]),
+      actualLevel: _jsonDouble(json, [
+        'actual_level',
+        'ActualLevel',
+        'actualLevel',
+        'current_level',
+        'CurrentLevel',
+        'currentLevel',
+      ]),
+      gap: _jsonDouble(json, ['gap', 'Gap']),
+      priority: _jsonString(json, ['priority', 'Priority']),
+      status: _jsonString(json, ['status', 'Status']),
+      reliability: _jsonString(json, [
+        'assessment_reliability',
+        'AssessmentReliability',
+        'reliability',
+      ]),
     );
   }
 }
@@ -417,16 +591,85 @@ class AssessmentLearningPathItem {
 
   factory AssessmentLearningPathItem.fromJson(Map<String, dynamic> json) {
     return AssessmentLearningPathItem(
-      skillId: int.tryParse(json['skill_id'].toString()) ?? 0,
-      skillName: json['skill_name']?.toString() ?? '',
-      currentLevel: double.tryParse(json['current_level'].toString()) ?? 0,
-      targetLevel: double.tryParse(json['target_level'].toString()) ?? 0,
-      priority: json['priority']?.toString() ?? '',
-      resources: (json['resources'] as List? ?? [])
-          .map((item) => AssessmentLearningResource.fromJson(item))
-          .toList(),
+      skillId: _jsonInt(json, ['skill_id', 'SkillID', 'skillId', 'id']),
+      skillName: _jsonString(json, [
+        'skill_name',
+        'SkillName',
+        'skillName',
+        'name',
+        'Name',
+      ]),
+      currentLevel: _jsonDouble(json, [
+        'current_level',
+        'CurrentLevel',
+        'currentLevel',
+        'current_estimated_level',
+        'CurrentEstimatedLevel',
+        'currentEstimatedLevel',
+        'actual_level',
+        'ActualLevel',
+        'actualLevel',
+        'final_level',
+        'FinalLevel',
+        'finalLevel',
+        'level',
+        'Level',
+      ]),
+      targetLevel: _jsonDouble(json, [
+        'target_level',
+        'TargetLevel',
+        'targetLevel',
+        'required_level',
+        'RequiredLevel',
+        'requiredLevel',
+        'market_level',
+        'MarketLevel',
+        'marketLevel',
+      ]),
+      priority: _jsonString(json, ['priority', 'Priority', 'status', 'Status']),
+      resources: _jsonList<AssessmentLearningResource>(json, [
+        'resources',
+        'Resources',
+        'learning_resources',
+        'LearningResources',
+      ], (item) {
+        return AssessmentLearningResource.fromJson(
+          Map<String, dynamic>.from(item as Map),
+        );
+      }),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'skill_id': skillId,
+      'skill_name': skillName,
+      'current_level': currentLevel,
+      'target_level': targetLevel,
+      'priority': priority,
+      'resources': resources.map((item) => item.toJson()).toList(),
+    };
+  }
+
+  AssessmentLearningPathItem copyWith({
+    int? skillId,
+    String? skillName,
+    double? currentLevel,
+    double? targetLevel,
+    String? priority,
+    List<AssessmentLearningResource>? resources,
+  }) {
+    return AssessmentLearningPathItem(
+      skillId: skillId ?? this.skillId,
+      skillName: skillName ?? this.skillName,
+      currentLevel: currentLevel ?? this.currentLevel,
+      targetLevel: targetLevel ?? this.targetLevel,
+      priority: priority ?? this.priority,
+      resources: resources ?? this.resources,
+    );
+  }
+
+  bool get isMarketReady => targetLevel > 0 && currentLevel >= targetLevel;
 }
 
 class AssessmentLearningResource {
@@ -456,6 +699,18 @@ class AssessmentLearningResource {
       provider: json['provider']?.toString() ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'url': url,
+      'type': type,
+      'level': level,
+      'estimated_hours': estimatedHours,
+      'provider': provider,
+    };
+  }
+
 }
 
 class AssessmentAiLearningPlanResponse {
@@ -506,8 +761,10 @@ class AssessmentAiLearningPlan {
             (json['AILearningPlanID'] ?? json['id'] ?? 0).toString(),
           ) ??
           0,
-      assessmentSessionId:
-          int.tryParse(json['AssessmentSessionID'].toString()) ?? 0,
+      assessmentSessionId: int.tryParse(
+            (json['AssessmentSessionID'] ?? json['assessment_session_id'] ?? 0).toString(),
+          ) ??
+          0,
       status: json['Status']?.toString() ?? '',
       weeks: int.tryParse(json['Weeks'].toString()) ?? 0,
       hoursPerWeek: int.tryParse(json['HoursPerWeek'].toString()) ?? 0,
