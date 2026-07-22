@@ -75,15 +75,11 @@ class HomeView extends GetView<HomeController> {
               fontWeight: FontWeight.w800,
             ),
           ),
-          leading: CompanyAccountMenu(
-            controller: authActionsController,
-          ),
+          leading: CompanyAccountMenu(controller: authActionsController),
           actions: [
             IconButton(
               tooltip: 'المحادثات',
-              onPressed: () {
-                Get.toNamed(Routes.studentConversations);
-              },
+              onPressed: () => Get.toNamed(Routes.studentConversations),
               icon: const Icon(
                 Icons.chat_bubble_outline_rounded,
                 color: AppColors.primaryBlue,
@@ -105,9 +101,7 @@ class HomeView extends GetView<HomeController> {
             ),
             const Padding(
               padding: EdgeInsetsDirectional.only(end: 12),
-              child: Center(
-                child: JisrAnimatedLogo(size: 38),
-              ),
+              child: Center(child: JisrAnimatedLogo(size: 38)),
             ),
           ],
         ),
@@ -124,19 +118,21 @@ class HomeView extends GetView<HomeController> {
                 )
                     .animate()
                     .fadeIn(duration: 450.ms)
-                    .slideY(
-                      begin: .16,
-                      curve: Curves.easeOutCubic,
-                    ),
+                    .slideY(begin: .16, curve: Curves.easeOutCubic),
                 const SizedBox(height: 22),
-                ...List.generate(features.length, (index) {
-                  final feature = features[index];
-
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      bottom: index == features.length - 1 ? 0 : 12,
-                    ),
-                    child: _HomeFeatureTile(
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: features.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 14,
+                    mainAxisSpacing: 14,
+                    childAspectRatio: .92,
+                  ),
+                  itemBuilder: (context, index) {
+                    final feature = features[index];
+                    return _HomeFeatureCard(
                       icon: feature.icon,
                       title: feature.title,
                       subtitle: feature.subtitle,
@@ -145,15 +141,12 @@ class HomeView extends GetView<HomeController> {
                     )
                         .animate()
                         .fadeIn(
-                          delay: Duration(milliseconds: 85 * index),
+                          delay: Duration(milliseconds: 90 * index),
                           duration: 420.ms,
                         )
-                        .slideX(
-                          begin: .10,
-                          curve: Curves.easeOutCubic,
-                        ),
-                  );
-                }),
+                        .slideY(begin: .18, curve: Curves.easeOutCubic);
+                  },
+                ),
               ],
             ),
           ),
@@ -183,10 +176,7 @@ class _WelcomeCard extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const _WelcomeCard({
-    required this.title,
-    required this.subtitle,
-  });
+  const _WelcomeCard({required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -198,10 +188,7 @@ class _WelcomeCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [
-            AppColors.primaryBlue,
-            Color(0xFF0077B6),
-          ],
+          colors: [AppColors.primaryBlue, Color(0xFF0077B6)],
         ),
         boxShadow: [
           BoxShadow(
@@ -239,14 +226,15 @@ class _WelcomeCard extends StatelessWidget {
     );
   }
 }
-class _HomeFeatureTile extends StatelessWidget {
+
+class _HomeFeatureCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
   final bool isEnabled;
   final VoidCallback onTap;
 
-  const _HomeFeatureTile({
+  const _HomeFeatureCard({
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -256,137 +244,80 @@ class _HomeFeatureTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const softOrange = Color(0xFFF4A261);
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: isEnabled ? onTap : null,
-        borderRadius: BorderRadius.circular(22),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
-          width: double.infinity,
-          height: 94,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
+    return InkWell(
+      onTap: isEnabled ? onTap : null,
+      borderRadius: BorderRadius.circular(28),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 260),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: isEnabled
+                ? AppColors.actionYellow.withOpacity(.34)
+                : AppColors.primaryBlue.withOpacity(.08),
           ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(
+          boxShadow: [
+            BoxShadow(
               color: isEnabled
-                  ? AppColors.primaryBlue.withOpacity(.08)
-                  : AppColors.textGrey.withOpacity(.07),
+                  ? AppColors.actionYellow.withOpacity(.12)
+                  : AppColors.primaryBlue.withOpacity(.06),
+              blurRadius: 18,
+              offset: const Offset(0, 9),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryBlue.withOpacity(.05),
-                blurRadius: 15,
-                offset: const Offset(0, 7),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 52,
+              width: 52,
+              decoration: BoxDecoration(
+                color: isEnabled
+                    ? AppColors.actionYellow.withOpacity(.14)
+                    : AppColors.primaryBlue.withOpacity(.06),
+                borderRadius: BorderRadius.circular(20),
               ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 58,
-                height: 58,
-                decoration: BoxDecoration(
-                  gradient: isEnabled
-                      ? LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            AppColors.primaryBlue.withOpacity(.16),
-                            AppColors.primaryBlue.withOpacity(.05),
-                          ],
-                        )
-                      : null,
-                  color: isEnabled
-                      ? null
-                      : AppColors.textGrey.withOpacity(.07),
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(
-                    color: isEnabled
-                        ? AppColors.primaryBlue.withOpacity(.10)
-                        : AppColors.textGrey.withOpacity(.05),
-                  ),
-                ),
-                child: Icon(
-                  icon,
-                  color: isEnabled
-                      ? AppColors.primaryBlue
-                      : AppColors.textGrey,
-                  size: 29,
-                ),
+              child: Icon(
+                icon,
+                color: isEnabled ? AppColors.actionYellow : AppColors.textGrey,
+                size: 31,
               ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        color: isEnabled
-                            ? AppColors.primaryBlue
-                            : AppColors.textGrey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        color: AppColors.textGrey.withOpacity(
-                          isEnabled ? .90 : .65,
-                        ),
-                        fontSize: 12,
-                        height: 1.45,
-                      ),
-                    ),
-                  ],
-                ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Cairo',
+                color: isEnabled ? AppColors.primaryBlue : AppColors.textGrey,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(width: 10),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  color: isEnabled
-                      ? softOrange.withOpacity(.10)
-                      : AppColors.textGrey.withOpacity(.06),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: isEnabled
-                      ? softOrange
-                      : AppColors.textGrey.withOpacity(.55),
-                  size: 15,
-                ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: 'Cairo',
+                color: AppColors.textGrey,
+                fontSize: 11,
+                height: 1.3,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-void _showRoadmapSheet(
-  BuildContext context,
-  HomeController controller,
-) {
+
+void _showRoadmapSheet(BuildContext context, HomeController controller) {
   if (!controller.hasLatestLearningPlan) {
     controller.showNoLearningPlanMessage();
     return;
@@ -411,18 +342,14 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
 
     if (plan == null || !context.mounted) return;
 
-    final cache = controller.latestLearningPlanCache.value;
-
-    if (cache == null) return;
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => _LatestLearningPlanSheet(
         plan: plan,
-        sessionId: cache.assessmentSessionId,
-        careerPath: cache.careerPath,
+        sessionId: controller.latestLearningPlanCache.value!.assessmentSessionId,
+        careerPath: controller.latestLearningPlanCache.value!.careerPath,
       ),
     );
   }
@@ -489,9 +416,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                         min: 1,
                         max: 12,
                         onChanged: (value) {
-                          setState(() {
-                            selectedWeeks = value;
-                          });
+                          setState(() => selectedWeeks = value);
                         },
                       ),
                       const SizedBox(height: 14),
@@ -501,36 +426,26 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                         min: 1,
                         max: 40,
                         onChanged: (value) {
-                          setState(() {
-                            selectedHours = value;
-                          });
+                          setState(() => selectedHours = value);
                         },
                       ),
                       const SizedBox(height: 22),
                       ElevatedButton.icon(
                         onPressed: () {
-                          Navigator.pop(
-                            context,
-                            {
-                              'weeks': selectedWeeks,
-                              'hours_per_week': selectedHours,
-                            },
-                          );
+                          Navigator.pop(context, {
+                            'weeks': selectedWeeks,
+                            'hours_per_week': selectedHours,
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue,
                           foregroundColor: Colors.white,
-                          minimumSize: const Size(
-                            double.infinity,
-                            54,
-                          ),
+                          minimumSize: const Size(double.infinity, 54),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(22),
                           ),
                         ),
-                        icon: const Icon(
-                          Icons.auto_awesome_rounded,
-                        ),
+                        icon: const Icon(Icons.auto_awesome_rounded),
                         label: const Text(
                           'إنشاء الخطة',
                           style: TextStyle(
@@ -571,9 +486,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
         decoration: const BoxDecoration(
           color: AppColors.background,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(32),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         ),
         child: Obx(() {
           final cache = controller.latestLearningPlanCache.value;
@@ -611,11 +524,8 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                       ),
                     )
                         .animate(
-                          onPlay: (animationController) {
-                            animationController.repeat(
-                              reverse: true,
-                            );
-                          },
+                          onPlay: (animationController) =>
+                              animationController.repeat(reverse: true),
                         )
                         .scale(
                           begin: const Offset(1, 1),
@@ -663,14 +573,10 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                               : 'اصنع خطة ذكية',
                           icon: Icons.auto_awesome_rounded,
                           color: AppColors.actionYellow,
-                          isLoading:
-                              controller.isGeneratingAiPlan.value,
-                          onTap:
-                              controller.isGeneratingAiPlan.value
-                                  ? null
-                                  : () {
-                                      _showPlanOptions(context);
-                                    },
+                          isLoading: controller.isGeneratingAiPlan.value,
+                          onTap: controller.isGeneratingAiPlan.value
+                              ? null
+                              : () => _showPlanOptions(context),
                         ),
                       ),
                     ),
@@ -678,24 +584,18 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                     Expanded(
                       child: Obx(
                         () => _CuteHomeRoadmapButton(
-                          text:
-                              controller.isLoadingLatestAiPlan.value
-                                  ? 'جاري الجلب...'
-                                  : 'آخر خطة',
+                          text: controller.isLoadingLatestAiPlan.value
+                              ? 'جاري الجلب...'
+                              : 'آخر خطة',
                           icon: Icons.history_rounded,
                           color: AppColors.primaryBlue,
-                          isLoading:
-                              controller.isLoadingLatestAiPlan.value,
-                          onTap:
-                              controller.isLoadingLatestAiPlan.value
-                                  ? null
-                                  : () {
-                                      _showPlan(
-                                        context,
-                                        controller
-                                            .getLatestAiLearningPlan,
-                                      );
-                                    },
+                          isLoading: controller.isLoadingLatestAiPlan.value,
+                          onTap: controller.isLoadingLatestAiPlan.value
+                              ? null
+                              : () => _showPlan(
+                                    context,
+                                    controller.getLatestAiLearningPlan,
+                                  ),
                         ),
                       ),
                     ),
@@ -704,10 +604,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                 const SizedBox(height: 18),
                 if (controller.isLoadingLatestLearningPlan.value)
                   const Padding(
-                    padding: EdgeInsets.only(
-                      top: 40,
-                      bottom: 40,
-                    ),
+                    padding: EdgeInsets.only(top: 40, bottom: 40),
                     child: Center(
                       child: CircularProgressIndicator(
                         color: AppColors.actionYellow,
@@ -732,24 +629,19 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                     ),
                   )
                 else
-                  ...List.generate(
-                    roadmap.length,
-                    (index) {
-                      return _HomeRoadmapItem(
-                        item: roadmap[index],
-                        index: index,
-                        isLast: index == roadmap.length - 1,
-                      )
-                          .animate()
-                          .fadeIn(
-                            delay: Duration(
-                              milliseconds: 80 * index,
-                            ),
-                            duration: 420.ms,
-                          )
-                          .slideY(begin: .16);
-                    },
-                  ),
+                  ...List.generate(roadmap.length, (index) {
+                    return _HomeRoadmapItem(
+                      item: roadmap[index],
+                      index: index,
+                      isLast: index == roadmap.length - 1,
+                    )
+                        .animate()
+                        .fadeIn(
+                          delay: Duration(milliseconds: 80 * index),
+                          duration: 420.ms,
+                        )
+                        .slideY(begin: .16);
+                  }),
               ],
             ),
           );
@@ -806,15 +698,11 @@ class _HomeRoadmapItem extends StatelessWidget {
                   gradient: const LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [
-                      AppColors.actionYellow,
-                      Color(0xFFFFC94A),
-                    ],
+                    colors: [AppColors.actionYellow, Color(0xFFFFC94A)],
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color:
-                          AppColors.actionYellow.withOpacity(.30),
+                      color: AppColors.actionYellow.withOpacity(.30),
                       blurRadius: 16,
                       offset: const Offset(0, 7),
                     ),
@@ -841,16 +729,14 @@ class _HomeRoadmapItem extends StatelessWidget {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color:
-                            AppColors.primaryBlue.withOpacity(.06),
+                        color: AppColors.primaryBlue.withOpacity(.06),
                         blurRadius: 16,
                         offset: const Offset(0, 8),
                       ),
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
@@ -892,11 +778,7 @@ class _HomeRoadmapItem extends StatelessWidget {
                         )
                       else
                         ...item.resources.map(
-                          (resource) {
-                            return _HomeResourceTile(
-                              resource: resource,
-                            );
-                          },
+                          (resource) => _HomeResourceTile(resource: resource),
                         ),
                     ],
                   ),
@@ -913,9 +795,7 @@ class _HomeRoadmapItem extends StatelessWidget {
 class _HomeResourceTile extends StatelessWidget {
   final AssessmentLearningResource resource;
 
-  const _HomeResourceTile({
-    required this.resource,
-  });
+  const _HomeResourceTile({required this.resource});
 
   @override
   Widget build(BuildContext context) {
@@ -948,9 +828,7 @@ class _HomeResourceTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  resource.title.isEmpty
-                      ? 'مصدر تعليمي'
-                      : resource.title,
+                  resource.title.isEmpty ? 'مصدر تعليمي' : resource.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -1005,9 +883,7 @@ class _CuteHomeRoadmapButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: color.withOpacity(.11),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: color.withOpacity(.22),
-          ),
+          border: Border.all(color: color.withOpacity(.22)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1022,11 +898,7 @@ class _CuteHomeRoadmapButton extends StatelessWidget {
                 ),
               )
             else
-              Icon(
-                icon,
-                color: color,
-                size: 19,
-              ),
+              Icon(icon, color: color, size: 19),
             const SizedBox(width: 7),
             Flexible(
               child: Text(
@@ -1092,11 +964,7 @@ class _HomePlanStepper extends StatelessWidget {
           ),
           _HomeSmallRoundButton(
             icon: Icons.remove_rounded,
-            onTap: value <= min
-                ? null
-                : () {
-                    onChanged(value - 1);
-                  },
+            onTap: value <= min ? null : () => onChanged(value - 1),
           ),
           SizedBox(
             width: 54,
@@ -1113,11 +981,7 @@ class _HomePlanStepper extends StatelessWidget {
           ),
           _HomeSmallRoundButton(
             icon: Icons.add_rounded,
-            onTap: value >= max
-                ? null
-                : () {
-                    onChanged(value + 1);
-                  },
+            onTap: value >= max ? null : () => onChanged(value + 1),
           ),
         ],
       ),
@@ -1153,9 +1017,7 @@ class _HomeSmallRoundButton extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          color: enabled
-              ? AppColors.actionYellow
-              : AppColors.textGrey,
+          color: enabled ? AppColors.actionYellow : AppColors.textGrey,
           size: 21,
         ),
       ),
@@ -1212,9 +1074,7 @@ class _LatestLearningPlanCard extends GetView<HomeController> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(
-              color: AppColors.actionYellow.withOpacity(.22),
-            ),
+            border: Border.all(color: AppColors.actionYellow.withOpacity(.22)),
             boxShadow: [
               BoxShadow(
                 color: AppColors.actionYellow.withOpacity(.10),
@@ -1232,40 +1092,34 @@ class _LatestLearningPlanCard extends GetView<HomeController> {
                   gradient: const LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [
-                      AppColors.actionYellow,
-                      Color(0xFFFFC94A),
-                    ],
+                    colors: [AppColors.actionYellow, Color(0xFFFFC94A)],
                   ),
                   borderRadius: BorderRadius.circular(21),
                   boxShadow: [
                     BoxShadow(
-                      color:
-                          AppColors.actionYellow.withOpacity(.22),
+                      color: AppColors.actionYellow.withOpacity(.22),
                       blurRadius: 16,
                       offset: const Offset(0, 8),
                     ),
                   ],
                 ),
-                child:
-                    controller.isLoadingLatestLearningPlan.value
-                        ? const Padding(
-                            padding: EdgeInsets.all(16),
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Icon(
-                            Icons.auto_awesome_rounded,
-                            color: Colors.white,
-                            size: 30,
-                          ),
+                child: controller.isLoadingLatestLearningPlan.value
+                    ? const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Icon(
+                        Icons.auto_awesome_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
               )
                   .animate(
-                    onPlay: (animationController) {
-                      animationController.repeat(reverse: true);
-                    },
+                    onPlay: (animationController) =>
+                        animationController.repeat(reverse: true),
                   )
                   .scale(
                     begin: const Offset(1, 1),
@@ -1290,8 +1144,8 @@ class _LatestLearningPlanCard extends GetView<HomeController> {
                     Text(
                       hasPlan
                           ? plan == null
-                              ? 'آخر جلسة محفوظة #${cache.assessmentSessionId}'
-                              : '${plan.weeks} أسابيع · ${plan.hoursPerWeek} ساعات أسبوعياً'
+                                ? 'آخر جلسة محفوظة #${cache.assessmentSessionId}'
+                                : '${plan.weeks} أسابيع · ${plan.hoursPerWeek} ساعات أسبوعياً'
                           : 'أنه الاختبار وأنشئ Roadmap لتظهر الخطة هنا.',
                       style: const TextStyle(
                         fontFamily: 'Cairo',
@@ -1303,8 +1157,7 @@ class _LatestLearningPlanCard extends GetView<HomeController> {
                     ),
                     if (hasPlan &&
                         (cache.careerPath.isNotEmpty ||
-                            (plan?.plan.careerPath ?? '')
-                                .isNotEmpty)) ...[
+                            (plan?.plan.careerPath ?? '').isNotEmpty)) ...[
                       const SizedBox(height: 5),
                       Text(
                         cache.careerPath.isNotEmpty
@@ -1358,9 +1211,7 @@ class _LatestLearningPlanSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
         decoration: const BoxDecoration(
           color: AppColors.background,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(32),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         ),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -1391,9 +1242,9 @@ class _LatestLearningPlanSheet extends StatelessWidget {
               Text(
                 plan == null
                     ? 'تم حفظ جلسة التقييم رقم #$sessionId. أنشئ خطة ذكية من صفحة التقرير لتظهر التفاصيل هنا.'
-                    : plan!.plan.summaryAr.isNotEmpty
-                        ? plan!.plan.summaryAr
-                        : plan!.summaryText,
+                    : (plan!.plan.summaryAr.isNotEmpty
+                          ? plan!.plan.summaryAr
+                          : plan!.summaryText),
                 style: const TextStyle(
                   fontFamily: 'Cairo',
                   color: AppColors.textDark,
@@ -1411,32 +1262,21 @@ class _LatestLearningPlanSheet extends StatelessWidget {
               ),
               if (plan != null) ...[
                 const SizedBox(height: 16),
-                ...List.generate(
-                  plan!.plan.weeks.length,
-                  (index) {
-                    final week = plan!.plan.weeks[index];
+                ...List.generate(plan!.plan.weeks.length, (index) {
+                  final week = plan!.plan.weeks[index];
 
-                    return _LearningPlanWeekCard(
-                      week: week,
-                      index: index,
-                    )
-                        .animate()
-                        .fadeIn(
-                          delay: Duration(
-                            milliseconds: 80 * index,
-                          ),
-                        )
-                        .slideY(begin: .16);
-                  },
-                ),
+                  return _LearningPlanWeekCard(week: week, index: index)
+                      .animate()
+                      .fadeIn(delay: Duration(milliseconds: 80 * index))
+                      .slideY(begin: .16);
+                }),
                 if (plan!.plan.finalOutcomeAr.isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color:
-                          AppColors.primaryBlue.withOpacity(.08),
+                      color: AppColors.primaryBlue.withOpacity(.08),
                       borderRadius: BorderRadius.circular(22),
                     ),
                     child: Text(
@@ -1457,6 +1297,7 @@ class _LatestLearningPlanSheet extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class _LearningPlanMetaCard extends StatelessWidget {
@@ -1499,9 +1340,7 @@ class _LearningPlanMetaCard extends StatelessWidget {
           ),
           _PlanMiniChip(
             icon: Icons.route_rounded,
-            text: careerPath.isEmpty
-                ? 'مسار غير محدد'
-                : careerPath,
+            text: careerPath.isEmpty ? 'مسار غير محدد' : careerPath,
             color: AppColors.actionYellow,
           ),
           if (weeks != null && weeks! > 0)
@@ -1573,21 +1412,14 @@ class _LearningPlanWeekCard extends StatelessWidget {
           ],
           const SizedBox(height: 10),
           ...week.goals.map(
-            (goal) {
-              return _PlanLine(
-                icon: Icons.flag_rounded,
-                text: goal,
-              );
-            },
+            (goal) => _PlanLine(icon: Icons.flag_rounded, text: goal),
           ),
           ...week.tasks.map(
-            (task) {
-              return _PlanLine(
-                icon: Icons.task_alt_rounded,
-                text:
-                    '${task.title} · ${task.estimatedHours.toStringAsFixed(0)} ساعة · ${task.skill}',
-              );
-            },
+            (task) => _PlanLine(
+              icon: Icons.task_alt_rounded,
+              text:
+                  '${task.title} · ${task.estimatedHours.toStringAsFixed(0)} ساعة · ${task.skill}',
+            ),
           ),
           if (week.expectedOutcome.isNotEmpty)
             _PlanLine(
@@ -1616,11 +1448,7 @@ class _PlanLine extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            icon,
-            color: AppColors.actionYellow,
-            size: 18,
-          ),
+          Icon(icon, color: AppColors.actionYellow, size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -1652,10 +1480,7 @@ class _PlanMiniChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 7,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
         color: color.withOpacity(.09),
         borderRadius: BorderRadius.circular(15),
@@ -1663,11 +1488,7 @@ class _PlanMiniChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            color: color,
-            size: 15,
-          ),
+          Icon(icon, color: color, size: 15),
           const SizedBox(width: 5),
           Text(
             text,
@@ -1705,9 +1526,7 @@ class _QuickActionCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(26),
-          border: Border.all(
-            color: AppColors.primaryBlue.withOpacity(0.08),
-          ),
+          border: Border.all(color: AppColors.primaryBlue.withOpacity(0.08)),
           boxShadow: [
             BoxShadow(
               color: AppColors.primaryBlue.withOpacity(0.07),
@@ -1719,11 +1538,7 @@ class _QuickActionCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              color: AppColors.primaryBlue,
-              size: 36,
-            ),
+            Icon(icon, color: AppColors.primaryBlue, size: 36),
             const SizedBox(height: 12),
             Text(
               title,

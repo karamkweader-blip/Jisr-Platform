@@ -6,108 +6,172 @@ import 'package:jisr_platform/routes/app_routes.dart';
 class StudentBottomNav extends StatelessWidget {
   final int currentIndex;
 
-  const StudentBottomNav({super.key, required this.currentIndex});
+  const StudentBottomNav({
+    super.key,
+    this.currentIndex = 0,
+  });
+
+  static const List<_StudentNavDestination> _destinations = [
+    _StudentNavDestination(
+      label: 'الرئيسية',
+      icon: Icons.home_outlined,
+      selectedIcon: Icons.home_rounded,
+      route: Routes.studentHome,
+    ),
+    _StudentNavDestination(
+      label: 'الملف',
+      icon: Icons.person_outline_rounded,
+      selectedIcon: Icons.person_rounded,
+      route: Routes.studentProfile,
+    ),
+    _StudentNavDestination(
+      label: 'السيرة',
+      icon: Icons.description_outlined,
+      selectedIcon: Icons.description_rounded,
+      route: Routes.cvUpload,
+    ),
+    _StudentNavDestination(
+      label: 'المجتمع',
+      icon: Icons.groups_outlined,
+      selectedIcon: Icons.groups_rounded,
+      route: Routes.studentCommunityPosts,
+    ),
+    _StudentNavDestination(
+      label: 'تقديماتي',
+      icon: Icons.fact_check_outlined,
+      selectedIcon: Icons.fact_check_rounded,
+      route: Routes.studentOpportunityApplications,
+    ),
+  ];
+
+  int _selectedIndex() {
+    final currentRoute = Get.currentRoute;
+
+    for (int index = 0; index < _destinations.length; index++) {
+      final destinationRoute = _destinations[index].route;
+
+      if (currentRoute == destinationRoute ||
+          currentRoute.startsWith('$destinationRoute/')) {
+        return index;
+      }
+    }
+
+    if (currentIndex >= 0 && currentIndex < _destinations.length) {
+      return currentIndex;
+    }
+
+    return 0;
+  }
 
   void _goTo(int index) {
-    if (index == currentIndex) return;
+    final selectedIndex = _selectedIndex();
 
-    if (index == 0) {
-      Get.offNamed(Routes.studentProfile);
-    } else if (index == 1) {
-      Get.offNamed(Routes.studentHome);
-    } else if (index == 2) {
-      Get.offNamed(Routes.cvUpload);
-    }
+    if (index == selectedIndex) return;
+
+    Get.offNamed(_destinations[index].route);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(22, 0, 22, 18),
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.08),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+    final selectedIndex = _selectedIndex();
+
+    return SafeArea(
+      top: false,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryBlue.withOpacity(.08),
+              blurRadius: 22,
+              offset: const Offset(0, -6),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          onTap: _goTo,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          selectedItemColor: AppColors.primaryBlue,
+          unselectedItemColor: AppColors.textGrey.withOpacity(.75),
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          selectedFontSize: 11,
+          unselectedFontSize: 10,
+          selectedLabelStyle: const TextStyle(
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.w800,
           ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _BottomItem(
-            icon: Icons.person_outline,
-            title: 'ملف شخصي',
-            isActive: currentIndex == 0,
-            onTap: () => _goTo(0),
+          unselectedLabelStyle: const TextStyle(
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.w600,
           ),
-          _BottomItem(
-            icon: Icons.home_rounded,
-            title: 'الرئيسية',
-            isActive: currentIndex == 1,
-            onTap: () => _goTo(1),
+          items: List.generate(
+            _destinations.length,
+            (index) {
+              final destination = _destinations[index];
+              final isSelected = selectedIndex == index;
+
+              return BottomNavigationBarItem(
+                label: destination.label,
+                icon: Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Icon(
+                    destination.icon,
+                    size: 23,
+                  ),
+                ),
+                activeIcon: AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  margin: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        AppColors.primaryBlue.withOpacity(.15),
+                        AppColors.primaryBlue.withOpacity(.05),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: AppColors.primaryBlue.withOpacity(.12),
+                    ),
+                  ),
+                  child: Icon(
+                    isSelected
+                        ? destination.selectedIcon
+                        : destination.icon,
+                    color: AppColors.primaryBlue,
+                    size: 24,
+                  ),
+                ),
+              );
+            },
           ),
-          _BottomItem(
-            icon: Icons.upload_file_outlined,
-            title: 'رفع CV',
-            isActive: currentIndex == 2,
-            onTap: () => _goTo(2),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _BottomItem extends StatelessWidget {
+class _StudentNavDestination {
+  final String label;
   final IconData icon;
-  final String title;
-  final bool isActive;
-  final VoidCallback onTap;
+  final IconData selectedIcon;
+  final String route;
 
-  const _BottomItem({
+  const _StudentNavDestination({
+    required this.label,
     required this.icon,
-    required this.title,
-    required this.isActive,
-    required this.onTap,
+    required this.selectedIcon,
+    required this.route,
   });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isActive ? AppColors.actionYellow : AppColors.textGrey;
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 240),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-        decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.actionYellow.withOpacity(.12)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: color, size: isActive ? 28 : 24),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              style: TextStyle(
-                color: color,
-                fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
