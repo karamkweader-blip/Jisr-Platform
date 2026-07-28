@@ -46,6 +46,12 @@ class HomeView extends GetView<HomeController> {
         },
       ),
       _StudentHomeFeature(
+        icon: Icons.analytics_rounded,
+        title: 'تحليل سوق العمل',
+        subtitle: 'اعرف المهارات المطلوبة فعلياً',
+        onTap: () => Get.toNamed(Routes.studentMarketAnalysis),
+      ),
+      _StudentHomeFeature(
         icon: Icons.assignment_ind_rounded,
         title: 'مهامي المسندة',
         subtitle: 'المهام المرسلة من المشرف',

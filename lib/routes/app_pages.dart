@@ -70,6 +70,8 @@ import 'package:jisr_platform/bindings/student/community/community_posts_binding
 import 'package:jisr_platform/views/student/community/community_posts_view.dart';
 import 'package:jisr_platform/bindings/student/points/student_points_binding.dart';
 import 'package:jisr_platform/views/student/points/student_points_view.dart';
+import 'package:jisr_platform/bindings/student/market_analysis/market_analysis_binding.dart';
+import 'package:jisr_platform/views/student/market_analysis/market_analysis_view.dart';
 
 class AppPages {
   static final pages = [
@@ -232,6 +234,18 @@ class AppPages {
       name: Routes.studentPoints,
       page: () => const StudentPointsView(),
       binding: StudentPointsBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
+    ),
+
+
+
+    //تحليل سوق العمل
+    GetPage(
+      name: Routes.studentMarketAnalysis,
+      page: () => const MarketAnalysisView(),
+      binding: MarketAnalysisBinding(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 350),
       curve: Curves.easeInOutCubic,

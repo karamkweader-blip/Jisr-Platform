@@ -45,6 +45,8 @@ abstract class Routes {
   static const studentCommunityPosts = '/student-community-posts';
   // نقاط الطالب
   static const studentPoints = '/student-points';
+  // تحليل سوق العمل
+  static const studentMarketAnalysis = '/student-market-analysis';
   /////company
   static const companyMain = '/company-main';
   static const companyHome = '/company-home';

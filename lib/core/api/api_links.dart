@@ -1,9 +1,9 @@
 class ApiLinks {
   //karam link
-   static const String baseUrl = 'http://192.168.1.104:8000/api';
+  // static const String baseUrl = 'http://192.168.1.104:8000/api';
 
   //baraa link
- // static const String baseUrl = 'http://192.168.50.6:8001/api';
+  static const String baseUrl = 'http://192.168.50.2:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -148,6 +148,23 @@ class ApiLinks {
 
   static String communityCommentReplies(int commentId) =>
       '$baseUrl/community/comments/$commentId/replies';
+
+  // market analysis
+  static const String marketCareerPaths =
+      '$baseUrl/market-analysis/career-paths';
+
+  static String marketSkillDemand(int careerPathId) =>
+      '$baseUrl/market-analysis/career-paths/$careerPathId/skill-demand';
+
+  static String marketTrends(int careerPathId) =>
+      '$baseUrl/market-analysis/career-paths/$careerPathId/trends';
+
+  static String marketSkillEvidence({
+    required int careerPathId,
+    required int skillId,
+  }) =>
+      '$baseUrl/market-analysis/career-paths/$careerPathId/skills/$skillId/evidence';
+
   // student points
   static const String myPoints = '$baseUrl/me/points';
   static const String myPointsHistory = '$baseUrl/me/points/history';
