@@ -17,15 +17,13 @@ class LoginOtpController extends GetxController {
   void onInit() {
     super.onInit();
     email = Get.arguments?['email'] ?? '';
-    print('LOGIN OTP EMAIL: $email');
+    // print('LOGIN OTP EMAIL: $email');
   }
 
   Future verifyLoginOtp() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     final code = otpController.text.trim();
-
-    print('VERIFY LOGIN OTP BUTTON CLICKED');
 
     if (code.length != 6) {
       JisrSnackbar.show(
@@ -41,8 +39,8 @@ class LoginOtpController extends GetxController {
 
       final body = {'email': email, 'code': code};
 
-      print('VERIFY LOGIN OTP URL: ${ApiLinks.verifyLoginOtp}');
-      print('VERIFY LOGIN OTP BODY: $body');
+      // print('VERIFY LOGIN OTP URL: ${ApiLinks.verifyLoginOtp}');
+      // print('VERIFY LOGIN OTP BODY: $body');
 
       final response = await http
           .post(
@@ -60,15 +58,15 @@ class LoginOtpController extends GetxController {
             },
           );
 
-      print('VERIFY LOGIN OTP STATUS CODE: ${response.statusCode}');
-      print('VERIFY LOGIN OTP RESPONSE BODY: ${response.body}');
+      // print('VERIFY LOGIN OTP STATUS CODE: ${response.statusCode}');
+      // print('VERIFY LOGIN OTP RESPONSE BODY: ${response.body}');
 
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
 final token = data['token']?.toString();
 final roleName = _extractUserRole(data);
-
+final userId = _extractUserId(data);
 if (token == null || token.isEmpty) {
   JisrSnackbar.show(
     title: 'خطأ',
@@ -87,9 +85,19 @@ if (roleName == null) {
   return;
 }
 
+if (userId == null) {
+  JisrSnackbar.show(
+    title: 'خطأ',
+    message: 'لم يتم استلام معرف المستخدم',
+    type: JisrSnackbarType.error,
+  );
+  return;
+}
+
 await AuthService().saveAuthData(
   token: token,
   role: roleName,
+  userId: userId,
 );
 print(roleName);  
 if (roleName == 'student') {
@@ -137,4 +145,14 @@ String? _extractUserRole(Map<String, dynamic> data) {
     otpController.dispose();
     super.onClose();
   }
+
+  int? _extractUserId(Map<String, dynamic> data) {
+  final rawId = data['user']?['id'];
+
+  if (rawId is int) {
+    return rawId;
+  }
+
+  return int.tryParse(rawId?.toString() ?? '');
+}
 }

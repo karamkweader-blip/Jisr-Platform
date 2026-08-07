@@ -18,6 +18,8 @@ class ApiLinks {
   static const String resendResetOtp = '$baseUrl/otp/resend';
   static const String resetPassword = '$baseUrl/password/reset';
 
+
+
   ///////student
   static const String uploadCv = '$baseUrl/cvs/upload';
   static String analyzeCv(int cvId) => '$baseUrl/cvs/$cvId/analyze';

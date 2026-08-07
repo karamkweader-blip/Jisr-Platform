@@ -8,6 +8,7 @@ import 'package:jisr_platform/bindings/auth/register_student_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/reset_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/role_binding.dart';
 import 'package:jisr_platform/bindings/company/company_main_binding.dart';
+import 'package:jisr_platform/bindings/company/conversations/company_conversation_binding.dart.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicant_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicants_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_assignment_workspace_binding.dart';
@@ -25,6 +26,7 @@ import 'package:jisr_platform/views/auth/forget&reset/otp_verification_view.dart
 import 'package:jisr_platform/views/auth/forget&reset/reset_password_view.dart';
 import 'package:jisr_platform/views/auth/role_selection.dart';
 import 'package:jisr_platform/views/company/company_main_view.dart';
+import 'package:jisr_platform/views/company/conversations/company_chat_view.dart';
 import 'package:jisr_platform/views/company/profile/edit_company_profile_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicant_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicants_view.dart';
@@ -295,6 +297,15 @@ class AppPages {
       binding: StudentTaskProgressBinding(),
     ),
 
+GetPage(
+  name: Routes.companyChat,
+  page: () => const CompanyChatView(),
+  binding: CompanyConversationBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration:
+      const Duration(milliseconds: 280),
+  curve: Curves.easeInOutCubic,
+),
     ////////////////////////////
   ];
 }

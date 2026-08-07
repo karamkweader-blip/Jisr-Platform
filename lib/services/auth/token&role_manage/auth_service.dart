@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthService {
   static const String tokenKey = 'token';
   static const String roleKey = 'role';
-
+  static const String userIdKey = 'user_id';
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(tokenKey);
@@ -18,31 +18,39 @@ class AuthService {
     return prefs.getString(roleKey);
   }
 
-  Future<Map<String, String?>> getAuthData() async {
+  Future<int?> getUserId() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getInt(userIdKey);
+}
+  Future<Map<String, dynamic>> getAuthData() async {
     final prefs = await SharedPreferences.getInstance();
 
     return {
       'token': prefs.getString(tokenKey),
       'role': prefs.getString(roleKey),
+      'userId': prefs.getInt(userIdKey),
     };
   }
 
-  Future<void> saveAuthData({
-    required String token,
-    required String role,
-  }) async {
-    final prefs = await SharedPreferences.getInstance();
+ Future<void> saveAuthData({
+  required String token,
+  required String role,
+  required int userId,
+}) async {
+  final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setString(tokenKey, token);
-    await prefs.setString(roleKey, role);
-  }
+  await prefs.setString(tokenKey, token);
+  await prefs.setString(roleKey, role);
+  await prefs.setInt(userIdKey, userId);
+}
 
   Future<void> removeAuthData() async {
-    final prefs = await SharedPreferences.getInstance();
+  final prefs = await SharedPreferences.getInstance();
 
-    await prefs.remove(tokenKey);
-    await prefs.remove(roleKey);
-  }
+  await prefs.remove(tokenKey);
+  await prefs.remove(roleKey);
+  await prefs.remove(userIdKey);
+}
 
   Future<Map<String, dynamic>> logout() async {
     final authData = await getAuthData();
