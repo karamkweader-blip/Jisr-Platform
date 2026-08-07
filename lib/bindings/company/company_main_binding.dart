@@ -9,7 +9,8 @@ import 'package:jisr_platform/services/company/company_home_service.dart';
 import 'package:jisr_platform/services/company/company_profile_service.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_assignments_service.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_service.dart';
-
+import 'package:jisr_platform/controllers/company/conversations/company_conversation_controller.dart';
+import 'package:jisr_platform/services/company/conversations/company_conversation_service.dart';
 class CompanyMainBinding extends Bindings {
   @override
   void dependencies() {
@@ -70,5 +71,19 @@ class CompanyMainBinding extends Bindings {
         fenix: true,
       );
     }
+    Get.lazyPut<CompanyConversationService>(
+  () => CompanyConversationService(
+    Get.find<AuthService>(),
+  ),
+  fenix: true,
+);
+
+Get.lazyPut<CompanyConversationController>(
+  () => CompanyConversationController(
+    Get.find<CompanyConversationService>(),
+    Get.find<AuthService>(),
+  ),
+  fenix: true,
+);
   }
 }

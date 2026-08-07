@@ -62,4 +62,7 @@ abstract class Routes {
   static const companyTaskAssignments = '/company/task-assignments';
   static const companyTaskAssignmentWorkspace =
       '/company/task-assignments/workspace';
+ //// conversations
+      static const companyChat =
+    '/company/conversations/chat';
 }
