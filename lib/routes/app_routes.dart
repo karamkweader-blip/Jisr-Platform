@@ -41,6 +41,9 @@ abstract class Routes {
   //محادثات
   static const studentConversations = '/student-conversations';
   static const studentChat = '/student-chat';
+  // مساعد جسر الذكي
+  static const studentChatbot = '/student-chatbot';
+  static const studentChatbotChat = '/student-chatbot/chat';
   // بوستات مجتمع تقني
   static const studentCommunityPosts = '/student-community-posts';
   // نقاط الطالب

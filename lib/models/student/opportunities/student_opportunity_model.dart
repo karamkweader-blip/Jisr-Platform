@@ -107,8 +107,8 @@ class StudentOpportunityModel {
       postedAt: json['posted_at']?.toString(),
       applicationsCount:
           int.tryParse(json['applications_count'].toString()) ?? 0,
-      matchScore: int.tryParse(json['match_score'].toString()) ?? 0,
-      matchLabel: json['match_label']?.toString() ?? '',
+matchScore:
+    (double.tryParse(json['match_score']?.toString() ?? '') ?? 0).round(),      matchLabel: json['match_label']?.toString() ?? '',
       matchReasons: (json['match_reasons'] as List? ?? [])
           .map((item) => item.toString())
           .toList(),

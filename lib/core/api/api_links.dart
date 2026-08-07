@@ -2,8 +2,8 @@ class ApiLinks {
   //karam link
   // static const String baseUrl = 'http://192.168.1.104:8000/api';
 
-  //baraa link
-  static const String baseUrl = 'http://192.168.50.2:8001/api';
+  //baraa link0
+  static const String baseUrl = 'http://192.168.50.7:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -123,6 +123,16 @@ class ApiLinks {
 
   static String markConversationAsRead(int conversationId) =>
       '$baseUrl/conversations/$conversationId/read';
+
+  // chatbot
+  static const String chatbotConversations =
+      '$baseUrl/student/chatbot/conversations';
+
+  static String chatbotConversation(int conversationId) =>
+      '$baseUrl/student/chatbot/conversations/$conversationId';
+
+  static String chatbotMessages(int conversationId) =>
+      '$baseUrl/student/chatbot/conversations/$conversationId/messages';
 
   // task assignment progress & final submission
   static String taskAssignmentProgress(int assignmentId) =>
