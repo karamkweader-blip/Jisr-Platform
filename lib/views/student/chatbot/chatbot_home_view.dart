@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/chatbot/chatbot_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/chatbot/chatbot_mode.dart';
 import 'package:jisr_platform/models/student/chatbot/chatbot_models.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
@@ -92,6 +93,7 @@ class _ChatbotHomeViewState extends State<ChatbotHomeView> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.background,

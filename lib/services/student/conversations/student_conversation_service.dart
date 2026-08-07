@@ -1,11 +1,14 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_links.dart';
 import 'package:jisr_platform/models/student/conversations/student_conversation_model.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 
 class StudentConversationService {
-  final AuthService _authService = AuthService();
+  final AuthService _authService;
+
+  StudentConversationService(this._authService);
 
   Future<Map<String, String>> _headers() async {
     final token = (await _authService.getToken())?.trim();
@@ -21,233 +24,219 @@ class StudentConversationService {
     };
   }
 
-  Map<String, dynamic> _decodeBody(http.Response response) {
-    if (response.body.isEmpty) return {};
+  Map<String, dynamic> _decode(http.Response response) {
+    if (response.body.trim().isEmpty) return <String, dynamic>{};
 
     try {
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      final decoded = jsonDecode(response.body);
+      if (decoded is Map<String, dynamic>) return decoded;
+      if (decoded is Map) return Map<String, dynamic>.from(decoded);
     } catch (_) {
-      return {'message': 'استجابة غير مفهومة من الخادم'};
+      // تعالج الرسالة أدناه بدل كشف الاستجابة الخام للمستخدم.
     }
+
+    return {'message': 'استجابة غير مفهومة من الخادم'};
   }
 
-  Uri _withPagination({
-    required String url,
+  Uri _withPagination(
+    String url, {
     required int page,
     required int perPage,
   }) {
     return Uri.parse(url).replace(
       queryParameters: {
-        'page': page.toString(),
-        'per_page': perPage.toString(),
+        'page': '$page',
+        'per_page': '$perPage',
       },
     );
   }
 
   Future<ConversationListResponse> getTaskConversations({
     int page = 1,
-    int perPage = 10,
-  }) async {
-    final response = await http
-        .get(
-          _withPagination(
-            url: ApiLinks.taskConversations,
-            page: page,
-            perPage: perPage,
-          ),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال بجلب محادثات التاسكات');
-          },
-        );
-
-    print('TASK CONVERSATIONS STATUS: ${response.statusCode}');
-    print('TASK CONVERSATIONS BODY: ${response.body}');
-
-    final data = _decodeBody(response);
-
-    if (response.statusCode == 200) {
-      return ConversationListResponse.fromJson(data);
-    }
-
-    throw Exception(data['message'] ?? 'فشل جلب محادثات التاسكات');
+    int perPage = 15,
+  }) {
+    return _getConversationList(
+      ApiLinks.taskConversations,
+      page: page,
+      perPage: perPage,
+      fallbackMessage: 'تعذر جلب محادثات المهام',
+    );
   }
 
   Future<ConversationListResponse> getAllConversations({
     int page = 1,
-    int perPage = 10,
-  }) async {
-    final response = await http
-        .get(
-          _withPagination(
-            url: ApiLinks.allConversations,
-            page: page,
-            perPage: perPage,
-          ),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال بجلب كل المحادثات');
-          },
-        );
-
-    print('ALL CONVERSATIONS STATUS: ${response.statusCode}');
-    print('ALL CONVERSATIONS BODY: ${response.body}');
-
-    final data = _decodeBody(response);
-
-    if (response.statusCode == 200) {
-      return ConversationListResponse.fromJson(data);
-    }
-
-    throw Exception(data['message'] ?? 'فشل جلب كل المحادثات');
+    int perPage = 15,
+  }) {
+    return _getConversationList(
+      ApiLinks.allConversations,
+      page: page,
+      perPage: perPage,
+      fallbackMessage: 'تعذر جلب المحادثات',
+    );
   }
 
   Future<ConversationListResponse> getClosedConversations({
     int page = 1,
-    int perPage = 10,
-  }) async {
-    final response = await http
-        .get(
-          _withPagination(
-            url: ApiLinks.closedConversations,
-            page: page,
-            perPage: perPage,
-          ),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال بجلب المحادثات المغلقة');
-          },
-        );
-
-    print('CLOSED CONVERSATIONS STATUS: ${response.statusCode}');
-    print('CLOSED CONVERSATIONS BODY: ${response.body}');
-
-    final data = _decodeBody(response);
-
-    if (response.statusCode == 200) {
-      return ConversationListResponse.fromJson(data);
-    }
-
-    throw Exception(data['message'] ?? 'فشل جلب المحادثات المغلقة');
+    int perPage = 15,
+  }) {
+    return _getConversationList(
+      ApiLinks.closedConversations,
+      page: page,
+      perPage: perPage,
+      fallbackMessage: 'تعذر جلب المحادثات المغلقة',
+    );
   }
 
-  Future<ConversationMessagesResponse> getMessages(int conversationId) async {
-    final response = await http
-        .get(
-          Uri.parse(ApiLinks.conversationMessages(conversationId)),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال بجلب الرسائل');
-          },
-        );
+  Future<ConversationListResponse> _getConversationList(
+    String url, {
+    required int page,
+    required int perPage,
+    required String fallbackMessage,
+  }) async {
+    try {
+      final response = await http
+          .get(
+            _withPagination(url, page: page, perPage: perPage),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () => throw Exception('انتهت مهلة الاتصال بالخادم'),
+          );
 
-    print('MESSAGES STATUS: ${response.statusCode}');
-    print('MESSAGES BODY: ${response.body}');
+      final body = _decode(response);
 
-    final data = _decodeBody(response);
+      if (response.statusCode == 200) {
+        return ConversationListResponse.fromJson(body);
+      }
 
-    if (response.statusCode == 200) {
-      return ConversationMessagesResponse.fromJson(data);
+      throw Exception(body['message']?.toString() ?? fallbackMessage);
+    } catch (error) {
+      if (error is Exception) rethrow;
+      throw Exception(fallbackMessage);
     }
+  }
 
-    throw Exception(data['message'] ?? 'فشل جلب الرسائل');
+  Future<ConversationMessagesResponse> getMessages(
+    int conversationId,
+  ) async {
+    try {
+      final response = await http
+          .get(
+            Uri.parse(ApiLinks.conversationMessages(conversationId)),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () => throw Exception('انتهت مهلة جلب الرسائل'),
+          );
+
+      final body = _decode(response);
+
+      if (response.statusCode == 200) {
+        return ConversationMessagesResponse.fromJson(body);
+      }
+
+      throw Exception(
+        body['message']?.toString() ?? 'تعذر جلب رسائل المحادثة',
+      );
+    } catch (error) {
+      if (error is Exception) rethrow;
+      throw Exception('تعذر جلب رسائل المحادثة');
+    }
   }
 
   Future<ConversationMessageModel> sendMessage({
     required int conversationId,
     required String content,
   }) async {
-    final response = await http
-        .post(
-          Uri.parse(ApiLinks.conversationMessages(conversationId)),
-          headers: await _headers(),
-          body: jsonEncode({'content': content}),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال أثناء إرسال الرسالة');
-          },
-        );
+    try {
+      final response = await http
+          .post(
+            Uri.parse(ApiLinks.conversationMessages(conversationId)),
+            headers: await _headers(),
+            body: jsonEncode({'content': content}),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () => throw Exception('انتهت مهلة إرسال الرسالة'),
+          );
 
-    print('SEND MESSAGE STATUS: ${response.statusCode}');
-    print('SEND MESSAGE BODY: ${response.body}');
+      final body = _decode(response);
 
-    final data = _decodeBody(response);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ConversationMessageModel.fromJson(
+          body['data'] is Map
+              ? Map<String, dynamic>.from(body['data'])
+              : <String, dynamic>{},
+        ).copyWith(isMine: true);
+      }
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return ConversationMessageModel.fromJson(
-        data['data'] ?? {},
-      ).copyWith(isMine: true);
+      throw Exception(body['message']?.toString() ?? 'تعذر إرسال الرسالة');
+    } catch (error) {
+      if (error is Exception) rethrow;
+      throw Exception('تعذر إرسال الرسالة');
     }
-
-    throw Exception(data['message'] ?? 'فشل إرسال الرسالة');
   }
 
   Future<ConversationMessageModel> updateMessage({
     required int messageId,
     required String content,
   }) async {
-    final response = await http
-        .post(
-          Uri.parse(ApiLinks.updateConversationMessage(messageId)),
-          headers: await _headers(),
-          body: jsonEncode({'content': content}),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال أثناء تعديل الرسالة');
-          },
-        );
+    try {
+      final response = await http
+          .post(
+            Uri.parse(ApiLinks.updateConversationMessage(messageId)),
+            headers: await _headers(),
+            body: jsonEncode({'content': content}),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () => throw Exception('انتهت مهلة تعديل الرسالة'),
+          );
 
-    print('UPDATE MESSAGE STATUS: ${response.statusCode}');
-    print('UPDATE MESSAGE BODY: ${response.body}');
+      final body = _decode(response);
 
-    final data = _decodeBody(response);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ConversationMessageModel.fromJson(
+          body['data'] is Map
+              ? Map<String, dynamic>.from(body['data'])
+              : <String, dynamic>{},
+        ).copyWith(isMine: true);
+      }
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return ConversationMessageModel.fromJson(
-        data['data'] ?? {},
-      ).copyWith(isMine: true);
+      throw Exception(body['message']?.toString() ?? 'تعذر تعديل الرسالة');
+    } catch (error) {
+      if (error is Exception) rethrow;
+      throw Exception('تعذر تعديل الرسالة');
     }
-
-    throw Exception(data['message'] ?? 'فشل تعديل الرسالة');
   }
 
   Future<void> markAsRead(int conversationId) async {
-    final response = await http
-        .patch(
-          Uri.parse(ApiLinks.markConversationAsRead(conversationId)),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 10),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال عند تعليم المحادثة كمقروءة');
-          },
-        );
+    try {
+      final response = await http
+          .patch(
+            Uri.parse(ApiLinks.markConversationAsRead(conversationId)),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 12),
+            onTimeout: () => throw Exception('انتهت مهلة تحديث حالة القراءة'),
+          );
 
-    print('MARK READ STATUS: ${response.statusCode}');
-    print('MARK READ BODY: ${response.body}');
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 204) {
+        return;
+      }
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return;
+      final body = _decode(response);
+      throw Exception(
+        body['message']?.toString() ?? 'تعذر تعليم المحادثة كمقروءة',
+      );
+    } catch (error) {
+      if (error is Exception) rethrow;
+      throw Exception('تعذر تعليم المحادثة كمقروءة');
     }
-
-    final data = _decodeBody(response);
-    throw Exception(data['message'] ?? 'فشل تعليم المحادثة كمقروءة');
   }
 }

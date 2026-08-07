@@ -759,29 +759,33 @@ class CompanyConversationController extends GetxController {
   DateTime? _parseDate(
     String? value,
   ) {
-    if (value == null ||
-        value.trim().isEmpty) {
+    final raw = value?.trim();
+
+    if (raw == null ||
+        raw.isEmpty ||
+        raw == 'null') {
       return null;
     }
 
     final normalized =
-        value.contains('T')
-            ? value
-            : value.replaceFirst(
+        raw.contains('T')
+            ? raw
+            : raw.replaceFirst(
                 ' ',
                 'T',
               );
 
-    final parsed =
-        DateTime.tryParse(normalized);
+    final hasTimezone =
+        RegExp(r'(Z|[+-]\d{2}:\d{2})$')
+            .hasMatch(normalized);
 
-    if (parsed == null) {
-      return null;
-    }
+    final parsed = DateTime.tryParse(
+      hasTimezone
+          ? normalized
+          : '${normalized}Z',
+    );
 
-    return parsed.isUtc
-        ? parsed.toLocal()
-        : parsed;
+    return parsed?.toLocal();
   }
 
   void _updateLatestMessage(
