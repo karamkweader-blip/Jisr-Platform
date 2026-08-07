@@ -72,6 +72,9 @@ import 'package:jisr_platform/bindings/student/points/student_points_binding.dar
 import 'package:jisr_platform/views/student/points/student_points_view.dart';
 import 'package:jisr_platform/bindings/student/market_analysis/market_analysis_binding.dart';
 import 'package:jisr_platform/views/student/market_analysis/market_analysis_view.dart';
+import 'package:jisr_platform/bindings/student/chatbot/chatbot_binding.dart';
+import 'package:jisr_platform/views/student/chatbot/chatbot_home_view.dart';
+import 'package:jisr_platform/views/student/chatbot/chatbot_chat_view.dart';
 
 class AppPages {
   static final pages = [
@@ -216,6 +219,20 @@ class AppPages {
       name: Routes.studentChat,
       page: () => const StudentChatView(),
       binding: StudentConversationBinding(),
+    ),
+
+    GetPage(
+      name: Routes.studentChatbot,
+      page: () => const ChatbotHomeView(),
+      binding: ChatbotBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+
+    GetPage(
+      name: Routes.studentChatbotChat,
+      page: () => const ChatbotChatView(),
+      binding: ChatbotBinding(),
+      transition: Transition.rightToLeftWithFade,
     ),
 
     //بوست مجتمع تقني

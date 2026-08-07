@@ -99,16 +99,12 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             IconButton(
-              tooltip: 'الإشعارات',
+              tooltip: 'مساعد جسر الذكي',
               onPressed: () {
-                Get.snackbar(
-                  'الإشعارات',
-                  'سيتم تفعيل الإشعارات قريباً',
-                  snackPosition: SnackPosition.BOTTOM,
-                );
+                Get.toNamed(Routes.studentChatbot);
               },
               icon: const Icon(
-                Icons.notifications_none_rounded,
+                Icons.smart_toy_outlined,
                 color: AppColors.primaryBlue,
               ),
             ),
