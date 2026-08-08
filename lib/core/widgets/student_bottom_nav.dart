@@ -64,11 +64,18 @@ class StudentBottomNav extends StatelessWidget {
   }
 
   void _goTo(int index) {
-    final selectedIndex = _selectedIndex();
+    final targetRoute = _destinations[index].route;
+    final currentRoute = Get.currentRoute;
 
-    if (index == selectedIndex) return;
+    // currentIndex is only a visual fallback for secondary student pages.
+    // Navigation must be blocked only when we are already on the real route;
+    // otherwise pages such as conversations cannot return to Home.
+    if (currentRoute == targetRoute ||
+        currentRoute.startsWith('$targetRoute/')) {
+      return;
+    }
 
-    Get.offNamed(_destinations[index].route);
+    Get.offNamed(targetRoute);
   }
 
   @override

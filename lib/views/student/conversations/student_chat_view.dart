@@ -1,528 +1,352 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/conversations/student_conversation_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
-import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
+import 'package:jisr_platform/core/widgets/company/Loading-Empty-Error/jisr_error_state.dart';
+import 'package:jisr_platform/core/widgets/company/Loading-Empty-Error/jisr_loading_state.dart';
+import 'package:jisr_platform/core/widgets/conversations/chat_message_bubble.dart.dart';
+import 'package:jisr_platform/core/widgets/conversations/message_info_sheet.dart';
 import 'package:jisr_platform/models/student/conversations/student_conversation_model.dart';
 
-class StudentChatView extends StatefulWidget {
+class StudentChatView extends GetView<StudentConversationController> {
   const StudentChatView({super.key});
 
   @override
-  State<StudentChatView> createState() => _StudentChatViewState();
-}
-
-class _StudentChatViewState extends State<StudentChatView> {
-  final StudentConversationController controller =
-      Get.find<StudentConversationController>();
-
-  late final StudentConversationModel conversation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    conversation = Get.arguments as StudentConversationModel;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.openConversation(conversation);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final taskTitle = controller.conversationTaskTitle(conversation);
-    final companyName = controller.conversationCompanyName(conversation);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: AppColors.background,
-          centerTitle: true,
-          iconTheme: const IconThemeData(color: AppColors.primaryBlue),
-          title: Column(
+        appBar: _buildAppBar(),
+        body: Obx(() {
+          final conversation = controller.selectedConversation.value;
+
+          if (conversation == null) {
+            return JisrErrorState(
+              message: 'لم يتم تحديد المحادثة المطلوبة.',
+              onRetry: () => Get.back(),
+            );
+          }
+
+          return Column(
             children: [
-              Text(
-                taskTitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: 'Cairo',
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                companyName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
-                  fontSize: 11,
-                ),
-              ),
+              _buildTaskContext(),
+              Expanded(child: _buildMessages(context)),
+              _buildBottomArea(),
             ],
-          ),
-          actions: [
-            IconButton(
-              onPressed: () => controller.fetchMessages(conversation.id),
-              icon: const Icon(
-                Icons.refresh_rounded,
-                color: AppColors.actionYellow,
-              ),
-            ),
-          ],
+          );
+        }),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: AppColors.cardWhite,
+      surfaceTintColor: Colors.transparent,
+      leading: IconButton(
+        onPressed: () => Get.back(),
+        icon: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: AppColors.textDark,
+          size: 20,
         ),
-        body: Column(
+      ),
+      titleSpacing: 0,
+      title: Obx(() {
+        final conversation = controller.selectedConversation.value;
+        if (conversation == null) return const Text('المحادثة');
+
+        final participant = controller.otherParticipant(conversation);
+        final companyName = controller.participantName(conversation);
+
+        return Row(
           children: [
+            _ChatAvatar(
+              name: companyName,
+              imageUrl: participant?.profilePictureUrl,
+            ),
+            const SizedBox(width: 10),
             Expanded(
-              child: Obx(() {
-                if (controller.isLoadingMessages.value) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.actionYellow,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    companyName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.textDark,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
                     ),
-                  );
-                }
-
-                if (controller.messages.isEmpty) {
-                  return const _EmptyMessages();
-                }
-
-                return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: controller.messages.length,
-                  itemBuilder: (context, index) {
-                    final message = controller.messages[index];
-
-                    if (controller.isSystemMessage(message)) {
-                      return _SystemMessageBubble(
-                        message: message,
-                      ).animate().fadeIn(duration: 300.ms).slideY(begin: .15);
+                  ),
+                  Text(
+                    controller.currentTaskTitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.textGrey,
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      }),
+      actions: [
+        Obx(
+          () => IconButton(
+            tooltip: 'تحديث',
+            onPressed: controller.isLoadingMessages.value
+                ? null
+                : () {
+                    final conversation = controller.selectedConversation.value;
+                    if (conversation != null) {
+                      controller.fetchMessages(conversation.id);
                     }
-
-                    return _ChatBubble(message: message)
-                        .animate()
-                        .fadeIn(
-                          delay: Duration(milliseconds: 35 * index),
-                          duration: 300.ms,
-                        )
-                        .slideY(begin: .12);
                   },
-                );
-              }),
+            icon: const Icon(
+              Icons.refresh_rounded,
+              color: AppColors.primaryBlue,
             ),
-            _MessageInput(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SystemMessageBubble extends StatelessWidget {
-  final ConversationMessageModel message;
-
-  const _SystemMessageBubble({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 14),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppColors.actionYellow.withOpacity(.13),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: AppColors.actionYellow.withOpacity(.25)),
-        ),
-        child: Text(
-          message.content,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontFamily: 'Cairo',
-            color: AppColors.primaryBlue,
-            fontSize: 12,
-            height: 1.5,
-            fontWeight: FontWeight.w600,
           ),
         ),
-      ),
+        const SizedBox(width: 5),
+      ],
     );
   }
-}
 
-class _ChatBubble extends GetView<StudentConversationController> {
-  final ConversationMessageModel message;
+  Widget _buildTaskContext() {
+    return Obx(() {
+      final task = controller.conversationContext.value?.task;
+      if (task == null) return const SizedBox.shrink();
 
-  const _ChatBubble({required this.message});
+      final deadline = controller.formatDate(task.deadline);
+      final status = controller.assignmentStatusLabel(task.assignmentStatus);
 
-  @override
-  Widget build(BuildContext context) {
-    final isMine = message.isMine;
-    final canEdit = controller.canEditMessage(message);
-
-    return Align(
-      alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * .76,
-          minWidth: 80,
-        ),
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(14),
+      return Container(
+        width: double.infinity,
+        margin: const EdgeInsets.fromLTRB(14, 12, 14, 4),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isMine ? AppColors.primaryBlue : Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(22),
-            topRight: const Radius.circular(22),
-            bottomLeft: Radius.circular(isMine ? 22 : 6),
-            bottomRight: Radius.circular(isMine ? 6 : 22),
+          color: AppColors.primaryBlue.withOpacity(0.06),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: AppColors.primaryBlue.withOpacity(0.10),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryBlue.withOpacity(.07),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
-            ),
-          ],
         ),
-        child: Column(
-          crossAxisAlignment: isMine
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
+        child: Row(
           children: [
-            if (!isMine)
-              Text(
-                message.sender?.name ?? 'الشركة',
-                style: const TextStyle(
-                  fontFamily: 'Cairo',
-                  color: AppColors.actionYellow,
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                ),
+            Container(
+              width: 38,
+              height: 38,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlue.withOpacity(0.10),
+                borderRadius: BorderRadius.circular(11),
               ),
-
-            if (!isMine) const SizedBox(height: 5),
-
-            Text(
-              message.content,
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontFamily: 'Cairo',
-                color: isMine ? Colors.white : AppColors.textDark,
-                height: 1.55,
-                fontSize: 14,
+              child: const Icon(
+                Icons.task_alt_rounded,
+                color: AppColors.primaryBlue,
+                size: 20,
               ),
             ),
-
-            const SizedBox(height: 8),
-
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: isMine
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.start,
-              children: [
-                Text(
-                  controller.timeOnly(message.createdAt),
-                  style: TextStyle(
-                    fontFamily: 'Cairo',
-                    color: isMine ? Colors.white70 : AppColors.textGrey,
-                    fontSize: 10,
+            const SizedBox(width: 11),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    task.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.textDark,
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
-                ),
-
-                if (isMine) ...[
-                  const SizedBox(width: 6),
-
-                  Icon(
-                    message.readAt == null
-                        ? Icons.done_rounded
-                        : Icons.done_all_rounded,
-                    size: 16,
-                    color: message.readAt == null
-                        ? Colors.white70
-                        : const Color(0xFF64B5F6),
-                  ),
-
-                  if (canEdit) ...[
-                    const SizedBox(width: 8),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () => _openEditSheet(message),
-                      child: const Padding(
-                        padding: EdgeInsets.all(3),
-                        child: Icon(
-                          Icons.edit_rounded,
-                          color: Colors.white70,
-                          size: 16,
-                        ),
+                  if (deadline.isNotEmpty || status.isNotEmpty) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      [
+                        if (status.isNotEmpty) status,
+                        if (deadline.isNotEmpty) 'الموعد: $deadline',
+                      ].join(' • '),
+                      style: const TextStyle(
+                        fontFamily: 'Cairo',
+                        color: AppColors.textGrey,
+                        fontSize: 10.5,
                       ),
                     ),
                   ],
                 ],
-              ],
+              ),
             ),
+          ],
+        ),
+      );
+    });
+  }
 
-            if (isMine && message.readAt != null) ...[
-              const SizedBox(height: 4),
-              const Text(
-                'تمت القراءة',
+  Widget _buildMessages(BuildContext context) {
+    if (controller.isLoadingMessages.value && controller.messages.isEmpty) {
+      return const JisrLoadingState(message: 'جارٍ تحميل الرسائل...');
+    }
+
+    final error = controller.messagesError.value;
+    if (error != null && controller.messages.isEmpty) {
+      final conversation = controller.selectedConversation.value;
+      return JisrErrorState(
+        message: error,
+        onRetry: conversation == null
+            ? null
+            : () => controller.fetchMessages(conversation.id),
+      );
+    }
+
+    if (controller.messages.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(28),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.chat_bubble_outline_rounded,
+                size: 48,
+                color: AppColors.textGrey,
+              ),
+              SizedBox(height: 12),
+              Text(
+                'ابدأ المحادثة',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: Color(0xFFBBDEFB),
-                  fontSize: 10,
+                  color: AppColors.textDark,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: 5),
+              Text(
+                'يمكنك التواصل مع الشركة بخصوص تنفيذ المهمة.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.textGrey,
+                  fontSize: 12,
                 ),
               ),
             ],
-          ],
+          ),
         ),
-      ),
-    );
-  }
-
-  void _openEditSheet(ConversationMessageModel message) {
-    if (!controller.canEditMessage(message)) {
-      JisrSnackbar.show(
-        title: 'لا يمكن التعديل',
-        message: 'لا يمكن تعديل الرسالة بعد قراءتها من الطرف الآخر',
-        type: JisrSnackbarType.warning,
       );
-      return;
     }
 
-    controller.prepareEditMessage(message);
+    return ListView.builder(
+      reverse: true,
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      padding: const EdgeInsets.fromLTRB(14, 16, 14, 10),
+      itemCount: controller.messages.length,
+      itemBuilder: (context, index) {
+        final reverseIndex = controller.messages.length - 1 - index;
+        final message = controller.messages[reverseIndex];
 
-    Get.bottomSheet(
-      _EditMessageSheet(message: message),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+        return ChatMessageBubble(
+          content: controller.displayMessageContent(message),
+          isMine: message.isMine,
+          isRead: message.isRead,
+          isSystem: message.isSystem,
+          timeText: controller.formatTime(message.createdAt),
+          onLongPress: message.isMine
+              ? () => _showMessageInfo(context, message)
+              : null,
+        );
+      },
     );
   }
-}
 
-class _EditMessageSheet extends GetView<StudentConversationController> {
-  final ConversationMessageModel message;
-
-  const _EditMessageSheet({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
+  Widget _buildBottomArea() {
+    if (controller.isConversationClosed) {
+      return SafeArea(
         top: false,
         child: Container(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.82,
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+          decoration: BoxDecoration(
+            color: AppColors.cardWhite,
+            border: Border(
+              top: BorderSide(color: AppColors.textGrey.withOpacity(0.10)),
+            ),
           ),
-          padding: EdgeInsets.only(
-            right: 22,
-            left: 22,
-            top: 18,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 22,
-          ),
-          decoration: const BoxDecoration(
-            color: AppColors.background,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
-          ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 46,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: AppColors.textGrey.withOpacity(.25),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-
-                const SizedBox(height: 18),
-
-                Container(
-                  width: 58,
-                  height: 58,
-                  decoration: BoxDecoration(
-                    color: AppColors.actionYellow.withOpacity(.14),
-                    borderRadius: BorderRadius.circular(22),
-                  ),
-                  child: const Icon(
-                    Icons.edit_rounded,
-                    color: AppColors.actionYellow,
-                    size: 32,
-                  ),
-                ),
-
-                const SizedBox(height: 14),
-
-                const Text(
-                  'تعديل الرسالة',
-                  style: TextStyle(
-                    fontFamily: 'Cairo',
-                    color: AppColors.primaryBlue,
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                const Text(
-                  'يمكنك تعديل رسالتك طالما لم تتم قراءتها من الطرف الآخر.',
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.lock_outline_rounded,
+                size: 17,
+                color: AppColors.textGrey,
+              ),
+              SizedBox(width: 7),
+              Flexible(
+                child: Text(
+                  'هذه المحادثة مغلقة ومتاحة للقراءة فقط',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Cairo',
                     color: AppColors.textGrey,
-                    height: 1.5,
-                    fontSize: 13,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-
-                const SizedBox(height: 16),
-
-                TextField(
-                  controller: controller.editMessageController,
-                  maxLines: 5,
-                  minLines: 3,
-                  textDirection: TextDirection.rtl,
-                  style: const TextStyle(fontFamily: 'Cairo'),
-                  decoration: InputDecoration(
-                    hintText: 'اكتب النص الجديد...',
-                    hintStyle: const TextStyle(
-                      fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.all(16),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(22),
-                      borderSide: BorderSide(
-                        color: AppColors.primaryBlue.withOpacity(.08),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(22),
-                      borderSide: BorderSide(
-                        color: AppColors.primaryBlue.withOpacity(.08),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(22),
-                      borderSide: const BorderSide(
-                        color: AppColors.actionYellow,
-                        width: 1.5,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                Obx(
-                  () => ElevatedButton.icon(
-                    onPressed: controller.isUpdating.value
-                        ? null
-                        : () => controller.updateMessage(message),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(double.infinity, 54),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(22),
-                      ),
-                      elevation: 0,
-                    ),
-                    icon: controller.isUpdating.value
-                        ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Icon(Icons.check_rounded),
-                    label: Text(
-                      controller.isUpdating.value
-                          ? 'جار حفظ التعديل...'
-                          : 'حفظ التعديل',
-                      style: const TextStyle(
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                TextButton(
-                  onPressed: controller.isUpdating.value ? null : Get.back,
-                  child: const Text(
-                    'إلغاء',
-                    style: TextStyle(
-                      fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      ),
-    );
-  }
-}
+      );
+    }
 
-class _MessageInput extends GetView<StudentConversationController> {
-  @override
-  Widget build(BuildContext context) {
     return SafeArea(
       top: false,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
+        padding: const EdgeInsets.fromLTRB(12, 9, 12, 10),
         decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryBlue.withOpacity(.08),
-              blurRadius: 18,
-              offset: const Offset(0, -6),
-            ),
-          ],
+          color: AppColors.cardWhite,
+          border: Border(
+            top: BorderSide(color: AppColors.textGrey.withOpacity(0.10)),
+          ),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
               child: TextField(
                 controller: controller.messageController,
                 minLines: 1,
                 maxLines: 4,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.multiline,
                 style: const TextStyle(fontFamily: 'Cairo'),
                 decoration: InputDecoration(
                   hintText: 'اكتب رسالة...',
                   hintStyle: const TextStyle(
                     fontFamily: 'Cairo',
                     color: AppColors.textGrey,
+                    fontSize: 13,
                   ),
                   filled: true,
                   fillColor: AppColors.background,
                   contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 13,
+                    horizontal: 15,
+                    vertical: 11,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(22),
@@ -531,31 +355,35 @@ class _MessageInput extends GetView<StudentConversationController> {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 9),
             Obx(
-              () => InkWell(
-                borderRadius: BorderRadius.circular(22),
-                onTap: controller.isSending.value
-                    ? null
-                    : controller.sendMessage,
-                child: Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    color: controller.isSending.value
-                        ? AppColors.textGrey
-                        : AppColors.primaryBlue,
-                    borderRadius: BorderRadius.circular(22),
-                  ),
-                  child: controller.isSending.value
-                      ? const Padding(
-                          padding: EdgeInsets.all(15),
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
+              () => Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap:
+                      controller.isSending.value ? null : controller.sendMessage,
+                  borderRadius: BorderRadius.circular(50),
+                  child: Ink(
+                    width: 45,
+                    height: 45,
+                    decoration: const BoxDecoration(
+                      gradient: AppColors.primaryGradient,
+                      shape: BoxShape.circle,
+                    ),
+                    child: controller.isSending.value
+                        ? const Padding(
+                            padding: EdgeInsets.all(13),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColors.cardWhite,
+                            ),
+                          )
+                        : const Icon(
+                            Icons.send_rounded,
+                            color: AppColors.cardWhite,
+                            size: 20,
                           ),
-                        )
-                      : const Icon(Icons.send_rounded, color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -564,17 +392,194 @@ class _MessageInput extends GetView<StudentConversationController> {
       ),
     );
   }
+
+  void _showMessageInfo(
+    BuildContext context,
+    ConversationMessageModel message,
+  ) {
+    final readTime =
+        message.isRead ? controller.formatTime(message.readAt) : null;
+    final readRelative =
+        message.isRead ? controller.relativeTime(message.readAt) : '';
+
+    Get.bottomSheet(
+      MessageInfoSheet(
+        sentAt: controller.formatTime(message.createdAt),
+        readStatus: controller.readStatusText(message),
+        readAt: message.isRead
+            ? [
+                if (readTime != null && readTime.isNotEmpty) readTime,
+                if (readRelative.isNotEmpty) readRelative,
+              ].join(' • ')
+            : null,
+        canEdit: controller.canEditMessage(message),
+        onEdit: () {
+          Get.back();
+          Future.microtask(() => _showEditSheet(context, message));
+        },
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
+
+  void _showEditSheet(
+    BuildContext context,
+    ConversationMessageModel message,
+  ) {
+    controller.prepareEditMessage(message);
+
+    Get.bottomSheet(
+      Directionality(
+        textDirection: TextDirection.rtl,
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewInsetsOf(context).bottom,
+            ),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(18, 12, 18, 22),
+              decoration: const BoxDecoration(
+                color: AppColors.cardWhite,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 42,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: AppColors.textGrey.withOpacity(0.25),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  const Row(
+                    children: [
+                      Icon(Icons.edit_outlined, color: AppColors.primaryBlue),
+                      SizedBox(width: 8),
+                      Text(
+                        'تعديل الرسالة',
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          color: AppColors.textDark,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: controller.editMessageController,
+                    minLines: 2,
+                    maxLines: 5,
+                    autofocus: true,
+                    style: const TextStyle(fontFamily: 'Cairo'),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: AppColors.background,
+                      hintText: 'نص الرسالة',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Obx(
+                    () => SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: controller.isUpdating.value
+                            ? null
+                            : () => controller.updateMessage(message),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryBlue,
+                          foregroundColor: AppColors.cardWhite,
+                          padding: const EdgeInsets.symmetric(vertical: 13),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: controller.isUpdating.value
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.cardWhite,
+                                ),
+                              )
+                            : const Text(
+                                'حفظ التعديل',
+                                style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
 }
 
-class _EmptyMessages extends StatelessWidget {
-  const _EmptyMessages();
+class _ChatAvatar extends StatelessWidget {
+  final String name;
+  final String? imageUrl;
+
+  const _ChatAvatar({required this.name, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final url = imageUrl?.trim();
+    final letter = name.trim().isEmpty ? '؟' : name.trim()[0];
+
+    return Container(
+      width: 38,
+      height: 38,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: AppColors.primaryBlue.withOpacity(0.10),
+        shape: BoxShape.circle,
+      ),
+      child: url != null && url.isNotEmpty
+          ? Image.network(
+              url,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => _AvatarLetter(letter: letter),
+            )
+          : _AvatarLetter(letter: letter),
+    );
+  }
+}
+
+class _AvatarLetter extends StatelessWidget {
+  final String letter;
+
+  const _AvatarLetter({required this.letter});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
       child: Text(
-        'لا توجد رسائل حالياً',
-        style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+        letter,
+        style: const TextStyle(
+          fontFamily: 'Cairo',
+          color: AppColors.primaryBlue,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
   }
