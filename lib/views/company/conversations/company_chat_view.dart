@@ -39,7 +39,7 @@ class CompanyChatView
 
             return Column(
               children: [
-                _buildConversationContext(),
+                _buildTaskContext(),
                 Expanded(
                   child:
                       _buildMessages(
@@ -126,7 +126,8 @@ class CompanyChatView
                       ),
                     ),
                     Text(
-                      controller.currentContextTitle,
+                      controller
+                          .currentTaskTitle,
                       maxLines: 1,
                       overflow:
                           TextOverflow
@@ -183,89 +184,134 @@ class CompanyChatView
     );
   }
 
-  Widget _buildConversationContext() {
-    return Obx(() {
-      final task = controller.conversationContext.value?.task;
-      final opportunity = controller.currentOpportunity;
-      final interview = controller.currentOpportunityInterview;
+  Widget _buildTaskContext() {
+    return Obx(
+      () {
+        final context =
+            controller
+                .conversationContext
+                .value;
 
-      if (task == null && opportunity == null) {
-        return const SizedBox.shrink();
-      }
+        final task = context?.task;
 
-      final deadline = task == null ? '' : controller.formatDate(task.deadline);
-      final status = task == null
-          ? opportunity?.status ?? ''
-          : controller.assignmentStatusLabel(task.assignmentStatus);
-      final schedule = controller.formatDate(interview?.scheduledAt);
-      final meetingType = controller.meetingTypeLabel(interview?.meetingType);
-      final isOpportunity = opportunity != null;
-      final details = <String>[
-        if (status.isNotEmpty) status,
-        if (deadline.isNotEmpty) 'الموعد: $deadline',
-        if (schedule.isNotEmpty) 'المقابلة: $schedule',
-        if (meetingType.isNotEmpty) meetingType,
-      ];
+        if (task == null) {
+          return const SizedBox
+              .shrink();
+        }
 
-      return Container(
-        width: double.infinity,
-        margin: const EdgeInsets.fromLTRB(14, 12, 14, 4),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppColors.primaryBlue.withOpacity(0.06),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: AppColors.primaryBlue.withOpacity(0.10)),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 38,
-              height: 38,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.10),
-                borderRadius: BorderRadius.circular(11),
-              ),
-              child: Icon(
-                isOpportunity
-                    ? Icons.event_available_outlined
-                    : Icons.task_alt_rounded,
-                color: AppColors.primaryBlue,
-                size: 20,
-              ),
+        final deadline =
+            controller.formatDate(
+          task.deadline,
+        );
+
+        final status =
+            controller
+                .assignmentStatusLabel(
+          task.assignmentStatus,
+        );
+
+        return Container(
+          width: double.infinity,
+          margin:
+              const EdgeInsets.fromLTRB(
+            14,
+            12,
+            14,
+            4,
+          ),
+          padding:
+              const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.primaryBlue
+                .withOpacity(0.06),
+            borderRadius:
+                BorderRadius.circular(15),
+            border: Border.all(
+              color: AppColors.primaryBlue
+                  .withOpacity(0.10),
             ),
-            const SizedBox(width: 11),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    opportunity?.title ?? task?.title ?? 'المحادثة',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.textDark,
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  if (details.isNotEmpty) ...[
-                    const SizedBox(height: 3),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 38,
+                height: 38,
+                alignment:
+                    Alignment.center,
+                decoration:
+                    BoxDecoration(
+                  color: AppColors
+                      .primaryBlue
+                      .withOpacity(0.10),
+                  borderRadius:
+                      BorderRadius
+                          .circular(11),
+                ),
+                child: const Icon(
+                  Icons.task_alt_rounded,
+                  color: AppColors
+                      .primaryBlue,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 11),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+                  children: [
                     Text(
-                      details.join(' • '),
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
-                        fontSize: 10.5,
+                      task.title,
+                      maxLines: 1,
+                      overflow:
+                          TextOverflow
+                              .ellipsis,
+                      style:
+                          const TextStyle(
+                        color:
+                            AppColors
+                                .textDark,
+                        fontSize: 12.5,
+                        fontWeight:
+                            FontWeight
+                                .w800,
                       ),
                     ),
+                    if (deadline
+                            .isNotEmpty ||
+                        status
+                            .isNotEmpty) ...[
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        [
+                          if (status
+                              .isNotEmpty)
+                            status,
+                          if (deadline
+                              .isNotEmpty)
+                            'الموعد: $deadline',
+                        ].join(' • '),
+                        style:
+                            const TextStyle(
+                          color:
+                              AppColors
+                                  .textGrey,
+                          fontSize:
+                              10.5,
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildMessages(
@@ -331,7 +377,7 @@ class CompanyChatView
               ),
               SizedBox(height: 5),
               Text(
-                'يمكنك التواصل مع الطالب بخصوص هذه المهمة أو الفرصة.',
+                'يمكنك التواصل مع الطالب بخصوص تنفيذ المهمة.',
                 textAlign:
                     TextAlign.center,
                 style: TextStyle(

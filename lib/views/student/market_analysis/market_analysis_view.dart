@@ -7,24 +7,15 @@ import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/market_analysis/market_analysis_models.dart';
 
 class MarketAnalysisView extends GetView<MarketAnalysisController> {
-  final bool isCompanyMode;
-
-  const MarketAnalysisView({
-    super.key,
-    this.isCompanyMode = false,
-  });
+  const MarketAnalysisView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final listBottomPadding = isCompanyMode ? 32.0 : 96.0;
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
-        bottomNavigationBar: isCompanyMode
-            ? null
-            : const StudentBottomNav(currentIndex: 0),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
         body: SafeArea(
           child: GetBuilder<MarketAnalysisController>(
             builder: (_) {
@@ -37,17 +28,10 @@ class MarketAnalysisView extends GetView<MarketAnalysisController> {
                     parent: AlwaysScrollableScrollPhysics(),
                   ),
                   slivers: [
-                    SliverToBoxAdapter(
-                      child: _MarketHeader(
-                        isCompanyMode: isCompanyMode,
-                      ),
-                    ),
+                    const SliverToBoxAdapter(child: _MarketHeader()),
                     if (controller.isLoadingPaths)
-                      const SliverFillRemaining(
-                        child: _MarketLoading(),
-                      )
-                    else if (controller.errorMessage != null &&
-                        controller.careerPaths.isEmpty)
+                      const SliverFillRemaining(child: _MarketLoading())
+                    else if (controller.errorMessage != null && controller.careerPaths.isEmpty)
                       SliverFillRemaining(
                         child: _MarketError(
                           message: controller.errorMessage!,
@@ -57,45 +41,27 @@ class MarketAnalysisView extends GetView<MarketAnalysisController> {
                     else if (controller.careerPaths.isEmpty)
                       const SliverFillRemaining(
                         child: _MarketEmpty(
-                          message:
-                              'لا توجد بيانات سوق عمل جاهزة حالياً.',
+                          message: 'لا توجد بيانات سوق عمل جاهزة حالياً.',
                         ),
                       )
                     else ...[
                       SliverToBoxAdapter(
-                        child: _CareerPathSelector(
-                          controller: controller,
-                        ),
+                        child: _CareerPathSelector(controller: controller),
                       ),
                       SliverToBoxAdapter(
-                        child: _MarketSummary(
-                          controller: controller,
-                        ),
+                        child: _MarketSummary(controller: controller),
                       ),
                       SliverToBoxAdapter(
-                        child: _MarketTabs(
-                          controller: controller,
-                        ),
+                        child: _MarketTabs(controller: controller),
                       ),
                       if (controller.isLoadingInsights)
-                        const SliverFillRemaining(
-                          child: _MarketLoading(),
-                        )
+                        const SliverFillRemaining(child: _MarketLoading())
                       else if (controller.selectedSection == 'trends')
-                        _TrendsList(
-                          controller: controller,
-                          bottomPadding: listBottomPadding,
-                        )
+                        _TrendsList(controller: controller)
                       else if (controller.selectedSection == 'categories')
-                        _CategoriesList(
-                          controller: controller,
-                          bottomPadding: listBottomPadding,
-                        )
+                        _CategoriesList(controller: controller)
                       else
-                        _DemandSkillsList(
-                          controller: controller,
-                          bottomPadding: listBottomPadding,
-                        ),
+                        _DemandSkillsList(controller: controller),
                     ],
                   ],
                 ),
@@ -109,11 +75,7 @@ class MarketAnalysisView extends GetView<MarketAnalysisController> {
 }
 
 class _MarketHeader extends StatelessWidget {
-  final bool isCompanyMode;
-
-  const _MarketHeader({
-    required this.isCompanyMode,
-  });
+  const _MarketHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -122,10 +84,13 @@ class _MarketHeader extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(22),
-        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(32),
-          gradient: AppColors.primaryGradient,
+          gradient: const LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [AppColors.primaryBlue, Color(0xFF0077B6)],
+          ),
           boxShadow: [
             BoxShadow(
               color: AppColors.primaryBlue.withOpacity(.22),
@@ -166,9 +131,7 @@ class _MarketHeader extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(.14),
                           borderRadius: BorderRadius.circular(18),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(.18),
-                          ),
+                          border: Border.all(color: Colors.white.withOpacity(.18)),
                         ),
                         child: const Icon(
                           Icons.arrow_forward_rounded,
@@ -177,11 +140,11 @@ class _MarketHeader extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'تحليل سوق العمل',
                             style: TextStyle(
                               fontFamily: 'Cairo',
@@ -190,14 +153,10 @@ class _MarketHeader extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text(
-                            isCompanyMode
-                                ? 'اكتشف المهارات المطلوبة قبل إنشاء فرصك وتحديد متطلباتها'
-                                : 'اعرف المهارات المطلوبة فعلياً في الوظائف',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            'اعرف المهارات المطلوبة فعلياً في الوظائف',
+                            style: TextStyle(
                               fontFamily: 'Cairo',
                               color: Colors.white70,
                               fontSize: 13,
@@ -207,7 +166,6 @@ class _MarketHeader extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 8),
                     Container(
                       width: 54,
                       height: 54,
@@ -221,11 +179,7 @@ class _MarketHeader extends StatelessWidget {
                         size: 31,
                       ),
                     )
-                        .animate(
-                          onPlay: (controller) {
-                            controller.repeat(reverse: true);
-                          },
-                        )
+                        .animate(onPlay: (c) => c.repeat(reverse: true))
                         .scale(
                           begin: const Offset(1, 1),
                           end: const Offset(1.06, 1.06),
@@ -247,11 +201,7 @@ class _MarketHeader extends StatelessWidget {
             ),
           ],
         ),
-      ).animate().fadeIn(
-            duration: 520.ms,
-          ).slideY(
-            begin: .18,
-          ),
+      ).animate().fadeIn(duration: 520.ms).slideY(begin: .18),
     );
   }
 }
@@ -259,9 +209,7 @@ class _MarketHeader extends StatelessWidget {
 class _CareerPathSelector extends StatelessWidget {
   final MarketAnalysisController controller;
 
-  const _CareerPathSelector({
-    required this.controller,
-  });
+  const _CareerPathSelector({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -271,7 +219,7 @@ class _CareerPathSelector extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'اختر المسار المهني',
+            'اختار المسار المهني',
             style: TextStyle(
               fontFamily: 'Cairo',
               color: AppColors.primaryBlue,
@@ -286,20 +234,15 @@ class _CareerPathSelector extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemCount: controller.careerPaths.length,
-              separatorBuilder: (_, __) {
-                return const SizedBox(width: 10);
-              },
+              separatorBuilder: (_, __) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
                 final path = controller.careerPaths[index];
-                final active =
-                    controller.selectedCareerPath?.id == path.id;
+                final active = controller.selectedCareerPath?.id == path.id;
 
                 return _CareerPathCard(
                   path: path,
                   isActive: active,
-                  onTap: () {
-                    controller.selectCareerPath(path);
-                  },
+                  onTap: () => controller.selectCareerPath(path),
                 );
               },
             ),
@@ -331,18 +274,14 @@ class _CareerPathCard extends StatelessWidget {
         width: 250,
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.primaryBlue
-              : AppColors.cardWhite,
+          color: isActive ? AppColors.primaryBlue : Colors.white,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: isActive
-                ? AppColors.primaryBlue
-                : AppColors.primaryBlue.withOpacity(.08),
+            color: isActive ? AppColors.primaryBlue : AppColors.primaryBlue.withOpacity(.08),
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryBlue.withOpacity(.08),
+              color: (isActive ? AppColors.primaryBlue : AppColors.primaryBlue).withOpacity(.08),
               blurRadius: 18,
               offset: const Offset(0, 9),
             ),
@@ -354,16 +293,12 @@ class _CareerPathCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: isActive
-                    ? Colors.white.withOpacity(.16)
-                    : AppColors.primaryBlue.withOpacity(.09),
+                color: isActive ? Colors.white.withOpacity(.16) : AppColors.primaryBlue.withOpacity(.09),
                 borderRadius: BorderRadius.circular(17),
               ),
               child: Icon(
                 Icons.route_rounded,
-                color: isActive
-                    ? Colors.white
-                    : AppColors.primaryBlue,
+                color: isActive ? Colors.white : AppColors.primaryBlue,
               ),
             ),
             const SizedBox(width: 10),
@@ -378,24 +313,19 @@ class _CareerPathCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: isActive
-                          ? Colors.white
-                          : AppColors.primaryBlue,
+                      color: isActive ? Colors.white : AppColors.primaryBlue,
                       fontSize: 14.5,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '${path.totalJobPostings} إعلان · '
-                    '${path.latestSnapshotDate.isEmpty ? 'بدون تاريخ' : path.latestSnapshotDate}',
+                    '${path.totalJobPostings} إعلان · ${path.latestSnapshotDate.isEmpty ? 'بدون تاريخ' : path.latestSnapshotDate}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: isActive
-                          ? Colors.white70
-                          : AppColors.textGrey,
+                      color: isActive ? Colors.white70 : AppColors.textGrey,
                       fontSize: 11.5,
                       fontWeight: FontWeight.w600,
                     ),
@@ -413,9 +343,7 @@ class _CareerPathCard extends StatelessWidget {
 class _MarketSummary extends StatelessWidget {
   final MarketAnalysisController controller;
 
-  const _MarketSummary({
-    required this.controller,
-  });
+  const _MarketSummary({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -473,11 +401,9 @@ class _SummaryBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: color.withOpacity(.12),
-        ),
+        border: Border.all(color: color.withOpacity(.12)),
         boxShadow: [
           BoxShadow(
             color: color.withOpacity(.06),
@@ -488,11 +414,7 @@ class _SummaryBox extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(
-            icon,
-            color: color,
-            size: 22,
-          ),
+          Icon(icon, color: color, size: 22),
           const SizedBox(height: 6),
           Text(
             value,
@@ -521,28 +443,14 @@ class _SummaryBox extends StatelessWidget {
 class _MarketTabs extends StatelessWidget {
   final MarketAnalysisController controller;
 
-  const _MarketTabs({
-    required this.controller,
-  });
+  const _MarketTabs({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    const tabs = [
-      _MarketTabData(
-        'demand',
-        'الطلب',
-        Icons.bar_chart_rounded,
-      ),
-      _MarketTabData(
-        'trends',
-        'الاتجاهات',
-        Icons.trending_up_rounded,
-      ),
-      _MarketTabData(
-        'categories',
-        'التصنيفات',
-        Icons.category_rounded,
-      ),
+    final tabs = [
+      _MarketTabData('demand', 'الطلب', Icons.bar_chart_rounded),
+      _MarketTabData('trends', 'الاتجاهات', Icons.trending_up_rounded),
+      _MarketTabData('categories', 'التصنيفات', Icons.category_rounded),
     ];
 
     return Padding(
@@ -550,32 +458,22 @@ class _MarketTabs extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(7),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: AppColors.primaryBlue.withOpacity(.08),
-          ),
+          border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
         ),
         child: Row(
           children: tabs.map((tab) {
-            final active =
-                controller.selectedSection == tab.key;
-
+            final active = controller.selectedSection == tab.key;
             return Expanded(
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
-                onTap: () {
-                  controller.changeSection(tab.key);
-                },
+                onTap: () => controller.changeSection(tab.key),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: active
-                        ? AppColors.primaryBlue
-                        : Colors.transparent,
+                    color: active ? AppColors.primaryBlue : Colors.transparent,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -583,25 +481,17 @@ class _MarketTabs extends StatelessWidget {
                     children: [
                       Icon(
                         tab.icon,
-                        color: active
-                            ? Colors.white
-                            : AppColors.textGrey,
+                        color: active ? Colors.white : AppColors.textGrey,
                         size: 17,
                       ),
                       const SizedBox(width: 5),
-                      Flexible(
-                        child: Text(
-                          tab.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: 'Cairo',
-                            color: active
-                                ? Colors.white
-                                : AppColors.textGrey,
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Text(
+                        tab.title,
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          color: active ? Colors.white : AppColors.textGrey,
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -618,61 +508,32 @@ class _MarketTabs extends StatelessWidget {
 
 class _DemandSkillsList extends StatelessWidget {
   final MarketAnalysisController controller;
-  final double bottomPadding;
 
-  const _DemandSkillsList({
-    required this.controller,
-    required this.bottomPadding,
-  });
+  const _DemandSkillsList({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     if (controller.skills.isEmpty) {
       return const SliverFillRemaining(
-        child: _MarketEmpty(
-          message:
-              'لا توجد مهارات مكتشفة لهذا المسار حالياً.',
-        ),
+        child: _MarketEmpty(message: 'لا توجد مهارات مكتشفة لهذا المسار حالياً.'),
       );
     }
 
     return SliverPadding(
-      padding: EdgeInsets.fromLTRB(
-        18,
-        0,
-        18,
-        bottomPadding,
-      ),
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 96),
       sliver: SliverList.separated(
         itemCount: controller.skills.length,
-        separatorBuilder: (_, __) {
-          return const SizedBox(height: 12);
-        },
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final skill = controller.skills[index];
-
           return _DemandSkillCard(
             skill: skill,
             controller: controller,
-            onTap: () {
-              _showEvidenceSheet(
-                context,
-                controller,
-                skill,
-              );
-            },
+            onTap: () => _showEvidenceSheet(context, controller, skill),
           )
               .animate()
-              .fadeIn(
-                delay: Duration(
-                  milliseconds: 55 * (index % 6),
-                ),
-                duration: 420.ms,
-              )
-              .slideY(
-                begin: .12,
-                curve: Curves.easeOutCubic,
-              );
+              .fadeIn(delay: Duration(milliseconds: 55 * (index % 6)), duration: 420.ms)
+              .slideY(begin: .12, curve: Curves.easeOutCubic);
         },
       ),
     );
@@ -692,13 +553,8 @@ class _DemandSkillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = controller.demandColor(
-      skill.demandLevel,
-    );
-
-    final percent = skill.demandPercentage
-        .clamp(0, 100)
-        .toDouble();
+    final color = controller.demandColor(skill.demandLevel);
+    final percent = skill.demandPercentage.clamp(0, 100).toDouble();
 
     return InkWell(
       onTap: onTap,
@@ -706,11 +562,9 @@ class _DemandSkillCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: color.withOpacity(.14),
-          ),
+          border: Border.all(color: color.withOpacity(.14)),
           boxShadow: [
             BoxShadow(
               color: AppColors.primaryBlue.withOpacity(.055),
@@ -731,17 +585,12 @@ class _DemandSkillCard extends StatelessWidget {
                     color: color.withOpacity(.10),
                     borderRadius: BorderRadius.circular(17),
                   ),
-                  child: Icon(
-                    Icons.bolt_rounded,
-                    color: color,
-                    size: 27,
-                  ),
+                  child: Icon(Icons.bolt_rounded, color: color, size: 27),
                 ),
                 const SizedBox(width: 11),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         skill.skillName,
@@ -770,9 +619,7 @@ class _DemandSkillCard extends StatelessWidget {
                   ),
                 ),
                 _MiniBadge(
-                  text: controller.demandLevelArabic(
-                    skill.demandLevel,
-                  ),
+                  text: controller.demandLevelArabic(skill.demandLevel),
                   color: color,
                 ),
               ],
@@ -787,8 +634,7 @@ class _DemandSkillCard extends StatelessWidget {
                       value: percent / 100,
                       minHeight: 10,
                       backgroundColor: color.withOpacity(.09),
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(color),
+                      valueColor: AlwaysStoppedAnimation<Color>(color),
                     ),
                   ),
                 ),
@@ -807,26 +653,18 @@ class _DemandSkillCard extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(
-                  Icons.work_outline_rounded,
-                  size: 16,
-                  color: AppColors.textGrey,
-                ),
+                const Icon(Icons.work_outline_rounded, size: 16, color: AppColors.textGrey),
                 const SizedBox(width: 5),
-                Expanded(
-                  child: Text(
-                    'ظهرت في ${skill.jobPostingCount} إعلان',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
+                Text(
+                  'ظهرت في ${skill.jobPostingCount} إعلان',
+                  style: const TextStyle(
+                    fontFamily: 'Cairo',
+                    color: AppColors.textGrey,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const Spacer(),
                 const Text(
                   'عرض الدليل',
                   style: TextStyle(
@@ -837,11 +675,7 @@ class _DemandSkillCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(
-                  Icons.open_in_new_rounded,
-                  size: 15,
-                  color: AppColors.primaryBlue,
-                ),
+                const Icon(Icons.open_in_new_rounded, size: 15, color: AppColors.primaryBlue),
               ],
             ),
           ],
@@ -853,59 +687,36 @@ class _DemandSkillCard extends StatelessWidget {
 
 class _TrendsList extends StatelessWidget {
   final MarketAnalysisController controller;
-  final double bottomPadding;
 
-  const _TrendsList({
-    required this.controller,
-    required this.bottomPadding,
-  });
+  const _TrendsList({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     if (controller.trends.isEmpty) {
       return const SliverFillRemaining(
-        child: _MarketEmpty(
-          message:
-              'لا توجد اتجاهات محفوظة لهذا المسار حالياً.',
-        ),
+        child: _MarketEmpty(message: 'لا توجد اتجاهات محفوظة لهذا المسار حالياً.'),
       );
     }
 
     return SliverPadding(
-      padding: EdgeInsets.fromLTRB(
-        18,
-        0,
-        18,
-        bottomPadding,
-      ),
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 96),
       sliver: SliverList.separated(
         itemCount: controller.trends.length,
-        separatorBuilder: (_, __) {
-          return const SizedBox(height: 12);
-        },
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final trend = controller.trends[index];
-
-          final color = controller.trendColor(
-            trend.trendDirection,
-          );
-
-          final percent = trend.demandScore
-              .clamp(0, 100)
-              .toDouble();
+          final color = controller.trendColor(trend.trendDirection);
+          final percent = trend.demandScore.clamp(0, 100).toDouble();
 
           return Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: color.withOpacity(.12),
-              ),
+              border: Border.all(color: color.withOpacity(.12)),
               boxShadow: [
                 BoxShadow(
-                  color:
-                      AppColors.primaryBlue.withOpacity(.055),
+                  color: AppColors.primaryBlue.withOpacity(.055),
                   blurRadius: 16,
                   offset: const Offset(0, 8),
                 ),
@@ -920,17 +731,12 @@ class _TrendsList extends StatelessWidget {
                     color: color.withOpacity(.10),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    _trendIcon(trend.trendDirection),
-                    color: color,
-                    size: 26,
-                  ),
+                  child: Icon(_trendIcon(trend.trendDirection), color: color, size: 26),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         trend.skillName,
@@ -945,10 +751,7 @@ class _TrendsList extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${trend.skillCategory} · '
-                        '${trend.sourceJobCount} إعلان',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        '${trend.skillCategory} · ${trend.sourceJobCount} إعلان',
                         style: const TextStyle(
                           fontFamily: 'Cairo',
                           color: AppColors.textGrey,
@@ -959,14 +762,11 @@ class _TrendsList extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     _MiniBadge(
-                      text: controller.trendArabic(
-                        trend.trendDirection,
-                      ),
+                      text: controller.trendArabic(trend.trendDirection),
                       color: color,
                     ),
                     const SizedBox(height: 6),
@@ -985,16 +785,8 @@ class _TrendsList extends StatelessWidget {
             ),
           )
               .animate()
-              .fadeIn(
-                delay: Duration(
-                  milliseconds: 55 * (index % 6),
-                ),
-                duration: 420.ms,
-              )
-              .slideY(
-                begin: .12,
-                curve: Curves.easeOutCubic,
-              );
+              .fadeIn(delay: Duration(milliseconds: 55 * (index % 6)), duration: 420.ms)
+              .slideY(begin: .12, curve: Curves.easeOutCubic);
         },
       ),
     );
@@ -1003,43 +795,25 @@ class _TrendsList extends StatelessWidget {
 
 class _CategoriesList extends StatelessWidget {
   final MarketAnalysisController controller;
-  final double bottomPadding;
 
-  const _CategoriesList({
-    required this.controller,
-    required this.bottomPadding,
-  });
+  const _CategoriesList({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    final map = controller.demandResponse?.skillMap ??
-        <String, List<MarketDemandSkill>>{};
-
-    final entries = map.entries
-        .where((entry) => entry.value.isNotEmpty)
-        .toList();
+    final map = controller.demandResponse?.skillMap ?? <String, List<MarketDemandSkill>>{};
+    final entries = map.entries.where((entry) => entry.value.isNotEmpty).toList();
 
     if (entries.isEmpty) {
       return const SliverFillRemaining(
-        child: _MarketEmpty(
-          message:
-              'لا توجد تصنيفات مهارات لهذا المسار حالياً.',
-        ),
+        child: _MarketEmpty(message: 'لا توجد تصنيفات مهارات لهذا المسار حالياً.'),
       );
     }
 
     return SliverPadding(
-      padding: EdgeInsets.fromLTRB(
-        18,
-        0,
-        18,
-        bottomPadding,
-      ),
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 96),
       sliver: SliverList.separated(
         itemCount: entries.length,
-        separatorBuilder: (_, __) {
-          return const SizedBox(height: 12);
-        },
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final entry = entries[index];
           final categorySkills = entry.value;
@@ -1047,15 +821,12 @@ class _CategoriesList extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: AppColors.primaryBlue.withOpacity(.08),
-              ),
+              border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
               boxShadow: [
                 BoxShadow(
-                  color:
-                      AppColors.primaryBlue.withOpacity(.055),
+                  color: AppColors.primaryBlue.withOpacity(.055),
                   blurRadius: 16,
                   offset: const Offset(0, 8),
                 ),
@@ -1070,21 +841,15 @@ class _CategoriesList extends StatelessWidget {
                       width: 42,
                       height: 42,
                       decoration: BoxDecoration(
-                        color: AppColors.primaryBlue
-                            .withOpacity(.09),
+                        color: AppColors.primaryBlue.withOpacity(.09),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: const Icon(
-                        Icons.category_rounded,
-                        color: AppColors.primaryBlue,
-                      ),
+                      child: const Icon(Icons.category_rounded, color: AppColors.primaryBlue),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         entry.key,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Cairo',
                           color: AppColors.primaryBlue,
@@ -1093,11 +858,7 @@ class _CategoriesList extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    _MiniBadge(
-                      text: '${categorySkills.length} مهارة',
-                      color: AppColors.actionYellow,
-                    ),
+                    _MiniBadge(text: '${categorySkills.length} مهارة', color: AppColors.actionYellow),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -1105,34 +866,19 @@ class _CategoriesList extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 8,
                   children: categorySkills.map((skill) {
-                    final color = controller.demandColor(
-                      skill.demandLevel,
-                    );
-
+                    final color = controller.demandColor(skill.demandLevel);
                     return InkWell(
                       borderRadius: BorderRadius.circular(50),
-                      onTap: () {
-                        _showEvidenceSheet(
-                          context,
-                          controller,
-                          skill,
-                        );
-                      },
+                      onTap: () => _showEvidenceSheet(context, controller, skill),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 11,
-                          vertical: 7,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
                         decoration: BoxDecoration(
                           color: color.withOpacity(.09),
                           borderRadius: BorderRadius.circular(50),
-                          border: Border.all(
-                            color: color.withOpacity(.14),
-                          ),
+                          border: Border.all(color: color.withOpacity(.14)),
                         ),
                         child: Text(
-                          '${skill.skillName} '
-                          '${skill.demandPercentage.toStringAsFixed(0)}%',
+                          '${skill.skillName} ${skill.demandPercentage.toStringAsFixed(0)}%',
                           style: TextStyle(
                             fontFamily: 'Cairo',
                             color: color,
@@ -1148,16 +894,8 @@ class _CategoriesList extends StatelessWidget {
             ),
           )
               .animate()
-              .fadeIn(
-                delay: Duration(
-                  milliseconds: 55 * (index % 6),
-                ),
-                duration: 420.ms,
-              )
-              .slideY(
-                begin: .12,
-                curve: Curves.easeOutCubic,
-              );
+              .fadeIn(delay: Duration(milliseconds: 55 * (index % 6)), duration: 420.ms)
+              .slideY(begin: .12, curve: Curves.easeOutCubic);
         },
       ),
     );
@@ -1169,7 +907,7 @@ void _showEvidenceSheet(
   MarketAnalysisController controller,
   MarketDemandSkill skill,
 ) {
-  showModalBottomSheet<void>(
+  showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
@@ -1178,25 +916,16 @@ void _showEvidenceSheet(
         textDirection: TextDirection.rtl,
         child: Container(
           height: MediaQuery.of(context).size.height * .82,
-          padding: const EdgeInsets.fromLTRB(
-            18,
-            14,
-            18,
-            20,
-          ),
+          padding: const EdgeInsets.fromLTRB(18, 14, 18, 20),
           decoration: const BoxDecoration(
             color: AppColors.background,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(30),
-            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
           ),
           child: FutureBuilder<MarketSkillEvidenceResponse?>(
             future: controller.loadEvidence(skill),
             builder: (context, snapshot) {
               final response = snapshot.data;
-
-              final evidence =
-                  response?.evidence ?? <MarketSkillEvidence>[];
+              final evidence = response?.evidence ?? <MarketSkillEvidence>[];
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1206,8 +935,7 @@ void _showEvidenceSheet(
                       width: 46,
                       height: 5,
                       decoration: BoxDecoration(
-                        color:
-                            AppColors.textGrey.withOpacity(.24),
+                        color: AppColors.textGrey.withOpacity(.24),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -1219,20 +947,15 @@ void _showEvidenceSheet(
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: AppColors.actionYellow
-                              .withOpacity(.12),
+                          color: AppColors.actionYellow.withOpacity(.12),
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: const Icon(
-                          Icons.fact_check_rounded,
-                          color: AppColors.actionYellow,
-                        ),
+                        child: const Icon(Icons.fact_check_rounded, color: AppColors.actionYellow),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'أدلة ظهور ${skill.skillName}',
@@ -1245,9 +968,9 @@ void _showEvidenceSheet(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'من إعلانات الوظائف المحللة',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'Cairo',
                                 color: AppColors.textGrey,
                                 fontSize: 12,
@@ -1258,43 +981,29 @@ void _showEvidenceSheet(
                         ),
                       ),
                       IconButton(
-                        tooltip: 'إغلاق',
                         onPressed: Get.back,
-                        icon: const Icon(
-                          Icons.close_rounded,
-                          color: AppColors.textDark,
-                        ),
+                        icon: const Icon(Icons.close_rounded),
                       ),
                     ],
                   ),
                   const SizedBox(height: 14),
-                  if (snapshot.connectionState ==
-                      ConnectionState.waiting)
-                    const Expanded(
-                      child: _MarketLoading(),
-                    )
+                  if (snapshot.connectionState == ConnectionState.waiting)
+                    const Expanded(child: _MarketLoading())
                   else if (evidence.isEmpty)
                     const Expanded(
                       child: _MarketEmpty(
-                        message:
-                            'لا توجد أدلة تفصيلية لهذه المهارة حالياً.',
+                        message: 'لا توجد أدلة تفصيلية لهذه المهارة حالياً.',
                       ),
                     )
                   else
                     Expanded(
                       child: ListView.separated(
-                        physics:
-                            const BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         itemCount: evidence.length,
-                        separatorBuilder: (_, __) {
-                          return const SizedBox(height: 12);
-                        },
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           final item = evidence[index];
-
-                          return _EvidenceCard(
-                            item: item,
-                          );
+                          return _EvidenceCard(item: item);
                         },
                       ),
                     ),
@@ -1311,9 +1020,7 @@ void _showEvidenceSheet(
 class _EvidenceCard extends StatelessWidget {
   final MarketSkillEvidence item;
 
-  const _EvidenceCard({
-    required this.item,
-  });
+  const _EvidenceCard({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -1323,11 +1030,9 @@ class _EvidenceCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(.08),
-        ),
+        border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
         boxShadow: [
           BoxShadow(
             color: AppColors.primaryBlue.withOpacity(.05),
@@ -1341,11 +1046,7 @@ class _EvidenceCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.business_center_rounded,
-                color: AppColors.primaryBlue,
-                size: 20,
-              ),
+              const Icon(Icons.business_center_rounded, color: AppColors.primaryBlue, size: 20),
               const SizedBox(width: 7),
               Expanded(
                 child: Text(
@@ -1362,12 +1063,10 @@ class _EvidenceCard extends StatelessWidget {
               ),
             ],
           ),
-          if (job.companyName.isNotEmpty ||
-              job.location.isNotEmpty) ...[
+          if (job.companyName.isNotEmpty || job.location.isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(
-              '${job.companyName.isEmpty ? 'شركة غير محددة' : job.companyName}'
-              '${job.location.isEmpty ? '' : ' · ${job.location}'}',
+              '${job.companyName.isEmpty ? 'شركة غير محددة' : job.companyName}${job.location.isEmpty ? '' : ' · ${job.location}'}',
               style: const TextStyle(
                 fontFamily: 'Cairo',
                 color: AppColors.textGrey,
@@ -1385,9 +1084,7 @@ class _EvidenceCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
             ),
             child: Text(
-              evidence.context.isEmpty
-                  ? evidence.matchedText
-                  : evidence.context,
+              evidence.context.isEmpty ? evidence.matchedText : evidence.context,
               style: const TextStyle(
                 fontFamily: 'Cairo',
                 color: AppColors.textDark,
@@ -1403,18 +1100,11 @@ class _EvidenceCard extends StatelessWidget {
             runSpacing: 8,
             children: [
               if (evidence.alias.isNotEmpty)
-                _MiniBadge(
-                  text: evidence.alias,
-                  color: AppColors.actionYellow,
-                ),
+                _MiniBadge(text: evidence.alias, color: AppColors.actionYellow),
               if (evidence.extractionMethod.isNotEmpty)
-                _MiniBadge(
-                  text: evidence.extractionMethod,
-                  color: AppColors.primaryBlue,
-                ),
+                _MiniBadge(text: evidence.extractionMethod, color: AppColors.primaryBlue),
               _MiniBadge(
-                text: 'ثقة '
-                    '${((evidence.confidence.clamp(0, 1)) * 100).toStringAsFixed(0)}%',
+                text: 'ثقة ${((evidence.confidence.clamp(0, 1)) * 100).toStringAsFixed(0)}%',
                 color: const Color(0xFF16A34A),
               ),
             ],
@@ -1428,23 +1118,16 @@ class _EvidenceCard extends StatelessWidget {
 class _HeaderChip extends StatelessWidget {
   final String label;
 
-  const _HeaderChip({
-    required this.label,
-  });
+  const _HeaderChip({required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 7,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(.13),
         borderRadius: BorderRadius.circular(50),
-        border: Border.all(
-          color: Colors.white.withOpacity(.16),
-        ),
+        border: Border.all(color: Colors.white.withOpacity(.16)),
       ),
       child: Text(
         label,
@@ -1463,24 +1146,16 @@ class _MiniBadge extends StatelessWidget {
   final String text;
   final Color color;
 
-  const _MiniBadge({
-    required this.text,
-    required this.color,
-  });
+  const _MiniBadge({required this.text, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 6,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: color.withOpacity(.10),
         borderRadius: BorderRadius.circular(50),
-        border: Border.all(
-          color: color.withOpacity(.16),
-        ),
+        border: Border.all(color: color.withOpacity(.16)),
       ),
       child: Text(
         text,
@@ -1504,13 +1179,10 @@ class _MarketLoading extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(
-            color: AppColors.actionYellow,
-          ),
+          const CircularProgressIndicator(color: AppColors.actionYellow),
           const SizedBox(height: 14),
           Text(
-            'جارٍ تحليل بيانات سوق العمل...',
-            textAlign: TextAlign.center,
+            'عم نحلل بيانات السوق...',
             style: TextStyle(
               fontFamily: 'Cairo',
               color: AppColors.textGrey.withOpacity(.85),
@@ -1526,9 +1198,7 @@ class _MarketLoading extends StatelessWidget {
 class _MarketEmpty extends StatelessWidget {
   final String message;
 
-  const _MarketEmpty({
-    required this.message,
-  });
+  const _MarketEmpty({required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -1542,8 +1212,7 @@ class _MarketEmpty extends StatelessWidget {
               width: 74,
               height: 74,
               decoration: BoxDecoration(
-                color:
-                    AppColors.actionYellow.withOpacity(.12),
+                color: AppColors.actionYellow.withOpacity(.12),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -1574,30 +1243,23 @@ class _MarketError extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
 
-  const _MarketError({
-    required this.message,
-    required this.onRetry,
-  });
+  const _MarketError({required this.message, required this.onRetry});
 
   String get _safeMessage {
     final lower = message.toLowerCase();
 
-    final containsTechnicalDetails =
-        lower.contains('market_job_postings') ||
-            lower.contains('base table or view not found') ||
-            lower.contains('sqlstate') ||
-            lower.contains('route') ||
-            lower.contains('could not be found') ||
-            lower.contains('exception');
+    if (lower.contains('market_job_postings') ||
+        lower.contains('base table or view not found') ||
+        lower.contains('sqlstate')) {
+      return 'بيانات تحليل سوق العمل غير مجهّزة حالياً في الباك. يرجى تشغيل migrations و seeders الخاصة بميزة السوق ثم إعادة المحاولة.';
+    }
 
-    if (containsTechnicalDetails) {
-      return 'بيانات سوق العمل غير متاحة حاليًا. '
-          'يرجى المحاولة مرة أخرى لاحقًا.';
+    if (lower.contains('route') && lower.contains('could not be found')) {
+      return 'راوت تحليل سوق العمل غير متوفر حالياً في الباك. تأكد من تفعيل market-analysis routes.';
     }
 
     if (message.length > 180) {
-      return 'تعذر تحميل بيانات سوق العمل. '
-          'تحقق من الاتصال ثم أعد المحاولة.';
+      return '${message.substring(0, 180)}...';
     }
 
     return message;
@@ -1610,30 +1272,19 @@ class _MarketError extends StatelessWidget {
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(28),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 74,
-                      height: 74,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFDC2626)
-                            .withOpacity(.10),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.wifi_off_rounded,
-                        size: 38,
-                        color: Color(0xFFDC2626),
-                      ),
+                    const Icon(
+                      Icons.wifi_off_rounded,
+                      size: 54,
+                      color: Color(0xFFDC2626),
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 12),
                     Text(
                       _safeMessage,
                       textAlign: TextAlign.center,
@@ -1643,34 +1294,21 @@ class _MarketError extends StatelessWidget {
                         fontFamily: 'Cairo',
                         color: AppColors.textGrey,
                         height: 1.55,
-                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton.icon(
                       onPressed: onRetry,
-                      icon: const Icon(
-                        Icons.refresh_rounded,
-                      ),
+                      icon: const Icon(Icons.refresh_rounded),
                       label: const Text(
                         'إعادة المحاولة',
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: TextStyle(fontFamily: 'Cairo'),
                       ),
                       style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor:
-                            AppColors.primaryBlue,
+                        backgroundColor: AppColors.primaryBlue,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 18,
-                          vertical: 12,
-                        ),
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(18),
                         ),
                       ),
                     ),
@@ -1689,20 +1327,14 @@ class _GlowCircle extends StatelessWidget {
   final double size;
   final Color color;
 
-  const _GlowCircle({
-    required this.size,
-    required this.color,
-  });
+  const _GlowCircle({required this.size, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }
 }
@@ -1712,11 +1344,7 @@ class _MarketTabData {
   final String title;
   final IconData icon;
 
-  const _MarketTabData(
-    this.key,
-    this.title,
-    this.icon,
-  );
+  const _MarketTabData(this.key, this.title, this.icon);
 }
 
 IconData _trendIcon(String value) {

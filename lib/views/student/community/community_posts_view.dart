@@ -8,6 +8,8 @@ import 'package:jisr_platform/controllers/student/points/student_points_controll
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/community/community_post_model.dart';
+import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 
 class CommunityPostsView extends GetView<CommunityPostsController> {
   const CommunityPostsView({super.key});
@@ -666,31 +668,71 @@ class _PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (post.isOwner)
-                  PopupMenuButton<String>(
-                    tooltip: 'خيارات',
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    onSelected: (value) {
-                      if (value == 'edit') onEdit();
-                      if (value == 'delete') onDelete();
-                    },
-                    itemBuilder: (_) => const [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Text('تعديل', style: TextStyle(fontFamily: 'Cairo')),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Text(
-                          'حذف',
-                          style: TextStyle(fontFamily: 'Cairo', color: Color(0xFFDC2626)),
-                        ),
-                      ),
-                    ],
-                    child: const Icon(Icons.more_horiz_rounded, color: AppColors.textGrey),
+                PopupMenuButton<String>(
+                  tooltip: 'خيارات',
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
+                  onSelected: (value) {
+                    if (value == 'edit') onEdit();
+                    if (value == 'delete') onDelete();
+                    if (value == 'report') {
+                      ComplaintDialog.show(
+                        contextType: ComplaintContextTypes.communityPost,
+                        contextId: post.id,
+                        subjectLabel: 'منشور ${post.author.name}',
+                        onContextNotFound: () =>
+                            controller.fetchPosts(refresh: true),
+                      );
+                    }
+                  },
+                  itemBuilder: (_) => post.isOwner
+                      ? const [
+                          PopupMenuItem(
+                            value: 'edit',
+                            child: Text(
+                              'تعديل',
+                              style: TextStyle(fontFamily: 'Cairo'),
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 'delete',
+                            child: Text(
+                              'حذف',
+                              style: TextStyle(
+                                fontFamily: 'Cairo',
+                                color: Color(0xFFDC2626),
+                              ),
+                            ),
+                          ),
+                        ]
+                      : const [
+                          PopupMenuItem(
+                            value: 'report',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.report_problem_outlined,
+                                  color: Color(0xFFDC2626),
+                                  size: 19,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  'إرسال شكوى',
+                                  style: TextStyle(
+                                    fontFamily: 'Cairo',
+                                    color: Color(0xFFDC2626),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                  child: const Icon(
+                    Icons.more_horiz_rounded,
+                    color: AppColors.textGrey,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 10),
@@ -1345,29 +1387,76 @@ class _CommentCard extends StatelessWidget {
                   ],
                 ),
               ),
-              if (comment.isOwner)
-                PopupMenuButton<String>(
-                  tooltip: 'خيارات التعليق',
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  onSelected: (value) {
-                    if (value == 'edit') controller.prepareEditComment(comment);
-                    if (value == 'delete') onDelete();
-                  },
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(
-                      value: 'edit',
-                      child: Text('تعديل', style: TextStyle(fontFamily: 'Cairo')),
-                    ),
-                    PopupMenuItem(
-                      value: 'delete',
-                      child: Text(
-                        'حذف',
-                        style: TextStyle(fontFamily: 'Cairo', color: Color(0xFFDC2626)),
-                      ),
-                    ),
-                  ],
-                  child: const Icon(Icons.more_horiz_rounded, color: AppColors.textGrey, size: 21),
+              PopupMenuButton<String>(
+                tooltip: 'خيارات التعليق',
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                onSelected: (value) {
+                  if (value == 'edit') {
+                    controller.prepareEditComment(comment);
+                  }
+                  if (value == 'delete') onDelete();
+                  if (value == 'report') {
+                    ComplaintDialog.show(
+                      contextType: ComplaintContextTypes.communityComment,
+                      contextId: comment.id,
+                      subjectLabel: 'تعليق ${comment.user.name}',
+                      onContextNotFound: () => controller.fetchComments(
+                        comment.postId,
+                        filter: controller.commentsFilter,
+                      ),
+                    );
+                  }
+                },
+                itemBuilder: (_) => comment.isOwner
+                    ? const [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Text(
+                            'تعديل',
+                            style: TextStyle(fontFamily: 'Cairo'),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Text(
+                            'حذف',
+                            style: TextStyle(
+                              fontFamily: 'Cairo',
+                              color: Color(0xFFDC2626),
+                            ),
+                          ),
+                        ),
+                      ]
+                    : const [
+                        PopupMenuItem(
+                          value: 'report',
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.report_problem_outlined,
+                                color: Color(0xFFDC2626),
+                                size: 19,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'إرسال شكوى',
+                                style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  color: Color(0xFFDC2626),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                child: const Icon(
+                  Icons.more_horiz_rounded,
+                  color: AppColors.textGrey,
+                  size: 21,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),

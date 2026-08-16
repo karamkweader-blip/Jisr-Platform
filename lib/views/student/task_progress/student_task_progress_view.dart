@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/task_progress/student_task_progress_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/student/task_progress/student_task_progress_model.dart';
+import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 
 class StudentTaskProgressView extends GetView<StudentTaskProgressController> {
   const StudentTaskProgressView({super.key});
@@ -91,6 +93,17 @@ class StudentTaskProgressView extends GetView<StudentTaskProgressController> {
                     onAddProgress: _openAddProgressSheet,
                     onSubmitFinal: _openFinalSubmissionSheet,
                   ).animate().fadeIn(delay: 120.ms).slideY(begin: .18),
+
+                  const SizedBox(height: 12),
+
+                  ComplaintActionButton(
+                    contextType: ComplaintContextTypes.companyTaskAssignment,
+                    contextId: controller.assignmentId,
+                    subjectLabel:
+                        'الشركة المرتبطة بالمهمة: ${assignment.task.title}',
+                    label: 'الإبلاغ عن الشركة',
+                    onContextNotFound: controller.fetchProgress,
+                  ).animate().fadeIn(delay: 170.ms).slideY(begin: .16),
 
                   const SizedBox(height: 22),
 

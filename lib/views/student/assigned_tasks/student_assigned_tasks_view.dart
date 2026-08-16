@@ -6,6 +6,8 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/assigned_tasks/student_assigned_task_model.dart';
+import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 import 'package:jisr_platform/views/student/assigned_tasks/student_evaluation_appeals_view.dart';
 
 class StudentAssignedTasksView extends GetView<StudentAssignedTaskController> {
@@ -1273,6 +1275,18 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
               value: task.assignment.supervisor.name,
             ),
           ],
+
+          const SizedBox(height: 14),
+
+          ComplaintActionButton(
+            contextType: ComplaintContextTypes.projectAssignment,
+            contextId: task.projectAssignmentId,
+            subjectLabel: task.assignment.supervisor.name.isEmpty
+                ? 'المشرف المسند للمشروع'
+                : 'المشرف ${task.assignment.supervisor.name}',
+            label: 'الإبلاغ عن المشرف',
+            onContextNotFound: () => controller.fetchAssignedTasks(),
+          ),
 
           const SizedBox(height: 18),
 

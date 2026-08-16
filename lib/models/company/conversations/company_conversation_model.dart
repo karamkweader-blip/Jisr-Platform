@@ -73,8 +73,6 @@ class CompanyConversationModel {
   final String status;
   final CompanyConversationTaskAssignment? taskAssignment;
   final CompanyConversationTask? task;
-  final CompanyConversationOpportunity? opportunity;
-  final CompanyConversationOpportunityInterview? opportunityInterview;
   final int unreadMessagesCount;
   final CompanyLatestMessage? latestMessage;
   final List<CompanyConversationParticipant> participants;
@@ -87,8 +85,6 @@ class CompanyConversationModel {
     required this.status,
     required this.taskAssignment,
     required this.task,
-    required this.opportunity,
-    required this.opportunityInterview,
     required this.unreadMessagesCount,
     required this.latestMessage,
     required this.participants,
@@ -108,14 +104,6 @@ class CompanyConversationModel {
           : null,
       task: json['task'] is Map
           ? CompanyConversationTask.fromJson(_asMap(json['task']))
-          : null,
-      opportunity: json['opportunity'] is Map
-          ? CompanyConversationOpportunity.fromJson(_asMap(json['opportunity']))
-          : null,
-      opportunityInterview: json['opportunity_interview'] is Map
-          ? CompanyConversationOpportunityInterview.fromJson(
-              _asMap(json['opportunity_interview']),
-            )
           : null,
       unreadMessagesCount: _toInt(json['unread_messages_count']),
       latestMessage: json['latest_message'] is Map
@@ -146,17 +134,6 @@ class CompanyConversationModel {
     return 'مهمة';
   }
 
-  String get displayContextTitle {
-    final opportunityTitle = opportunity?.title.trim();
-    if (opportunityTitle != null && opportunityTitle.isNotEmpty) {
-      return opportunityTitle;
-    }
-    return displayTaskTitle;
-  }
-
-  bool get isOpportunityInterview =>
-      type == 'opportunity_interview' || opportunity != null;
-
   CompanyConversationModel copyWith({
     int? unreadMessagesCount,
     CompanyLatestMessage? latestMessage,
@@ -167,71 +144,12 @@ class CompanyConversationModel {
       status: status,
       taskAssignment: taskAssignment,
       task: task,
-      opportunity: opportunity,
-      opportunityInterview: opportunityInterview,
       unreadMessagesCount:
           unreadMessagesCount ?? this.unreadMessagesCount,
       latestMessage: latestMessage ?? this.latestMessage,
       participants: participants,
       createdAt: createdAt,
       updatedAt: updatedAt,
-    );
-  }
-}
-
-class CompanyConversationOpportunity {
-  final int id;
-  final String title;
-  final String type;
-  final String status;
-
-  const CompanyConversationOpportunity({
-    required this.id,
-    required this.title,
-    required this.type,
-    required this.status,
-  });
-
-  factory CompanyConversationOpportunity.fromJson(Map<String, dynamic> json) {
-    return CompanyConversationOpportunity(
-      id: _toInt(json['id'] ?? json['id_Resource']),
-      title: json['title']?.toString() ?? '',
-      type: json['type']?.toString() ?? '',
-      status: json['status']?.toString() ?? '',
-    );
-  }
-}
-
-class CompanyConversationOpportunityInterview {
-  final int id;
-  final String type;
-  final String status;
-  final String? scheduledAt;
-  final String? meetingType;
-  final String? meetingLink;
-  final String? location;
-
-  const CompanyConversationOpportunityInterview({
-    required this.id,
-    required this.type,
-    required this.status,
-    required this.scheduledAt,
-    required this.meetingType,
-    required this.meetingLink,
-    required this.location,
-  });
-
-  factory CompanyConversationOpportunityInterview.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    return CompanyConversationOpportunityInterview(
-      id: _toInt(json['id']),
-      type: json['type']?.toString() ?? '',
-      status: json['status']?.toString() ?? '',
-      scheduledAt: json['scheduled_at']?.toString(),
-      meetingType: json['meeting_type']?.toString(),
-      meetingLink: json['meeting_link']?.toString(),
-      location: json['location']?.toString(),
     );
   }
 }
@@ -345,8 +263,6 @@ class CompanyConversationContext {
   final String type;
   final String status;
   final CompanyConversationTask? task;
-  final CompanyConversationOpportunity? opportunity;
-  final CompanyConversationOpportunityInterview? opportunityInterview;
   final String? createdAt;
   final String? updatedAt;
 
@@ -355,8 +271,6 @@ class CompanyConversationContext {
     required this.type,
     required this.status,
     required this.task,
-    required this.opportunity,
-    required this.opportunityInterview,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -370,14 +284,6 @@ class CompanyConversationContext {
       status: json['status']?.toString() ?? '',
       task: json['task'] is Map
           ? CompanyConversationTask.fromJson(_asMap(json['task']))
-          : null,
-      opportunity: json['opportunity'] is Map
-          ? CompanyConversationOpportunity.fromJson(_asMap(json['opportunity']))
-          : null,
-      opportunityInterview: json['opportunity_interview'] is Map
-          ? CompanyConversationOpportunityInterview.fromJson(
-              _asMap(json['opportunity_interview']),
-            )
           : null,
       createdAt: json['created_at']?.toString(),
       updatedAt: json['updated_at']?.toString(),

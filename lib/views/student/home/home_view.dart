@@ -63,6 +63,12 @@ class HomeView extends GetView<HomeController> {
         subtitle: 'التقديم كمرشد واكتشاف المرشدين',
         onTap: () => Get.toNamed(Routes.studentMentors),
       ),
+      _StudentHomeFeature(
+        icon: Icons.report_problem_rounded,
+        title: 'إرسال شكوى',
+        subtitle: 'الإبلاغ عن مشكلة ضمن سياق محدد',
+        onTap: () => _showComplaintSourcesSheet(context),
+      ),
     ];
 
     return Directionality(
@@ -182,6 +188,162 @@ class _StudentHomeFeature {
     this.onTap,
     this.isEnabled = true,
   });
+}
+
+class _ComplaintSource {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final String route;
+
+  const _ComplaintSource({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.route,
+  });
+}
+
+void _showComplaintSourcesSheet(BuildContext context) {
+  const sources = <_ComplaintSource>[
+    _ComplaintSource(
+      icon: Icons.assignment_ind_rounded,
+      title: 'المشرف المسند',
+      subtitle: 'من داخل مهام المشروع المسندة',
+      route: Routes.studentAssignedTasks,
+    ),
+    _ComplaintSource(
+      icon: Icons.business_center_rounded,
+      title: 'شركة ضمن مهمة',
+      subtitle: 'من داخل طلبات المهام المقبولة',
+      route: Routes.studentTaskApplications,
+    ),
+    _ComplaintSource(
+      icon: Icons.event_available_rounded,
+      title: 'مقابلة فرصة',
+      subtitle: 'متاح فقط عند وجود مقابلة مجدولة',
+      route: Routes.studentOpportunityApplications,
+    ),
+    _ComplaintSource(
+      icon: Icons.article_rounded,
+      title: 'منشور في المجتمع',
+      subtitle: 'اختر منشوراً ليس ملكك',
+      route: Routes.studentCommunityPosts,
+    ),
+    _ComplaintSource(
+      icon: Icons.mode_comment_rounded,
+      title: 'تعليق في المجتمع',
+      subtitle: 'اختر تعليقاً ليس ملكك',
+      route: Routes.studentCommunityPosts,
+    ),
+    _ComplaintSource(
+      icon: Icons.school_rounded,
+      title: 'مرشد معتمد',
+      subtitle: 'من قائمة المرشدين المعتمدين',
+      route: Routes.studentMentors,
+    ),
+  ];
+
+  showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    backgroundColor: Colors.transparent,
+    barrierColor: Colors.black.withOpacity(.35),
+    builder: (sheetContext) {
+      return Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(sheetContext).height * .88,
+          ),
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+          decoration: const BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 48,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: AppColors.textGrey.withOpacity(.22),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(height: 18),
+              const Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'إرسال شكوى',
+                          style: TextStyle(
+                            fontFamily: 'Cairo',
+                            color: AppColors.primaryBlue,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'اختر السياق المرتبط بالمشكلة، ثم حدّد العنصر داخل صفحته.',
+                          style: TextStyle(
+                            fontFamily: 'Cairo',
+                            color: AppColors.textGrey,
+                            fontSize: 12.5,
+                            height: 1.55,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Icon(
+                    Icons.report_problem_rounded,
+                    color: AppColors.primaryBlue,
+                    size: 30,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              Flexible(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: List.generate(sources.length, (index) {
+                      final source = sources[index];
+
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: index == sources.length - 1 ? 0 : 12,
+                        ),
+                        child: _HomeFeatureTile(
+                          icon: source.icon,
+                          title: source.title,
+                          subtitle: source.subtitle,
+                          isEnabled: true,
+                          onTap: () {
+                            Navigator.of(sheetContext).pop();
+                            Get.toNamed(source.route);
+                          },
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
 
 class _WelcomeCard extends StatelessWidget {
