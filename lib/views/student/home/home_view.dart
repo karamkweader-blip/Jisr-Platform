@@ -57,11 +57,11 @@ class HomeView extends GetView<HomeController> {
         subtitle: 'المهام المرسلة من المشرف',
         onTap: () => Get.toNamed(Routes.studentAssignedTasks),
       ),
-      const _StudentHomeFeature(
+      _StudentHomeFeature(
         icon: Icons.school_rounded,
         title: 'مساري التدريبي',
-        subtitle: 'قريباً',
-        isEnabled: false,
+        subtitle: 'التقديم كمرشد واكتشاف المرشدين',
+        onTap: () => Get.toNamed(Routes.studentMentors),
       ),
     ];
 
