@@ -95,13 +95,24 @@ class ApiLinks {
       '$baseUrl/student/applications/$applicationId/withdraw';
   //مهامي المسندة
   // assigned tasks
-  static const String assignedTasksMock = '';
+  static const String projectAssignmentTasks =
+      '$baseUrl/student/project-assignment-tasks';
 
   static String startAssignedTask(int taskId) =>
       '$baseUrl/supervisor/assignment-tasks/$taskId/start';
 
   static String submitAssignedTask(int taskId) =>
       '$baseUrl/supervisor/assignment-tasks/$taskId/submit';
+
+  // student project evaluation & appeals
+  static String studentProjectAssignmentEvaluation(int projectAssignmentId) =>
+      '$baseUrl/student/project-assignments/$projectAssignmentId/evaluation';
+
+  static String studentProjectEvaluationAppeals(int evaluationId) =>
+      '$baseUrl/student/project-evaluations/$evaluationId/appeals';
+
+  static const String studentEvaluationAppeals =
+      '$baseUrl/student/evaluation-appeals';
   // تاسكاتي
   // my task applications
   static const String allMyTasks = '$baseUrl/student/tasks/allMyTask';
