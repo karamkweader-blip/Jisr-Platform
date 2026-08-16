@@ -16,6 +16,11 @@ import 'package:jisr_platform/bindings/company/tasks/company_task_assignments_bi
 import 'package:jisr_platform/bindings/company/tasks/company_task_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/create_company_task_binding.dart';
 import 'package:jisr_platform/bindings/company/profile/edit_company_profile_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_candidate_details_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_candidates_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_details_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_form_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_interview_binding.dart';
 
 import 'package:jisr_platform/bindings/student/cv/cv_upload_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
@@ -28,6 +33,11 @@ import 'package:jisr_platform/views/auth/role_selection.dart';
 import 'package:jisr_platform/views/company/company_main_view.dart';
 import 'package:jisr_platform/views/company/conversations/company_chat_view.dart';
 import 'package:jisr_platform/views/company/profile/edit_company_profile_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_candidate_details_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_candidates_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_details_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_form_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_interview_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicant_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicants_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_assignment_workspace_view.dart';
@@ -278,6 +288,16 @@ class AppPages {
       binding: CompanyMainBinding(),
     ),
     GetPage(
+  name: Routes.companyMarketAnalysis,
+  page: () => const MarketAnalysisView(
+    isCompanyMode: true,
+  ),
+  binding: MarketAnalysisBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration: const Duration(milliseconds: 350),
+  curve: Curves.easeInOutCubic,
+),
+    GetPage(
       name: Routes.createCompanyTask,
       page: () => const CreateCompanyTaskView(),
       binding: CreateCompanyTaskBinding(),
@@ -315,6 +335,31 @@ class AppPages {
       name: Routes.companyTaskAssignmentWorkspace,
       page: () => const CompanyTaskAssignmentWorkspaceView(),
       binding: CompanyTaskAssignmentWorkspaceBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityForm,
+      page: () => const CompanyOpportunityFormView(),
+      binding: CompanyOpportunityFormBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityDetails,
+      page: () => const CompanyOpportunityDetailsView(),
+      binding: CompanyOpportunityDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityCandidates,
+      page: () => const CompanyOpportunityCandidatesView(),
+      binding: CompanyOpportunityCandidatesBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityCandidateDetails,
+      page: () => const CompanyOpportunityCandidateDetailsView(),
+      binding: CompanyOpportunityCandidateDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityInterview,
+      page: () => const CompanyOpportunityInterviewView(),
+      binding: CompanyOpportunityInterviewBinding(),
     ),
 
     //     GetPage(

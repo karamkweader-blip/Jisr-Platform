@@ -1,9 +1,9 @@
 class ApiLinks {
   //karam link
-  // static const String baseUrl = 'http://192.168.1.104:8000/api';
+   static const String baseUrl = 'http://192.168.1.108:8000/api';
 
   //baraa link0
-  static const String baseUrl = 'http://192.168.50.7:8001/api';
+  // static const String baseUrl = 'http://192.168.50.7:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -226,4 +226,56 @@ class ApiLinks {
 
   static String companyTaskSubmissionReview(int submissionId) =>
       '$baseUrl/company/tasks/review/$submissionId';
+
+  // company opportunities
+  static const String companyOpportunities =
+      '$baseUrl/company/opportunities';
+
+  static String companyOpportunityDetails(int opportunityId) =>
+      '$baseUrl/company/opportunities/$opportunityId';
+
+  static String publishCompanyOpportunity(int opportunityId) =>
+      '$baseUrl/company/opportunities/$opportunityId/publish';
+
+  static String closeCompanyOpportunity(int opportunityId) =>
+      '$baseUrl/company/opportunities/$opportunityId/close';
+
+  static String cancelCompanyOpportunity(int opportunityId) =>
+      '$baseUrl/company/opportunities/$opportunityId/cancel';
+
+  static String companyOpportunityCandidates(int opportunityId) =>
+      '$baseUrl/company/opportunities/$opportunityId/candidates';
+
+  static String companyOpportunityCandidateDetails(
+    int opportunityId,
+    int applicationId,
+  ) =>
+      '$baseUrl/company/opportunities/$opportunityId/candidates/$applicationId';
+
+  static String scheduleCompanyOpportunityInterview(
+    int opportunityId,
+    int applicationId,
+  ) =>
+      '$baseUrl/company/opportunities/$opportunityId/interviews/$applicationId';
+
+  static String rescheduleCompanyOpportunityInterview(
+    int opportunityId,
+    int interviewId,
+  ) =>
+      '$baseUrl/company/opportunities/$opportunityId/interviews/$interviewId/reschedule';
+
+  static String cancelCompanyOpportunityInterview(
+    int opportunityId,
+    int interviewId,
+  ) =>
+      '$baseUrl/company/opportunities/$opportunityId/interviews/$interviewId/cancel';
+
+  static String completeCompanyOpportunityInterview(
+    int opportunityId,
+    int interviewId,
+  ) =>
+      '$baseUrl/company/opportunities/$opportunityId/interviews/$interviewId/complete';
+
+  static const String opportunityConversations =
+      '$baseUrl/conversations/opportunity-conversations';
 }
