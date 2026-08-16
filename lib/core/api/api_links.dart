@@ -1,9 +1,9 @@
 class ApiLinks {
   //karam link
-  // static const String baseUrl = 'http://192.168.1.104:8000/api';
+  static const String baseUrl = 'http://192.168.1.104:8000/api';
 
   //baraa link0
-  static const String baseUrl = 'http://192.168.50.7:8001/api';
+ // static const String baseUrl = 'http://192.168.50.7:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -17,8 +17,6 @@ class ApiLinks {
   static const String verifyResetOtp = '$baseUrl/password/reset/verify-otp';
   static const String resendResetOtp = '$baseUrl/otp/resend';
   static const String resetPassword = '$baseUrl/password/reset';
-
-
 
   ///////student
   static const String uploadCv = '$baseUrl/cvs/upload';
@@ -113,6 +111,13 @@ class ApiLinks {
 
   static const String studentEvaluationAppeals =
       '$baseUrl/student/evaluation-appeals';
+
+  // student mentor application and approved mentor discovery
+  static const String myMentorApplication = '$baseUrl/mentor/application/me';
+  static const String mentorApplication = '$baseUrl/mentor/application';
+  static const String studentMentors = '$baseUrl/student/mentors';
+  static String studentMentorDetails(int mentorProfileId) =>
+      '$baseUrl/student/mentors/$mentorProfileId';
   // تاسكاتي
   // my task applications
   static const String allMyTasks = '$baseUrl/student/tasks/allMyTask';

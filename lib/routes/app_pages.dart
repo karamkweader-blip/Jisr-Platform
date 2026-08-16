@@ -77,6 +77,9 @@ import 'package:jisr_platform/views/student/market_analysis/market_analysis_view
 import 'package:jisr_platform/bindings/student/chatbot/chatbot_binding.dart';
 import 'package:jisr_platform/views/student/chatbot/chatbot_home_view.dart';
 import 'package:jisr_platform/views/student/chatbot/chatbot_chat_view.dart';
+import 'package:jisr_platform/bindings/student/mentor/student_mentor_binding.dart';
+import 'package:jisr_platform/views/student/mentor/student_mentor_details_view.dart';
+import 'package:jisr_platform/views/student/mentor/student_mentor_view.dart';
 
 class AppPages {
   static final pages = [
@@ -267,6 +270,23 @@ class AppPages {
       binding: MarketAnalysisBinding(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
+    ),
+
+    GetPage(
+      name: Routes.studentMentors,
+      page: () => const StudentMentorView(),
+      binding: StudentMentorBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
+    ),
+
+    GetPage(
+      name: Routes.studentMentorDetails,
+      page: () => const StudentMentorDetailsView(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
     ),
 
