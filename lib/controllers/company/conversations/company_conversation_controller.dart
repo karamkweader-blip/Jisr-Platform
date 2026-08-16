@@ -7,6 +7,7 @@ import 'package:jisr_platform/services/company/conversations/company_conversatio
 
 enum CompanyConversationTab {
   tasks,
+  opportunities,
   all,
   closed,
 }
@@ -87,7 +88,7 @@ class CompanyConversationController extends GetxController {
 
     return conversations.where((conversation) {
       final taskTitle =
-          conversation.displayTaskTitle.toLowerCase();
+          conversation.displayContextTitle.toLowerCase();
 
       final studentName =
           participantName(conversation).toLowerCase();
@@ -134,6 +135,9 @@ class CompanyConversationController extends GetxController {
       case CompanyConversationTab.tasks:
         return 'محادثات المهام';
 
+      case CompanyConversationTab.opportunities:
+        return 'محادثات الفرص';
+
       case CompanyConversationTab.all:
         return 'كل المحادثات';
 
@@ -148,6 +152,10 @@ class CompanyConversationController extends GetxController {
     switch (selectedTab.value) {
       case CompanyConversationTab.tasks:
         await _fetchTasks(refresh: refresh);
+        break;
+
+      case CompanyConversationTab.opportunities:
+        await _fetchOpportunities(refresh: refresh);
         break;
 
       case CompanyConversationTab.all:
@@ -165,6 +173,18 @@ class CompanyConversationController extends GetxController {
   }) async {
     await _loadConversationList(
       () => _service.getTaskConversations(
+        page: currentPage,
+        perPage: perPage,
+      ),
+      refresh: refresh,
+    );
+  }
+
+  Future<void> _fetchOpportunities({
+    required bool refresh,
+  }) async {
+    await _loadConversationList(
+      () => _service.getOpportunityConversations(
         page: currentPage,
         perPage: perPage,
       ),
@@ -282,7 +302,9 @@ class CompanyConversationController extends GetxController {
     }
 
     if (conversation.participants.isNotEmpty) {
-      return conversation.participants.last;
+      return conversation.isOpportunityInterview
+          ? conversation.participants.first
+          : conversation.participants.last;
     }
 
     return null;
@@ -545,7 +567,11 @@ class CompanyConversationController extends GetxController {
         false;
   }
 
-  String get currentTaskTitle {
+  String get currentContextTitle {
+    final contextOpportunity = conversationContext.value?.opportunity?.title.trim();
+    if (contextOpportunity != null && contextOpportunity.isNotEmpty) {
+      return contextOpportunity;
+    }
     final contextTask =
         conversationContext
             .value
@@ -560,8 +586,27 @@ class CompanyConversationController extends GetxController {
 
     return selectedConversation
             .value
-            ?.displayTaskTitle ??
+            ?.displayContextTitle ??
         'المحادثة';
+  }
+
+  String get currentTaskTitle => currentContextTitle;
+
+  CompanyConversationOpportunity? get currentOpportunity =>
+      conversationContext.value?.opportunity ??
+      selectedConversation.value?.opportunity;
+
+  CompanyConversationOpportunityInterview? get currentOpportunityInterview =>
+      conversationContext.value?.opportunityInterview ??
+      selectedConversation.value?.opportunityInterview;
+
+  String meetingTypeLabel(String? type) {
+    switch (type) {
+      case 'online': return 'أونلاين';
+      case 'onsite': return 'حضوري';
+      case 'phone': return 'هاتف';
+      default: return type ?? '';
+    }
   }
 
   String assignmentStatusLabel(

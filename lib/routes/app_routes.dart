@@ -55,6 +55,7 @@ abstract class Routes {
   static const studentMentorDetails = '/student-mentors/details';
   /////company
   static const companyMain = '/company-main';
+  static const companyMarketAnalysis = '/company/market-analysis';
   static const companyHome = '/company-home';
   static const editCompanyProfile = '/company/profile/edit';
   /////tasks
@@ -65,7 +66,15 @@ abstract class Routes {
   static const companyTaskAssignments = '/company/task-assignments';
   static const companyTaskAssignmentWorkspace =
       '/company/task-assignments/workspace';
- //// conversations
-      static const companyChat =
-    '/company/conversations/chat';
+  //// opportunities
+  static const companyOpportunityForm = '/company/opportunities/form';
+  static const companyOpportunityDetails = '/company/opportunities/details';
+  static const companyOpportunityCandidates =
+      '/company/opportunities/candidates';
+  static const companyOpportunityCandidateDetails =
+      '/company/opportunities/candidates/details';
+  static const companyOpportunityInterview =
+      '/company/opportunities/interview';
+  //// conversations
+  static const companyChat = '/company/conversations/chat';
 }
