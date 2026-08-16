@@ -18,8 +18,6 @@ class ApiLinks {
   static const String resendResetOtp = '$baseUrl/otp/resend';
   static const String resetPassword = '$baseUrl/password/reset';
 
-
-
   ///////student
   static const String uploadCv = '$baseUrl/cvs/upload';
   static String analyzeCv(int cvId) => '$baseUrl/cvs/$cvId/analyze';
@@ -95,13 +93,31 @@ class ApiLinks {
       '$baseUrl/student/applications/$applicationId/withdraw';
   //مهامي المسندة
   // assigned tasks
-  static const String assignedTasksMock = '';
+  static const String projectAssignmentTasks =
+      '$baseUrl/student/project-assignment-tasks';
 
   static String startAssignedTask(int taskId) =>
       '$baseUrl/supervisor/assignment-tasks/$taskId/start';
 
   static String submitAssignedTask(int taskId) =>
       '$baseUrl/supervisor/assignment-tasks/$taskId/submit';
+
+  // student project evaluation & appeals
+  static String studentProjectAssignmentEvaluation(int projectAssignmentId) =>
+      '$baseUrl/student/project-assignments/$projectAssignmentId/evaluation';
+
+  static String studentProjectEvaluationAppeals(int evaluationId) =>
+      '$baseUrl/student/project-evaluations/$evaluationId/appeals';
+
+  static const String studentEvaluationAppeals =
+      '$baseUrl/student/evaluation-appeals';
+
+  // student mentor application and approved mentor discovery
+  static const String myMentorApplication = '$baseUrl/mentor/application/me';
+  static const String mentorApplication = '$baseUrl/mentor/application';
+  static const String studentMentors = '$baseUrl/student/mentors';
+  static String studentMentorDetails(int mentorProfileId) =>
+      '$baseUrl/student/mentors/$mentorProfileId';
   // تاسكاتي
   // my task applications
   static const String allMyTasks = '$baseUrl/student/tasks/allMyTask';
