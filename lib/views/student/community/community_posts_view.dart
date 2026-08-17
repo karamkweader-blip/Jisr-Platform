@@ -8,6 +8,8 @@ import 'package:jisr_platform/controllers/student/points/student_points_controll
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/community/community_post_model.dart';
+import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 
 class CommunityPostsView extends GetView<CommunityPostsController> {
   const CommunityPostsView({super.key});
@@ -690,6 +692,22 @@ class _PostCard extends StatelessWidget {
                       ),
                     ],
                     child: const Icon(Icons.more_horiz_rounded, color: AppColors.textGrey),
+                  )
+                else
+                  IconButton(
+                    tooltip: 'الإبلاغ عن المنشور',
+                    onPressed: () => ComplaintDialog.show(
+                      contextType: ComplaintContextTypes.communityPost,
+                      contextId: post.id,
+                      subjectLabel: 'منشور ${post.author.name}',
+                      onContextNotFound: () =>
+                          controller.fetchPosts(refresh: true),
+                    ),
+                    icon: const Icon(
+                      Icons.report_problem_outlined,
+                      color: Color(0xFFDC2626),
+                      size: 21,
+                    ),
                   ),
               ],
             ),
@@ -1367,6 +1385,22 @@ class _CommentCard extends StatelessWidget {
                     ),
                   ],
                   child: const Icon(Icons.more_horiz_rounded, color: AppColors.textGrey, size: 21),
+                )
+              else
+                IconButton(
+                  tooltip: 'الإبلاغ عن التعليق',
+                  onPressed: () => ComplaintDialog.show(
+                    contextType: ComplaintContextTypes.communityComment,
+                    contextId: comment.id,
+                    subjectLabel: 'تعليق ${comment.user.name}',
+                    onContextNotFound: () =>
+                        controller.fetchComments(comment.postId),
+                  ),
+                  icon: const Icon(
+                    Icons.report_problem_outlined,
+                    color: Color(0xFFDC2626),
+                    size: 20,
+                  ),
                 ),
             ],
           ),

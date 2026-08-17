@@ -6,7 +6,9 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/assigned_tasks/student_assigned_task_model.dart';
+import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
 import 'package:jisr_platform/views/student/assigned_tasks/student_evaluation_appeals_view.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 
 class StudentAssignedTasksView extends GetView<StudentAssignedTaskController> {
   const StudentAssignedTasksView({super.key});
@@ -1271,6 +1273,19 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
               icon: Icons.supervisor_account_outlined,
               label: 'المشرف',
               value: task.assignment.supervisor.name,
+            ),
+          ],
+
+          if (task.projectAssignmentId > 0) ...[
+            const SizedBox(height: 12),
+            ComplaintActionButton(
+              contextType: ComplaintContextTypes.projectAssignment,
+              contextId: task.projectAssignmentId,
+              subjectLabel: task.assignment.supervisor.name.isEmpty
+                  ? 'مشرف المشروع'
+                  : 'المشرف ${task.assignment.supervisor.name}',
+              label: 'إرسال شكوى على المشرف',
+              onContextNotFound: controller.fetchAssignedTasks,
             ),
           ],
 

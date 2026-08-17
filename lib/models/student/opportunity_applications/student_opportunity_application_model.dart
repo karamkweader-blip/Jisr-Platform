@@ -98,6 +98,13 @@ class StudentOpportunityApplicationModel {
       createdAt: json['created_at']?.toString(),
     );
   }
+
+  int? get interviewId {
+    final rawInterview = interview;
+    if (rawInterview is! Map) return null;
+    final id = int.tryParse(rawInterview['id'].toString());
+    return id != null && id > 0 ? id : null;
+  }
 }
 
 class StudentAppliedOpportunityModel {

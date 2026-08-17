@@ -9,6 +9,7 @@ import 'package:jisr_platform/core/widgets/company/jisr_animated_logo.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/assessment/assessment_models.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_entry_sheet.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -62,6 +63,12 @@ class HomeView extends GetView<HomeController> {
         title: 'مساري التدريبي',
         subtitle: 'التقديم كمرشد واكتشاف المرشدين',
         onTap: () => Get.toNamed(Routes.studentMentors),
+      ),
+      _StudentHomeFeature(
+        icon: Icons.report_problem_outlined,
+        title: 'الشكاوى',
+        subtitle: 'إرسال شكوى من السياق الصحيح',
+        onTap: () => ComplaintEntrySheet.show(context),
       ),
     ];
 
