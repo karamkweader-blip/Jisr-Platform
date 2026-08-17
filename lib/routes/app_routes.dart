@@ -33,6 +33,8 @@ abstract class Routes {
       '/student-opportunity-applications';
   static const studentOpportunityApplicationDetails =
       '/student-opportunity-application-details';
+  // مقابلاتي
+  static const studentInterviews = '/student-interviews';
   //مهمامي المسندة
   static const studentAssignedTasks = '/student-assigned-tasks';
   //تاسكاتي

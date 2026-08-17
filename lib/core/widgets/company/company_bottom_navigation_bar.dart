@@ -5,11 +5,13 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 class CompanyBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final bool studentMode;
 
   const CompanyBottomNavigationBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
+    this.studentMode = false,
   });
 
   static const int _searchIndex = 0;
@@ -29,6 +31,9 @@ class CompanyBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final darkMode = studentMode &&
+        Theme.of(context).brightness == Brightness.dark;
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: SafeArea(
@@ -48,6 +53,7 @@ class CompanyBottomNavigationBar extends StatelessWidget {
                   painter: _FloatingDockPainter(
                     isHomeSelected:
                         currentIndex == _homeIndex,
+                    darkMode: darkMode,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -57,9 +63,13 @@ class CompanyBottomNavigationBar extends StatelessWidget {
                       children: [
                         Expanded(
                           child: _DockNavigationItem(
-                            label: 'البحث',
-                            icon: Icons.search,
-                            selectedIcon: Icons.search,
+                            label: studentMode ? 'التاسكات' : 'البحث',
+                            icon: studentMode
+                                ? Icons.task_alt_outlined
+                                : Icons.search,
+                            selectedIcon: studentMode
+                                ? Icons.task_alt_rounded
+                                : Icons.search,
                             isSelected:
                                 currentIndex == _searchIndex,
                             onTap: () {
@@ -100,10 +110,12 @@ class CompanyBottomNavigationBar extends StatelessWidget {
                         Expanded(
                           child: _DockNavigationItem(
                             label: 'الملف',
-                            icon:
-                                Icons.business_outlined,
-                            selectedIcon:
-                                Icons.business,
+                            icon: studentMode
+                                ? Icons.person_outline_rounded
+                                : Icons.business_outlined,
+                            selectedIcon: studentMode
+                                ? Icons.person_rounded
+                                : Icons.business,
                             isSelected:
                                 currentIndex == _profileIndex,
                             onTap: () {
@@ -121,6 +133,7 @@ class CompanyBottomNavigationBar extends StatelessWidget {
                 child: _HomeOrbButton(
                   isSelected:
                       currentIndex == _homeIndex,
+                  darkMode: darkMode,
                   onTap: () {
                     _handleTap(_homeIndex);
                   },
@@ -292,10 +305,12 @@ class _DockNavigationItem extends StatelessWidget {
 
 class _HomeOrbButton extends StatelessWidget {
   final bool isSelected;
+  final bool darkMode;
   final VoidCallback onTap;
 
   const _HomeOrbButton({
     required this.isSelected,
+    required this.darkMode,
     required this.onTap,
   });
 
@@ -365,7 +380,9 @@ class _HomeOrbButton extends StatelessWidget {
                             ],
                           ),
                     border: Border.all(
-                      color: Colors.white,
+                      color: darkMode
+                          ? const Color(0xFF17283A)
+                          : Colors.white,
                       width: 4,
                     ),
                     boxShadow: [
@@ -418,9 +435,11 @@ class _HomeOrbButton extends StatelessWidget {
 
 class _FloatingDockPainter extends CustomPainter {
   final bool isHomeSelected;
+  final bool darkMode;
 
   const _FloatingDockPainter({
     required this.isHomeSelected,
+    required this.darkMode,
   });
 
   @override
@@ -513,13 +532,12 @@ class _FloatingDockPainter extends CustomPainter {
     final rect = Offset.zero & size;
 
     final backgroundPaint = Paint()
-      ..shader = const LinearGradient(
+      ..shader = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [
-          Color(0xFFFFFFFF),
-          Color(0xFFF7FBFF),
-        ],
+        colors: darkMode
+            ? const [Color(0xFF162332), Color(0xFF101E2C)]
+            : const [Color(0xFFFFFFFF), Color(0xFFF7FBFF)],
       ).createShader(rect)
       ..style = PaintingStyle.fill;
 
@@ -538,6 +556,7 @@ class _FloatingDockPainter extends CustomPainter {
     covariant _FloatingDockPainter oldDelegate,
   ) {
     return oldDelegate.isHomeSelected !=
-        isHomeSelected;
+            isHomeSelected ||
+        oldDelegate.darkMode != darkMode;
   }
 }

@@ -24,7 +24,7 @@ class MarketAnalysisView extends GetView<MarketAnalysisController> {
         backgroundColor: AppColors.background,
         bottomNavigationBar: isCompanyMode
             ? null
-            : const StudentBottomNav(currentIndex: 0),
+            : const StudentBottomNav(currentIndex: 2),
         body: SafeArea(
           child: GetBuilder<MarketAnalysisController>(
             builder: (_) {

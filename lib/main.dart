@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
       title: "Jisr Platform",
       initialRoute: initialRoute,
       getPages: AppPages.pages,
+      themeMode: ThemeMode.system,
       theme: ThemeData(
         bottomNavigationBarTheme: JisrBottomNavItem.theme(),
         primaryColor: AppColors.primaryBlue,
@@ -60,6 +61,22 @@ class MyApp extends StatelessWidget {
             color: AppColors.textGrey,
             height: 1.4,
           ),
+        ),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: AppColors.primaryBlue,
+        fontFamily: 'Cairo',
+        scaffoldBackgroundColor: const Color(0xFF0D1722),
+        cardColor: const Color(0xFF162332),
+        colorScheme: const ColorScheme.dark(
+          primary: AppColors.primaryBlue,
+          secondary: AppColors.actionYellow,
+          surface: Color(0xFF162332),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF0D1722),
+          foregroundColor: Colors.white,
         ),
       ),
     );

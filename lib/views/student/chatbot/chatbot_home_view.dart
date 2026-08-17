@@ -93,7 +93,7 @@ class _ChatbotHomeViewState extends State<ChatbotHomeView> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
-        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.background,
