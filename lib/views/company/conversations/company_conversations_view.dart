@@ -71,7 +71,7 @@ class CompanyConversationsView
                     return Text(
                       unread > 0
                           ? '$unread رسالة غير مقروءة'
-                          : 'تواصل مع الطلاب المقبولين في مهامك',
+                          : 'تواصل مع الطلاب في المهام ومقابلات الفرص',
                       style: const TextStyle(
                         color: AppColors.textGrey,
                         fontSize: 12.5,
@@ -113,7 +113,7 @@ class CompanyConversationsView
             TextInputAction.search,
         decoration: InputDecoration(
           hintText:
-              'ابحث باسم الطالب أو المهمة...',
+              'ابحث باسم الطالب أو المهمة أو الفرصة...',
           hintStyle: TextStyle(
             color:
                 AppColors.textGrey.withOpacity(0.75),
@@ -184,6 +184,19 @@ class CompanyConversationsView
               onTap: () {
                 controller.changeTab(
                   CompanyConversationTab.tasks,
+                );
+              },
+            ),
+            const SizedBox(width: 8),
+            _FilterChip(
+              label: 'الفرص',
+              icon: Icons.work_outline_rounded,
+              selected:
+                  controller.selectedTab.value ==
+                      CompanyConversationTab.opportunities,
+              onTap: () {
+                controller.changeTab(
+                  CompanyConversationTab.opportunities,
                 );
               },
             ),
@@ -336,7 +349,7 @@ class CompanyConversationsView
             return ConversationCard(
               taskTitle:
                   conversation
-                      .displayTaskTitle,
+                      .displayContextTitle,
               participantName:
                   controller
                       .participantName(
@@ -392,6 +405,13 @@ class CompanyConversationsView
               'لا توجد محادثات مهام',
           message:
               'ستظهر المحادثات هنا بعد قبول الطلاب في مهام الشركة.',
+        );
+
+      case CompanyConversationTab.opportunities:
+        return const JisrEmptyState(
+          icon: Icons.event_available_outlined,
+          title: 'لا توجد محادثات فرص',
+          message: 'ستظهر محادثة الفرصة بعد جدولة مقابلة مع أحد المرشحين.',
         );
 
       case CompanyConversationTab.all:

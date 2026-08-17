@@ -16,6 +16,11 @@ import 'package:jisr_platform/bindings/company/tasks/company_task_assignments_bi
 import 'package:jisr_platform/bindings/company/tasks/company_task_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/create_company_task_binding.dart';
 import 'package:jisr_platform/bindings/company/profile/edit_company_profile_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_candidate_details_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_candidates_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_details_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_form_binding.dart';
+import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_interview_binding.dart';
 
 import 'package:jisr_platform/bindings/student/cv/cv_upload_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
@@ -28,6 +33,11 @@ import 'package:jisr_platform/views/auth/role_selection.dart';
 import 'package:jisr_platform/views/company/company_main_view.dart';
 import 'package:jisr_platform/views/company/conversations/company_chat_view.dart';
 import 'package:jisr_platform/views/company/profile/edit_company_profile_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_candidate_details_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_candidates_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_details_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_form_view.dart';
+import 'package:jisr_platform/views/company/opportunities/company_opportunity_interview_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicant_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicants_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_assignment_workspace_view.dart';
@@ -69,7 +79,6 @@ import 'package:jisr_platform/views/student/conversations/student_chat_view.dart
 import 'package:jisr_platform/bindings/student/task_progress/student_task_progress_binding.dart';
 import 'package:jisr_platform/views/student/task_progress/student_task_progress_view.dart';
 import 'package:jisr_platform/bindings/student/community/community_posts_binding.dart';
-import 'package:jisr_platform/bindings/student/complaints/complaint_binding.dart';
 import 'package:jisr_platform/views/student/community/community_posts_view.dart';
 import 'package:jisr_platform/bindings/student/points/student_points_binding.dart';
 import 'package:jisr_platform/views/student/points/student_points_view.dart';
@@ -197,34 +206,22 @@ class AppPages {
     GetPage(
       name: Routes.studentOpportunityApplications,
       page: () => const StudentOpportunityApplicationsView(),
-      bindings: [
-        StudentOpportunityApplicationBinding(),
-        ComplaintBinding(),
-      ],
+      binding: StudentOpportunityApplicationBinding(),
     ),
     GetPage(
       name: Routes.studentOpportunityApplicationDetails,
       page: () => const StudentOpportunityApplicationDetailsView(),
-      bindings: [
-        StudentOpportunityApplicationBinding(),
-        ComplaintBinding(),
-      ],
+      binding: StudentOpportunityApplicationBinding(),
     ),
     GetPage(
       name: Routes.studentAssignedTasks,
       page: () => const StudentAssignedTasksView(),
-      bindings: [
-        StudentAssignedTaskBinding(),
-        ComplaintBinding(),
-      ],
+      binding: StudentAssignedTaskBinding(),
     ),
     GetPage(
       name: Routes.studentTaskApplications,
       page: () => const StudentTaskApplicationsView(),
-      bindings: [
-        StudentTaskApplicationBinding(),
-        ComplaintBinding(),
-      ],
+      binding: StudentTaskApplicationBinding(),
     ),
 
     GetPage(
@@ -257,10 +254,7 @@ class AppPages {
     GetPage(
   name: Routes.studentCommunityPosts,
   page: () => const CommunityPostsView(),
-  bindings: [
-    CommunityPostsBinding(),
-    ComplaintBinding(),
-  ],
+  binding: CommunityPostsBinding(),
   transition: Transition.rightToLeftWithFade,
   transitionDuration: const Duration(milliseconds: 350),
   curve: Curves.easeInOutCubic,
@@ -292,10 +286,7 @@ class AppPages {
     GetPage(
       name: Routes.studentMentors,
       page: () => const StudentMentorView(),
-      bindings: [
-        StudentMentorBinding(),
-        ComplaintBinding(),
-      ],
+      binding: StudentMentorBinding(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 350),
       curve: Curves.easeInOutCubic,
@@ -304,10 +295,6 @@ class AppPages {
     GetPage(
       name: Routes.studentMentorDetails,
       page: () => const StudentMentorDetailsView(),
-      bindings: [
-        StudentMentorBinding(),
-        ComplaintBinding(),
-      ],
       transition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
@@ -320,6 +307,16 @@ class AppPages {
       page: () => const CompanyMainView(),
       binding: CompanyMainBinding(),
     ),
+    GetPage(
+  name: Routes.companyMarketAnalysis,
+  page: () => const MarketAnalysisView(
+    isCompanyMode: true,
+  ),
+  binding: MarketAnalysisBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration: const Duration(milliseconds: 350),
+  curve: Curves.easeInOutCubic,
+),
     GetPage(
       name: Routes.createCompanyTask,
       page: () => const CreateCompanyTaskView(),
@@ -359,6 +356,31 @@ class AppPages {
       page: () => const CompanyTaskAssignmentWorkspaceView(),
       binding: CompanyTaskAssignmentWorkspaceBinding(),
     ),
+    GetPage(
+      name: Routes.companyOpportunityForm,
+      page: () => const CompanyOpportunityFormView(),
+      binding: CompanyOpportunityFormBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityDetails,
+      page: () => const CompanyOpportunityDetailsView(),
+      binding: CompanyOpportunityDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityCandidates,
+      page: () => const CompanyOpportunityCandidatesView(),
+      binding: CompanyOpportunityCandidatesBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityCandidateDetails,
+      page: () => const CompanyOpportunityCandidateDetailsView(),
+      binding: CompanyOpportunityCandidateDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.companyOpportunityInterview,
+      page: () => const CompanyOpportunityInterviewView(),
+      binding: CompanyOpportunityInterviewBinding(),
+    ),
 
     //     GetPage(
     //       name: Routes.editCompanyProfile,
@@ -368,10 +390,7 @@ class AppPages {
     GetPage(
       name: Routes.studentTaskProgress,
       page: () => const StudentTaskProgressView(),
-      bindings: [
-        StudentTaskProgressBinding(),
-        ComplaintBinding(),
-      ],
+      binding: StudentTaskProgressBinding(),
     ),
 
 GetPage(

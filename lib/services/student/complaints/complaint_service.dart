@@ -37,7 +37,7 @@ class ComplaintService {
 
     final response = await http
         .post(
-          Uri.parse(ApiLinks.complaints),
+          Uri.parse('${ApiLinks.baseUrl}/complaints'),
           headers: await _headers(),
           body: jsonEncode(request.toJson()),
         )

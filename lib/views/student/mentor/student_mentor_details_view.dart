@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/mentor/student_mentor_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
-import 'package:jisr_platform/models/student/mentor/student_mentor_model.dart';
 import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
-import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/models/student/mentor/student_mentor_model.dart';
 import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 
 class StudentMentorDetailsView extends GetView<StudentMentorController> {
@@ -150,18 +149,13 @@ class StudentMentorDetailsView extends GetView<StudentMentorController> {
                 ],
                 const SizedBox(height: 12),
                 _ContactSection(mentor),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
                 ComplaintActionButton(
                   contextType: ComplaintContextTypes.mentorProfile,
                   contextId: mentor.id,
                   subjectLabel: 'المرشد ${mentor.fullName}',
-                  label: 'الإبلاغ عن المرشد',
-                  onContextNotFound: () async {
-                    if (Get.currentRoute == Routes.studentMentorDetails) {
-                      Get.back();
-                    }
-                    await controller.fetchMentors();
-                  },
+                  label: 'إرسال شكوى على المرشد',
+                  onContextNotFound: controller.retryMentorDetails,
                 ),
               ],
             ),

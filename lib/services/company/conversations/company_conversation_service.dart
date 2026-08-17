@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_links.dart';
 import 'package:jisr_platform/models/company/conversations/company_conversation_model.dart';
@@ -14,7 +16,9 @@ class CompanyConversationService {
     final token = (await _authService.getToken())?.trim();
 
     if (token == null || token.isEmpty) {
-      throw Exception('انتهت الجلسة، يرجى تسجيل الدخول من جديد');
+      throw Exception(
+        'انتهت الجلسة، يرجى تسجيل الدخول من جديد',
+      );
     }
 
     return {
@@ -57,6 +61,38 @@ class CompanyConversationService {
     );
   }
 
+  void _printOpportunityConversationsResponse({
+    required Uri requestUrl,
+    required http.Response response,
+  }) {
+    if (!kDebugMode) {
+      return;
+    }
+
+    debugPrint('');
+    debugPrint(
+      '========== OPPORTUNITY CONVERSATIONS RESPONSE ==========',
+    );
+    debugPrint('REQUEST URL: $requestUrl');
+    debugPrint('STATUS CODE: ${response.statusCode}');
+    debugPrint('RESPONSE HEADERS: ${response.headers}');
+    debugPrint('RESPONSE BODY:');
+
+    if (response.body.trim().isEmpty) {
+      debugPrint('[EMPTY RESPONSE BODY]');
+    } else {
+      debugPrint(
+        response.body,
+        wrapWidth: 1024,
+      );
+    }
+
+    debugPrint(
+      '========================================================',
+    );
+    debugPrint('');
+  }
+
   Future<CompanyConversationListResponse> getTaskConversations({
     int page = 1,
     int perPage = 15,
@@ -66,6 +102,20 @@ class CompanyConversationService {
       page: page,
       perPage: perPage,
       fallbackMessage: 'تعذر جلب محادثات المهام',
+    );
+  }
+
+  Future<CompanyConversationListResponse>
+      getOpportunityConversations({
+    int page = 1,
+    int perPage = 15,
+  }) {
+    return _getConversationList(
+      ApiLinks.opportunityConversations,
+      page: page,
+      perPage: perPage,
+      fallbackMessage: 'تعذر جلب محادثات الفرص',
+      printOpportunityResponse: true,
     );
   }
 
@@ -81,7 +131,8 @@ class CompanyConversationService {
     );
   }
 
-  Future<CompanyConversationListResponse> getClosedConversations({
+  Future<CompanyConversationListResponse>
+      getClosedConversations({
     int page = 1,
     int perPage = 15,
   }) {
@@ -98,30 +149,51 @@ class CompanyConversationService {
     required int page,
     required int perPage,
     required String fallbackMessage,
+    bool printOpportunityResponse = false,
   }) async {
     try {
+      final requestUrl = _withPagination(
+        url,
+        page: page,
+        perPage: perPage,
+      );
+
       final response = await http
           .get(
-            _withPagination(
-              url,
-              page: page,
-              perPage: perPage,
-            ),
+            requestUrl,
             headers: await _headers(),
           )
-          .timeout(const Duration(seconds: 15));
+          .timeout(
+            const Duration(seconds: 15),
+          );
+
+      if (printOpportunityResponse) {
+        _printOpportunityConversationsResponse(
+          requestUrl: requestUrl,
+          response: response,
+        );
+      }
 
       final body = _decode(response);
 
       if (response.statusCode == 200) {
-        return CompanyConversationListResponse.fromJson(body);
+        return CompanyConversationListResponse.fromJson(
+          body,
+        );
       }
 
       throw Exception(
-        body['message']?.toString() ?? fallbackMessage,
+        body['message']?.toString() ??
+            fallbackMessage,
+      );
+    } on TimeoutException {
+      throw Exception(
+        'انتهت مهلة الاتصال بالخادم',
       );
     } catch (e) {
-      if (e is Exception) rethrow;
+      if (e is Exception) {
+        rethrow;
+      }
 
       throw Exception(fallbackMessage);
     }
@@ -134,26 +206,40 @@ class CompanyConversationService {
       final response = await http
           .get(
             Uri.parse(
-              ApiLinks.conversationMessages(conversationId),
+              ApiLinks.conversationMessages(
+                conversationId,
+              ),
             ),
             headers: await _headers(),
           )
-          .timeout(const Duration(seconds: 15));
+          .timeout(
+            const Duration(seconds: 15),
+          );
 
       final body = _decode(response);
 
       if (response.statusCode == 200) {
-        return CompanyConversationMessagesResponse.fromJson(body);
+        return CompanyConversationMessagesResponse.fromJson(
+          body,
+        );
       }
 
       throw Exception(
         body['message']?.toString() ??
             'تعذر جلب رسائل المحادثة',
       );
+    } on TimeoutException {
+      throw Exception(
+        'انتهت مهلة الاتصال بالخادم',
+      );
     } catch (e) {
-      if (e is Exception) rethrow;
+      if (e is Exception) {
+        rethrow;
+      }
 
-      throw Exception('تعذر جلب رسائل المحادثة');
+      throw Exception(
+        'تعذر جلب رسائل المحادثة',
+      );
     }
   }
 
@@ -165,14 +251,18 @@ class CompanyConversationService {
       final response = await http
           .post(
             Uri.parse(
-              ApiLinks.conversationMessages(conversationId),
+              ApiLinks.conversationMessages(
+                conversationId,
+              ),
             ),
             headers: await _headers(),
             body: jsonEncode({
               'content': content,
             }),
           )
-          .timeout(const Duration(seconds: 15));
+          .timeout(
+            const Duration(seconds: 15),
+          );
 
       final body = _decode(response);
 
@@ -180,19 +270,31 @@ class CompanyConversationService {
           response.statusCode == 201) {
         return CompanyConversationMessage.fromJson(
           body['data'] is Map
-              ? Map<String, dynamic>.from(body['data'])
+              ? Map<String, dynamic>.from(
+                  body['data'],
+                )
               : {},
-        ).copyWith(isMine: true);
+        ).copyWith(
+          isMine: true,
+        );
       }
 
       throw Exception(
         body['message']?.toString() ??
             'تعذر إرسال الرسالة',
       );
+    } on TimeoutException {
+      throw Exception(
+        'انتهت مهلة الاتصال بالخادم',
+      );
     } catch (e) {
-      if (e is Exception) rethrow;
+      if (e is Exception) {
+        rethrow;
+      }
 
-      throw Exception('تعذر إرسال الرسالة');
+      throw Exception(
+        'تعذر إرسال الرسالة',
+      );
     }
   }
 
@@ -204,14 +306,18 @@ class CompanyConversationService {
       final response = await http
           .post(
             Uri.parse(
-              ApiLinks.updateConversationMessage(messageId),
+              ApiLinks.updateConversationMessage(
+                messageId,
+              ),
             ),
             headers: await _headers(),
             body: jsonEncode({
               'content': content,
             }),
           )
-          .timeout(const Duration(seconds: 15));
+          .timeout(
+            const Duration(seconds: 15),
+          );
 
       final body = _decode(response);
 
@@ -219,32 +325,50 @@ class CompanyConversationService {
           response.statusCode == 201) {
         return CompanyConversationMessage.fromJson(
           body['data'] is Map
-              ? Map<String, dynamic>.from(body['data'])
+              ? Map<String, dynamic>.from(
+                  body['data'],
+                )
               : {},
-        ).copyWith(isMine: true);
+        ).copyWith(
+          isMine: true,
+        );
       }
 
       throw Exception(
         body['message']?.toString() ??
             'تعذر تعديل الرسالة',
       );
+    } on TimeoutException {
+      throw Exception(
+        'انتهت مهلة الاتصال بالخادم',
+      );
     } catch (e) {
-      if (e is Exception) rethrow;
+      if (e is Exception) {
+        rethrow;
+      }
 
-      throw Exception('تعذر تعديل الرسالة');
+      throw Exception(
+        'تعذر تعديل الرسالة',
+      );
     }
   }
 
-  Future<void> markAsRead(int conversationId) async {
+  Future<void> markAsRead(
+    int conversationId,
+  ) async {
     try {
       final response = await http
           .patch(
             Uri.parse(
-              ApiLinks.markConversationAsRead(conversationId),
+              ApiLinks.markConversationAsRead(
+                conversationId,
+              ),
             ),
             headers: await _headers(),
           )
-          .timeout(const Duration(seconds: 12));
+          .timeout(
+            const Duration(seconds: 12),
+          );
 
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
@@ -258,10 +382,18 @@ class CompanyConversationService {
         body['message']?.toString() ??
             'تعذر تعليم المحادثة كمقروءة',
       );
+    } on TimeoutException {
+      throw Exception(
+        'انتهت مهلة الاتصال بالخادم',
+      );
     } catch (e) {
-      if (e is Exception) rethrow;
+      if (e is Exception) {
+        rethrow;
+      }
 
-      throw Exception('تعذر تعليم المحادثة كمقروءة');
+      throw Exception(
+        'تعذر تعليم المحادثة كمقروءة',
+      );
     }
   }
 }
