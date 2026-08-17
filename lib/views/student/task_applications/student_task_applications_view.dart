@@ -18,7 +18,7 @@ class StudentTaskApplicationsView
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
-        bottomNavigationBar: const StudentBottomNav(currentIndex: 1),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.background,

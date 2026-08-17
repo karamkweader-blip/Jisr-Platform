@@ -16,9 +16,27 @@ class CompanyOpportunityFormView
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
+    final baseTheme = Theme.of(context);
+    final blueContainer = baseTheme.brightness == Brightness.dark
+        ? const Color(0xFF123F5E)
+        : const Color(0xFFDCEFFD);
+
+    return Theme(
+      data: baseTheme.copyWith(
+        colorScheme: baseTheme.colorScheme.copyWith(
+          primary: AppColors.primaryBlue,
+          onPrimary: Colors.white,
+          primaryContainer: blueContainer,
+          onPrimaryContainer: AppColors.primaryBlue,
+          secondary: AppColors.primaryBlue,
+          onSecondary: Colors.white,
+          secondaryContainer: blueContainer,
+          onSecondaryContainer: AppColors.primaryBlue,
+        ),
+      ),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
         backgroundColor: AppColors.background,
        appBar: AppBar(
   backgroundColor: AppColors.background,
@@ -102,6 +120,7 @@ class CompanyOpportunityFormView
                 ? controller.submit
                 : null,
           ),
+        ),
         ),
       ),
     );

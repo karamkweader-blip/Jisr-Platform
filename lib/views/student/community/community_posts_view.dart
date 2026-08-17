@@ -20,7 +20,7 @@ class CommunityPostsView extends GetView<CommunityPostsController> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
-        bottomNavigationBar: const StudentBottomNav(currentIndex: 1),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         floatingActionButton: FloatingActionButton.extended(
           heroTag: 'create-community-post',
           elevation: 12,
