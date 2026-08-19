@@ -1,6 +1,6 @@
 class ApiLinks {
   //karam link
- static const String baseUrl = 'http://192.168.1.108:8000/api';
+   static const String baseUrl = 'http://192.168.1.107:8000/api';
 
   //baraa link0
    // static const String baseUrl = 'http://192.168.50.2:8001/api';
@@ -297,4 +297,14 @@ class ApiLinks {
 
   static const String opportunityConversations =
       '$baseUrl/conversations/opportunity-conversations';
+
+      static const String companyMentorNominations =
+    '$baseUrl/company/mentor-nominations';
+
+//complaints
+    static const String complaints =
+    '$baseUrl/complaints';
+
+static const String myComplaints =
+    '$baseUrl/complaints/mine';
 }

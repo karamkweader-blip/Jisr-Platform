@@ -12,6 +12,7 @@ class AssignmentWorkspaceHeader extends StatelessWidget {
   final String statusLabel;
   final String deadlineText;
   final String startedAtText;
+  final VoidCallback onReportStudent;
 
   const AssignmentWorkspaceHeader({
     super.key,
@@ -22,6 +23,7 @@ class AssignmentWorkspaceHeader extends StatelessWidget {
     required this.statusLabel,
     required this.deadlineText,
     required this.startedAtText,
+    required this.onReportStudent,
   });
 
   @override
@@ -152,6 +154,46 @@ class AssignmentWorkspaceHeader extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(width: 9),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onReportStudent,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.18),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.report_gmailerrorred_outlined,
+                              color: AppColors.actionYellow,
+                              size: 17,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'إبلاغ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 18),
@@ -188,10 +230,12 @@ class AssignmentWorkspaceHeader extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: LinearProgressIndicator(
-                    value: details.matching.score.clamp(0, 100) / 100,
+                    value:
+                        details.matching.score.clamp(0, 100) / 100,
                     minHeight: 7,
                     color: AppColors.actionYellow,
-                    backgroundColor: Colors.white.withOpacity(0.20),
+                    backgroundColor:
+                        Colors.white.withOpacity(0.20),
                   ),
                 ),
               ],
@@ -226,13 +270,17 @@ class _StudentAvatar extends StatelessWidget {
           height: 46,
           fit: BoxFit.cover,
           errorBuilder: (_, __, ___) {
-            return _InitialAvatar(letter: firstLetter);
+            return _InitialAvatar(
+              letter: firstLetter,
+            );
           },
         ),
       );
     }
 
-    return _InitialAvatar(letter: firstLetter);
+    return _InitialAvatar(
+      letter: firstLetter,
+    );
   }
 }
 
