@@ -9,10 +9,28 @@ class CompanyOpportunitiesView extends GetView<CompanyOpportunitiesController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Directionality(
+    final baseTheme = Theme.of(context);
+    final blueContainer = baseTheme.brightness == Brightness.dark
+        ? const Color(0xFF123F5E)
+        : const Color(0xFFDCEFFD);
+
+    return Theme(
+      data: baseTheme.copyWith(
+        colorScheme: baseTheme.colorScheme.copyWith(
+          primary: AppColors.primaryBlue,
+          onPrimary: Colors.white,
+          primaryContainer: blueContainer,
+          onPrimaryContainer: AppColors.primaryBlue,
+          secondary: AppColors.primaryBlue,
+          onSecondary: Colors.white,
+          secondaryContainer: blueContainer,
+          onSecondaryContainer: AppColors.primaryBlue,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Directionality(
           textDirection: TextDirection.rtl,
           child: Obx(() {
             final items = controller.visibleItems;
@@ -86,6 +104,7 @@ class CompanyOpportunitiesView extends GetView<CompanyOpportunitiesController> {
               ),
             );
           }),
+          ),
         ),
       ),
     );

@@ -3,7 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/opportunity_applications/student_opportunity_application_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
 import 'package:jisr_platform/models/student/opportunity_applications/student_opportunity_application_model.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 
 class StudentOpportunityApplicationDetailsView extends StatefulWidget {
   const StudentOpportunityApplicationDetailsView({super.key});
@@ -106,6 +108,18 @@ class _StudentOpportunityApplicationDetailsViewState
                     title: 'ملاحظات المراجع',
                     value: application.reviewerNotes ?? '',
                   ).animate().fadeIn(delay: 350.ms).slideY(begin: .16),
+                if (application.interviewId != null) ...[
+                  const SizedBox(height: 18),
+                  ComplaintActionButton(
+                    contextType: ComplaintContextTypes.opportunityInterview,
+                    contextId: application.interviewId!,
+                    subjectLabel:
+                        'مقابلة فرصة ${application.opportunity.title}',
+                    label: 'إرسال شكوى على المقابلة',
+                    onContextNotFound: () =>
+                        controller.fetchApplicationDetails(application.id),
+                  ),
+                ],
                 const SizedBox(height: 18),
                 if (application.status == 'pending')
                   _WithdrawButton(applicationId: application.id)

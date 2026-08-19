@@ -3,7 +3,7 @@ class ApiLinks {
    static const String baseUrl = 'http://192.168.1.107:8000/api';
 
   //baraa link0
-  // static const String baseUrl = 'http://192.168.50.7:8001/api';
+   // static const String baseUrl = 'http://192.168.50.2:8001/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -91,6 +91,9 @@ class ApiLinks {
 
   static String withdrawStudentOpportunityApplication(int applicationId) =>
       '$baseUrl/student/applications/$applicationId/withdraw';
+
+  // student interviews
+  static const String studentInterviews = '$baseUrl/student/interviews';
   //مهامي المسندة
   // assigned tasks
   static const String projectAssignmentTasks =
