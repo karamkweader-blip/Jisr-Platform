@@ -20,36 +20,56 @@ Future<void> main() async {
     firebaseMessagingBackgroundHandler,
   );
 
-  final initialRoute = await InitialRouteService().getInitialRoute();
+  final initialRoute =
+      await InitialRouteService()
+          .getInitialRoute();
 
-  runApp(MyApp(initialRoute: initialRoute));
+  runApp(
+    MyApp(
+      initialRoute: initialRoute,
+    ),
+  );
 
-  await NotificationService.instance.initializeForTest();
+  /*
+   * نبدأ الاستماع للإشعارات بعد تشغيل التطبيق.
+   *
+   * إذا كان المستخدم مسجلًا مسبقًا، تقوم الخدمة
+   * أيضًا بإرسال FCM Token إلى الباك.
+   */
+  await NotificationService.instance.initialize();
 }
 
 class MyApp extends StatelessWidget {
   final String initialRoute;
 
-  const MyApp({super.key, required this.initialRoute});
+  const MyApp({
+    super.key,
+    required this.initialRoute,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Jisr Platform",
+      title: 'Jisr Platform',
       initialRoute: initialRoute,
       getPages: AppPages.pages,
       themeMode: ThemeMode.system,
       theme: ThemeData(
-        bottomNavigationBarTheme: JisrBottomNavItem.theme(),
-        primaryColor: AppColors.primaryBlue,
+        bottomNavigationBarTheme:
+            JisrBottomNavItem.theme(),
+        primaryColor:
+            AppColors.primaryBlue,
         fontFamily: 'Cairo',
-        scaffoldBackgroundColor: AppColors.background,
+        scaffoldBackgroundColor:
+            AppColors.background,
         textTheme: const TextTheme(
           displayLarge: TextStyle(
             fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryBlue,
+            fontWeight:
+                FontWeight.bold,
+            color:
+                AppColors.primaryBlue,
           ),
           bodyLarge: TextStyle(
             fontSize: 16,
@@ -65,18 +85,28 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: AppColors.primaryBlue,
+        primaryColor:
+            AppColors.primaryBlue,
         fontFamily: 'Cairo',
-        scaffoldBackgroundColor: const Color(0xFF0D1722),
-        cardColor: const Color(0xFF162332),
-        colorScheme: const ColorScheme.dark(
-          primary: AppColors.primaryBlue,
-          secondary: AppColors.actionYellow,
-          surface: Color(0xFF162332),
+        scaffoldBackgroundColor:
+            const Color(0xFF0D1722),
+        cardColor:
+            const Color(0xFF162332),
+        colorScheme:
+            const ColorScheme.dark(
+          primary:
+              AppColors.primaryBlue,
+          secondary:
+              AppColors.actionYellow,
+          surface:
+              Color(0xFF162332),
         ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF0D1722),
-          foregroundColor: Colors.white,
+        appBarTheme:
+            const AppBarTheme(
+          backgroundColor:
+              Color(0xFF0D1722),
+          foregroundColor:
+              Colors.white,
         ),
       ),
     );
