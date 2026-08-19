@@ -16,7 +16,7 @@ class StudentPointsView extends GetView<StudentPointsController> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
-        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         body: SafeArea(
           child: GetBuilder<StudentPointsController>(
             builder: (_) {

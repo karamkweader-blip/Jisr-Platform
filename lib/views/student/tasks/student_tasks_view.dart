@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/tasks/student_task_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
+import 'package:jisr_platform/core/widgets/student/student_drawer.dart';
+import 'package:jisr_platform/core/widgets/student/student_shell_app_bar.dart';
 import 'package:jisr_platform/models/student/tasks/student_task_model.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 
@@ -33,22 +35,11 @@ class _StudentTasksViewState extends State<StudentTasksView> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        bottomNavigationBar: const StudentBottomNav(currentIndex: 1),
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: AppColors.background,
-          centerTitle: true,
-          iconTheme: const IconThemeData(color: AppColors.primaryBlue),
-          title: const Text(
-            'التاسكات',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              color: AppColors.primaryBlue,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        drawer: const StudentDrawer(),
+        drawerScrimColor: Colors.black.withOpacity(.32),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
+        appBar: const StudentShellAppBar(),
         body: RefreshIndicator(
           color: AppColors.actionYellow,
           onRefresh: controller.refreshTasks,

@@ -10,10 +10,7 @@ import 'package:jisr_platform/controllers/student/tasks/student_task_controller.
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    /*
-     * يجهز Controller الإشعارات عند دخول الطالب
-     * حتى يبدأ جلب العدد والاستماع لـFCM مباشرة.
-     */
+
     NotificationsBinding().dependencies();
 
     Get.lazyPut<HomeController>(

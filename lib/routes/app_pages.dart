@@ -98,6 +98,8 @@ import 'package:jisr_platform/views/student/chatbot/chatbot_chat_view.dart';
 import 'package:jisr_platform/bindings/student/mentor/student_mentor_binding.dart';
 import 'package:jisr_platform/views/student/mentor/student_mentor_details_view.dart';
 import 'package:jisr_platform/views/student/mentor/student_mentor_view.dart';
+import 'package:jisr_platform/bindings/student/interviews/student_interview_binding.dart';
+import 'package:jisr_platform/views/student/interviews/student_interviews_view.dart';
 
 class AppPages {
   static final pages = [
@@ -231,6 +233,14 @@ class AppPages {
       name: Routes.studentOpportunityApplicationDetails,
       page: () => const StudentOpportunityApplicationDetailsView(),
       binding: StudentOpportunityApplicationBinding(),
+    ),
+    GetPage(
+      name: Routes.studentInterviews,
+      page: () => const StudentInterviewsView(),
+      binding: StudentInterviewBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOutCubic,
     ),
     GetPage(
       name: Routes.studentAssignedTasks,
