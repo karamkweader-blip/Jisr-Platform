@@ -77,4 +77,12 @@ abstract class Routes {
       '/company/opportunities/interview';
   //// conversations
   static const companyChat = '/company/conversations/chat';
+
+  static const String companyMentorNominations =
+    '/company/mentor-nominations';
+
+static const String companyMentorNominationForm =
+    '/company/mentor-nominations/create';
+
+static const companyComplaints = '/company/complaints';
 }

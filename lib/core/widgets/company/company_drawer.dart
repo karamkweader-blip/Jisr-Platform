@@ -77,22 +77,9 @@ class CompanyDrawer extends GetView<CompanyDrawerController> {
                     const SizedBox(height: 9),
                     _menuTile(
                       palette: palette,
-                      icon: Icons.analytics_rounded,
+                      icon: Icons.query_stats_rounded,
                       title: 'تحليل سوق العمل',
                       subtitle: 'اكتشف المهارات والاتجاهات المطلوبة',
-                      trailing: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: AppColors.actionYellow.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: AppColors.actionYellow,
-                          size: 13,
-                        ),
-                      ),
                       onTap: () async {
                         final rootContext = await _closeDrawer(context);
 
@@ -103,6 +90,39 @@ class CompanyDrawer extends GetView<CompanyDrawerController> {
                         Get.toNamed(Routes.companyMarketAnalysis);
                       },
                     ),
+                    const SizedBox(height: 9),
+                    _menuTile(
+                      palette: palette,
+                      icon: Icons.volunteer_activism_rounded,
+                      title: 'ترشيحات المرشدين',
+                      subtitle: 'رشّح موظفًا وتابع حالة الترشيح',
+                      onTap: () async {
+                        final rootContext = await _closeDrawer(context);
+
+                        if (rootContext == null) {
+                          return;
+                        }
+
+                        Get.toNamed(Routes.companyMentorNominations);
+                      },
+                    ),
+                    const SizedBox(height: 9),
+_menuTile(
+  palette: palette,
+  icon: Icons.support_agent_rounded,
+  title: 'شكاواي',
+  subtitle: 'تابع الشكاوى ونتائج مراجعتها',
+  onTap: () async {
+    final rootContext =
+        await _closeDrawer(context);
+
+    if (rootContext == null) {
+      return;
+    }
+
+    Get.toNamed(Routes.companyComplaints);
+  },
+),
                     const SizedBox(height: 18),
                     Padding(
                       padding: const EdgeInsetsDirectional.only(
@@ -120,12 +140,9 @@ class CompanyDrawer extends GetView<CompanyDrawerController> {
                     const SizedBox(height: 8),
                     _menuTile(
                       palette: palette,
-                      icon: Icons.language_rounded,
+                      icon: Icons.translate_rounded,
                       title: 'اللغة',
                       subtitle: controller.languageLabel,
-                      trailing: _badge(
-                        controller.languageCode.value == 'ar' ? 'AR' : 'EN',
-                      ),
                       onTap: () {
                         _showLanguageSheet(context);
                       },
@@ -389,7 +406,6 @@ class CompanyDrawer extends GetView<CompanyDrawerController> {
     required String title,
     required String subtitle,
     required VoidCallback onTap,
-    Widget? trailing,
   }) {
     return Material(
       color: palette.card,
@@ -442,34 +458,27 @@ class CompanyDrawer extends GetView<CompanyDrawerController> {
                 fontSize: 10,
               ),
             ),
-            trailing: trailing ??
-                Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: palette.mutedText,
-                  size: 13,
+            trailing: Container(
+              width: 31,
+              height: 31,
+              decoration: BoxDecoration(
+                color: AppColors.actionYellow.withOpacity(
+                  palette.dark ? 0.16 : 0.10,
                 ),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: AppColors.actionYellow.withOpacity(
+                    palette.dark ? 0.22 : 0.16,
+                  ),
+                ),
+              ),
+              child: const Icon(
+                Icons.chevron_left_rounded,
+                color: AppColors.actionYellow,
+                size: 20,
+              ),
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _badge(String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 7,
-        vertical: 5,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primaryBlue.withOpacity(0.09),
-        borderRadius: BorderRadius.circular(9),
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: AppColors.primaryBlue,
-          fontSize: 9.5,
-          fontWeight: FontWeight.w900,
         ),
       ),
     );
@@ -520,6 +529,27 @@ class CompanyDrawer extends GetView<CompanyDrawerController> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _badge(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 7,
+        vertical: 5,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.primaryBlue.withOpacity(0.09),
+        borderRadius: BorderRadius.circular(9),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: AppColors.primaryBlue,
+          fontSize: 9.5,
+          fontWeight: FontWeight.w900,
+        ),
       ),
     );
   }

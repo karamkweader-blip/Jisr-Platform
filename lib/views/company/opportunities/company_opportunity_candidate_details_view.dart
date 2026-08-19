@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/company/opportunities/company_opportunity_candidate_details_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/models/company/complaints/company_complaint_model.dart';
 import 'package:jisr_platform/models/company/opportunities/company_opportunity_candidate_model.dart';
+import 'package:jisr_platform/views/company/complaints/widgets/company_complaint_form_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CompanyOpportunityCandidateDetailsView extends GetView<CompanyOpportunityCandidateDetailsController> {
@@ -44,7 +46,8 @@ class CompanyOpportunityCandidateDetailsView extends GetView<CompanyOpportunityC
                     ],
                     if (item.matchReasons.isNotEmpty) ...[const SizedBox(height: 10), ...item.matchReasons.map((reason) => Padding(padding: const EdgeInsets.only(bottom: 6), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.check_circle_outline, size: 18, color: AppColors.primaryBlue), const SizedBox(width: 7), Expanded(child: Text(reason))])))]
                   ])),
-                  if (item.interview != null) _interview(item),
+                  if (item.interview != null)
+  _interview(context, item),
                   if (item.interview == null && item.actions.canScheduleInterview)
                     FilledButton.icon(onPressed: () => controller.openInterviewForm(), icon: const Icon(Icons.event_available_outlined), label: const Text('جدولة مقابلة')),
                 ],
@@ -67,7 +70,10 @@ class CompanyOpportunityCandidateDetailsView extends GetView<CompanyOpportunityC
     ])),
   );
 
-  Widget _interview(CompanyOpportunityCandidate item) {
+ Widget _interview(
+  BuildContext context,
+  CompanyOpportunityCandidate item,
+) {
     final interview = item.interview!;
     return _section('المقابلة', Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       _line('الحالة', controller.statusLabel(interview.status)),
@@ -82,6 +88,37 @@ class CompanyOpportunityCandidateDetailsView extends GetView<CompanyOpportunityC
         if (interview.canReschedule) OutlinedButton.icon(onPressed: () => controller.openInterviewForm(reschedule: true), icon: const Icon(Icons.edit_calendar_outlined), label: const Text('إعادة الجدولة')),
         if (interview.canComplete) FilledButton.icon(onPressed: controller.isActing.value ? null : controller.completeInterview, icon: const Icon(Icons.check_rounded), label: const Text('إكمال')),
         if (interview.canCancel) TextButton.icon(onPressed: controller.isActing.value ? null : controller.cancelInterview, icon: const Icon(Icons.cancel_outlined, color: Colors.red), label: const Text('إلغاء', style: TextStyle(color: Colors.red))),
+        OutlinedButton.icon(
+  onPressed: controller.isActing.value
+      ? null
+      : () {
+          showCompanyComplaintForm(
+            context: context,
+            contextType:
+                CompanyComplaintContextTypes
+                    .opportunityInterview,
+            contextId: interview.id,
+            subjectName: item.student.name,
+            onSourceNotFound:
+                controller.fetchCandidate,
+          );
+        },
+  style: OutlinedButton.styleFrom(
+    foregroundColor: AppColors.actionYellow,
+    side: BorderSide(
+      color: AppColors.actionYellow.withOpacity(
+        0.35,
+      ),
+    ),
+  ),
+  icon: const Icon(
+    Icons.report_gmailerrorred_outlined,
+    size: 18,
+  ),
+  label: const Text(
+    'الإبلاغ عن المقابلة',
+  ),
+),
       ]),
     ]));
   }

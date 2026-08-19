@@ -9,7 +9,13 @@ class AppColors {
   // ألوان الخلفيات (ليست أبيض ناصع)
   static const Color background = Color(0xFFF8FAFC);
   static const Color cardWhite = Colors.white;
+// ألوان المحتوى فوق الخلفية الأساسية
+static const Color onPrimary = Colors.white;
+static const Color onPrimaryMuted = Colors.white70;
 
+// ألوان الحالات
+static const Color dangerRed = Colors.red;
+static const Color successGreen = Colors.green;
   // ألوان النصوص    
   static const Color textDark = Color(0xFF1E293B);
   static const Color textGrey = Color(0xFF64748B);

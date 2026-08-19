@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/company/tasks/company_task_assignment_workspace_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/models/company/complaints/company_complaint_model.dart';
+import 'package:jisr_platform/views/company/complaints/widgets/company_complaint_form_sheet.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_evaluation_section.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_overview_section.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_progress_timeline.dart';
@@ -65,6 +67,17 @@ onRefresh: controller.refreshWorkspace,
                     startedAtText: controller.formatDate(
                       details.assignment.startedAt,
                     ),
+                    onReportStudent: () {
+  showCompanyComplaintForm(
+    context: context,
+    contextType:
+        CompanyComplaintContextTypes.taskAssignment,
+    contextId: details.assignment.id,
+    subjectName: controller.studentName,
+    onSourceNotFound:
+        controller.refreshWorkspace,
+  );
+},
                   ),
                   const SizedBox(height: 20),
 

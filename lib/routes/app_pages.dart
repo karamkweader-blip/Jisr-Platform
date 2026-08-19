@@ -8,7 +8,10 @@ import 'package:jisr_platform/bindings/auth/register_student_binding.dart';
 import 'package:jisr_platform/bindings/auth/forget-password/reset_password_binding.dart';
 import 'package:jisr_platform/bindings/auth/role_binding.dart';
 import 'package:jisr_platform/bindings/company/company_main_binding.dart';
+import 'package:jisr_platform/bindings/company/complaints/company_complaints_binding.dart';
 import 'package:jisr_platform/bindings/company/conversations/company_conversation_binding.dart.dart';
+import 'package:jisr_platform/bindings/company/mentor/company_mentor_nomination_form_binding.dart';
+import 'package:jisr_platform/bindings/company/mentor/company_mentor_nominations_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicant_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicants_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_assignment_workspace_binding.dart';
@@ -31,7 +34,10 @@ import 'package:jisr_platform/views/auth/forget&reset/otp_verification_view.dart
 import 'package:jisr_platform/views/auth/forget&reset/reset_password_view.dart';
 import 'package:jisr_platform/views/auth/role_selection.dart';
 import 'package:jisr_platform/views/company/company_main_view.dart';
+import 'package:jisr_platform/views/company/complaints/company_complaints_view.dart';
 import 'package:jisr_platform/views/company/conversations/company_chat_view.dart';
+import 'package:jisr_platform/views/company/mentor/company_mentor_nomination_form_view.dart';
+import 'package:jisr_platform/views/company/mentor/company_mentor_nominations_view.dart';
 import 'package:jisr_platform/views/company/profile/edit_company_profile_view.dart';
 import 'package:jisr_platform/views/company/opportunities/company_opportunity_candidate_details_view.dart';
 import 'package:jisr_platform/views/company/opportunities/company_opportunity_candidates_view.dart';
@@ -402,6 +408,31 @@ GetPage(
       const Duration(milliseconds: 280),
   curve: Curves.easeInOutCubic,
 ),
-    ////////////////////////////
+
+GetPage(
+  name: Routes.companyMentorNominations,
+  page: () => const CompanyMentorNominationsView(),
+  binding: CompanyMentorNominationsBinding(),
+  transition: Transition.cupertino,
+),
+
+GetPage(
+  name: Routes.companyMentorNominationForm,
+  page: () => const CompanyMentorNominationFormView(),
+  binding: CompanyMentorNominationFormBinding(),
+  transition: Transition.cupertino,
+),
+
+GetPage(
+  name: Routes.companyComplaints,
+  page: () => const CompanyComplaintsView(),
+  binding: CompanyComplaintsBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration: const Duration(
+    milliseconds: 320,
+  ),
+  curve: Curves.easeInOutCubic,
+),  
+////////////////////////////
   ];
 }

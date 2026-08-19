@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/company/opportunities/company_opportunity_candidate_details_controller.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
+import 'package:jisr_platform/services/company/complaints/company_complaint_service.dart';
 import 'package:jisr_platform/services/company/opportunities/company_opportunity_candidate_service.dart';
 import 'package:jisr_platform/services/company/opportunities/company_opportunity_interview_service.dart';
 
@@ -18,6 +19,15 @@ class CompanyOpportunityCandidateDetailsBinding extends Bindings {
         () => CompanyOpportunityInterviewService(Get.find<AuthService>()),
       );
     }
+    
+    if (!Get.isRegistered<CompanyComplaintService>()) {
+  Get.lazyPut<CompanyComplaintService>(
+    () => CompanyComplaintService(
+      Get.find<AuthService>(),
+    ),
+    fenix: true,
+  );
+}
     Get.lazyPut<CompanyOpportunityCandidateDetailsController>(
       () => CompanyOpportunityCandidateDetailsController(
         Get.find<CompanyOpportunityCandidateService>(),
