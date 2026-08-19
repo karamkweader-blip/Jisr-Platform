@@ -6,6 +6,7 @@ import 'package:jisr_platform/controllers/student/home/home_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/company/company_account_menu.dart';
 import 'package:jisr_platform/core/widgets/company/jisr_animated_logo.dart';
+import 'package:jisr_platform/core/widgets/notifications/notification_bell_button.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/models/student/assessment/assessment_models.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
@@ -87,34 +88,54 @@ class HomeView extends GetView<HomeController> {
           leading: CompanyAccountMenu(
             controller: authActionsController,
           ),
-          actions: [
-            IconButton(
-              tooltip: 'المحادثات',
-              onPressed: () {
-                Get.toNamed(Routes.studentConversations);
-              },
-              icon: const Icon(
-                Icons.chat_bubble_outline_rounded,
-                color: AppColors.primaryBlue,
-              ),
-            ),
-            IconButton(
-              tooltip: 'مساعد جسر الذكي',
-              onPressed: () {
-                Get.toNamed(Routes.studentChatbot);
-              },
-              icon: const Icon(
-                Icons.smart_toy_outlined,
-                color: AppColors.primaryBlue,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsetsDirectional.only(end: 12),
-              child: Center(
-                child: JisrAnimatedLogo(size: 38),
-              ),
-            ),
-          ],
+        actions: [
+  /*
+   * نفس الجرس المشترك المستخدم عند الشركة.
+   * لا يوجد جرس خاص بالطالب.
+   */
+  const Center(
+    child: NotificationBellButton(),
+  ),
+
+  const SizedBox(width: 4),
+
+  IconButton(
+    tooltip: 'المحادثات',
+    onPressed: () {
+      Get.toNamed(
+        Routes.studentConversations,
+      );
+    },
+    icon: const Icon(
+      Icons.chat_bubble_outline_rounded,
+      color: AppColors.primaryBlue,
+    ),
+  ),
+
+  IconButton(
+    tooltip: 'مساعد جسر الذكي',
+    onPressed: () {
+      Get.toNamed(
+        Routes.studentChatbot,
+      );
+    },
+    icon: const Icon(
+      Icons.smart_toy_outlined,
+      color: AppColors.primaryBlue,
+    ),
+  ),
+
+  const Padding(
+    padding: EdgeInsetsDirectional.only(
+      end: 12,
+    ),
+    child: Center(
+      child: JisrAnimatedLogo(
+        size: 38,
+      ),
+    ),
+  ),
+],
         ),
         body: SafeArea(
           child: SingleChildScrollView(

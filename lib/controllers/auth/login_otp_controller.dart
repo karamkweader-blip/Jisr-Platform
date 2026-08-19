@@ -6,6 +6,7 @@ import 'package:jisr_platform/core/api/api_links.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
+import 'package:jisr_platform/services/notifications/notification_service.dart';
 
 class LoginOtpController extends GetxController {
   final otpController = TextEditingController();
@@ -99,7 +100,9 @@ await AuthService().saveAuthData(
   role: roleName,
   userId: userId,
 );
-print(roleName);  
+await NotificationService.instance.syncDeviceToken();
+
+// print(roleName);  
 if (roleName == 'student') {
   Get.offAllNamed(Routes.studentHome);
 } else if (roleName == 'company') { 

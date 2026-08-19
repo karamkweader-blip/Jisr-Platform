@@ -24,6 +24,7 @@ import 'package:jisr_platform/bindings/company/opportunities/company_opportunity
 import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_details_binding.dart';
 import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_form_binding.dart';
 import 'package:jisr_platform/bindings/company/opportunities/company_opportunity_interview_binding.dart';
+import 'package:jisr_platform/bindings/notifications/notifications_binding.dart';
 
 import 'package:jisr_platform/bindings/student/cv/cv_upload_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
@@ -50,6 +51,7 @@ import 'package:jisr_platform/views/company/tasks/company_task_assignment_worksp
 import 'package:jisr_platform/views/company/tasks/company_task_assignments_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/create_company_task_view.dart';
+import 'package:jisr_platform/views/notifications/notifications_view.dart';
 import 'package:jisr_platform/views/student/home/home_view.dart';
 import 'package:jisr_platform/views/auth/login/login_otp_view.dart';
 import 'package:jisr_platform/views/auth/student/register_student_view.dart';
@@ -145,6 +147,17 @@ class AppPages {
       page: () => const LoginOtpView(),
       binding: LoginOtpBinding(),
     ),
+    
+    GetPage(
+  name: Routes.notifications,
+  page: () => const NotificationsView(),
+  binding: NotificationsBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration: const Duration(
+    milliseconds: 300,
+  ),
+  curve: Curves.easeInOutCubic,
+),
     //////////////////////
     ///
     ///

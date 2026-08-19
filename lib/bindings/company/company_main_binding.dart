@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jisr_platform/bindings/notifications/notifications_binding.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
 import 'package:jisr_platform/controllers/company/company_drawer_controller.dart';
 import 'package:jisr_platform/controllers/company/company_main_controller.dart';
@@ -26,6 +27,8 @@ class CompanyMainBinding extends Bindings {
     Get.lazyPut<AuthService>(
       AuthService.new,
     );
+    
+NotificationsBinding().dependencies();
 
     if (!Get.isRegistered<AuthActionsController>()) {
       Get.lazyPut<AuthActionsController>(

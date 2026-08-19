@@ -11,6 +11,23 @@ class ApiLinks {
   static const String verifyLoginOtp = '$baseUrl/login/verify-otp';
   static const String logout = '$baseUrl/logout';
   static const String logoutAll = '$baseUrl/logout-all';
+    // notifications
+  static const String notifications =
+      '$baseUrl/notifications';
+
+  static String markNotificationAsRead(
+    int notificationId,
+  ) =>
+      '$baseUrl/notifications/$notificationId/read';
+
+  static const String markAllNotificationsAsRead =
+      '$baseUrl/notifications/read-all';
+
+  static const String unreadNotificationsCount =
+      '$baseUrl/notifications/unread-count';
+
+  static const String notificationDeviceTokens =
+      '$baseUrl/notifications/device-tokens';
 
   /////////////////reset password
   static const String forgotPassword = '$baseUrl/password/forgot';

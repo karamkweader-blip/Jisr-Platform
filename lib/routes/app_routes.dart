@@ -8,6 +8,9 @@ abstract class Routes {
   static const registerStudent = '/register-student';
   static const loginOtp = '/login-otp';
 
+  // notifications
+  static const notifications = '/notifications';
+
   ///reset
   static const forgotPassword = '/forgot-password';
   static const otpVerification = '/otp-verification';
