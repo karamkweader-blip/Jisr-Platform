@@ -3,7 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/student/task_progress/student_task_progress_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/models/student/complaints/complaint_model.dart';
 import 'package:jisr_platform/models/student/task_progress/student_task_progress_model.dart';
+import 'package:jisr_platform/views/student/complaints/complaint_dialog.dart';
 
 class StudentTaskProgressView extends GetView<StudentTaskProgressController> {
   const StudentTaskProgressView({super.key});
@@ -40,6 +42,19 @@ class StudentTaskProgressView extends GetView<StudentTaskProgressController> {
             ),
           ),
           actions: [
+            IconButton(
+              tooltip: 'إرسال شكوى على الشركة',
+              onPressed: () => ComplaintDialog.show(
+                contextType: ComplaintContextTypes.companyTaskAssignment,
+                contextId: controller.assignmentId,
+                subjectLabel: 'الشركة المرتبطة بالمهمة المقبولة',
+                onContextNotFound: controller.fetchProgress,
+              ),
+              icon: const Icon(
+                Icons.report_problem_outlined,
+                color: Color(0xFFDC2626),
+              ),
+            ),
             IconButton(
               onPressed: controller.fetchProgress,
               icon: const Icon(

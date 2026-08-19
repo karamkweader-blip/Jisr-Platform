@@ -7,6 +7,8 @@ import 'package:jisr_platform/controllers/student/profile/student_profile_contro
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
+import 'package:jisr_platform/core/widgets/student/student_drawer.dart';
+import 'package:jisr_platform/core/widgets/student/student_shell_app_bar.dart';
 
 class StudentProfileView extends GetView<StudentProfileController> {
   const StudentProfileView({super.key});
@@ -16,22 +18,11 @@ class StudentProfileView extends GetView<StudentProfileController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: AppColors.background,
-          centerTitle: true,
-          iconTheme: const IconThemeData(color: AppColors.primaryBlue),
-          title: const Text(
-            'ملفي الشخصي',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              color: AppColors.primaryBlue,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        drawer: const StudentDrawer(),
+        drawerScrimColor: Colors.black.withOpacity(.32),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 4),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: const StudentShellAppBar(),
         body: Obx(() {
           if (controller.isLoading.value) {
             return const Center(

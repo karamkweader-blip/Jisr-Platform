@@ -9,6 +9,8 @@ import 'package:jisr_platform/core/widgets/company/Loading-Empty-Error/jisr_erro
 import 'package:jisr_platform/core/widgets/company/Loading-Empty-Error/jisr_loading_state.dart';
 import 'package:jisr_platform/core/widgets/conversations/conversation_card.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
+import 'package:jisr_platform/core/widgets/student/student_drawer.dart';
+import 'package:jisr_platform/core/widgets/student/student_shell_app_bar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 
 class StudentConversationsView
@@ -20,8 +22,11 @@ class StudentConversationsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        drawer: const StudentDrawer(),
+        drawerScrimColor: Colors.black.withOpacity(.32),
+        appBar: const StudentShellAppBar(),
+        bottomNavigationBar: const StudentBottomNav(currentIndex: 3),
         body: SafeArea(
           child: Column(
             children: [
