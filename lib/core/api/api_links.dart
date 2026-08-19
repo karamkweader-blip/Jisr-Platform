@@ -282,6 +282,11 @@ class ApiLinks {
   static String companyOpportunityCandidates(int opportunityId) =>
       '$baseUrl/company/opportunities/$opportunityId/candidates';
 
+  static String companyOpportunityTopCandidates(
+  int opportunityId,
+) =>
+    '$baseUrl/opportunities/$opportunityId/top-candidates';
+    
   static String companyOpportunityCandidateDetails(
     int opportunityId,
     int applicationId,
@@ -324,4 +329,6 @@ class ApiLinks {
 
 static const String myComplaints =
     '$baseUrl/complaints/mine';
+
+  
 }
