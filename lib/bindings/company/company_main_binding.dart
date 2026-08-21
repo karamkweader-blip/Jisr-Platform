@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jisr_platform/bindings/notifications/notifications_binding.dart';
+import 'package:jisr_platform/controllers/app_theme_controller.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
 import 'package:jisr_platform/controllers/company/company_drawer_controller.dart';
 import 'package:jisr_platform/controllers/company/company_main_controller.dart';
@@ -116,15 +117,17 @@ if (!Get.isRegistered<CompanyComplaintService>()) {
       fenix: true,
     );
 
-    Get.lazyPut<CompanyDrawerController>(
-      () => CompanyDrawerController(
-        authController:
-            Get.find<AuthActionsController>(),
-        mainController:
-            Get.find<CompanyMainController>(),
-        profileController:
-            Get.find<CompanyProfileController>(),
-      ),
-    );
+  Get.lazyPut<CompanyDrawerController>(
+  () => CompanyDrawerController(
+    authController:
+        Get.find<AuthActionsController>(),
+    mainController:
+        Get.find<CompanyMainController>(),
+    profileController:
+        Get.find<CompanyProfileController>(),
+    themeController:
+        Get.find<AppThemeController>(),
+  ),
+);
   }
 }
