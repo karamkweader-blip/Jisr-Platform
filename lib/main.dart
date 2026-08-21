@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:jisr_platform/core/colors/app_colors.dart';
-import 'package:jisr_platform/core/widgets/company/jisr_bottom_nav_item.dart';
+import 'package:get/get.dart';
+import 'package:jisr_platform/controllers/app_theme_controller.dart';
+import 'package:jisr_platform/core/theme/app_theme.dart';
 import 'package:jisr_platform/firebase_options.dart';
 import 'package:jisr_platform/routes/app_pages.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/initial_route_service.dart';
@@ -20,9 +20,17 @@ Future<void> main() async {
     firebaseMessagingBackgroundHandler,
   );
 
+  // تحميل المظهر قبل تشغيل الواجهة لمنع ظهور Light Theme للحظة.
+  final appThemeController =
+      await AppThemeController().initialize();
+
+  Get.put<AppThemeController>(
+    appThemeController,
+    permanent: true,
+  );
+
   final initialRoute =
-      await InitialRouteService()
-          .getInitialRoute();
+      await InitialRouteService().getInitialRoute();
 
   runApp(
     MyApp(
@@ -30,12 +38,6 @@ Future<void> main() async {
     ),
   );
 
-  /*
-   * نبدأ الاستماع للإشعارات بعد تشغيل التطبيق.
-   *
-   * إذا كان المستخدم مسجلًا مسبقًا، تقوم الخدمة
-   * أيضًا بإرسال FCM Token إلى الباك.
-   */
   await NotificationService.instance.initialize();
 }
 
@@ -49,66 +51,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeController =
+        Get.find<AppThemeController>();
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Jisr Platform',
       initialRoute: initialRoute,
       getPages: AppPages.pages,
-      themeMode: ThemeMode.system,
-      theme: ThemeData(
-        bottomNavigationBarTheme:
-            JisrBottomNavItem.theme(),
-        primaryColor:
-            AppColors.primaryBlue,
-        fontFamily: 'Cairo',
-        scaffoldBackgroundColor:
-            AppColors.background,
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-            fontSize: 24,
-            fontWeight:
-                FontWeight.bold,
-            color:
-                AppColors.primaryBlue,
-          ),
-          bodyLarge: TextStyle(
-            fontSize: 16,
-            color: AppColors.textDark,
-            height: 1.5,
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 14,
-            color: AppColors.textGrey,
-            height: 1.4,
-          ),
-        ),
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor:
-            AppColors.primaryBlue,
-        fontFamily: 'Cairo',
-        scaffoldBackgroundColor:
-            const Color(0xFF0D1722),
-        cardColor:
-            const Color(0xFF162332),
-        colorScheme:
-            const ColorScheme.dark(
-          primary:
-              AppColors.primaryBlue,
-          secondary:
-              AppColors.actionYellow,
-          surface:
-              Color(0xFF162332),
-        ),
-        appBarTheme:
-            const AppBarTheme(
-          backgroundColor:
-              Color(0xFF0D1722),
-          foregroundColor:
-              Colors.white,
-        ),
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeController.themeMode.value,
     );
   }
 }

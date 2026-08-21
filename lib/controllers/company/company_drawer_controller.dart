@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jisr_platform/controllers/app_theme_controller.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
 import 'package:jisr_platform/controllers/company/company_main_controller.dart';
 import 'package:jisr_platform/controllers/company/profile/company_profile_controller.dart';
@@ -17,26 +18,30 @@ class CompanyDrawerController extends GetxController {
   static const String _languagePreferenceKey =
       'company_language';
 
-  static const String _appearancePreferenceKey =
-      'company_appearance';
-
   final AuthActionsController authController;
   final CompanyMainController mainController;
   final CompanyProfileController profileController;
+  final AppThemeController themeController;
 
   CompanyDrawerController({
     required this.authController,
     required this.mainController,
     required this.profileController,
+    required this.themeController,
   });
 
   final RxString languageCode = 'ar'.obs;
-  final RxString appearance = 'light'.obs;
   final Rx<DateTime> currentTime = DateTime.now().obs;
 
   Timer? _clockTimer;
 
-  bool get isDarkMode => appearance.value == 'dark';
+  bool get isDarkMode {
+    return themeController.isDarkMode;
+  }
+
+  String get appearanceValue {
+    return themeController.appearanceValue;
+  }
 
   String get languageLabel {
     return languageCode.value == 'ar'
@@ -103,7 +108,7 @@ class CompanyDrawerController extends GetxController {
   void onInit() {
     super.onInit();
 
-    _loadPreferences();
+    _loadLanguagePreference();
 
     _clockTimer = Timer.periodic(
       const Duration(minutes: 1),
@@ -119,7 +124,7 @@ class CompanyDrawerController extends GetxController {
     super.onClose();
   }
 
-  Future<void> _loadPreferences() async {
+  Future<void> _loadLanguagePreference() async {
     try {
       final preferences =
           await SharedPreferences.getInstance();
@@ -128,32 +133,18 @@ class CompanyDrawerController extends GetxController {
         _languagePreferenceKey,
       );
 
-      final savedAppearance = preferences.getString(
-        _appearancePreferenceKey,
+      if (savedLanguage != 'ar' &&
+          savedLanguage != 'en') {
+        return;
+      }
+
+      languageCode.value = savedLanguage!;
+
+      Get.updateLocale(
+        Locale(savedLanguage),
       );
-
-      if (savedLanguage == 'ar' ||
-          savedLanguage == 'en') {
-        languageCode.value = savedLanguage!;
-
-        Get.updateLocale(
-          Locale(savedLanguage),
-        );
-      }
-
-      if (savedAppearance == 'light' ||
-          savedAppearance == 'dark') {
-        appearance.value = savedAppearance!;
-
-        Get.changeThemeMode(
-          savedAppearance == 'dark'
-              ? ThemeMode.dark
-              : ThemeMode.light,
-        );
-      }
     } catch (_) {
       languageCode.value = 'ar';
-      appearance.value = 'light';
     }
   }
 
@@ -162,9 +153,12 @@ class CompanyDrawerController extends GetxController {
       return;
     }
 
-    try {
-      languageCode.value = code;
+    final previousLanguage = languageCode.value;
 
+    languageCode.value = code;
+    Get.updateLocale(Locale(code));
+
+    try {
       final preferences =
           await SharedPreferences.getInstance();
 
@@ -172,9 +166,10 @@ class CompanyDrawerController extends GetxController {
         _languagePreferenceKey,
         code,
       );
-
-      Get.updateLocale(Locale(code));
     } catch (_) {
+      languageCode.value = previousLanguage;
+      Get.updateLocale(Locale(previousLanguage));
+
       Get.snackbar(
         'تعذر تغيير اللغة',
         'حدث خطأ أثناء حفظ اختيار اللغة.',
@@ -184,30 +179,12 @@ class CompanyDrawerController extends GetxController {
   }
 
   Future<void> changeAppearance(String value) async {
-    if (value != 'light' && value != 'dark') {
-      return;
-    }
-
     try {
-      appearance.value = value;
-
-      final preferences =
-          await SharedPreferences.getInstance();
-
-      await preferences.setString(
-        _appearancePreferenceKey,
-        value,
-      );
-
-      Get.changeThemeMode(
-        value == 'dark'
-            ? ThemeMode.dark
-            : ThemeMode.light,
-      );
+      await themeController.changeTheme(value);
     } catch (_) {
       Get.snackbar(
         'تعذر تغيير المظهر',
-        'حدث خطأ أثناء حفظ اختيار المظهر.',
+        'حدث خطأ أثناء تغيير مظهر التطبيق.',
         snackPosition: SnackPosition.BOTTOM,
       );
     }

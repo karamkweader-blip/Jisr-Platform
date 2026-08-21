@@ -682,7 +682,8 @@ _menuTile(
                     sun: true,
                     title: 'نهاري',
                     subtitle: 'واضح ومشرق',
-                    selected: controller.appearance.value == 'light',
+                   selected:
+    controller.appearanceValue == 'light',
                     onTap: () {
                       Navigator.of(sheetContext).pop();
                       controller.changeAppearance('light');
@@ -696,7 +697,8 @@ _menuTile(
                     sun: false,
                     title: 'داكن',
                     subtitle: 'هادئ في الليل',
-                    selected: controller.appearance.value == 'dark',
+                   selected:
+    controller.appearanceValue == 'dark',
                     onTap: () {
                       Navigator.of(sheetContext).pop();
                       controller.changeAppearance('dark');

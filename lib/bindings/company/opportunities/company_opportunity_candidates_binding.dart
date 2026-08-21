@@ -44,7 +44,7 @@ class CompanyOpportunityCandidatesBinding
         Get.find<
             CompanyOpportunityCandidateService>(),
         Get.find<
-            CompanyOpp  ortunityMatchingService>(),
+            CompanyOpportunityMatchingService>(),
         Get.find<AuthService>(),
       ),
     );
