@@ -147,6 +147,16 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> startAssessment() async {
+    if (careerPathId <= 0) {
+      isAssessmentLocked.value = false;
+      JisrSnackbar.show(
+        title: 'تعذر بدء الاختبار',
+        message: 'لم يتم تحديد مسار مهني صالح للاختبار.',
+        type: JisrSnackbarType.warning,
+      );
+      return;
+    }
+
     if (skillIds.isEmpty) {
       JisrSnackbar.show(
         title: 'لا توجد مهارات',

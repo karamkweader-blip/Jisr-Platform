@@ -25,12 +25,18 @@ class StudentAssignedTasksView extends GetView<StudentAssignedTaskController> {
           backgroundColor: AppColors.background,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
-          title: const Text(
-            'مهامي المسندة',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              color: AppColors.primaryBlue,
-              fontWeight: FontWeight.bold,
+          title: Obx(
+            () => Text(
+              controller.selectedProjectTitle.value.isEmpty
+                  ? 'مهامي المسندة'
+                  : controller.selectedProjectTitle.value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: 'Cairo',
+                color: AppColors.primaryBlue,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           actions: [

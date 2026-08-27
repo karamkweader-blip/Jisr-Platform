@@ -137,6 +137,22 @@ class _StudentDrawerState extends State<StudentDrawer> {
                   ),
                   _menuTile(
                     palette,
+                    Icons.account_tree_outlined,
+                    'مشاريع المشرفين',
+                    'اكتشف المشاريع وقدّم عليها',
+                    () => _openRoute(Routes.studentSupervisorProjects),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.fact_check_outlined,
+                    'تقديمات المشاريع',
+                    'تابع القبول وافتح مهام المشروع',
+                    () => _openRoute(
+                      Routes.studentSupervisorProjectApplications,
+                    ),
+                  ),
+                  _menuTile(
+                    palette,
                     Icons.assignment_ind_outlined,
                     'مهامي المسندة',
                     'مهام المشرف والتسليمات',

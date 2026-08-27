@@ -10,6 +10,7 @@ import 'package:jisr_platform/services/auth/token&role_manage/initial_route_serv
 import 'package:jisr_platform/services/notifications/notification_service.dart';
 
 Future<void> main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(

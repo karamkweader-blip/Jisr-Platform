@@ -4,17 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
+import 'package:jisr_platform/models/student/assessment/assessment_models.dart';
 import 'package:jisr_platform/models/student/profile/student_profile_model.dart';
+import 'package:jisr_platform/services/student/assessment/assessment_learning_plan_cache.dart';
 import 'package:jisr_platform/services/student/profile/student_profile_service.dart';
 
 class StudentProfileController extends GetxController {
   final StudentProfileService _service = StudentProfileService();
+  final AssessmentLearningPlanCache _learningPlanCache =
+      AssessmentLearningPlanCache();
 
   final RxBool isLoading = false.obs;
   final RxBool isSaving = false.obs;
+  final RxBool isLoadingSkills = false.obs;
 
   final Rxn<StudentProfileModel> profile = Rxn<StudentProfileModel>();
   final Rxn<File> selectedImage = Rxn<File>();
+  final RxList<AssessmentLearningPathItem> skills =
+      <AssessmentLearningPathItem>[].obs;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -30,6 +37,22 @@ class StudentProfileController extends GetxController {
   void onInit() {
     super.onInit();
     fetchProfile();
+    loadStoredSkills();
+  }
+
+  Future<void> loadStoredSkills() async {
+    try {
+      isLoadingSkills.value = true;
+      final cachedLearningPlan = await _learningPlanCache.read();
+      skills.assignAll(
+        cachedLearningPlan?.roadmap ??
+            const <AssessmentLearningPathItem>[],
+      );
+    } catch (_) {
+      skills.clear();
+    } finally {
+      isLoadingSkills.value = false;
+    }
   }
 
   Future<void> fetchProfile() async {

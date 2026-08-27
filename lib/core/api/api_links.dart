@@ -1,9 +1,9 @@
 class ApiLinks {
   //karam link
-   static const String baseUrl = 'http://192.168.1.107:8000/api';
+  //static const String baseUrl = 'http://192.168.137.160:8000/api';
 
   //baraa link0
-   // static const String baseUrl = 'http://192.168.50.2:8001/api';
+  static const String baseUrl = 'http://10.65.2.56:8000/api';
 
   ////////authentication
   static const String register = '$baseUrl/register';
@@ -11,13 +11,10 @@ class ApiLinks {
   static const String verifyLoginOtp = '$baseUrl/login/verify-otp';
   static const String logout = '$baseUrl/logout';
   static const String logoutAll = '$baseUrl/logout-all';
-    // notifications
-  static const String notifications =
-      '$baseUrl/notifications';
+  // notifications
+  static const String notifications = '$baseUrl/notifications';
 
-  static String markNotificationAsRead(
-    int notificationId,
-  ) =>
+  static String markNotificationAsRead(int notificationId) =>
       '$baseUrl/notifications/$notificationId/read';
 
   static const String markAllNotificationsAsRead =
@@ -38,6 +35,9 @@ class ApiLinks {
   ///////student
   static const String uploadCv = '$baseUrl/cvs/upload';
   static String analyzeCv(int cvId) => '$baseUrl/cvs/$cvId/analyze';
+  static const String studentCvs = '$baseUrl/student/cvs';
+  static String studentCvAnalysis(int cvId) =>
+      '$baseUrl/student/cvs/$cvId/analysis';
   static const String createAssessment = '$baseUrl/assessments';
 
   static String nextAssessmentQuestion({
@@ -87,6 +87,19 @@ class ApiLinks {
   static String taskDetails(int taskId) => '$baseUrl/student/tasks/$taskId';
   static String applyToTask(int taskId) =>
       '$baseUrl/student/tasks/$taskId/apply';
+
+  // supervisor-created projects for students
+  static const String studentSupervisorProjects =
+      '$baseUrl/student/project-templates';
+
+  static String studentSupervisorProjectDetails(int projectTemplateId) =>
+      '$baseUrl/student/project-templates/$projectTemplateId';
+
+  static String applyToStudentSupervisorProject(int projectTemplateId) =>
+      '$baseUrl/student/project-templates/$projectTemplateId/apply';
+
+  static const String studentSupervisorProjectApplications =
+      '$baseUrl/student/project-templates/applications/all';
   // opportunities
   static const String studentRecommendedOpportunities =
       '$baseUrl/student/opportunities/recommended';
@@ -264,8 +277,7 @@ class ApiLinks {
       '$baseUrl/company/tasks/review/$submissionId';
 
   // company opportunities
-  static const String companyOpportunities =
-      '$baseUrl/company/opportunities';
+  static const String companyOpportunities = '$baseUrl/company/opportunities';
 
   static String companyOpportunityDetails(int opportunityId) =>
       '$baseUrl/company/opportunities/$opportunityId';
@@ -282,11 +294,9 @@ class ApiLinks {
   static String companyOpportunityCandidates(int opportunityId) =>
       '$baseUrl/company/opportunities/$opportunityId/candidates';
 
-  static String companyOpportunityTopCandidates(
-  int opportunityId,
-) =>
-    '$baseUrl/opportunities/$opportunityId/top-candidates';
-    
+  static String companyOpportunityTopCandidates(int opportunityId) =>
+      '$baseUrl/opportunities/$opportunityId/top-candidates';
+
   static String companyOpportunityCandidateDetails(
     int opportunityId,
     int applicationId,
@@ -320,15 +330,11 @@ class ApiLinks {
   static const String opportunityConversations =
       '$baseUrl/conversations/opportunity-conversations';
 
-      static const String companyMentorNominations =
-    '$baseUrl/company/mentor-nominations';
+  static const String companyMentorNominations =
+      '$baseUrl/company/mentor-nominations';
 
-//complaints
-    static const String complaints =
-    '$baseUrl/complaints';
+  //complaints
+  static const String complaints = '$baseUrl/complaints';
 
-static const String myComplaints =
-    '$baseUrl/complaints/mine';
-
-  
+  static const String myComplaints = '$baseUrl/complaints/mine';
 }

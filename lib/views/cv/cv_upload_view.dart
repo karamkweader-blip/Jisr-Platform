@@ -26,7 +26,7 @@ class CvUploadView extends GetView<CvUploadController> {
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
-            'رفع السيرة الذاتية',
+            'رفع السيرة الذاتية',r
             style: TextStyle(
               fontFamily: 'Cairo',
               color: AppColors.primaryBlue,
