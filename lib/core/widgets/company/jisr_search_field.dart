@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/decorations/app_decorations.dart';
 
-class JisrSearchField extends StatelessWidget {
+class JisrSearchField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final ValueChanged<String>? onChanged;
@@ -15,29 +15,94 @@ class JisrSearchField extends StatelessWidget {
   });
 
   @override
+  State<JisrSearchField> createState() {
+    return _JisrSearchFieldState();
+  }
+}
+
+class _JisrSearchFieldState
+    extends State<JisrSearchField> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(
+      _updateClearButton,
+    );
+  }
+
+  @override
+  void didUpdateWidget(
+    covariant JisrSearchField oldWidget,
+  ) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.controller ==
+        widget.controller) {
+      return;
+    }
+
+    oldWidget.controller.removeListener(
+      _updateClearButton,
+    );
+
+    widget.controller.addListener(
+      _updateClearButton,
+    );
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(
+      _updateClearButton,
+    );
+
+    super.dispose();
+  }
+
+  void _updateClearButton() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  void _clearSearch() {
+    widget.controller.clear();
+    widget.onChanged?.call('');
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Container(
       decoration: BoxDecoration(
-        boxShadow: AppDecorations.softShadow,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow:
+            AppDecorations.softShadow(context),
       ),
       child: TextField(
-        controller: controller,
-        onChanged: onChanged,
+        controller: widget.controller,
+        onChanged: widget.onChanged,
+        cursorColor: AppColors.primaryBlue,
+        style: TextStyle(
+          color: colorScheme.onSurface,
+        ),
         decoration: AppDecorations.fieldInput(
-          hintText,
+          context,
+          widget.hintText,
           Icons.search_rounded,
-        ).copyWith(
-          suffixIcon: controller.text.isEmpty
+          suffixIcon:
+              widget.controller.text.isEmpty
               ? null
               : IconButton(
-                  icon: const Icon(
+                  tooltip: 'مسح البحث',
+                  icon: Icon(
                     Icons.close_rounded,
-                    color: AppColors.textGrey,
+                    color: colorScheme
+                        .onSurfaceVariant,
                   ),
-                  onPressed: () {
-                    controller.clear();
-                    onChanged?.call('');
-                  },
+                  onPressed: _clearSearch,
                 ),
         ),
       ),

@@ -31,8 +31,10 @@ class CompanyBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final darkMode = studentMode &&
-        Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+final colorScheme = theme.colorScheme;
+final darkMode =
+    theme.brightness == Brightness.dark;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -147,9 +149,9 @@ class CompanyBottomNavigationBar extends StatelessWidget {
                         const Duration(milliseconds: 220),
                     curve: Curves.easeOutCubic,
                     style: TextStyle(
-                      color: currentIndex == _homeIndex
-                          ? AppColors.primaryBlue
-                          : AppColors.textGrey,
+                     color: currentIndex == _homeIndex
+    ? AppColors.primaryBlue
+    : colorScheme.onSurfaceVariant,
                       fontFamily: 'Cairo',
                       fontSize: 9.5,
                       fontWeight:
@@ -186,6 +188,8 @@ class _DockNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+    Theme.of(context).colorScheme;
     return Semantics(
       button: true,
       selected: isSelected,
@@ -260,9 +264,9 @@ class _DockNavigationItem extends StatelessWidget {
                           ? selectedIcon
                           : icon,
                       key: ValueKey<bool>(isSelected),
-                      color: isSelected
-                          ? AppColors.primaryBlue
-                          : AppColors.textGrey,
+                     color: isSelected
+    ? AppColors.primaryBlue
+    : colorScheme.onSurfaceVariant,
                       size: isSelected ? 22 : 21,
                     ),
                   ),
@@ -381,8 +385,8 @@ class _HomeOrbButton extends StatelessWidget {
                           ),
                     border: Border.all(
                       color: darkMode
-                          ? const Color(0xFF17283A)
-                          : Colors.white,
+    ? AppColors.darkSurfaceContainer
+    : AppColors.cardWhite,
                       width: 4,
                     ),
                     boxShadow: [
@@ -536,8 +540,14 @@ class _FloatingDockPainter extends CustomPainter {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: darkMode
-            ? const [Color(0xFF162332), Color(0xFF101E2C)]
-            : const [Color(0xFFFFFFFF), Color(0xFFF7FBFF)],
+    ? const [
+        AppColors.darkSurface,
+        AppColors.darkBackground,
+      ]
+    : const [
+        AppColors.cardWhite,
+        AppColors.background,
+      ],
       ).createShader(rect)
       ..style = PaintingStyle.fill;
 
