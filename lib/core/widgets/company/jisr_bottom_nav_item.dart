@@ -108,9 +108,12 @@ class _AnimatedNavigationIcon extends StatelessWidget {
         child: Icon(
           isSelected ? selectedIcon : icon,
           key: ValueKey<bool>(isSelected),
-          color: isSelected
-              ? AppColors.primaryBlue
-              : AppColors.textGrey.withOpacity(0.78),
+         color: isSelected
+    ? AppColors.primaryBlue
+    : Theme.of(context)
+        .colorScheme
+        .onSurfaceVariant
+        .withOpacity(0.78),
           size: isSelected ? 24 : 23,
         ),
       ),

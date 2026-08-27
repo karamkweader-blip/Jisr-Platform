@@ -10,6 +10,7 @@ import 'package:jisr_platform/views/company/conversations/company_conversations_
 import 'package:jisr_platform/views/company/home/company_home_view.dart';
 import 'package:jisr_platform/views/company/opportunities/company_opportunities_view.dart';
 import 'package:jisr_platform/views/company/profile/company_profile_view.dart';
+import 'package:jisr_platform/views/company/search/company_search_view.dart';
 
 class CompanyMainView extends GetView<CompanyMainController> {
   const CompanyMainView({
@@ -17,7 +18,7 @@ class CompanyMainView extends GetView<CompanyMainController> {
   });
 
   static const List<Widget> _pages = <Widget>[
-    _CompanySearchPlaceholder(),
+    CompanySearchView(),
     CompanyOpportunitiesView(),
     CompanyHomeView(),
     CompanyConversationsView(),
@@ -328,68 +329,6 @@ class _CompanyPageSwitcherState
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _CompanySearchPlaceholder
-    extends StatelessWidget {
-  const _CompanySearchPlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(
-          18,
-          24,
-          18,
-          120,
-        ),
-        children: [
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppColors.cardWhite,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: AppColors.primaryBlue.withOpacity(
-                  0.07,
-                ),
-              ),
-            ),
-            child: const Column(
-              children: [
-                Icon(
-                  Icons.search_rounded,
-                  color: AppColors.primaryBlue,
-                  size: 38,
-                ),
-                SizedBox(height: 14),
-                Text(
-                  'البحث عن الطلاب',
-                  style: TextStyle(
-                    color: AppColors.textDark,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                SizedBox(height: 7),
-                Text(
-                  'سيتم قريبًا تفعيل البحث باسم الطالب أو المهارة.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.textGrey,
-                    fontSize: 12.5,
-                    height: 1.5,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

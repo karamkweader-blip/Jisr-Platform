@@ -12,6 +12,7 @@ import 'package:jisr_platform/bindings/company/complaints/company_complaints_bin
 import 'package:jisr_platform/bindings/company/conversations/company_conversation_binding.dart.dart';
 import 'package:jisr_platform/bindings/company/mentor/company_mentor_nomination_form_binding.dart';
 import 'package:jisr_platform/bindings/company/mentor/company_mentor_nominations_binding.dart';
+import 'package:jisr_platform/bindings/company/students/company_student_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicant_details_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_applicants_binding.dart';
 import 'package:jisr_platform/bindings/company/tasks/company_task_assignment_workspace_binding.dart';
@@ -45,6 +46,7 @@ import 'package:jisr_platform/views/company/opportunities/company_opportunity_ca
 import 'package:jisr_platform/views/company/opportunities/company_opportunity_details_view.dart';
 import 'package:jisr_platform/views/company/opportunities/company_opportunity_form_view.dart';
 import 'package:jisr_platform/views/company/opportunities/company_opportunity_interview_view.dart';
+import 'package:jisr_platform/views/company/students/company_student_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicant_details_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_applicants_view.dart';
 import 'package:jisr_platform/views/company/tasks/company_task_assignment_workspace_view.dart';
@@ -336,6 +338,16 @@ class AppPages {
       page: () => const CompanyMainView(),
       binding: CompanyMainBinding(),
     ),
+    GetPage(
+  name: Routes.companyStudentDetails,
+  page: () =>
+      const CompanyStudentDetailsView(),
+  binding: CompanyStudentDetailsBinding(),
+  transition: Transition.rightToLeftWithFade,
+  transitionDuration:
+      const Duration(milliseconds: 320),
+  curve: Curves.easeInOutCubic,
+),
     GetPage(
   name: Routes.companyMarketAnalysis,
   page: () => const MarketAnalysisView(

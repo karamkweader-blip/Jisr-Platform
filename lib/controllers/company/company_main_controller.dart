@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jisr_platform/controllers/company/search/company_search_controller.dart';
 
 class CompanyMainController extends GetxController {
   static const int searchPageIndex = 0;
@@ -20,6 +21,12 @@ class CompanyMainController extends GetxController {
     }
 
     selectedIndex.value = index;
+
+    if (index == searchPageIndex &&
+    Get.isRegistered<CompanySearchController>()) {
+  Get.find<CompanySearchController>()
+      .ensureInitialized();
+}
   }
 
   void openNextTab() {

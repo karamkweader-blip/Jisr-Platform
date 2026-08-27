@@ -1,79 +1,114 @@
 import 'package:flutter/material.dart';
-import '../colors/app_colors.dart';
-import '../constants/app_dimensions.dart';
+import 'package:jisr_platform/core/colors/app_colors.dart';
+import 'package:jisr_platform/core/constants/app_dimensions.dart';
 
 class AppDecorations {
   AppDecorations._();
 
-  static List<BoxShadow> softShadow = [
-    BoxShadow(
-      color: AppColors.primaryBlue.withOpacity(0.06),
-      blurRadius: 18,
-      offset: const Offset(0, 8),
-    ),
-  ];
+  static List<BoxShadow> softShadow(
+    BuildContext context,
+  ) {
+    final isDark =
+        Theme.of(context).brightness ==
+        Brightness.dark;
 
-  static BoxDecoration cardDecoration({
+    return [
+      BoxShadow(
+        color: isDark
+            ? Colors.black.withOpacity(0.20)
+            : AppColors.primaryBlue.withOpacity(
+                0.06,
+              ),
+        blurRadius: isDark ? 12 : 18,
+        offset: const Offset(0, 8),
+      ),
+    ];
+  }
+
+  static BoxDecoration cardDecoration(
+    BuildContext context, {
     double radius = AppDimensions.radiusMedium,
   }) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return BoxDecoration(
-      color: AppColors.cardWhite,
+      color: colorScheme.surface,
       borderRadius: BorderRadius.circular(radius),
-      boxShadow: softShadow,
+      border: Border.all(
+        color: colorScheme.outlineVariant,
+      ),
+      boxShadow: softShadow(context),
     );
   }
 
   static InputDecoration fieldInput(
+    BuildContext context,
     String hint,
     IconData icon, {
     Widget? suffixIcon,
   }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return InputDecoration(
       hintText: hint,
       prefixIcon: Icon(
         icon,
-        color: AppColors.primaryBlue.withOpacity(0.7),
+        color: AppColors.primaryBlue.withOpacity(
+          theme.brightness == Brightness.dark
+              ? 0.90
+              : 0.70,
+        ),
         size: 20,
       ),
       suffixIcon: suffixIcon,
       filled: true,
-      fillColor: AppColors.cardWhite,
+      fillColor: colorScheme.surfaceContainer,
       contentPadding: const EdgeInsets.symmetric(
         vertical: 18,
         horizontal: 14,
       ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        borderSide: BorderSide.none,
+      border: _fieldBorder(
+        colorScheme.outlineVariant,
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        borderSide: const BorderSide(
-          color: AppColors.primaryBlue,
-          width: 1.4,
-        ),
+      enabledBorder: _fieldBorder(
+        colorScheme.outlineVariant,
       ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        borderSide: BorderSide(
-          color: AppColors.actionYellow.withOpacity(0.9),
-          width: 1.3,
-        ),
+      focusedBorder: _fieldBorder(
+        AppColors.primaryBlue,
+        width: 1.4,
       ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        borderSide: const BorderSide(
-          color: AppColors.actionYellow,
-          width: 1.4,
-        ),
+      errorBorder: _fieldBorder(
+        AppColors.dangerRed,
+        width: 1.3,
+      ),
+      focusedErrorBorder: _fieldBorder(
+        AppColors.dangerRed,
+        width: 1.4,
       ),
       errorStyle: const TextStyle(
         fontSize: 12,
         height: 1.2,
       ),
       hintStyle: TextStyle(
-        color: AppColors.textGrey.withOpacity(0.8),
+        color: colorScheme.onSurfaceVariant,
         fontSize: 14,
+      ),
+    );
+  }
+
+  static OutlineInputBorder _fieldBorder(
+    Color color, {
+    double width = 1,
+  }) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(
+        AppDimensions.radiusMedium,
+      ),
+      borderSide: BorderSide(
+        color: color,
+        width: width,
       ),
     );
   }
