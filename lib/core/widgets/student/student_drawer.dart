@@ -4,6 +4,7 @@ import 'package:jisr_platform/controllers/app_theme_controller.dart';
 import 'package:jisr_platform/controllers/auth/auth_actions_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/services/student/profile/student_profile_service.dart';
 import 'package:jisr_platform/views/student/complaints/complaint_entry_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,6 +27,11 @@ class _StudentDrawerState extends State<StudentDrawer> {
     return Get.find<AppThemeController>();
   }
 
+  final StudentProfileService _profileService = StudentProfileService();
+  String _studentName = 'طالب جسور';
+  String _studentEmail = '';
+  String? _studentImageUrl;
+
   AuthActionsController get _authController {
     if (Get.isRegistered<AuthActionsController>()) {
       return Get.find<AuthActionsController>();
@@ -44,7 +50,25 @@ class _StudentDrawerState extends State<StudentDrawer> {
   @override
   void initState() {
     super.initState();
-    _loadLanguagePreference();
+    _loadPreferences();
+    _loadStudentProfile();
+  }
+
+  Future<void> _loadStudentProfile() async {
+    try {
+      final response = await _profileService.getProfile();
+      if (!mounted) return;
+
+      setState(() {
+        _studentName = response.data.user.name.trim().isEmpty
+            ? 'طالب جسور'
+            : response.data.user.name.trim();
+        _studentEmail = response.data.user.email.trim();
+        _studentImageUrl = response.data.user.profilePictureUrl;
+      });
+    } catch (_) {
+      // Keep the safe default header if profile loading fails.
+    }
   }
 
   Future<void> _loadLanguagePreference() async {
@@ -313,6 +337,9 @@ class _StudentDrawerState extends State<StudentDrawer> {
   }
 
   Widget _header() {
+    final hasProfileImage =
+        _studentImageUrl != null && _studentImageUrl!.trim().isNotEmpty;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(
@@ -327,35 +354,61 @@ class _StudentDrawerState extends State<StudentDrawer> {
           bottomLeft: Radius.circular(30),
         ),
       ),
-      child: const Row(
+      child: Row(
         children: [
           CircleAvatar(
             radius: 28,
             backgroundColor: Colors.white,
-            child: Icon(
-              Icons.person_rounded,
-              color: AppColors.primaryBlue,
-              size: 31,
+            child: ClipOval(
+              child: SizedBox(
+                width: 56,
+                height: 56,
+                child: hasProfileImage
+                    ? Image.network(
+                        _studentImageUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(
+                              Icons.person_rounded,
+                              color: AppColors.primaryBlue,
+                              size: 31,
+                            ),
+                          );
+                        },
+                      )
+                    : const Center(
+                        child: Icon(
+                          Icons.person_rounded,
+                          color: AppColors.primaryBlue,
+                          size: 31,
+                        ),
+                      ),
+              ),
             ),
           ),
-          SizedBox(width: 13),
+          const SizedBox(width: 13),
           Expanded(
             child: Column(
               crossAxisAlignment:
                   CrossAxisAlignment.start,
               children: [
                 Text(
-                  'مساحة الطالب',
-                  style: TextStyle(
+                  _studentName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'كل أدواتك المهنية في مكان واحد',
-                  style: TextStyle(
+                  _studentEmail,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 10.5,
                   ),

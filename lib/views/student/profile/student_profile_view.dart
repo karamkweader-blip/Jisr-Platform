@@ -46,8 +46,6 @@ class StudentProfileView extends GetView<StudentProfileController> {
                             email: profile?.user.email ?? '',
                             imageUrl: profile?.user.profilePictureUrl,
                             selectedImage: controller.selectedImage.value,
-                            status:
-                                profile?.user.verificationStatus ?? 'pending',
                             onPickImage: controller.pickProfileImage,
                           )
                           .animate()
@@ -463,7 +461,6 @@ class _ProfileHeader extends StatelessWidget {
   final String email;
   final String? imageUrl;
   final File? selectedImage;
-  final String status;
   final VoidCallback onPickImage;
 
   const _ProfileHeader({
@@ -471,7 +468,6 @@ class _ProfileHeader extends StatelessWidget {
     required this.email,
     required this.imageUrl,
     required this.selectedImage,
-    required this.status,
     required this.onPickImage,
   });
 
@@ -590,27 +586,6 @@ class _ProfileHeader extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 14),
-
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.actionYellow.withOpacity(.14),
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(
-                color: AppColors.actionYellow.withOpacity(.42),
-              ),
-            ),
-            child: Text(
-              status == 'pending' ? 'بانتظار التحقق' : status,
-              style: const TextStyle(
-                fontFamily: 'Cairo',
-                color: AppColors.actionYellow,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
-            ),
-          ),
         ],
       ),
     );

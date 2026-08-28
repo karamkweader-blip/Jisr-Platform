@@ -215,7 +215,10 @@ class _HomeViewState extends State<HomeView> {
                   onAction: () => Get.toNamed(Routes.studentTasks),
                 ),
                 const SizedBox(height: 12),
-                _AvailableTasksSection(controller: tasksController),
+                _AvailableTasksSection(
+                  controller: tasksController,
+                  opportunityController: opportunitiesController,
+                ),
                 const SizedBox(height: 26),
                 _DashboardSectionHeader(
                   icon: Icons.work_outline_rounded,
@@ -751,21 +754,42 @@ class _AvailableSupervisorProjectsSection extends StatelessWidget {
 
 class _AvailableTasksSection extends StatelessWidget {
   final StudentTaskController controller;
+  final StudentOpportunityController opportunityController;
 
-  const _AvailableTasksSection({required this.controller});
+  const _AvailableTasksSection({
+    required this.controller,
+    required this.opportunityController,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final items = controller.recommendedTasks.isNotEmpty
+      final sourceItems = controller.recommendedTasks.isNotEmpty
           ? controller.recommendedTasks
           : controller.exploreTasks;
 
-      if ((controller.isLoadingRecommended.value ||
-              controller.isLoadingExplore.value) &&
-          items.isEmpty) {
+      final opportunities = <StudentOpportunityModel>[
+        ...opportunityController.recommendedOpportunities,
+        ...opportunityController.exploreOpportunities,
+      ];
+
+      final items = sourceItems
+          .where((task) => !_matchesPublishedOpportunity(task, opportunities))
+          .toList();
+
+      final tasksLoading = controller.isLoadingRecommended.value ||
+          controller.isLoadingExplore.value;
+      final opportunitiesLoading =
+          opportunityController.isLoadingRecommended.value ||
+              opportunityController.isLoadingExplore.value;
+
+      // ننتظر جلب الفرص قبل عرض التاسكات حتى لا تظهر فرصة داخل قسم التاسكات
+      // بشكل مؤقت أثناء تحميل القائمتين بالتوازي.
+      if ((tasksLoading && sourceItems.isEmpty) ||
+          (opportunitiesLoading && opportunities.isEmpty)) {
         return const _HomeLoadingCard();
       }
+
       if (items.isEmpty) {
         return const _HomeEmptyCard(
           icon: Icons.task_alt_outlined,
@@ -786,6 +810,24 @@ class _AvailableTasksSection extends StatelessWidget {
       );
     });
   }
+
+  bool _matchesPublishedOpportunity(
+    StudentTaskModel task,
+    List<StudentOpportunityModel> opportunities,
+  ) {
+    final taskTitle = _normalize(task.title);
+    final taskCompany = _normalize(task.company.name);
+
+    return opportunities.any((opportunity) {
+      final sameTitle = _normalize(opportunity.title) == taskTitle;
+      final sameCompany = _normalize(opportunity.company.name) == taskCompany;
+      final sameIdAndTitle = opportunity.id == task.id && sameTitle;
+
+      return sameIdAndTitle || (sameTitle && sameCompany);
+    });
+  }
+
+  String _normalize(String value) => value.trim().toLowerCase();
 }
 
 class _DashboardTaskCard extends StatelessWidget {
