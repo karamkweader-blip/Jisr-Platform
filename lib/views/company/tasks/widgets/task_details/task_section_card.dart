@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class TaskSectionCard extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -19,7 +20,7 @@ class TaskSectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -50,8 +51,8 @@ class TaskSectionCard extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w800,
                 ),

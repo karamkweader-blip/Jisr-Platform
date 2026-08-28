@@ -3,54 +3,88 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 
-enum JisrBottomNavTab { profile, home, cv }
+enum JisrBottomNavTab {
+  profile,
+  home,
+  cv,
+}
 
 class JisrBottomNav extends StatelessWidget {
   final JisrBottomNavTab activeTab;
 
-  const JisrBottomNav({super.key, required this.activeTab});
+  const JisrBottomNav({
+    super.key,
+    required this.activeTab,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark =
+        theme.brightness == Brightness.dark;
+
     return Container(
-      margin: const EdgeInsets.fromLTRB(24, 0, 24, 18),
-      padding: const EdgeInsets.symmetric(vertical: 14),
+      margin: const EdgeInsets.fromLTRB(
+        24,
+        0,
+        24,
+        18,
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 14,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: colorScheme.outlineVariant,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.08),
+            color: isDark
+                ? Colors.black.withOpacity(0.22)
+                : AppColors.primaryBlue
+                    .withOpacity(0.08),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment:
+            MainAxisAlignment.spaceAround,
         children: [
           _BottomItem(
             icon: Icons.person_outline,
             title: 'ملف شخصي',
-            isActive: activeTab == JisrBottomNavTab.profile,
+            isActive:
+                activeTab ==
+                JisrBottomNavTab.profile,
             onTap: () {},
           ),
           _BottomItem(
             icon: Icons.home_rounded,
             title: 'الرئيسية',
-            isActive: activeTab == JisrBottomNavTab.home,
+            isActive:
+                activeTab == JisrBottomNavTab.home,
             onTap: () {
-              if (activeTab != JisrBottomNavTab.home) {
-                Get.offNamed(Routes.studentHome);
+              if (activeTab !=
+                  JisrBottomNavTab.home) {
+                Get.offNamed(
+                  Routes.studentHome,
+                );
               }
             },
           ),
           _BottomItem(
             icon: Icons.upload_file_outlined,
             title: 'رفع CV',
-            isActive: activeTab == JisrBottomNavTab.cv,
+            isActive:
+                activeTab == JisrBottomNavTab.cv,
             onTap: () {
-              if (activeTab != JisrBottomNavTab.cv) {
+              if (activeTab !=
+                  JisrBottomNavTab.cv) {
                 Get.toNamed(Routes.cvUpload);
               }
             },
@@ -76,28 +110,44 @@ class _BottomItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? AppColors.actionYellow : AppColors.textGrey;
+    final colorScheme =
+        Theme.of(context).colorScheme;
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: color),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              style: TextStyle(
+    final color = isActive
+        ? AppColors.actionYellow
+        : colorScheme.onSurfaceVariant;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 6,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
                 color: color,
-                fontFamily: 'Cairo',
-                fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-                fontSize: 12,
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                title,
+                style: TextStyle(
+                  color: color,
+                  fontFamily: 'Cairo',
+                  fontWeight: isActive
+                      ? FontWeight.bold
+                      : FontWeight.w500,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

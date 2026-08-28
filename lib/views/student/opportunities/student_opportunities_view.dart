@@ -175,7 +175,7 @@ class _OpportunityTabs extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.07)),
         boxShadow: [
@@ -189,7 +189,8 @@ class _OpportunityTabs extends StatelessWidget {
       child: TabBar(
         controller: controller.tabController,
         labelColor: Colors.white,
-        unselectedLabelColor: AppColors.primaryBlue,
+        unselectedLabelColor:
+            Theme.of(context).colorScheme.onSurfaceVariant,
         indicatorSize: TabBarIndicatorSize.tab,
         indicator: BoxDecoration(
           color: AppColors.primaryBlue,
@@ -322,7 +323,7 @@ class _OpportunityCard extends GetView<StudentOpportunityController> {
       child: Container(
         padding: const EdgeInsets.all(17),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(28),
           border: Border.all(color: accent.withOpacity(.18)),
           boxShadow: [
@@ -362,9 +363,9 @@ class _OpportunityCard extends GetView<StudentOpportunityController> {
                         opportunity.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontSize: 15.5,
                           fontWeight: FontWeight.bold,
                           height: 1.35,
@@ -375,18 +376,18 @@ class _OpportunityCard extends GetView<StudentOpportunityController> {
                         controller.companyName(opportunity.company),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 12,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_back_ios_new_rounded,
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 17,
                 ),
               ],
@@ -428,9 +429,9 @@ class _OpportunityCard extends GetView<StudentOpportunityController> {
                 opportunity.description,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 12.5,
                   height: 1.5,
                 ),
@@ -539,7 +540,7 @@ class _EmptyOpportunities extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(28),
           boxShadow: [
             BoxShadow(
@@ -561,9 +562,9 @@ class _EmptyOpportunities extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.primaryBlue,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -572,9 +573,9 @@ class _EmptyOpportunities extends StatelessWidget {
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
             ),

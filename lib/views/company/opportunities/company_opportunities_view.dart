@@ -28,7 +28,7 @@ class CompanyOpportunitiesView extends GetView<CompanyOpportunitiesController> {
         ),
       ),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: Directionality(
           textDirection: TextDirection.rtl,
@@ -126,7 +126,7 @@ class CompanyOpportunitiesView extends GetView<CompanyOpportunitiesController> {
   void _showCreateSheet(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: AppColors.cardWhite,
+      backgroundColor: Get.theme.colorScheme.surface,
       showDragHandle: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -141,19 +141,19 @@ class CompanyOpportunitiesView extends GetView<CompanyOpportunitiesController> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'ماذا تريد أن تنشئ؟',
                   style: TextStyle(
-                    color: AppColors.textDark,
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 19,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
                 const SizedBox(height: 5),
-                const Text(
+                 Text(
                   'اختر المسار المناسب، وسنجهّز لك النموذج المطلوب.',
                   style: TextStyle(
-                    color: AppColors.textGrey,
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -193,7 +193,7 @@ icon: Icons.work_outline_rounded,                  title: 'فرصة عمل أو 
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.cardWhite,
+      backgroundColor: Get.theme.colorScheme.surface,
       showDragHandle: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -212,19 +212,19 @@ icon: Icons.work_outline_rounded,                  title: 'فرصة عمل أو 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                     Text(
                       'فلترة حسب الحالة',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 18,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     const SizedBox(height: 5),
-                    const Text(
+                     Text(
                       'اختر حالة العناصر التي تريد عرضها',
                       style: TextStyle(
-                        color: AppColors.textGrey,
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 12.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -256,7 +256,7 @@ icon: Icons.work_outline_rounded,                  title: 'فرصة عمل أو 
                                 style: TextStyle(
                                   color: selected
                                       ? AppColors.primaryBlue
-                                      : AppColors.textDark,
+                                      : Get.theme.colorScheme.onSurface,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w800,
                                 ),
@@ -267,7 +267,7 @@ icon: Icons.work_outline_rounded,                  title: 'فرصة عمل أو 
                                     : Icons.circle_outlined,
                                 color: selected
                                     ? AppColors.primaryBlue
-                                    : AppColors.textGrey.withOpacity(0.45),
+                                    : Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.45),
                               ),
                               onTap: () {
                                 Navigator.pop(sheetContext);
@@ -298,14 +298,14 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
+         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'الفرص',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
                 ),
@@ -314,7 +314,7 @@ class _Header extends StatelessWidget {
               Text(
                 'تابع المهام وفرص التدريب والعمل',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13.5,
                   fontWeight: FontWeight.w500,
                 ),
@@ -363,23 +363,23 @@ class _SearchField extends StatelessWidget {
     return TextField(
       onChanged: onSearchChanged,
       textInputAction: TextInputAction.search,
-      style: const TextStyle(
-        color: AppColors.textDark,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurface,
         fontSize: 13.5,
         fontWeight: FontWeight.w600,
       ),
       decoration: InputDecoration(
         hintText: 'ابحث بعنوان الفرصة أو موقعها...',
-        hintStyle: const TextStyle(
-          color: AppColors.textGrey,
+        hintStyle:  TextStyle(
+          color: Get.theme.colorScheme.onSurfaceVariant,
           fontSize: 13,
         ),
-        prefixIcon: const Icon(
+        prefixIcon:  Icon(
           Icons.search_rounded,
-          color: AppColors.textGrey,
+          color: Get.theme.colorScheme.onSurfaceVariant,
         ),
         filled: true,
-        fillColor: AppColors.cardWhite,
+        fillColor: Get.theme.colorScheme.surface,
         contentPadding: const EdgeInsets.symmetric(vertical: 15),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -420,7 +420,7 @@ class _DisplayFilterPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.07),
@@ -451,14 +451,14 @@ class _DisplayFilterPanel extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              const Expanded(
+               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'خيارات العرض',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 14.5,
                         fontWeight: FontWeight.w900,
                       ),
@@ -467,7 +467,7 @@ class _DisplayFilterPanel extends StatelessWidget {
                     Text(
                       'اختر النوع والحالة',
                       style: TextStyle(
-                        color: AppColors.textGrey,
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                       ),
@@ -479,7 +479,7 @@ class _DisplayFilterPanel extends StatelessWidget {
               Material(
                 color: hasStatusFilter
                     ? AppColors.primaryBlue
-                    : AppColors.background,
+                    : Get.theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(14),
                 child: InkWell(
                   onTap: onStatusPressed,
@@ -515,7 +515,7 @@ class _DisplayFilterPanel extends StatelessWidget {
                               style: TextStyle(
                                 color: hasStatusFilter
                                     ? Colors.white70
-                                    : AppColors.textGrey,
+                                    : Get.theme.colorScheme.onSurfaceVariant,
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -525,7 +525,7 @@ class _DisplayFilterPanel extends StatelessWidget {
                               style: TextStyle(
                                 color: hasStatusFilter
                                     ? Colors.white
-                                    : AppColors.textDark,
+                                    : Get.theme.colorScheme.onSurface,
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -573,7 +573,7 @@ class _TypeSelector extends StatelessWidget {
       height: 48,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(0.08)),
       ),
@@ -597,7 +597,7 @@ class _TypeSelector extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: selected ? Colors.white : AppColors.textGrey,
+                        color: selected ? Colors.white : Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
                       ),
@@ -639,8 +639,8 @@ class _SectionTitle extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 17,
               fontWeight: FontWeight.w900,
             ),
@@ -682,7 +682,7 @@ class _OpportunityCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: AppColors.primaryBlue.withOpacity(0.06),
@@ -722,8 +722,8 @@ class _OpportunityCard extends StatelessWidget {
                         item.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: AppColors.textDark,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurface,
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
                           height: 1.35,
@@ -744,8 +744,8 @@ class _OpportunityCard extends StatelessWidget {
                   item.description,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     height: 1.5,
                     fontWeight: FontWeight.w500,
@@ -851,7 +851,7 @@ class _StatusChip extends StatelessWidget {
       case 'cancelled':
         return Colors.red;
       default:
-        return AppColors.textGrey;
+        return Get.theme.colorScheme.onSurfaceVariant;
     }
   }
 
@@ -886,18 +886,18 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: AppColors.textGrey, size: 15),
+          Icon(icon, color: Get.theme.colorScheme.onSurfaceVariant, size: 15),
           const SizedBox(width: 5),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12,
               fontWeight: FontWeight.w700,
             ),
@@ -924,7 +924,7 @@ class _CreateOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.background,
+      color: Get.theme.scaffoldBackgroundColor,
       borderRadius: BorderRadius.circular(18),
       child: InkWell(
         onTap: onTap,
@@ -949,8 +949,8 @@ class _CreateOption extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 14.5,
                         fontWeight: FontWeight.w900,
                       ),
@@ -958,8 +958,8 @@ class _CreateOption extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1015,7 +1015,7 @@ class _PageState extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 42),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(0.06)),
       ),
@@ -1034,8 +1034,8 @@ class _PageState extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 16,
               fontWeight: FontWeight.w900,
             ),
@@ -1044,8 +1044,8 @@ class _PageState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12.5,
               height: 1.5,
               fontWeight: FontWeight.w500,

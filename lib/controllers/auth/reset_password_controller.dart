@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/auth/login_controller.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/auth/forget&reset/password_reset_service.dart';
@@ -55,13 +56,11 @@ if (Get.isRegistered<LoginController>()) {
 }
 Get.until((route) => route.settings.name == Routes.login);
 
-    } catch (_) {
-      JisrSnackbar.show(
-        title: 'تعذر تغيير كلمة المرور',
-        message: 'حدث خطأ أثناء تغيير كلمة المرور، حاول مرة أخرى',
-        type: JisrSnackbarType.error,
-      );
-    } finally {
+    } 
+    catch (error) {
+  ApiErrorPresenter.show(error);
+} 
+finally {
       isLoading.value = false;
     }
   }

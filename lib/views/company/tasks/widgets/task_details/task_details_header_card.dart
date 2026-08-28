@@ -57,8 +57,8 @@ class TaskDetailsHeaderCard extends StatelessWidget {
           const SizedBox(height: 18),
           Text(
             title,
-            style: const TextStyle(
-              color: AppColors.cardWhite,
+            style:  TextStyle(
+              color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.w800,
               height: 1.3,
@@ -67,16 +67,16 @@ class TaskDetailsHeaderCard extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              const Icon(
+               Icon(
                 Icons.timer_outlined,
-                color: AppColors.cardWhite,
+                color: Colors.white,
                 size: 18,
               ),
               const SizedBox(width: 6),
               Text(
                 '$deadline · $deadlineHint',
                 style: TextStyle(
-                  color: AppColors.cardWhite.withOpacity(0.88),
+                  color: Colors.white.withOpacity(0.88),
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -124,7 +124,7 @@ class TaskDetailsHeaderCard extends StatelessWidget {
                 label: Text(isPublishing ? 'جاري النشر...' : 'نشر المهمة'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.actionYellow,
-                  foregroundColor: AppColors.textDark,
+                  foregroundColor: Theme.of(context).colorScheme.onSecondary,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
@@ -141,9 +141,9 @@ class TaskDetailsHeaderCard extends StatelessWidget {
                 icon: const Icon(Icons.groups_2_outlined),
                 label: const Text('مراجعة المتقدمين'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.cardWhite,
+                  foregroundColor:Colors.white,
                   side: BorderSide(
-                    color: AppColors.cardWhite.withOpacity(0.55),
+                    color: Colors.white.withOpacity(0.55),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
@@ -192,16 +192,16 @@ class _Pill extends StatelessWidget {
         vertical: 7,
       ),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite.withOpacity(0.16),
+        color:Colors.white.withOpacity(0.16),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: AppColors.cardWhite.withOpacity(0.28),
+          color: Colors.white.withOpacity(0.28),
         ),
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          color: AppColors.cardWhite,
+        style:  TextStyle(
+          color:Colors.white,
           fontSize: 12,
           fontWeight: FontWeight.w700,
         ),
@@ -227,18 +227,18 @@ class _HeaderStat extends StatelessWidget {
         horizontal: 10,
       ),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite.withOpacity(0.13),
+        color: Colors.white.withOpacity(0.13),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColors.cardWhite.withOpacity(0.20),
+          color:Colors.white.withOpacity(0.20),
         ),
       ),
       child: Column(
         children: [
           Text(
             value,
-            style: const TextStyle(
-              color: AppColors.cardWhite,
+            style:  TextStyle(
+              color:Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.w800,
             ),
@@ -247,7 +247,7 @@ class _HeaderStat extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: AppColors.cardWhite.withOpacity(0.80),
+              color: Colors.white.withOpacity(0.80),
               fontSize: 11,
               fontWeight: FontWeight.w600,
             ),

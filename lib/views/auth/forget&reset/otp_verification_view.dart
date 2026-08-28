@@ -1,182 +1,251 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pinput/pinput.dart';
 import 'package:jisr_platform/controllers/auth/otp_verification_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/auth_header.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
+import 'package:pinput/pinput.dart';
 
-class OtpVerificationView extends GetView<OtpVerificationController> {
-  const OtpVerificationView({super.key});
+class OtpVerificationView
+    extends GetView<OtpVerificationController> {
+  const OtpVerificationView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     final defaultTheme = PinTheme(
       width: 48,
       height: 56,
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: AppColors.textDark,
+        color: colorScheme.onSurface,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(14),
+        color: colorScheme.surface,
+        borderRadius:
+            BorderRadius.circular(14),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.18),
+          color: AppColors.primaryBlue
+              .withOpacity(0.18),
         ),
       ),
     );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor:
+          Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding:
+                const EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
             child: Column(
               children: [
                 const SizedBox(height: 42),
-
                 const AuthHeader(
                   title: 'تحقق من بريدك',
-                  subtitle: 'أدخل رمز التحقق المرسل إلى بريدك الإلكتروني',
+                  subtitle:
+                      'أدخل رمز التحقق المرسل إلى بريدك الإلكتروني',
                   logoSize: 76,
                   titleFontSize: 24,
                   spaceAfterLogo: 22,
                 ),
-
                 const SizedBox(height: 34),
-
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 22),
+                  padding:
+                      const EdgeInsets.fromLTRB(
+                    20,
+                    24,
+                    20,
+                    22,
+                  ),
                   decoration: BoxDecoration(
-                    color: AppColors.cardWhite,
-                    borderRadius: BorderRadius.circular(26),
+                    color: colorScheme.surface,
+                    borderRadius:
+                        BorderRadius.circular(26),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primaryBlue.withOpacity(0.06),
+                        color: Theme.of(context)
+                                    .brightness ==
+                                Brightness.dark
+                            ? Colors.black
+                                .withOpacity(0.18)
+                            : AppColors.primaryBlue
+                                .withOpacity(0.06),
                         blurRadius: 24,
-                        offset: const Offset(0, 10),
+                        offset:
+                            const Offset(0, 10),
                       ),
                     ],
                   ),
                   child: Column(
                     children: [
-                      const Text(
+                      Text(
                         'تم إرسال الرمز إلى',
                         style: TextStyle(
-                          color: AppColors.textGrey,
+                          color: colorScheme
+                              .onSurfaceVariant,
                           fontSize: 13,
                         ),
                       ),
-
                       const SizedBox(height: 6),
-
                       Text(
                         controller.email,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: AppColors.primaryBlue,
+                        textAlign:
+                            TextAlign.center,
+                        style:
+                            const TextStyle(
+                          color: AppColors
+                              .primaryBlue,
                           fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                          fontWeight:
+                              FontWeight.bold,
                         ),
                       ),
-
                       const SizedBox(height: 26),
-
                       Directionality(
-                        textDirection: TextDirection.ltr,
+                        textDirection:
+                            TextDirection.ltr,
                         child: Pinput(
                           length: 6,
-                          defaultPinTheme: defaultTheme,
-                          focusedPinTheme: defaultTheme.copyWith(
-                            decoration: defaultTheme.decoration!.copyWith(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: AppColors.primaryBlue,
+                          defaultPinTheme:
+                              defaultTheme,
+                          focusedPinTheme:
+                              defaultTheme
+                                  .copyWith(
+                            decoration:
+                                defaultTheme
+                                    .decoration!
+                                    .copyWith(
+                              color: colorScheme
+                                  .surface,
+                              border:
+                                  Border.all(
+                                color: AppColors
+                                    .primaryBlue,
                                 width: 1.6,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.primaryBlue.withOpacity(0.10),
+                                  color: AppColors
+                                      .primaryBlue
+                                      .withOpacity(
+                                    0.10,
+                                  ),
                                   blurRadius: 14,
-                                  offset: const Offset(0, 6),
+                                  offset:
+                                      const Offset(
+                                    0,
+                                    6,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          submittedPinTheme: defaultTheme.copyWith(
-                            decoration: defaultTheme.decoration!.copyWith(
-                              border: Border.all(
-                                color: AppColors.primaryBlue.withOpacity(0.45),
+                          submittedPinTheme:
+                              defaultTheme
+                                  .copyWith(
+                            decoration:
+                                defaultTheme
+                                    .decoration!
+                                    .copyWith(
+                              color: colorScheme
+                                  .surface,
+                              border:
+                                  Border.all(
+                                color: AppColors
+                                    .primaryBlue
+                                    .withOpacity(
+                                  0.45,
+                                ),
                               ),
                             ),
                           ),
-                          onChanged: (value) => controller.otp.value = value,
+                          onChanged: (value) {
+                            controller.otp.value =
+                                value;
+                          },
                         ),
                       ),
-
                       const SizedBox(height: 22),
-
-                    Obx(
-  () => TextButton.icon(
-    onPressed: controller.isResending.value
-        ? null
-        : controller.resendCode,
-    icon: controller.isResending.value
-        ? const SizedBox(
-            width: 18,
-            height: 18,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          )
-        : const Icon(
-            Icons.refresh_rounded,
-            color: AppColors.actionYellow,
-            size: 20,
-          ),
-    label: Text(
-      controller.isResending.value
-          ? 'جارٍ الإرسال...'
-          : 'إعادة إرسال الرمز',
-      style: TextStyle(
-        color: controller.isResending.value
-            ? AppColors.textGrey
-            : AppColors.actionYellow,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  ),
-),
+                      Obx(
+                        () => TextButton.icon(
+                          onPressed: controller
+                                  .isResending.value
+                              ? null
+                              : controller
+                                  .resendCode,
+                          icon: controller
+                                  .isResending.value
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child:
+                                      CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons
+                                      .refresh_rounded,
+                                  color: AppColors
+                                      .actionYellow,
+                                  size: 20,
+                                ),
+                          label: Text(
+                            controller
+                                    .isResending.value
+                                ? 'جارٍ الإرسال...'
+                                : 'إعادة إرسال الرمز',
+                            style: TextStyle(
+                              color: controller
+                                      .isResending
+                                      .value
+                                  ? colorScheme
+                                      .onSurfaceVariant
+                                  : AppColors
+                                      .actionYellow,
+                              fontWeight:
+                                  FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 28),
-
                 Obx(
                   () => JisrPrimaryButton(
                     text: 'تحقق من الرمز',
-                    isLoading: controller.isLoading.value,
-                    onPressed: controller.verifyOtp,
+                    isLoading:
+                        controller.isLoading.value,
+                    onPressed:
+                        controller.verifyOtp,
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 TextButton(
-                  onPressed: () => Get.back(),
+                  onPressed: Get.back,
                   child: const Text(
                     'تعديل البريد الإلكتروني',
                     style: TextStyle(
-                      color: AppColors.primaryBlue,
-                      fontWeight: FontWeight.w600,
+                      color:
+                          AppColors.primaryBlue,
+                      fontWeight:
+                          FontWeight.w600,
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 30),
               ],
             ),

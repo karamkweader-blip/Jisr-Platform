@@ -3,6 +3,7 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_assignment_details_model.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_match_score_indicator.dart';
 
+import 'package:get/get.dart';
 class AssignmentOverviewSection extends StatelessWidget {
   final CompanyTaskAssignmentDetailsModel details;
   final String Function(String difficultyLevel) difficultyLabel;
@@ -48,8 +49,8 @@ class AssignmentOverviewSection extends StatelessWidget {
               if (details.task.description.trim().isNotEmpty)
                 Text(
                   details.task.description,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 12.5,
                     height: 1.65,
                     fontWeight: FontWeight.w600,
@@ -110,8 +111,8 @@ class AssignmentOverviewSection extends StatelessWidget {
             icon: Icons.sticky_note_2_outlined,
             child: Text(
               details.application.companyNotes!,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 12.5,
                 height: 1.65,
                 fontWeight: FontWeight.w600,
@@ -217,10 +218,10 @@ class AssignmentOverviewSection extends StatelessWidget {
         score: details.matching.score,
       ),
       const SizedBox(height: 18),
-      const Text(
+       Text(
         'تفاصيل التحليل',
         style: TextStyle(
-          color: AppColors.textDark,
+          color: Get.theme.colorScheme.onSurface,
           fontSize: 12.5,
           fontWeight: FontWeight.w900,
         ),
@@ -264,7 +265,7 @@ class _SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(23),
         boxShadow: [
           BoxShadow(
@@ -295,8 +296,8 @@ class _SectionCard extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 14.5,
                   fontWeight: FontWeight.w900,
                 ),
@@ -327,7 +328,7 @@ class _InfoTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(11),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(
@@ -344,8 +345,8 @@ class _InfoTile extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 9.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -355,8 +356,8 @@ class _InfoTile extends StatelessWidget {
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 10.5,
                     fontWeight: FontWeight.w800,
                   ),
@@ -397,7 +398,7 @@ class _RequiredSkillPill extends StatelessWidget {
       child: Text(
         '$name · مستوى $level${mandatory ? ' · أساسية' : ''}',
         style: TextStyle(
-          color: mandatory ? AppColors.primaryBlue : AppColors.textDark,
+          color: mandatory ? AppColors.primaryBlue : Get.theme.colorScheme.onSurface,
           fontSize: 10.5,
           fontWeight: FontWeight.w800,
         ),
@@ -420,7 +421,7 @@ class _ProfileInfoTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(11),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -428,8 +429,8 @@ class _ProfileInfoTile extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 10,
               fontWeight: FontWeight.w600,
             ),
@@ -439,8 +440,8 @@ class _ProfileInfoTile extends StatelessWidget {
             value,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 11,
               fontWeight: FontWeight.w800,
             ),
@@ -470,7 +471,7 @@ class _StudentSkillPill extends StatelessWidget {
         vertical: 8,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.10),
@@ -478,8 +479,8 @@ class _StudentSkillPill extends StatelessWidget {
       ),
       child: Text(
         '$name · مستوى $level${verified ? ' · موثقة' : ''}',
-        style: const TextStyle(
-          color: AppColors.textDark,
+        style:  TextStyle(
+          color: Get.theme.colorScheme.onSurface,
           fontSize: 10.5,
           fontWeight: FontWeight.w800,
         ),
@@ -507,7 +508,7 @@ class _PortfolioProjectCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -515,8 +516,8 @@ class _PortfolioProjectCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 12.5,
               fontWeight: FontWeight.w900,
             ),
@@ -527,8 +528,8 @@ class _PortfolioProjectCard extends StatelessWidget {
               description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 11,
                 height: 1.5,
                 fontWeight: FontWeight.w600,
@@ -546,8 +547,8 @@ class _PortfolioProjectCard extends StatelessWidget {
               const SizedBox(width: 5),
               Text(
                 completionDate,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
                 ),
@@ -604,8 +605,8 @@ class _MatchingReasonItem extends StatelessWidget {
         Expanded(
           child: Text(
             _arabicReasonOnly(reason),
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 11.5,
               height: 1.55,
               fontWeight: FontWeight.w600,
@@ -646,8 +647,8 @@ class _EmptyInline extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       message,
-      style: const TextStyle(
-        color: AppColors.textGrey,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurfaceVariant,
         fontSize: 12,
         height: 1.5,
         fontWeight: FontWeight.w600,

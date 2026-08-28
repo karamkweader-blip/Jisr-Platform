@@ -33,7 +33,7 @@ class AssignmentWorkspaceHeader extends StatelessWidget {
         Row(
           children: [
             Material(
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(15),
               child: InkWell(
                 onTap: Get.back,
@@ -50,14 +50,14 @@ class AssignmentWorkspaceHeader extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            const Expanded(
+             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'مساحة عمل المهمة',
                     style: TextStyle(
-                      color: AppColors.textDark,
+                      color: Get.theme.colorScheme.onSurface,
                       fontSize: 21,
                       fontWeight: FontWeight.w900,
                     ),
@@ -66,7 +66,7 @@ class AssignmentWorkspaceHeader extends StatelessWidget {
                   Text(
                     'تابع معلومات المهمة والطالب المكلف بها',
                     style: TextStyle(
-                      color: AppColors.textGrey,
+                      color: Get.theme.colorScheme.onSurfaceVariant,
                       fontSize: 11.5,
                       fontWeight: FontWeight.w600,
                     ),

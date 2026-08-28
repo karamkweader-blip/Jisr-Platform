@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class TasksHeader extends StatelessWidget {
   final VoidCallback onCreatePressed;
 
@@ -13,14 +14,14 @@ class TasksHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
+         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'المهام',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
                 ),
@@ -29,7 +30,7 @@ class TasksHeader extends StatelessWidget {
               Text(
                 'تابع المهام التي أنشأتها أو نشرتها',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13.5,
                   fontWeight: FontWeight.w500,
                 ),

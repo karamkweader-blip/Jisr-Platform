@@ -1,9 +1,11 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/auth/register_company_request.dart';
 import 'package:jisr_platform/services/auth/register/register_company_service.dart';
+import 'package:jisr_platform/routes/app_routes.dart';
 
 class RegisterCompanyController extends GetxController {
   final RxInt currentStep = 0.obs;
@@ -42,7 +44,14 @@ final RxnString selectedFilePath = RxnString();
 Future<void> pickFile() async {
   final result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
-    allowedExtensions: ['pdf', 'txt', 'doc', 'docx'],
+   allowedExtensions: [
+  'pdf',
+  'jpg',
+  'jpeg',
+  'png',
+  'doc',
+  'docx',
+],
   );
 
   if (result != null && result.files.single.path != null) {
@@ -113,11 +122,12 @@ Future<void> pickFile() async {
   if (!validateStep(1)) return;
 
   if (selectedFilePath.value == null) {
-  JisrSnackbar.show(
-  title: 'تنبيه',
-  message: 'يرجى رفع ملف التوثيق',
-  type: JisrSnackbarType.warning,
-);
+    JisrSnackbar.show(
+      title: 'ملف التوثيق مطلوب',
+      message:
+          'يرجى رفع مستند يثبت بيانات الشركة قبل إنشاء الحساب.',
+      type: JisrSnackbarType.warning,
+    );
     return;
   }
 
@@ -127,28 +137,29 @@ Future<void> pickFile() async {
     final request = RegisterCompanyRequest(
       name: companyNameController.text.trim(),
       email: emailController.text.trim(),
-      password: passwordController.text.trim(),
+      password: passwordController.text,
       location: locationController.text.trim(),
       industry: companyFieldController.text.trim(),
       website: websiteController.text.trim(),
-      documentationFilePath: selectedFilePath.value!,);
+      documentationFilePath:
+          selectedFilePath.value!,
+    );
 
     await _service.register(request);
 
-   JisrSnackbar.show(
-  title: 'نجاح',
-  message: 'تم إنشاء الحساب بنجاح',
-  type: JisrSnackbarType.success,
-);
+    Get.until(
+      (route) =>
+          route.settings.name == Routes.login,
+    );
 
-    Get.offAllNamed('/login');
-
-  } catch (e) {
-   JisrSnackbar.show(
-  title: 'خطأ',
-  message: 'حدث خطأ أثناء إنشاء الحساب',
-  type: JisrSnackbarType.error,
-);
+    JisrSnackbar.show(
+      title: 'تم إنشاء الحساب',
+      message:
+          'تم إنشاء حساب الشركة بنجاح. سيصبح تسجيل الدخول متاحًا بعد موافقة الإدارة على التوثيق.',
+      type: JisrSnackbarType.success,
+    );
+  } catch (error) {
+    ApiErrorPresenter.show(error);
   } finally {
     isLoading.value = false;
   }

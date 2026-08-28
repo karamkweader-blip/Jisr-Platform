@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_details_model.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_details_service.dart';
@@ -158,7 +160,11 @@ class CreateCompanyTaskController extends GetxController {
         _hydrateExistingSkills();
       }
     } catch (e) {
-      skillsError.value = _cleanError(e);
+     skillsError.value =
+    ApiErrorPresenter.messageFor(
+  e,
+  operation: ApiOperation.task,
+);
     } finally {
       isLoadingSkills.value = false;
     }
@@ -450,13 +456,12 @@ class CreateCompanyTaskController extends GetxController {
       final createdTask = await _taskService.createTask(request);
 
       _showCreatedDialog(createdTask);
-    } catch (e) {
-      Get.snackbar(
-        'خطأ',
-        _cleanError(e),
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
+   } catch (error) {
+  ApiErrorPresenter.show(
+    error,
+    operation: ApiOperation.task,
+  );
+} finally {
       isSubmitting.value = false;
     }
   }
@@ -675,15 +680,14 @@ class CreateCompanyTaskController extends GetxController {
         'تم نشر المهمة بنجاح',
         snackPosition: SnackPosition.BOTTOM,
       );
-    } catch (e) {
-      Get.snackbar(
-        'خطأ',
-        _cleanError(e),
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isSubmitting.value = false;
-    }
+  } catch (error) {
+  ApiErrorPresenter.show(
+    error,
+    operation: ApiOperation.task,
+  );
+} finally {
+  isSubmitting.value = false;
+}
   }
 
   void _showCreatedDialog(CompanyTaskModel task) {

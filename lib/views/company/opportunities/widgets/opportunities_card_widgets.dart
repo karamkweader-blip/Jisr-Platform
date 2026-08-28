@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/opportunities/company_opportunity_feed_item.dart';
 
+import 'package:get/get.dart';
 class OpportunityCard extends StatelessWidget {
   final CompanyOpportunityFeedItem item;
   final VoidCallback onTap;
@@ -22,7 +23,7 @@ class OpportunityCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: AppColors.primaryBlue.withOpacity(0.06),
@@ -62,8 +63,8 @@ class OpportunityCard extends StatelessWidget {
                         item.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: AppColors.textDark,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurface,
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
                           height: 1.35,
@@ -84,8 +85,8 @@ class OpportunityCard extends StatelessWidget {
                   item.description,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     height: 1.5,
                     fontWeight: FontWeight.w500,
@@ -195,7 +196,7 @@ class OpportunityStatusChip extends StatelessWidget {
       case 'cancelled':
         return Colors.red;
       default:
-        return AppColors.textGrey;
+        return Get.theme.colorScheme.onSurfaceVariant;
     }
   }
 
@@ -240,7 +241,7 @@ class OpportunityInfoChip extends StatelessWidget {
         vertical: 7,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -248,7 +249,7 @@ class OpportunityInfoChip extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: AppColors.textGrey,
+            color: Get.theme.colorScheme.onSurfaceVariant,
             size: 15,
           ),
           const SizedBox(width: 5),
@@ -257,8 +258,8 @@ class OpportunityInfoChip extends StatelessWidget {
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
               ),
@@ -287,7 +288,7 @@ class OpportunityCreateOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.background,
+      color: Get.theme.scaffoldBackgroundColor,
       borderRadius: BorderRadius.circular(18),
       child: InkWell(
         onTap: onTap,
@@ -316,8 +317,8 @@ class OpportunityCreateOption extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 14.5,
                         fontWeight: FontWeight.w900,
                       ),
@@ -325,8 +326,8 @@ class OpportunityCreateOption extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w500,
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/controllers/company/tasks/company_tasks_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class TaskStatusFilterBar extends StatelessWidget {
   final CompanyTaskStatusFilter selectedFilter;
   final ValueChanged<CompanyTaskStatusFilter> onChanged;
@@ -25,7 +26,7 @@ class TaskStatusFilterBar extends StatelessWidget {
             child: Material(
               color: isSelected
                   ? AppColors.primaryBlue
-                  : AppColors.cardWhite,
+                  : Get.theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(14),
               child: InkWell(
                 onTap: () => onChanged(filter),
@@ -48,7 +49,7 @@ class TaskStatusFilterBar extends StatelessWidget {
                     style: TextStyle(
                       color: isSelected
                           ? Colors.white
-                          : AppColors.textGrey,
+                          : Get.theme.colorScheme.onSurfaceVariant,
                       fontSize: 12.5,
                       fontWeight: FontWeight.w800,
                     ),

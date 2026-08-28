@@ -6,8 +6,11 @@ import 'package:jisr_platform/core/widgets/auth_header.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 import 'package:pinput/pinput.dart';
 
-class LoginOtpView extends GetView<LoginOtpController> {
-  const LoginOtpView({super.key});
+class LoginOtpView
+    extends GetView<LoginOtpController> {
+  const LoginOtpView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +23,17 @@ class LoginOtpView extends GetView<LoginOtpController> {
         color: AppColors.primaryBlue,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color:
+            Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primaryBlue.withOpacity(0.2)),
+        border: Border.all(
+          color: AppColors.primaryBlue
+              .withOpacity(0.2),
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.08),
+            color: AppColors.primaryBlue
+                .withOpacity(0.08),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -36,55 +44,75 @@ class LoginOtpView extends GetView<LoginOtpController> {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor:
+            Theme.of(context)
+                .scaffoldBackgroundColor,
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding:
+                  const EdgeInsets.symmetric(
+                horizontal: 30,
+              ),
               child: Column(
                 children: [
                   const SizedBox(height: 0.1),
-
                   const AuthHeader(
                     title: 'تحقق من الرمز',
-                    subtitle: 'أدخل رمز التحقق المرسل إلى بريدك الإلكتروني',
+                    subtitle:
+                        'أدخل رمز التحقق المرسل إلى بريدك الإلكتروني',
                     logoSize: 95,
                     titleFontSize: 26,
                     spaceAfterLogo: 28,
                   ),
-
-                  const SizedBox(height: 9
-                ),
-
+                  const SizedBox(height: 9),
                   Text(
                     controller.email,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.textGrey,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurfaceVariant,
                       fontSize: 14,
                     ),
                   ),
-
                   const SizedBox(height: 40),
-
                   Pinput(
-                    controller: controller.otpController,
+                    controller:
+                        controller.otpController,
                     length: 6,
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
-                    defaultPinTheme: defaultPinTheme,
-                    focusedPinTheme: defaultPinTheme.copyWith(
-                      decoration: defaultPinTheme.decoration!.copyWith(
+                    keyboardType:
+                        TextInputType.number,
+                    textInputAction:
+                        TextInputAction.done,
+                    defaultPinTheme:
+                        defaultPinTheme,
+                    focusedPinTheme:
+                        defaultPinTheme.copyWith(
+                      decoration: defaultPinTheme
+                          .decoration!
+                          .copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface,
                         border: Border.all(
-                          color: AppColors.primaryBlue,
+                          color: AppColors
+                              .primaryBlue,
                           width: 1.5,
                         ),
                       ),
                     ),
-                    submittedPinTheme: defaultPinTheme.copyWith(
-                      decoration: defaultPinTheme.decoration!.copyWith(
+                    submittedPinTheme:
+                        defaultPinTheme.copyWith(
+                      decoration: defaultPinTheme
+                          .decoration!
+                          .copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface,
                         border: Border.all(
-                          color: AppColors.actionYellow,
+                          color: AppColors
+                              .actionYellow,
                           width: 1.5,
                         ),
                       ),
@@ -93,17 +121,22 @@ class LoginOtpView extends GetView<LoginOtpController> {
                       print('OTP COMPLETED');
                     },
                   ),
-
                   const SizedBox(height: 50),
-
                   Obx(
                     () => JisrPrimaryButton(
                       text: 'تأكيد الرمز',
-                      isLoading: controller.isLoading.value,
+                      isLoading:
+                          controller.isLoading.value,
                       onPressed: () {
-                        if (controller.isLoading.value) return;
+                        if (controller
+                            .isLoading.value) {
+                          return;
+                        }
 
-                        print('LOGIN OTP VIEW BUTTON PRESSED');
+                        print(
+                          'LOGIN OTP VIEW BUTTON PRESSED',
+                        );
+
                         controller.verifyLoginOtp();
                       },
                     ),

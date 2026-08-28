@@ -24,8 +24,8 @@ class CompanyConversationsView
         top: false,
         child: Column(
           children: [
-            _buildHeader(),
-            _buildSearch(),
+           _buildHeader(context),
+_buildSearch(context),
             _buildFilters(),
             const SizedBox(height: 6),
             Expanded(
@@ -39,7 +39,7 @@ class CompanyConversationsView
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         18,
@@ -54,10 +54,10 @@ class CompanyConversationsView
               crossAxisAlignment:
                   CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'المحادثات',
                   style: TextStyle(
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                   ),
@@ -72,8 +72,8 @@ class CompanyConversationsView
                       unread > 0
                           ? '$unread رسالة غير مقروءة'
                           : 'تواصل مع الطلاب في المهام ومقابلات الفرص',
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12.5,
                       ),
                     );
@@ -100,7 +100,7 @@ class CompanyConversationsView
     );
   }
 
-  Widget _buildSearch() {
+  Widget _buildSearch(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 18,
@@ -116,7 +116,7 @@ class CompanyConversationsView
               'ابحث باسم الطالب أو المهمة أو الفرصة...',
           hintStyle: TextStyle(
             color:
-                AppColors.textGrey.withOpacity(0.75),
+                Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.75),
             fontSize: 13,
           ),
           prefixIcon: const Icon(
@@ -125,7 +125,7 @@ class CompanyConversationsView
             size: 21,
           ),
           filled: true,
-          fillColor: AppColors.cardWhite,
+          fillColor: Theme.of(context).colorScheme.surface,
           contentPadding:
               const EdgeInsets.symmetric(
             vertical: 13,
@@ -135,7 +135,7 @@ class CompanyConversationsView
             borderRadius:
                 BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: AppColors.textGrey
+              color: Theme.of(context).colorScheme.onSurfaceVariant
                   .withOpacity(0.10),
             ),
           ),
@@ -144,7 +144,7 @@ class CompanyConversationsView
             borderRadius:
                 BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: AppColors.textGrey
+              color: Theme.of(context).colorScheme.onSurfaceVariant
                   .withOpacity(0.10),
             ),
           ),
@@ -471,13 +471,13 @@ class _FilterChip
           decoration: BoxDecoration(
             color: selected
                 ? AppColors.primaryBlue
-                : AppColors.cardWhite,
+                :Theme.of(context).colorScheme.surface,
             borderRadius:
                 BorderRadius.circular(30),
             border: Border.all(
               color: selected
                   ? AppColors.primaryBlue
-                  : AppColors.textGrey
+                  :Theme.of(context).colorScheme.onSurfaceVariant
                       .withOpacity(0.14),
             ),
           ),
@@ -487,16 +487,16 @@ class _FilterChip
                 icon,
                 size: 17,
                 color: selected
-                    ? AppColors.cardWhite
-                    : AppColors.textGrey,
+                    ? Colors.white
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               const SizedBox(width: 6),
               Text(
                 label,
                 style: TextStyle(
                   color: selected
-                      ? AppColors.cardWhite
-                      : AppColors.textDark,
+                      ? Colors.white
+                      : Theme.of(context).colorScheme.onSurface,
                   fontSize: 12,
                   fontWeight: selected
                       ? FontWeight.w700

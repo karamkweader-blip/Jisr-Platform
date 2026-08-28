@@ -58,7 +58,12 @@ class NotificationService {
         badge: true,
         sound: true,
       );
+final fcmToken = await _messaging.getToken();
 
+debugPrint(
+  'FCM_TOKEN=$fcmToken',
+  wrapWidth: 4096,
+);
       await _messaging
           .setForegroundNotificationPresentationOptions(
         alert: true,

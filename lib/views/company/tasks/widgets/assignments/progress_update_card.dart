@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_assignment_progress_model.dart';
 
+import 'package:get/get.dart';
 class ProgressUpdateCard extends StatelessWidget {
   final CompanyTaskProgressUpdateModel update;
   final String createdAtText;
@@ -20,7 +21,7 @@ class ProgressUpdateCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -40,8 +41,8 @@ class ProgressUpdateCard extends StatelessWidget {
                   update.progress.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 13.5,
                     fontWeight: FontWeight.w900,
                   ),
@@ -55,8 +56,8 @@ class ProgressUpdateCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               update.progress.description,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 11.5,
                 height: 1.55,
                 fontWeight: FontWeight.w600,
@@ -85,8 +86,8 @@ class ProgressUpdateCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   createdAtText,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
                   ),
@@ -104,10 +105,10 @@ class ProgressUpdateCard extends StatelessWidget {
           ],
           if (update.attachments.isNotEmpty) ...[
             const SizedBox(height: 12),
-            const Text(
+             Text(
               'المرفقات',
               style: TextStyle(
-                color: AppColors.textDark,
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 11.5,
                 fontWeight: FontWeight.w900,
               ),
@@ -178,7 +179,7 @@ class _LinksSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
@@ -226,8 +227,8 @@ class _LinkItem extends StatelessWidget {
         const SizedBox(width: 7),
         Text(
           '$label:',
-          style: const TextStyle(
-            color: AppColors.textDark,
+          style:  TextStyle(
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 10.5,
             fontWeight: FontWeight.w800,
           ),
@@ -240,8 +241,8 @@ class _LinkItem extends StatelessWidget {
               url,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
               ),
@@ -267,7 +268,7 @@ class _AttachmentPreview extends StatelessWidget {
       child: Container(
         width: 82,
         height: 74,
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         child: Image.network(
           imageUrl,
           fit: BoxFit.cover,

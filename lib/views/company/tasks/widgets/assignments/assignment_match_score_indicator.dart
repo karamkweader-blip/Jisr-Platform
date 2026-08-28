@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class AssignmentMatchScoreIndicator extends StatelessWidget {
   final double score;
   final bool compact;
@@ -92,10 +93,10 @@ class AssignmentMatchScoreIndicator extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'نسبة توافق المهارات',
                   style: TextStyle(
-                    color: AppColors.textDark,
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 13,
                     fontWeight: FontWeight.w900,
                   ),
@@ -112,8 +113,8 @@ class AssignmentMatchScoreIndicator extends StatelessWidget {
                 const SizedBox(height: 7),
                 Text(
                   _scoreDescription,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11.5,
                     height: 1.5,
                     fontWeight: FontWeight.w600,

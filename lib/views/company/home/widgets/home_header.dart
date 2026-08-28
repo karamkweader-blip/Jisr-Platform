@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/company_home_model.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -12,21 +11,28 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final companyName = home.company.name.trim().isEmpty
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
+    final companyName =
+        home.company.name.trim().isEmpty
         ? 'شركتك'
         : home.company.name.trim();
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
       children: [
-        _WelcomeTitle(companyName: companyName),
+        _WelcomeTitle(
+          companyName: companyName,
+        ),
         const SizedBox(height: 8),
         Text(
           home.hasAnyActivity
               ? 'إليك ملخص نشاط شركتك اليوم'
               : 'ابدأ بنشر أول مهمة لاستقبال الطلاب المناسبين',
-          style: const TextStyle(
-            color: AppColors.textGrey,
+          style: TextStyle(
+            color: colorScheme.onSurfaceVariant,
             fontSize: 14,
             fontWeight: FontWeight.w500,
             height: 1.5,
@@ -46,17 +52,21 @@ class _WelcomeTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor =
+        Theme.of(context).colorScheme.onSurface;
+
     return Wrap(
       textDirection: TextDirection.rtl,
       alignment: WrapAlignment.start,
-      crossAxisAlignment: WrapCrossAlignment.center,
+      crossAxisAlignment:
+          WrapCrossAlignment.center,
       spacing: 6,
       runSpacing: 2,
       children: [
-        const Text(
+        Text(
           'مرحباً،',
           style: TextStyle(
-            color: AppColors.textDark,
+            color: textColor,
             fontSize: 24,
             fontWeight: FontWeight.w800,
             height: 1.25,
@@ -64,11 +74,12 @@ class _WelcomeTitle extends StatelessWidget {
         ),
         Text(
           companyName,
-          textDirection: _containsArabic(companyName)
+          textDirection:
+              _containsArabic(companyName)
               ? TextDirection.rtl
               : TextDirection.ltr,
-          style: const TextStyle(
-            color: AppColors.textDark,
+          style: TextStyle(
+            color: textColor,
             fontSize: 24,
             fontWeight: FontWeight.w800,
             height: 1.25,
@@ -79,6 +90,8 @@ class _WelcomeTitle extends StatelessWidget {
   }
 
   bool _containsArabic(String value) {
-    return RegExp(r'[\u0600-\u06FF]').hasMatch(value);
+    return RegExp(
+      r'[\u0600-\u06FF]',
+    ).hasMatch(value);
   }
 }

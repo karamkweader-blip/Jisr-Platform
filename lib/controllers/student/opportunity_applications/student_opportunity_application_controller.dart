@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/student/opportunity_applications/student_opportunity_application_model.dart';
 import 'package:jisr_platform/services/student/opportunity_applications/student_opportunity_application_service.dart';
@@ -73,7 +75,10 @@ class StudentOpportunityApplicationController extends GetxController {
       final response = await _service.getApplications();
       applications.assignAll(response.data);
     } catch (e) {
-      _showError('فشل جلب التقديمات', e);
+      ApiErrorPresenter.show(
+  e,
+  operation: ApiOperation.application,
+);
     } finally {
       isLoading.value = false;
     }
@@ -109,16 +114,17 @@ class StudentOpportunityApplicationController extends GetxController {
         applications[index] = response.data;
       }
 
-      JisrSnackbar.show(
-        title: 'تم سحب الطلب',
-        message: response.message.isEmpty
-            ? 'تم سحب طلب التقديم بنجاح'
-            : response.message,
-        type: JisrSnackbarType.success,
-      );
-    } catch (e) {
-      _showError('فشل سحب الطلب', e);
-    } finally {
+     JisrSnackbar.show(
+  title: 'تم سحب الطلب',
+  message: 'تم سحب طلب التقديم بنجاح.',
+  type: JisrSnackbarType.success,
+);
+   } catch (error) {
+  ApiErrorPresenter.show(
+    error,
+    operation: ApiOperation.application,
+  );
+} finally {
       isWithdrawing.value = false;
     }
   }

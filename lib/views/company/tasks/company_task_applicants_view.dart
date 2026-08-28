@@ -12,7 +12,7 @@ class CompanyTaskApplicantsView extends GetView<CompanyTaskApplicantsController>
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: Obx(
             () => RefreshIndicator(
@@ -105,7 +105,7 @@ class _ApplicantsTopBar extends StatelessWidget {
     return Row(
       children: [
         Material(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
             onTap: Get.back,
@@ -126,10 +126,10 @@ class _ApplicantsTopBar extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 'المتقدمون',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
                 ),
@@ -139,8 +139,8 @@ class _ApplicantsTopBar extends StatelessWidget {
                 title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -182,12 +182,12 @@ class _ApplicantsHeader extends StatelessWidget {
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: AppColors.cardWhite.withOpacity(0.16),
+              color: Get.theme.colorScheme.surface.withOpacity(0.16),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Icon(
+            child:  Icon(
               Icons.groups_2_outlined,
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               size: 30,
             ),
           ),
@@ -196,10 +196,10 @@ class _ApplicantsHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'راجع الطلاب المتقدمين',
                   style: TextStyle(
-                    color: AppColors.cardWhite,
+                    color: Get.theme.colorScheme.surface,
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
                   ),
@@ -210,7 +210,7 @@ class _ApplicantsHeader extends StatelessWidget {
                       ? 'سيتم عرض المتقدمين حسب نسبة التطابق.'
                       : 'عدد المتقدمين الحالي: $count',
                   style: TextStyle(
-                    color: AppColors.cardWhite.withOpacity(0.86),
+                    color: Get.theme.colorScheme.surface.withOpacity(0.86),
                     fontSize: 12,
                     height: 1.5,
                     fontWeight: FontWeight.w600,
@@ -256,7 +256,7 @@ class _ApplicantsError extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
@@ -275,10 +275,10 @@ class _ApplicantsError extends StatelessWidget {
                 size: 42,
               ),
               const SizedBox(height: 12),
-              const Text(
+               Text(
                 'تعذر تحميل المتقدمين',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w900,
                 ),
@@ -287,8 +287,8 @@ class _ApplicantsError extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   height: 1.5,
                 ),
@@ -319,7 +319,7 @@ class _ApplicantsEmpty extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
@@ -329,7 +329,7 @@ class _ApplicantsEmpty extends StatelessWidget {
               ),
             ],
           ),
-          child: const Column(
+          child:  Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
@@ -341,7 +341,7 @@ class _ApplicantsEmpty extends StatelessWidget {
               Text(
                 'لا يوجد متقدمون بعد',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w900,
                 ),
@@ -351,7 +351,7 @@ class _ApplicantsEmpty extends StatelessWidget {
                 'عند تقديم الطلاب على هذه المهمة سيظهرون هنا للمراجعة.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   height: 1.5,
                 ),

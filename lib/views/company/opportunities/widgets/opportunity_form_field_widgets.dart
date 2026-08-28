@@ -32,8 +32,8 @@ class _OpportunityField extends StatelessWidget {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      style: const TextStyle(
-        color: AppColors.textDark,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurface,
         fontSize: 13.3,
         fontWeight: FontWeight.w600,
       ),
@@ -41,18 +41,18 @@ class _OpportunityField extends StatelessWidget {
         labelText: label,
         hintText: hint,
         alignLabelWithHint: maxLines > 1,
-        labelStyle: const TextStyle(
-          color: AppColors.textGrey,
+        labelStyle:  TextStyle(
+          color: Get.theme.colorScheme.onSurfaceVariant,
           fontSize: 12.2,
           fontWeight: FontWeight.w600,
         ),
         hintStyle: TextStyle(
-          color: AppColors.textGrey.withOpacity(0.68),
+          color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.68),
           fontSize: 11.2,
         ),
         prefixIcon: Icon(icon, color: AppColors.primaryBlue, size: 20),
         filled: true,
-        fillColor: AppColors.background,
+        fillColor: Get.theme.scaffoldBackgroundColor,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 13,
           vertical: 16,
@@ -107,8 +107,8 @@ class _InlineHint extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 10.8,
                 height: 1.5,
                 fontWeight: FontWeight.w600,
@@ -133,7 +133,7 @@ class _DeadlinePicker extends StatelessWidget {
     return Material(
       color: selected
           ? AppColors.primaryBlue.withOpacity(0.06)
-          : AppColors.background,
+          : Get.theme.scaffoldBackgroundColor,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
@@ -169,10 +169,10 @@ class _DeadlinePicker extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                     Text(
                       'آخر موعد للتقديم',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 13.2,
                         fontWeight: FontWeight.w800,
                       ),
@@ -183,7 +183,7 @@ class _DeadlinePicker extends StatelessWidget {
                       style: TextStyle(
                         color: selected
                             ? AppColors.primaryBlue
-                            : AppColors.textGrey,
+                            : Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.7,
                         fontWeight: FontWeight.w700,
                       ),

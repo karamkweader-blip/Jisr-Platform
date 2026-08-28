@@ -30,8 +30,8 @@ class StudentConversationsView
         body: SafeArea(
           child: Column(
             children: [
-              _buildHeader(),
-              _buildSearch(),
+              _buildHeader(context),
+              _buildSearch(context),
               _buildFilters(),
               const SizedBox(height: 6),
               Expanded(child: Obx(_buildContent)),
@@ -42,7 +42,7 @@ class StudentConversationsView
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
       child: Row(
@@ -51,11 +51,11 @@ class StudentConversationsView
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'المحادثات',
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                   ),
@@ -67,9 +67,9 @@ class StudentConversationsView
                     unread > 0
                         ? '$unread رسالة غير مقروءة'
                         : 'تواصل مع الشركات بعد قبولك في المهام',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12.5,
                     ),
                   );
@@ -94,7 +94,7 @@ class StudentConversationsView
     );
   }
 
-  Widget _buildSearch() {
+  Widget _buildSearch(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
       child: TextField(
@@ -105,7 +105,7 @@ class StudentConversationsView
           hintText: 'ابحث باسم الشركة أو المهمة...',
           hintStyle: TextStyle(
             fontFamily: 'Cairo',
-            color: AppColors.textGrey.withOpacity(0.75),
+            color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.75),
             fontSize: 13,
           ),
           prefixIcon: const Icon(
@@ -114,7 +114,7 @@ class StudentConversationsView
             size: 21,
           ),
           filled: true,
-          fillColor: AppColors.cardWhite,
+          fillColor: Theme.of(context).colorScheme.surface,
           contentPadding: const EdgeInsets.symmetric(
             vertical: 13,
             horizontal: 14,
@@ -122,13 +122,13 @@ class StudentConversationsView
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: AppColors.textGrey.withOpacity(0.10),
+              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.10),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: AppColors.textGrey.withOpacity(0.10),
+              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.10),
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -315,12 +315,14 @@ class _FilterChip extends StatelessWidget {
           duration: const Duration(milliseconds: 180),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: selected ? AppColors.primaryBlue : AppColors.cardWhite,
+            color: selected
+                ? AppColors.primaryBlue
+                : Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
               color: selected
                   ? AppColors.primaryBlue
-                  : AppColors.textGrey.withOpacity(0.14),
+                  : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.14),
             ),
           ),
           child: Row(
@@ -328,14 +330,14 @@ class _FilterChip extends StatelessWidget {
               Icon(
                 icon,
                 size: 17,
-                color: selected ? AppColors.cardWhite : AppColors.textGrey,
+                color: selected ? AppColors.cardWhite : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               const SizedBox(width: 6),
               Text(
                 label,
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: selected ? AppColors.cardWhite : AppColors.textDark,
+                  color: selected ? AppColors.cardWhite : Theme.of(context).colorScheme.onSurface,
                   fontSize: 12,
                   fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
                 ),

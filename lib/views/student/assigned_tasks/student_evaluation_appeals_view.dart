@@ -21,10 +21,10 @@ class StudentEvaluationAppealsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -71,7 +71,8 @@ class StudentEvaluationAppealsView
                         ),
                       ),
                       selectedColor: AppColors.primaryBlue,
-                      backgroundColor: AppColors.cardWhite,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.surface,
                       side: BorderSide(
                         color: selected
                             ? AppColors.primaryBlue
@@ -211,7 +212,7 @@ class _EvaluationAppealCard extends GetView<StudentAssignedTaskController> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: statusColor.withOpacity(.18)),
         boxShadow: [
@@ -264,9 +265,9 @@ class _EvaluationAppealCard extends GetView<StudentAssignedTaskController> {
           const SizedBox(height: 12),
           Text(
             appeal.reason,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 12,
               height: 1.55,
             ),
@@ -312,9 +313,9 @@ class _AppealInfoRow extends StatelessWidget {
         children: [
           Text(
             '$label: ',
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
@@ -322,9 +323,9 @@ class _AppealInfoRow extends StatelessWidget {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 10,
                 height: 1.45,
               ),

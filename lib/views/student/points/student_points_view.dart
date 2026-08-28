@@ -15,7 +15,7 @@ class StudentPointsView extends GetView<StudentPointsController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         body: SafeArea(
           child: GetBuilder<StudentPointsController>(
@@ -48,9 +48,9 @@ class StudentPointsView extends GetView<StudentPointsController> {
                             if (controller.meta.total > 0)
                               Text(
                                 '${controller.meta.total} نشاط',
-                                style: const TextStyle(
+                                style:  TextStyle(
                                   fontFamily: 'Cairo',
-                                  color: AppColors.textGrey,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -261,7 +261,7 @@ class _HowToEarnCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.07)),
           boxShadow: [
@@ -299,7 +299,7 @@ class _EarnItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(18),
         ),
         child: Column(
@@ -317,9 +317,9 @@ class _EarnItem extends StatelessWidget {
             ),
             Text(
               title,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 11.5,
                 fontWeight: FontWeight.bold,
               ),
@@ -344,7 +344,7 @@ class _PointHistoryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.07)),
         boxShadow: [
@@ -374,9 +374,9 @@ class _PointHistoryCard extends StatelessWidget {
               children: [
                 Text(
                   record.arabicDescription,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 13.5,
                     height: 1.45,
                     fontWeight: FontWeight.bold,
@@ -444,14 +444,14 @@ class _SmallTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Text(
         text,
-        style: const TextStyle(
+        style:  TextStyle(
           fontFamily: 'Cairo',
-          color: AppColors.textGrey,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontSize: 10.5,
           fontWeight: FontWeight.w700,
         ),
@@ -492,12 +492,12 @@ class _PointsEmpty extends StatelessWidget {
               child: const Icon(Icons.stars_rounded, color: AppColors.actionYellow, size: 40),
             ),
             const SizedBox(height: 12),
-            const Text(
+             Text(
               'لسا ما عندك سجل نقاط. ابدأ بمنشور أو تعليق بالمجتمع التقني.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 14,
                 height: 1.6,
                 fontWeight: FontWeight.w600,
@@ -529,9 +529,9 @@ class _PointsError extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.6,
               ),
             ),

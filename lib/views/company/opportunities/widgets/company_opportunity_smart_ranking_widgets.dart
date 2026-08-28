@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/opportunities/company_opportunity_smart_ranking_model.dart';
 
+import 'package:get/get.dart';
 class CompanyCandidatesModeSelector
     extends StatelessWidget {
   final bool smartRankingSelected;
@@ -18,11 +19,11 @@ class CompanyCandidatesModeSelector
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(17),
         border: Border.all(
           color:
-              AppColors.textGrey.withOpacity(0.10),
+              Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.10),
         ),
       ),
       child: Row(
@@ -197,7 +198,7 @@ class CompanySmartRankingCard
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.cardWhite,
+      color: Get.theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(21),
       child: InkWell(
         onTap: onTap,
@@ -210,7 +211,7 @@ class CompanySmartRankingCard
               color: candidate.rank == 1
                   ? AppColors.actionYellow
                       .withOpacity(0.30)
-                  : AppColors.textGrey
+                  : Get.theme.colorScheme.onSurfaceVariant
                       .withOpacity(0.10),
             ),
             boxShadow: <BoxShadow>[
@@ -250,8 +251,8 @@ class CompanySmartRankingCard
                           maxLines: 1,
                           overflow:
                               TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: AppColors.textDark,
+                          style:  TextStyle(
+                            color: Get.theme.colorScheme.onSurface,
                             fontSize: 14.5,
                             fontWeight:
                                 FontWeight.w900,
@@ -267,9 +268,9 @@ class CompanySmartRankingCard
                                 TextOverflow.ellipsis,
                             textDirection:
                                 TextDirection.ltr,
-                            style: const TextStyle(
+                            style:  TextStyle(
                               color:
-                                  AppColors.textGrey,
+                                  Get.theme.colorScheme.onSurfaceVariant,
                               fontSize: 10.5,
                               fontWeight:
                                   FontWeight.w600,
@@ -375,8 +376,8 @@ class CompanySmartRankingCard
                     child: Text(
                       '${candidate.metrics.matchedSkillsCount} من '
                       '${candidate.metrics.totalSkillsCount} مهارة متطابقة',
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 10.5,
                         fontWeight: FontWeight.w600,
                       ),
@@ -418,7 +419,7 @@ Future<void> showCompanySmartRankingDetails({
     useRootNavigator: true,
     useSafeArea: true,
     isScrollControlled: true,
-    backgroundColor: AppColors.cardWhite,
+    backgroundColor: Get.theme.colorScheme.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(28),
@@ -452,7 +453,7 @@ Future<void> showCompanySmartRankingDetails({
                     width: 44,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: AppColors.textGrey
+                      color: Get.theme.colorScheme.onSurfaceVariant
                           .withOpacity(0.22),
                       borderRadius:
                           BorderRadius.circular(10),
@@ -476,9 +477,9 @@ Future<void> showCompanySmartRankingDetails({
                         children: <Widget>[
                           Text(
                             candidate.student.name,
-                            style: const TextStyle(
+                            style:  TextStyle(
                               color:
-                                  AppColors.textDark,
+                                  Get.theme.colorScheme.onSurface,
                               fontSize: 18,
                               fontWeight:
                                   FontWeight.w900,
@@ -520,7 +521,7 @@ Future<void> showCompanySmartRankingDetails({
                       icon: const Icon(
                         Icons.close_rounded,
                       ),
-                      color: AppColors.textGrey,
+                      color: Get.theme.colorScheme.onSurfaceVariant,
                     ),
                   ],
                 ),
@@ -758,7 +759,7 @@ class _ModeButton extends StatelessWidget {
                 icon,
                 color: selected
                     ? AppColors.onPrimary
-                    : AppColors.textGrey,
+                    : Get.theme.colorScheme.onSurfaceVariant,
                 size: 18,
               ),
               const SizedBox(width: 6),
@@ -770,7 +771,7 @@ class _ModeButton extends StatelessWidget {
                   style: TextStyle(
                     color: selected
                         ? AppColors.onPrimary
-                        : AppColors.textGrey,
+                        : Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w900,
                   ),
@@ -934,10 +935,10 @@ class _FinalScoreBadge extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 2),
-          const Text(
+           Text(
             'النتيجة',
             style: TextStyle(
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 8.5,
               fontWeight: FontWeight.w700,
             ),
@@ -965,7 +966,7 @@ class _SmallScoreItem extends StatelessWidget {
         vertical: 9,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -984,8 +985,8 @@ class _SmallScoreItem extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 8.5,
               fontWeight: FontWeight.w600,
             ),
@@ -1021,7 +1022,7 @@ class _DetailsSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: danger
             ? AppColors.dangerRed.withOpacity(0.045)
-            : AppColors.background,
+            : Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: color.withOpacity(0.10),
@@ -1087,8 +1088,8 @@ class _ScoreProgressRow extends StatelessWidget {
                   Expanded(
                     child: Text(
                       label,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 11.5,
                         fontWeight:
                             FontWeight.w800,
@@ -1097,8 +1098,8 @@ class _ScoreProgressRow extends StatelessWidget {
                   ),
                   Text(
                     'الوزن ${_numberText(weight)}%',
-                    style: const TextStyle(
-                      color: AppColors.textGrey,
+                    style:  TextStyle(
+                      color: Get.theme.colorScheme.onSurfaceVariant,
                       fontSize: 9.5,
                       fontWeight:
                           FontWeight.w600,
@@ -1142,7 +1143,7 @@ class _ScoreProgressRow extends StatelessWidget {
         if (showDivider)
           Divider(
             height: 1,
-            color: AppColors.textGrey
+            color: Get.theme.colorScheme.onSurfaceVariant
                 .withOpacity(0.10),
           ),
       ],
@@ -1269,8 +1270,8 @@ class _ExplanationItem extends StatelessWidget {
           Expanded(
             child: SelectableText(
               text,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 11.5,
                 height: 1.55,
                 fontWeight: FontWeight.w600,

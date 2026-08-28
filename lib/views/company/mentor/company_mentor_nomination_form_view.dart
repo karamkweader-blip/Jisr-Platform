@@ -14,20 +14,20 @@ class CompanyMentorNominationFormView
     // يتم إنشاء الـScaffold مرة واحدة.
     // عند تغير isSubmitting يتحدث PopScope فقط ولا يعاد بناء الفورم كله.
     final scaffold = Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Get.theme.scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
-        backgroundColor: AppColors.cardWhite,
+        backgroundColor: Get.theme.colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
         iconTheme: const IconThemeData(
           color: AppColors.primaryBlue,
         ),
-        title: const Text(
+        title:  Text(
           'ترشيح مرشد جديد',
           style: TextStyle(
-            color: AppColors.textDark,
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 17,
             fontWeight: FontWeight.w900,
           ),
@@ -303,11 +303,11 @@ class CompanyMentorNominationFormView
               14,
             ),
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               border: Border(
                 top: BorderSide(
                   color:
-                      AppColors.textGrey.withOpacity(0.12),
+                      Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.12),
                 ),
               ),
             ),
@@ -417,10 +417,10 @@ class _FormSection extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(17),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(
-            color: AppColors.textGrey.withOpacity(0.11),
+            color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.11),
           ),
         ),
         child: Column(
@@ -456,8 +456,8 @@ class _FormSection extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         title,
-                        style: const TextStyle(
-                          color: AppColors.textDark,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurface,
                           fontSize: 15,
                           fontWeight: FontWeight.w900,
                         ),
@@ -465,8 +465,8 @@ class _FormSection extends StatelessWidget {
                       const SizedBox(height: 3),
                       Text(
                         subtitle,
-                        style: const TextStyle(
-                          color: AppColors.textGrey,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurfaceVariant,
                           fontSize: 10.8,
                           height: 1.4,
                           fontWeight: FontWeight.w500,
@@ -536,8 +536,8 @@ class _SpecializationField extends StatelessWidget {
               hint:
                   'اختر المجال التقني للموظف',
             ),
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 13,
               fontWeight: FontWeight.w700,
             ),
@@ -593,8 +593,8 @@ class _MentorFormField extends StatelessWidget {
           validator: validator,
           autovalidateMode:
               AutovalidateMode.onUserInteraction,
-          style: const TextStyle(
-            color: AppColors.textDark,
+          style:  TextStyle(
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 13.2,
             fontWeight: FontWeight.w600,
           ),
@@ -629,8 +629,8 @@ class _FieldLabel extends StatelessWidget {
           ),
         ],
       ),
-      style: const TextStyle(
-        color: AppColors.textDark,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurface,
         fontSize: 11.7,
         fontWeight: FontWeight.w800,
       ),
@@ -735,12 +735,12 @@ class _TopicOption extends StatelessWidget {
           decoration: BoxDecoration(
             color: selected
                 ? AppColors.primaryBlue.withOpacity(0.07)
-                : AppColors.background,
+                : Get.theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
               color: selected
                   ? AppColors.primaryBlue.withOpacity(0.48)
-                  : AppColors.textGrey.withOpacity(0.12),
+                  : Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.12),
               width: selected ? 1.3 : 1,
             ),
           ),
@@ -757,7 +757,7 @@ class _TopicOption extends StatelessWidget {
                       style: TextStyle(
                         color: selected
                             ? AppColors.primaryBlue
-                            : AppColors.textDark,
+                            : Get.theme.colorScheme.onSurface,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w800,
                       ),
@@ -767,8 +767,8 @@ class _TopicOption extends StatelessWidget {
                       _topicDescription(topic),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 9.6,
                         height: 1.35,
                         fontWeight: FontWeight.w500,
@@ -791,7 +791,7 @@ class _TopicOption extends StatelessWidget {
                   border: Border.all(
                     color: selected
                         ? AppColors.primaryBlue
-                        : AppColors.textGrey
+                        : Get.theme.colorScheme.onSurfaceVariant
                             .withOpacity(0.35),
                   ),
                 ),
@@ -859,7 +859,7 @@ class _CvPicker extends StatelessWidget {
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: file == null
-                        ? AppColors.background
+                        ? Get.theme.scaffoldBackgroundColor
                         : AppColors.primaryBlue
                             .withOpacity(0.055),
                     borderRadius:
@@ -868,7 +868,7 @@ class _CvPicker extends StatelessWidget {
                       color: error != null
                           ? Colors.red
                           : file == null
-                              ? AppColors.textGrey
+                              ? Get.theme.colorScheme.onSurfaceVariant
                                   .withOpacity(0.14)
                               : AppColors.primaryBlue
                                   .withOpacity(0.35),
@@ -880,7 +880,7 @@ class _CvPicker extends StatelessWidget {
                         width: 42,
                         height: 42,
                         decoration: BoxDecoration(
-                          color: AppColors.cardWhite,
+                          color: Get.theme.colorScheme.surface,
                           borderRadius:
                               BorderRadius.circular(12),
                         ),
@@ -904,8 +904,8 @@ class _CvPicker extends StatelessWidget {
                               maxLines: 1,
                               overflow:
                                   TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: AppColors.textDark,
+                              style:  TextStyle(
+                                color: Get.theme.colorScheme.onSurface,
                                 fontSize: 12,
                                 fontWeight:
                                     FontWeight.w800,
@@ -916,8 +916,8 @@ class _CvPicker extends StatelessWidget {
                               file == null
                                   ? 'PDF أو DOCX — حتى 5 MB'
                                   : _fileSize(file.size),
-                              style: const TextStyle(
-                                color: AppColors.textGrey,
+                              style:  TextStyle(
+                                color: Get.theme.colorScheme.onSurfaceVariant,
                                 fontSize: 10.3,
                                 fontWeight:
                                     FontWeight.w500,
@@ -986,7 +986,7 @@ InputDecoration _inputDecoration({
   final border = OutlineInputBorder(
     borderRadius: BorderRadius.circular(15),
     borderSide: BorderSide(
-      color: AppColors.textGrey.withOpacity(0.14),
+      color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.14),
     ),
   );
 
@@ -994,14 +994,14 @@ InputDecoration _inputDecoration({
     hintText: hint,
     alignLabelWithHint: alignLabelWithHint,
     filled: true,
-    fillColor: AppColors.background,
+    fillColor: Get.theme.scaffoldBackgroundColor,
     counterText: '',
     contentPadding: const EdgeInsets.symmetric(
       horizontal: 14,
       vertical: 15,
     ),
     hintStyle: TextStyle(
-      color: AppColors.textGrey.withOpacity(0.66),
+      color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.66),
       fontSize: 11.5,
       fontWeight: FontWeight.w500,
     ),

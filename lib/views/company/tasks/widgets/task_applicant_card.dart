@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_application_model.dart';
 
+import 'package:get/get.dart';
 class TaskApplicantCard extends StatelessWidget {
   final CompanyTaskApplicationModel application;
   final String statusLabel;
@@ -24,7 +25,7 @@ class TaskApplicantCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
@@ -47,8 +48,8 @@ class TaskApplicantCard extends StatelessWidget {
               children: [
                 Text(
                   application.student.name,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 15,
                     fontWeight: FontWeight.w900,
                   ),
@@ -71,8 +72,8 @@ class TaskApplicantCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   'مشاريع البورتفوليو: ${application.portfolioProjectsCount}',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -80,8 +81,8 @@ class TaskApplicantCard extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   'تاريخ التقديم: $appliedAt',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -100,7 +101,7 @@ class TaskApplicantCard extends StatelessWidget {
                   onPressed: onDetailsPressed,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBlue,
-                    foregroundColor: AppColors.cardWhite,
+                    foregroundColor: Get.theme.colorScheme.surface,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     shape: RoundedRectangleBorder(
@@ -222,13 +223,13 @@ class _MatchCircle extends StatelessWidget {
           CircularProgressIndicator(
             value: value,
             strokeWidth: 4,
-            backgroundColor: AppColors.textGrey.withOpacity(0.12),
+            backgroundColor: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.12),
             color: AppColors.actionYellow,
           ),
           Text(
             '$score',
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 11,
               fontWeight: FontWeight.w900,
             ),

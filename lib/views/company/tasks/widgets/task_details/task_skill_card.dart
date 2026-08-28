@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_details_model.dart';
 
+import 'package:get/get.dart';
 class TaskSkillCard extends StatelessWidget {
   final CompanyTaskDetailsSkillModel skill;
 
@@ -16,7 +17,7 @@ class TaskSkillCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.06),
@@ -44,8 +45,8 @@ class TaskSkillCard extends StatelessWidget {
               children: [
                 Text(
                   skill.name,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 15,
                     fontWeight: FontWeight.w800,
                   ),
@@ -53,8 +54,8 @@ class TaskSkillCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   skill.category,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
@@ -79,7 +80,7 @@ class TaskSkillCard extends StatelessWidget {
                 style: TextStyle(
                   color: skill.mandatory
                       ? AppColors.actionYellow
-                      : AppColors.textGrey,
+                      : Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                 ),

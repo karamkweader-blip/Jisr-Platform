@@ -92,11 +92,11 @@ class _ChatbotHomeViewState extends State<ChatbotHomeView> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           surfaceTintColor: Colors.transparent,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           centerTitle: true,
@@ -132,11 +132,11 @@ class _ChatbotHomeViewState extends State<ChatbotHomeView> {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    const Text(
+                     Text(
                       'اختر نوع المحادثة، .',
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -175,7 +175,7 @@ class _ChatbotHomeViewState extends State<ChatbotHomeView> {
                   );
                 }
                 if (controller.conversations.isEmpty) {
-                  return const SliverToBoxAdapter(
+                  return  SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.all(28),
                       child: Center(
@@ -183,7 +183,7 @@ class _ChatbotHomeViewState extends State<ChatbotHomeView> {
                           'لا توجد محادثات سابقة بعد',
                           style: TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -376,7 +376,7 @@ class _CreatingConversationIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return  SizedBox(
       key: ValueKey('creating-conversation-indicator'),
       width: 280,
       child: Padding(
@@ -410,7 +410,7 @@ class _CreatingConversationIndicator extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'Cairo',
                 fontSize: 13,
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],
@@ -428,7 +428,7 @@ class _ModeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -473,10 +473,10 @@ class _ModeCard extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       mode.description,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
                         fontSize: 12.5,
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -513,7 +513,7 @@ class _ConversationTile extends StatelessWidget {
     final formatted =
         '${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}';
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(18),
       child: InkWell(
         onTap: onTap,
@@ -550,10 +550,10 @@ class _ConversationTile extends StatelessWidget {
                           conversation.mode.arabicLabel,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
                         fontSize: 12,
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 4),

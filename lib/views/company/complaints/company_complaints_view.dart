@@ -48,20 +48,20 @@ class CompanyComplaintsView extends GetView<CompanyComplaintsController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
           scrolledUnderElevation: 0,
-          backgroundColor: AppColors.cardWhite,
+          backgroundColor: Get.theme.colorScheme.surface,
           surfaceTintColor: Colors.transparent,
           centerTitle: true,
           iconTheme: const IconThemeData(
             color: AppColors.primaryBlue,
           ),
-          title: const Text(
+          title:  Text(
             'شكاواي',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 17,
               fontWeight: FontWeight.w900,
             ),
@@ -149,7 +149,7 @@ class CompanyComplaintsView extends GetView<CompanyComplaintsController> {
                   const SizedBox(height: 20),
                   Row(
                     children: <Widget>[
-                      const Expanded(
+                       Expanded(
                         child: Column(
                           crossAxisAlignment:
                               CrossAxisAlignment.start,
@@ -157,7 +157,7 @@ class CompanyComplaintsView extends GetView<CompanyComplaintsController> {
                             Text(
                               'الشكاوى المرسلة',
                               style: TextStyle(
-                                color: AppColors.textDark,
+                                color: Get.theme.colorScheme.onSurface,
                                 fontSize: 16,
                                 fontWeight:
                                     FontWeight.w900,
@@ -167,7 +167,7 @@ class CompanyComplaintsView extends GetView<CompanyComplaintsController> {
                             Text(
                               'اضغط على الشكوى لعرض نتيجة المراجعة',
                               style: TextStyle(
-                                color: AppColors.textGrey,
+                                color: Get.theme.colorScheme.onSurfaceVariant,
                                 fontSize: 10.5,
                                 fontWeight:
                                     FontWeight.w500,
@@ -368,7 +368,7 @@ class _ComplaintsOverviewHeader extends StatelessWidget {
             height: 52,
             decoration: BoxDecoration(
               color:
-                  AppColors.cardWhite.withOpacity(0.15),
+                  Get.theme.colorScheme.surface.withOpacity(0.15),
               borderRadius: BorderRadius.circular(17),
             ),
             child: const Icon(
@@ -437,8 +437,8 @@ class _FiltersSection extends StatelessWidget {
               const EdgeInsetsDirectional.only(start: 3),
           child: Text(
             title,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 11.5,
               fontWeight: FontWeight.w900,
             ),
@@ -467,19 +467,19 @@ class _FiltersSection extends StatelessWidget {
                     : null,
                 selectedColor: AppColors.primaryBlue
                     .withOpacity(0.11),
-                backgroundColor: AppColors.cardWhite,
-                disabledColor: AppColors.cardWhite,
+                backgroundColor: Get.theme.colorScheme.surface,
+                disabledColor: Get.theme.colorScheme.surface,
                 side: BorderSide(
                   color: selected
                       ? AppColors.primaryBlue
                           .withOpacity(0.28)
-                      : AppColors.textGrey
+                      : Get.theme.colorScheme.onSurfaceVariant
                           .withOpacity(0.13),
                 ),
                 labelStyle: TextStyle(
                   color: selected
                       ? AppColors.primaryBlue
-                      : AppColors.textGrey,
+                      : Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 10.5,
                   fontWeight: FontWeight.w800,
                 ),

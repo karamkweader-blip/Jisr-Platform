@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
 
+import 'package:get/get.dart';
 class CompanyTaskCard extends StatelessWidget {
   final CompanyTaskModel task;
   final String statusLabel;
@@ -28,7 +29,7 @@ class CompanyTaskCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: AppColors.primaryBlue.withOpacity(0.06),
@@ -49,8 +50,8 @@ class CompanyTaskCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       task.title,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
                         height: 1.35,
@@ -68,8 +69,8 @@ class CompanyTaskCard extends StatelessWidget {
                 task.description,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   height: 1.5,
                   fontWeight: FontWeight.w500,
@@ -178,7 +179,7 @@ class _StatusChip extends StatelessWidget {
       case 'cancelled':
         return Colors.red;
       default:
-        return AppColors.textGrey;
+        return Get.theme.colorScheme.onSurfaceVariant;
     }
   }
 
@@ -219,18 +220,18 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: AppColors.textGrey, size: 15),
+          Icon(icon, color: Get.theme.colorScheme.onSurfaceVariant, size: 15),
           const SizedBox(width: 5),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12,
               fontWeight: FontWeight.w700,
             ),

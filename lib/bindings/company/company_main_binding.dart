@@ -8,6 +8,7 @@ import 'package:jisr_platform/controllers/company/conversations/company_conversa
 import 'package:jisr_platform/controllers/company/home/company_home_controller.dart';
 import 'package:jisr_platform/controllers/company/opportunities/company_opportunities_controller.dart';
 import 'package:jisr_platform/controllers/company/profile/company_profile_controller.dart';
+import 'package:jisr_platform/controllers/company/search/company_search_controller.dart';
 import 'package:jisr_platform/controllers/company/tasks/company_tasks_controller.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 import 'package:jisr_platform/services/company/company_home_service.dart';
@@ -15,6 +16,7 @@ import 'package:jisr_platform/services/company/company_profile_service.dart';
 import 'package:jisr_platform/services/company/complaints/company_complaint_service.dart';
 import 'package:jisr_platform/services/company/conversations/company_conversation_service.dart';
 import 'package:jisr_platform/services/company/opportunities/company_opportunity_service.dart';
+import 'package:jisr_platform/services/company/students/company_student_service.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_assignments_service.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_service.dart';
 
@@ -31,6 +33,18 @@ class CompanyMainBinding extends Bindings {
     
 NotificationsBinding().dependencies();
 
+Get.lazyPut<CompanyStudentService>(
+  () => CompanyStudentService(
+    Get.find<AuthService>(),
+  ),
+  fenix: true,
+);
+
+Get.lazyPut<CompanySearchController>(
+  () => CompanySearchController(
+    Get.find<CompanyStudentService>(),
+  ),
+);
     if (!Get.isRegistered<AuthActionsController>()) {
       Get.lazyPut<AuthActionsController>(
         AuthActionsController.new,

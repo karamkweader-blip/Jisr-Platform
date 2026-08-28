@@ -18,7 +18,7 @@ class _SubmitBar extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(18, 11, 18, 14),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           border: const Border(
             top: BorderSide(color: Color(0xFFE4EBF1)),
           ),

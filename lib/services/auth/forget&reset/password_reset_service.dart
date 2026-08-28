@@ -1,63 +1,79 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/api/api_links.dart';
+import 'package:jisr_platform/core/api/api_response_handler.dart';
 
 class PasswordResetService {
   Future<String> verifyOtp({
     required String email,
     required String code,
   }) async {
-    final response = await http.post(
-      Uri.parse(ApiLinks.verifyResetOtp),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'email': email.trim(),
-        'code': code.trim(),
-      }),
-    );
+    try {
+      final response = await http
+          .post(
+            Uri.parse(ApiLinks.verifyResetOtp),
+            headers: const {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'email': email.trim(),
+              'code': code.trim(),
+            }),
+          )
+          .timeout(const Duration(seconds: 20));
 
-    final data = jsonDecode(response.body);
+      final data = ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.verifyResetOtp,
+      );
 
-    if (response.statusCode == 200) {
-      final token = data['token']?.toString() ?? '';
+      final token = data['token']?.toString().trim() ?? '';
 
       if (token.isEmpty) {
-        throw Exception('لم يتم استلام رمز الأمان');
+        throw const ApiException(
+          operation: ApiOperation.verifyResetOtp,
+          type: ApiFailureType.invalidResponse,
+        );
       }
 
       return token;
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.verifyResetOtp,
+      );
     }
-
-    throw Exception(
-      data['message']?.toString() ?? 'تعذر التحقق من رمز التأكيد',
-    );
   }
 
   Future<void> resendOtp({
     required String email,
   }) async {
-    final response = await http.post(
-      Uri.parse(ApiLinks.resendResetOtp),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'email': email.trim(),
-      }),
-    );
+    try {
+      final response = await http
+          .post(
+            Uri.parse(ApiLinks.resendResetOtp),
+            headers: const {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'email': email.trim(),
+            }),
+          )
+          .timeout(const Duration(seconds: 20));
 
-    if (response.statusCode == 200) return;
-
-    final data = jsonDecode(response.body);
-
-    throw Exception(
-      data['message']?.toString() ?? 'تعذر إعادة إرسال الرمز',
-    );
+      ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.resendOtp,
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.resendOtp,
+      );
+    }
   }
 
   Future<void> resetPassword({
@@ -65,25 +81,32 @@ class PasswordResetService {
     required String newPassword,
     required String newPasswordConfirmation,
   }) async {
-    final response = await http.post(
-      Uri.parse(ApiLinks.resetPassword),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode({
-        'new_password': newPassword.trim(),
-        'new_password_confirmation': newPasswordConfirmation.trim(),
-      }),
-    );
+    try {
+      final response = await http
+          .post(
+            Uri.parse(ApiLinks.resetPassword),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode({
+              'new_password': newPassword,
+              'new_password_confirmation':
+                  newPasswordConfirmation,
+            }),
+          )
+          .timeout(const Duration(seconds: 20));
 
-    if (response.statusCode == 200) return;
-
-    final data = jsonDecode(response.body);
-
-    throw Exception(
-      data['message']?.toString() ?? 'تعذر تغيير كلمة المرور',
-    );
+      ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.resetPassword,
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.resetPassword,
+      );
+    }
   }
 }

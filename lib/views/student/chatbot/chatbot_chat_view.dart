@@ -77,11 +77,11 @@ class _ChatbotChatViewState extends State<ChatbotChatView> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           surfaceTintColor: Colors.transparent,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           centerTitle: true,
@@ -95,7 +95,7 @@ class _ChatbotChatViewState extends State<ChatbotChatView> {
                     style: const TextStyle(fontFamily: 'Cairo', color: AppColors.primaryBlue, fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   if (controller.activeConversation.value != null)
-                    Text(controller.activeConversation.value!.mode.arabicLabel, style: const TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey, fontSize: 10.5)),
+                    Text(controller.activeConversation.value!.mode.arabicLabel, style:  TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 10.5)),
                 ],
               )),
           actions: [
@@ -114,7 +114,17 @@ class _ChatbotChatViewState extends State<ChatbotChatView> {
                   return const Center(child: CircularProgressIndicator(color: AppColors.primaryBlue));
                 }
                 if (controller.messages.isEmpty) {
-                  return const Center(child: Text('لا توجد رسائل في هذه المحادثة', style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey)));
+                  return Center(
+                    child: Text(
+                      'لا توجد رسائل في هذه المحادثة',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurfaceVariant,
+                      ),
+                    ),
+                  );
                 }
                 return ListView.builder(
                   controller: scrollController,
@@ -167,7 +177,7 @@ class _MessageBubble extends StatelessWidget {
                 ? Colors.red.shade50
                 : isUser
                     ? AppColors.primaryBlue
-                    : Colors.white,
+                    : Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(18),
               topRight: const Radius.circular(18),
@@ -184,7 +194,13 @@ class _MessageBubble extends StatelessWidget {
                 child: Text(
                   message.content,
                   textAlign: TextAlign.start,
-                  style: TextStyle(fontFamily: 'Cairo', height: 1.55, color: isUser && !message.isFailed ? Colors.white : Colors.black87),
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    height: 1.55,
+                    color: isUser && !message.isFailed
+                        ? Colors.white
+                        : Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
               if (message.isPending) ...[
@@ -232,7 +248,7 @@ class _Composer extends StatelessWidget {
       top: false,
       child: Container(
         padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-        decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black.withOpacity(.05), blurRadius: 16, offset: const Offset(0, -4))]),
+        decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, boxShadow: [BoxShadow(color: Colors.black.withOpacity(.05), blurRadius: 16, offset: const Offset(0, -4))]),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -249,7 +265,7 @@ class _Composer extends StatelessWidget {
                   hintText: 'اكتب رسالتك...',
                   hintStyle: const TextStyle(fontFamily: 'Cairo'),
                   filled: true,
-                  fillColor: AppColors.background,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(18), borderSide: BorderSide.none),
                 ),
               ),

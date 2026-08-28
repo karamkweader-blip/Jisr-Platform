@@ -36,10 +36,10 @@ class _StudentOpportunityApplicationDetailsViewState
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -61,12 +61,12 @@ class _StudentOpportunityApplicationDetailsViewState
           final application = controller.selectedApplication.value;
 
           if (application == null) {
-            return const Center(
+            return  Center(
               child: Text(
                 'لم يتم العثور على طلب التقديم',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             );
@@ -322,7 +322,7 @@ class _DetailsInfoCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 13),
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
@@ -352,9 +352,9 @@ class _DetailsInfoCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   shownValue,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     height: 1.55,
                   ),
                 ),
@@ -424,7 +424,7 @@ class _MiniDetailsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
@@ -442,9 +442,9 @@ class _MiniDetailsCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 11,
             ),
           ),
@@ -479,7 +479,7 @@ class _MatchReasonsCard extends StatelessWidget {
       margin: const EdgeInsets.only(top: 13),
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
@@ -523,9 +523,9 @@ class _MatchReasonsCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       reason,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textDark,
+                        color: Theme.of(context).colorScheme.onSurface,
                         height: 1.55,
                         fontSize: 12.5,
                       ),
@@ -555,7 +555,7 @@ class _WithdrawButton extends GetView<StudentOpportunityApplicationController> {
             : () => _confirmWithdraw(context),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.redAccent,
-          disabledBackgroundColor: AppColors.textGrey.withOpacity(.25),
+          disabledBackgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 54),
           shape: RoundedRectangleBorder(
@@ -601,11 +601,11 @@ class _WithdrawButton extends GetView<StudentOpportunityApplicationController> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            content: const Text(
+            content:  Text(
               'سيتم تغيير حالة طلب التقديم إلى مسحوب.',
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             actions: [
