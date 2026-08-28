@@ -242,7 +242,7 @@ class _AnalysisLoading extends StatelessWidget {
               ),
               SizedBox(height: 6),
               Text(
-                'استني لحظات',
+                'استنى لحظات',
                 style: TextStyle(
                   fontFamily: 'Cairo',
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -265,7 +265,6 @@ class _SkillCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final levelPercent = (skill.initialLevel / 5).clamp(0.0, 1.0);
-    final confidencePercent = skill.confidence.clamp(0.0, 1.0);
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -310,25 +309,6 @@ class _SkillCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 11,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.actionYellow.withOpacity(0.14),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Text(
-                  '${(skill.confidence * 100).round()}%',
-                  style: const TextStyle(
-                    fontFamily: 'Cairo',
-                    color: AppColors.actionYellow,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
             ],
           ),
 
@@ -351,15 +331,6 @@ class _SkillCard extends StatelessWidget {
             value: levelPercent,
             label: '${skill.initialLevel}/5',
             color: AppColors.primaryBlue,
-          ),
-
-          const SizedBox(height: 12),
-
-          _AnimatedBar(
-            title: 'الثقة بالتحليل',
-            value: confidencePercent,
-            label: '${(skill.confidence * 100).round()}%',
-            color: AppColors.actionYellow,
           ),
         ],
       ),

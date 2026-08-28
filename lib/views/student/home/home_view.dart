@@ -7,6 +7,7 @@ import 'package:jisr_platform/controllers/student/opportunities/student_opportun
 import 'package:jisr_platform/controllers/student/opportunity_applications/student_opportunity_application_controller.dart';
 import 'package:jisr_platform/controllers/student/task_applications/student_task_application_controller.dart';
 import 'package:jisr_platform/controllers/student/tasks/student_task_controller.dart';
+import 'package:jisr_platform/controllers/student/supervisor_projects/student_supervisor_project_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/widgets/company/company_account_menu.dart';
 import 'package:jisr_platform/core/widgets/company/jisr_animated_logo.dart';
@@ -20,8 +21,10 @@ import 'package:jisr_platform/models/student/opportunities/student_opportunity_m
 import 'package:jisr_platform/models/student/opportunity_applications/student_opportunity_application_model.dart';
 import 'package:jisr_platform/models/student/task_applications/student_task_application_model.dart';
 import 'package:jisr_platform/models/student/tasks/student_task_model.dart';
+import 'package:jisr_platform/models/student/supervisor_projects/student_supervisor_project_model.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/views/student/complaints/complaint_entry_sheet.dart';
+import 'package:jisr_platform/views/student/supervisor_projects/student_supervisor_projects_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -36,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
   late final StudentTaskApplicationController taskApplicationsController;
   late final StudentTaskController tasksController;
   late final StudentOpportunityController opportunitiesController;
+  late final StudentSupervisorProjectController supervisorProjectsController;
 
   @override
   void initState() {
@@ -46,10 +50,13 @@ class _HomeViewState extends State<HomeView> {
     taskApplicationsController = Get.find<StudentTaskApplicationController>();
     tasksController = Get.find<StudentTaskController>();
     opportunitiesController = Get.find<StudentOpportunityController>();
+    supervisorProjectsController =
+        Get.find<StudentSupervisorProjectController>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       tasksController.fetchInitialTasks();
       opportunitiesController.fetchInitialOpportunities();
+      supervisorProjectsController.fetchHomeData();
     });
   }
 
@@ -59,6 +66,8 @@ class _HomeViewState extends State<HomeView> {
       taskApplicationsController.refreshCurrentData(),
       tasksController.refreshTasks(),
       opportunitiesController.refreshOpportunities(),
+      supervisorProjectsController.refreshProjects(),
+      supervisorProjectsController.fetchApplications(silent: true),
       homeController.loadLatestLearningPlan(silent: true),
     ]);
   }
@@ -121,6 +130,18 @@ class _HomeViewState extends State<HomeView> {
                     Get.toNamed(Routes.studentTaskApplications);
                   },
                 ),
+                const SizedBox(height: 9),
+                _ApplicationMenuTile(
+                  icon: Icons.account_tree_outlined,
+                  title: 'تقديمات المشاريع',
+                  subtitle: 'طلبات مشاريع المشرفين وحالة القبول',
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    Get.toNamed(
+                      Routes.studentSupervisorProjectApplications,
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -161,7 +182,7 @@ class _HomeViewState extends State<HomeView> {
                 _DashboardSectionHeader(
                   icon: Icons.fact_check_outlined,
                   title: 'تقديماتي',
-                  subtitle: 'حالة طلبات الفرص والتاسكات',
+                  subtitle: 'حالة طلبات الفرص والتاسكات والمشاريع',
                   actionLabel: 'عرض الكل',
                   onAction: _showApplicationsMenu,
                 ),
@@ -169,6 +190,21 @@ class _HomeViewState extends State<HomeView> {
                 _ApplicationsDashboard(
                   opportunityController: applicationsController,
                   taskController: taskApplicationsController,
+                  projectController: supervisorProjectsController,
+                ),
+                const SizedBox(height: 26),
+                _DashboardSectionHeader(
+                  icon: Icons.account_tree_outlined,
+                  title: 'مشاريع المشرفين',
+                  subtitle: 'مشاريع بإشراف مباشر يمكنك التقديم عليها',
+                  actionLabel: 'كل المشاريع',
+                  onAction: () => Get.toNamed(
+                    Routes.studentSupervisorProjects,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _AvailableSupervisorProjectsSection(
+                  controller: supervisorProjectsController,
                 ),
                 const SizedBox(height: 26),
                 _DashboardSectionHeader(
@@ -200,6 +236,10 @@ class _HomeViewState extends State<HomeView> {
                       _showRoadmapSheet(context, homeController);
                     }
                   },
+                ),
+                const SizedBox(height: 12),
+                _CvAnalysisStrip(
+                  onTap: () => Get.toNamed(Routes.cvSelection),
                 ),
               ],
             ),
@@ -402,29 +442,36 @@ class _DashboardSectionHeader extends StatelessWidget {
 class _ApplicationsDashboard extends StatelessWidget {
   final StudentOpportunityApplicationController opportunityController;
   final StudentTaskApplicationController taskController;
+  final StudentSupervisorProjectController projectController;
 
   const _ApplicationsDashboard({
     required this.opportunityController,
     required this.taskController,
+    required this.projectController,
   });
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       final loading = opportunityController.isLoading.value ||
-          taskController.isLoading.value;
+          taskController.isLoading.value ||
+          projectController.isLoadingApplications.value;
       final opportunities = opportunityController.applications.take(3).toList();
       final tasks = taskController.allTasks.take(3).toList();
+      final projects = projectController.allApplications.take(3).toList();
 
-      if (loading && opportunities.isEmpty && tasks.isEmpty) {
+      if (loading &&
+          opportunities.isEmpty &&
+          tasks.isEmpty &&
+          projects.isEmpty) {
         return const _HomeLoadingCard();
       }
 
-      if (opportunities.isEmpty && tasks.isEmpty) {
+      if (opportunities.isEmpty && tasks.isEmpty && projects.isEmpty) {
         return const _HomeEmptyCard(
           icon: Icons.inbox_outlined,
           title: 'لا توجد تقديمات حتى الآن',
-          subtitle: 'عند التقديم على فرصة أو تاسك ستظهر حالته هنا.',
+          subtitle: 'عند التقديم على فرصة أو تاسك أو مشروع ستظهر حالته هنا.',
         );
       }
 
@@ -449,6 +496,18 @@ class _ApplicationsDashboard extends StatelessWidget {
                 item: item,
                 statusText: taskController.statusText(item.status),
                 company: taskController.companyName(item),
+              ),
+            ),
+          ),
+          ...projects.map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: 9),
+              child: _ApplicationSummaryCard.project(
+                item: item,
+                statusText: projectController.applicationStatusText(
+                  item.status,
+                ),
+                controller: projectController,
               ),
             ),
           ),
@@ -513,6 +572,35 @@ class _ApplicationSummaryCard extends StatelessWidget {
           );
         } else {
           Get.toNamed(Routes.studentTaskApplications);
+        }
+      },
+    );
+  }
+
+  factory _ApplicationSummaryCard.project({
+    required StudentSupervisorProjectApplicationItem item,
+    required String statusText,
+    required StudentSupervisorProjectController controller,
+  }) {
+    return _ApplicationSummaryCard._(
+      title: item.projectTemplate.title,
+      company: 'مشروع بإشراف مباشر',
+      status: statusText,
+      statusColor: _statusColor(item.status),
+      icon: Icons.account_tree_outlined,
+      onTap: () {
+        if (item.status == 'accepted' &&
+            item.projectAssignmentId != null &&
+            item.projectAssignmentId! > 0) {
+          controller.openAcceptedAssignment(
+            projectAssignmentId: item.projectAssignmentId,
+            projectTitle: item.projectTemplate.title,
+          );
+        } else {
+          Get.toNamed(
+            Routes.studentSupervisorProjectDetails,
+            arguments: item.projectTemplateId,
+          );
         }
       },
     );
@@ -615,6 +703,49 @@ class _ApplicationSummaryCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _AvailableSupervisorProjectsSection extends StatelessWidget {
+  final StudentSupervisorProjectController controller;
+
+  const _AvailableSupervisorProjectsSection({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.isLoadingProjects.value && controller.projects.isEmpty) {
+        return const _HomeLoadingCard();
+      }
+
+      if (controller.projects.isEmpty) {
+        return const _HomeEmptyCard(
+          icon: Icons.account_tree_outlined,
+          title: 'لا توجد مشاريع متاحة حالياً',
+          subtitle: 'ستظهر مشاريع المشرفين هنا فور توفرها.',
+        );
+      }
+
+      return SizedBox(
+        height: 173,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          itemCount: controller.projects.length > 5
+              ? 5
+              : controller.projects.length,
+          separatorBuilder: (_, __) => const SizedBox(width: 11),
+          itemBuilder: (_, index) => SizedBox(
+            width: 292,
+            child: StudentSupervisorProjectCard(
+              project: controller.projects[index],
+              controller: controller,
+              compact: true,
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
 
@@ -990,6 +1121,70 @@ class _RoadmapStrip extends StatelessWidget {
               ),
             ),
             Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.actionYellow, size: 15),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CvAnalysisStrip extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _CvAnalysisStrip({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(23),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppColors.primaryBlue.withOpacity(.10),
+              AppColors.actionYellow.withOpacity(.10),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(23),
+          border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.description_outlined,
+              color: AppColors.primaryBlue,
+              size: 27,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'اختيار سي في',
+                    style: TextStyle(
+                      color: AppColors.textDark,
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const Text(
+                    'حدد السيرة لعرض التحليل المحفوظ لها',
+                    style: TextStyle(
+                      color: AppColors.textGrey,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: AppColors.actionYellow,
+              size: 15,
+            ),
           ],
         ),
       ),

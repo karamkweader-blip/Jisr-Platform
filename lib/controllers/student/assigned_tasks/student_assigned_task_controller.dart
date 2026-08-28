@@ -34,6 +34,8 @@ class StudentAssignedTaskController extends GetxController {
   final RxInt appealsCurrentPage = 1.obs;
   final RxInt appealsLastPage = 1.obs;
   final RxInt appealsTotal = 0.obs;
+  final Rxn<int> selectedProjectAssignmentId = Rxn<int>();
+  final RxString selectedProjectTitle = ''.obs;
 
   static const int _perPage = 15;
 
@@ -44,6 +46,17 @@ class StudentAssignedTaskController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    final arguments = Get.arguments;
+    if (arguments is Map) {
+      final assignmentId = int.tryParse(
+        arguments['projectAssignmentId']?.toString() ?? '',
+      );
+      if (assignmentId != null && assignmentId > 0) {
+        selectedProjectAssignmentId.value = assignmentId;
+      }
+      selectedProjectTitle.value =
+          arguments['projectTitle']?.toString().trim() ?? '';
+    }
     fetchAssignedTasks();
   }
 
@@ -59,6 +72,7 @@ class StudentAssignedTaskController extends GetxController {
 
       final page = loadMore ? currentPage.value + 1 : 1;
       final response = await _service.getAssignedTasks(
+        projectAssignmentId: selectedProjectAssignmentId.value,
         page: page,
         perPage: _perPage,
       );

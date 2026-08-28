@@ -28,6 +28,8 @@ import 'package:jisr_platform/bindings/company/opportunities/company_opportunity
 import 'package:jisr_platform/bindings/notifications/notifications_binding.dart';
 
 import 'package:jisr_platform/bindings/student/cv/cv_upload_binding.dart';
+import 'package:jisr_platform/bindings/student/cv/student_cv_history_analysis_binding.dart';
+import 'package:jisr_platform/bindings/student/cv/student_cv_selection_binding.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/views/auth/forget&reset/forgot_password_view.dart';
 import 'package:jisr_platform/views/auth/login/login.dart';
@@ -60,6 +62,8 @@ import 'package:jisr_platform/views/auth/student/register_student_view.dart';
 import 'package:jisr_platform/bindings/auth/login_otp_binding.dart';
 import 'package:jisr_platform/bindings/student/home/home_binding.dart';
 import 'package:jisr_platform/views/student/cv/cv_upload_view.dart';
+import 'package:jisr_platform/views/student/cv/student_cv_history_analysis_view.dart';
+import 'package:jisr_platform/views/student/cv/student_cv_selection_view.dart';
 import 'package:jisr_platform/bindings/student/cv/cv_analysis_binding.dart';
 import 'package:jisr_platform/views/student/cv/cv_analysis_view.dart';
 
@@ -102,6 +106,10 @@ import 'package:jisr_platform/views/student/mentor/student_mentor_details_view.d
 import 'package:jisr_platform/views/student/mentor/student_mentor_view.dart';
 import 'package:jisr_platform/bindings/student/interviews/student_interview_binding.dart';
 import 'package:jisr_platform/views/student/interviews/student_interviews_view.dart';
+import 'package:jisr_platform/bindings/student/supervisor_projects/student_supervisor_project_binding.dart';
+import 'package:jisr_platform/views/student/supervisor_projects/student_supervisor_project_applications_view.dart';
+import 'package:jisr_platform/views/student/supervisor_projects/student_supervisor_project_details_view.dart';
+import 'package:jisr_platform/views/student/supervisor_projects/student_supervisor_projects_view.dart';
 
 class AppPages {
   static final pages = [
@@ -183,6 +191,16 @@ class AppPages {
       binding: CvAnalysisBinding(),
     ),
     GetPage(
+      name: Routes.cvSelection,
+      page: () => const StudentCvSelectionView(),
+      binding: StudentCvSelectionBinding(),
+    ),
+    GetPage(
+      name: Routes.cvHistoryAnalysis,
+      page: () => const StudentCvHistoryAnalysisView(),
+      binding: StudentCvHistoryAnalysisBinding(),
+    ),
+    GetPage(
       name: Routes.assessment,
       page: () => const AssessmentView(),
       binding: AssessmentBinding(),
@@ -253,6 +271,24 @@ class AppPages {
       name: Routes.studentTaskApplications,
       page: () => const StudentTaskApplicationsView(),
       binding: StudentTaskApplicationBinding(),
+    ),
+    GetPage(
+      name: Routes.studentSupervisorProjects,
+      page: () => const StudentSupervisorProjectsView(),
+      binding: StudentSupervisorProjectBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: Routes.studentSupervisorProjectDetails,
+      page: () => const StudentSupervisorProjectDetailsView(),
+      binding: StudentSupervisorProjectBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: Routes.studentSupervisorProjectApplications,
+      page: () => const StudentSupervisorProjectApplicationsView(),
+      binding: StudentSupervisorProjectBinding(),
+      transition: Transition.rightToLeftWithFade,
     ),
 
     GetPage(

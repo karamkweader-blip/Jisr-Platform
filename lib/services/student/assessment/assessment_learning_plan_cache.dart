@@ -248,11 +248,11 @@ class AssessmentLearningPlanCache {
     required int careerPathId,
     required int cvId,
   }) async {
-    if (cvId == 0) return;
+    if (cvId == 0 || careerPathId <= 0) return;
 
     final prefs = await SharedPreferences.getInstance();
     final data = AssessmentRetestSeedData(
-      careerPathId: careerPathId == 0 ? 1 : careerPathId,
+      careerPathId: careerPathId,
       cvId: cvId,
       savedAt: DateTime.now().toIso8601String(),
     );
@@ -271,7 +271,7 @@ class AssessmentLearningPlanCache {
       if (decoded is! Map<String, dynamic>) return null;
 
       final data = AssessmentRetestSeedData.fromJson(decoded);
-      if (data.cvId == 0) return null;
+      if (data.cvId == 0 || data.careerPathId <= 0) return null;
       return data;
     } catch (_) {
       return null;

@@ -4,9 +4,12 @@ import 'package:jisr_platform/models/student/cv/cv_analysis_response.dart';
 import 'package:jisr_platform/services/student/cv/cv_analysis_service.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/student/assessment/assessment_learning_plan_cache.dart';
+import 'package:jisr_platform/services/student/assessment/assessment_career_path_resolver.dart';
 
 class CvAnalysisController extends GetxController {
   final CvAnalysisService _analysisService = CvAnalysisService();
+  final AssessmentCareerPathResolver _careerPathResolver =
+      AssessmentCareerPathResolver();
 
   final RxBool isLoading = false.obs;
   final Rxn<CvAnalysisResponse> analysis = Rxn<CvAnalysisResponse>();
@@ -58,19 +61,32 @@ class CvAnalysisController extends GetxController {
       for (final skill in result.skills) skill.skillId: skill.skillName,
     };
 
-    await AssessmentLearningPlanCache().saveRetestSeed(
-      careerPathId: 1,
-      cvId: result.cvId,
-    );
+    try {
+      final careerPathId = await _careerPathResolver.resolveForCv(
+        cvId: result.cvId,
+      );
+      if (careerPathId == null) return;
 
-    Get.toNamed(
-      Routes.assessment,
-      arguments: {
-        'careerPathId': 1,
-        'cvId': result.cvId,
-        'skillIds': skillIds,
-        'skillNames': skillNames,
-      },
-    );
+      await AssessmentLearningPlanCache().saveRetestSeed(
+        careerPathId: careerPathId,
+        cvId: result.cvId,
+      );
+
+      Get.toNamed(
+        Routes.assessment,
+        arguments: {
+          'careerPathId': careerPathId,
+          'cvId': result.cvId,
+          'skillIds': skillIds,
+          'skillNames': skillNames,
+        },
+      );
+    } catch (error) {
+      JisrSnackbar.show(
+        title: 'تعذر بدء الاختبار',
+        message: error.toString().replaceFirst('Exception: ', ''),
+        type: JisrSnackbarType.error,
+      );
+    }
   }
 }

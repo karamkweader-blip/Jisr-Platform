@@ -20,6 +20,8 @@ abstract class Routes {
   static const studentHome = '/student-home';
   static const cvUpload = '/cv-upload';
   static const cvAnalysis = '/cv-analysis';
+  static const cvSelection = '/student-cv-selection';
+  static const cvHistoryAnalysis = '/student-cv-history-analysis';
   static const assessment = '/assessment';
   //ملف شخصي
   static const studentProfile = '/student-profile';
@@ -43,6 +45,12 @@ abstract class Routes {
   //تاسكاتي
   static const studentTaskApplications = '/student-task-applications';
   static const studentTaskProgress = '/student-task-progress';
+  // مشاريع المشرفين للطالب
+  static const studentSupervisorProjects = '/student-supervisor-projects';
+  static const studentSupervisorProjectDetails =
+      '/student-supervisor-projects/details';
+  static const studentSupervisorProjectApplications =
+      '/student-supervisor-projects/applications';
   //محادثات
   static const studentConversations = '/student-conversations';
   static const studentChat = '/student-chat';

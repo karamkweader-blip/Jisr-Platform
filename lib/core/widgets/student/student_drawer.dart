@@ -164,189 +164,144 @@ class _StudentDrawerState extends State<StudentDrawer> {
           _isDark,
         );
 
-        return Drawer(
-          width:
-              MediaQuery.of(context).size.width *
-              0.84,
-          elevation: 18,
-          backgroundColor: palette.background,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              bottomLeft: Radius.circular(30),
-            ),
-          ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                _header(),
-                Expanded(
-                  child: ListView(
-                    physics:
-                        const BouncingScrollPhysics(),
-                    padding:
-                        const EdgeInsets.fromLTRB(
-                          14,
-                          14,
-                          14,
-                          22,
-                        ),
-                    children: [
-                      _sectionLabel(
-                        'مساحتك',
-                        palette,
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.description_outlined,
-                        'السيرة الذاتية',
-                        'رفع السيرة وتحليلها',
-                        () => _openRoute(
-                          Routes.cvUpload,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.work_history_rounded,
-                        'البورتفوليو',
-                        'مشاريعك وإنجازاتك',
-                        () => _openRoute(
-                          Routes.studentPortfolio,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.fact_check_outlined,
-                        'تقديمات الفرص',
-                        'تابع حالة طلباتك',
-                        () => _openRoute(
-                          Routes
-                              .studentOpportunityApplications,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons
-                            .assignment_turned_in_outlined,
-                        'تقديمات التاسكات',
-                        'المقبولة وقيد المراجعة',
-                        () => _openRoute(
-                          Routes
-                              .studentTaskApplications,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.assignment_ind_outlined,
-                        'مهامي المسندة',
-                        'مهام المشرف والتسليمات',
-                        () => _openRoute(
-                          Routes.studentAssignedTasks,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.event_available_outlined,
-                        'مقابلاتي',
-                        'المواعيد والتفاصيل',
-                        () => _openRoute(
-                          Routes.studentInterviews,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      _sectionLabel(
-                        'التطوير والمجتمع',
-                        palette,
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.groups_outlined,
-                        'المجتمع التقني',
-                        'أسئلة ونقاشات الطلاب',
-                        () => _openRoute(
-                          Routes
-                              .studentCommunityPosts,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.stars_outlined,
-                        'نقاطي',
-                        'تابع تقدمك وإنجازاتك',
-                        () => _openRoute(
-                          Routes.studentPoints,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.analytics_outlined,
-                        'تحليل سوق العمل',
-                        'المهارات والاتجاهات المطلوبة',
-                        () => _openRoute(
-                          Routes
-                              .studentMarketAnalysis,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.school_outlined,
-                        'الإرشاد المهني',
-                        'اكتشف المرشدين ومسارك',
-                        () => _openRoute(
-                          Routes.studentMentors,
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.report_problem_outlined,
-                        'الشكاوى',
-                        'أرسل شكوى من السياق الصحيح',
-                        _openComplaints,
-                      ),
-                      const SizedBox(height: 14),
-                      _sectionLabel(
-                        'الإعدادات',
-                        palette,
-                      ),
-                      _menuTile(
-                        palette,
-                        Icons.language_rounded,
-                        'اللغة',
-                        _language == 'ar'
-                            ? 'العربية'
-                            : 'English',
-                        () => _showLanguageSheet(
-                          palette,
-                        ),
-                        trailing: _badge(
-                          _language == 'ar'
-                              ? 'AR'
-                              : 'EN',
-                        ),
-                      ),
-                      _menuTile(
-                        palette,
-                        _isDark
-                            ? Icons.dark_mode_rounded
-                            : Icons.light_mode_rounded,
-                        'المظهر',
-                        _isDark
-                            ? 'الوضع الداكن'
-                            : 'الوضع الفاتح',
-                        () => _showAppearanceSheet(
-                          palette,
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      Obx(
-                        () => _logoutButton(
-                          palette,
-                          loading: _authController
-                              .isLoading
-                              .value,
-                        ),
-                      ),
-                    ],
+    return Drawer(
+      width: MediaQuery.of(context).size.width * .84,
+      elevation: 18,
+      backgroundColor: palette.background,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          bottomLeft: Radius.circular(30),
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            _header(),
+            Expanded(
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(14, 14, 14, 22),
+                children: [
+                  _sectionLabel('مساحتك', palette),
+                  _menuTile(
+                    palette,
+                    Icons.description_outlined,
+                    'السيرة الذاتية',
+                    'رفع السيرة وتحليلها',
+                    () => _openRoute(Routes.cvUpload),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.work_history_rounded,
+                    'البورتفوليو',
+                    'مشاريعك وإنجازاتك',
+                    () => _openRoute(Routes.studentPortfolio),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.fact_check_outlined,
+                    'تقديمات الفرص',
+                    'تابع حالة طلباتك',
+                    () => _openRoute(Routes.studentOpportunityApplications),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.assignment_turned_in_outlined,
+                    'تقديمات التاسكات',
+                    'المقبولة وقيد المراجعة',
+                    () => _openRoute(Routes.studentTaskApplications),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.account_tree_outlined,
+                    'مشاريع المشرفين',
+                    'اكتشف المشاريع وقدّم عليها',
+                    () => _openRoute(Routes.studentSupervisorProjects),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.fact_check_outlined,
+                    'تقديمات المشاريع',
+                    'تابع القبول وافتح مهام المشروع',
+                    () => _openRoute(
+                      Routes.studentSupervisorProjectApplications,
+                    ),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.assignment_ind_outlined,
+                    'مهامي المسندة',
+                    'مهام المشرف والتسليمات',
+                    () => _openRoute(Routes.studentAssignedTasks),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.event_available_outlined,
+                    'مقابلاتي',
+                    'المواعيد والتفاصيل',
+                    () => _openRoute(Routes.studentInterviews),
+                  ),
+                  const SizedBox(height: 14),
+                  _sectionLabel('التطوير والمجتمع', palette),
+                  _menuTile(
+                    palette,
+                    Icons.groups_outlined,
+                    'المجتمع التقني',
+                    'أسئلة ونقاشات الطلاب',
+                    () => _openRoute(Routes.studentCommunityPosts),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.stars_outlined,
+                    'نقاطي',
+                    'تابع تقدمك وإنجازاتك',
+                    () => _openRoute(Routes.studentPoints),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.analytics_outlined,
+                    'تحليل سوق العمل',
+                    'المهارات والاتجاهات المطلوبة',
+                    () => _openRoute(Routes.studentMarketAnalysis),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.school_outlined,
+                    'الإرشاد المهني',
+                    'اكتشف المرشدين ومسارك',
+                    () => _openRoute(Routes.studentMentors),
+                  ),
+                  _menuTile(
+                    palette,
+                    Icons.report_problem_outlined,
+                    'الشكاوى',
+                    'أرسل شكوى من السياق الصحيح',
+                    _openComplaints,
+                  ),
+                  const SizedBox(height: 14),
+                  _sectionLabel('الإعدادات', palette),
+                  _menuTile(
+                    palette,
+                    Icons.language_rounded,
+                    'اللغة',
+                    _language == 'ar' ? 'العربية' : 'English',
+                    () => _showLanguageSheet(palette),
+                    trailing: _badge(_language == 'ar' ? 'AR' : 'EN'),
+                  ),
+                  _menuTile(
+                    palette,
+                    _isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                    'المظهر',
+                    _isDark ? 'الوضع الداكن' : 'الوضع الفاتح',
+                    () => _showAppearanceSheet(palette),
+                  ),
+                  const SizedBox(height: 18),
+                  Obx(
+                    () => _logoutButton(
+                      palette,
+                      loading: _authController.isLoading.value,
+                    ),
                   ),
                 ),
               ],

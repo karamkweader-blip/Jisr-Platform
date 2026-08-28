@@ -9,6 +9,7 @@ import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 import 'package:jisr_platform/core/widgets/student_bottom_nav.dart';
 import 'package:jisr_platform/core/widgets/student/student_drawer.dart';
 import 'package:jisr_platform/core/widgets/student/student_shell_app_bar.dart';
+import 'package:jisr_platform/models/student/assessment/assessment_models.dart';
 
 class StudentProfileView extends GetView<StudentProfileController> {
   const StudentProfileView({super.key});
@@ -159,6 +160,15 @@ class StudentProfileView extends GetView<StudentProfileController> {
                             duration: 2200.ms,
                             color: Colors.white.withOpacity(.25),
                           ),
+
+                      const SizedBox(height: 30),
+
+                      Obx(
+                        () => _StudentSkillsSection(
+                          isLoading: controller.isLoadingSkills.value,
+                          skills: controller.skills.toList(growable: false),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -166,6 +176,267 @@ class StudentProfileView extends GetView<StudentProfileController> {
             ],
           );
         }),
+      ),
+    );
+  }
+}
+
+class _StudentSkillsSection extends StatelessWidget {
+  final bool isLoading;
+  final List<AssessmentLearningPathItem> skills;
+
+  const _StudentSkillsSection({
+    required this.isLoading,
+    required this.skills,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlue.withOpacity(.10),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Icon(
+                Icons.psychology_rounded,
+                color: AppColors.primaryBlue,
+              ),
+            ),
+            const SizedBox(width: 11),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'مهاراتي',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryBlue,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'تُعرض تلقائيًا حسب آخر نتيجة محفوظة',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.textGrey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              decoration: BoxDecoration(
+                color: AppColors.actionYellow.withOpacity(.12),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.lock_outline_rounded,
+                    size: 15,
+                    color: AppColors.actionYellow,
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'للقراءة فقط',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.actionYellow,
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        if (isLoading)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.actionYellow,
+              ),
+            ),
+          )
+        else if (skills.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: AppColors.primaryBlue.withOpacity(.08),
+              ),
+            ),
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  color: AppColors.textGrey,
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'لا توجد مهارات محفوظة بعد. ستظهر هنا بعد إتمام التقييم.',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      color: AppColors.textGrey,
+                      height: 1.5,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          ...List.generate(
+            skills.length,
+            (index) => _ReadOnlySkillCard(
+              skill: skills[index],
+              index: index,
+            )
+                .animate()
+                .fadeIn(
+                  delay: Duration(milliseconds: 80 * index),
+                  duration: 420.ms,
+                )
+                .slideY(begin: .12, end: 0),
+          ),
+      ],
+    ).animate().fadeIn(delay: 680.ms).slideY(begin: .10, end: 0);
+  }
+}
+
+class _ReadOnlySkillCard extends StatelessWidget {
+  final AssessmentLearningPathItem skill;
+  final int index;
+
+  const _ReadOnlySkillCard({
+    required this.skill,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final hasSavedLevel = skill.currentLevel > 0;
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: AppColors.primaryBlue.withOpacity(.08),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryBlue.withOpacity(.055),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  AppColors.primaryBlue,
+                  AppColors.primaryBlueLight,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Center(
+              child: Text(
+                '${index + 1}',
+                style: const TextStyle(
+                  fontFamily: 'Cairo',
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 13),
+          Expanded(
+            child: Text(
+              skill.skillName.isEmpty ? 'مهارة' : skill.skillName,
+              style: const TextStyle(
+                fontFamily: 'Cairo',
+                color: AppColors.textDark,
+                fontSize: 15.5,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+            decoration: BoxDecoration(
+              color: hasSavedLevel
+                  ? AppColors.primaryBlue.withOpacity(.09)
+                  : AppColors.textGrey.withOpacity(.09),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'المستوى',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    color: hasSavedLevel
+                        ? AppColors.primaryBlue
+                        : AppColors.textGrey,
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  hasSavedLevel
+                      ? skill.currentLevel.toStringAsFixed(1)
+                      : 'غير محفوظ',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    color: hasSavedLevel
+                        ? AppColors.primaryBlue
+                        : AppColors.textGrey,
+                    fontSize: hasSavedLevel ? 15 : 10.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

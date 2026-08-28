@@ -6,6 +6,7 @@ import 'package:jisr_platform/controllers/student/opportunities/student_opportun
 import 'package:jisr_platform/controllers/student/opportunity_applications/student_opportunity_application_controller.dart';
 import 'package:jisr_platform/controllers/student/task_applications/student_task_application_controller.dart';
 import 'package:jisr_platform/controllers/student/tasks/student_task_controller.dart';
+import 'package:jisr_platform/controllers/student/supervisor_projects/student_supervisor_project_controller.dart';
 
 class HomeBinding extends Bindings {
   @override
@@ -37,6 +38,10 @@ class HomeBinding extends Bindings {
         StudentOpportunityController>(
       () =>
           StudentOpportunityController(),
+    );
+
+    Get.lazyPut<StudentSupervisorProjectController>(
+      StudentSupervisorProjectController.new,
     );
 
     Get.lazyPut<AuthActionsController>(
