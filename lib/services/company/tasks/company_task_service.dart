@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/api/api_links.dart';
+import 'package:jisr_platform/core/api/api_response_handler.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 
@@ -9,18 +11,25 @@ class CompanyTaskService {
 
   CompanyTaskService(this._authService);
 
-static const Set<String> _allowedTaskStatuses = {
-  'draft',
-  'published',
-  'in_progress',
-  'closed',
-  'cancelled',
-};
+  static const Set<String> _allowedTaskStatuses = {
+    'draft',
+    'published',
+    'in_progress',
+    'closed',
+    'cancelled',
+  };
+
   Future<Map<String, String>> _headers() async {
-    final token = await _authService.getToken();
+    final token =
+        (await _authService.getToken())?.trim();
 
     if (token == null || token.isEmpty) {
-      throw Exception('انتهت الجلسة، يرجى تسجيل الدخول مجددًا');
+      throw const ApiException(
+        statusCode: 401,
+        backendMessage:
+            'انتهت الجلسة، يرجى تسجيل الدخول مجددًا',
+        operation: ApiOperation.task,
+      );
     }
 
     return {
@@ -31,45 +40,56 @@ static const Set<String> _allowedTaskStatuses = {
   }
 
   Future<List<CompanyTaskModel>> getCompanyTasks({
-  String? status,
-}) async {
-  final normalizedStatus = status?.trim();
+    String? status,
+  }) async {
+    final normalizedStatus = status?.trim();
 
-  if (normalizedStatus != null &&
-      normalizedStatus.isNotEmpty &&
-      !_allowedTaskStatuses.contains(normalizedStatus)) {
-    throw Exception('حالة المهمة المحددة غير صالحة');
-  }
-
-  try {
-    final response = await http
-        .post(
-          Uri.parse(ApiLinks.companyTasksIndex),
-          headers: await _headers(),
-          body: normalizedStatus == null || normalizedStatus.isEmpty
-              ? null
-              : jsonEncode({
-                  'status': normalizedStatus,
-                }),
-        )
-        .timeout(
-          const Duration(seconds: 15),
-          onTimeout: () => throw Exception('انتهت مهلة الاتصال بالخادم'),
-        );
-
-    final decodedBody = response.body.isNotEmpty
-        ? jsonDecode(response.body)
-        : <String, dynamic>{};
-
-    if (decodedBody is! Map<String, dynamic>) {
-      throw Exception('استجابة قائمة المهام غير صالحة');
+    if (normalizedStatus != null &&
+        normalizedStatus.isNotEmpty &&
+        !_allowedTaskStatuses
+            .contains(normalizedStatus)) {
+      throw const ApiException(
+        backendMessage:
+            'حالة المهمة المحددة غير صالحة',
+        operation: ApiOperation.task,
+      );
     }
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      final data = decodedBody['data'];
+    try {
+      final response = await http
+          .post(
+            Uri.parse(
+              ApiLinks.companyTasksIndex,
+            ),
+            headers: await _headers(),
+            body: normalizedStatus == null ||
+                    normalizedStatus.isEmpty
+                ? null
+                : jsonEncode({
+                    'status': normalizedStatus,
+                  }),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
+
+      final decoded =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.task,
+      );
+
+      final data = decoded['data'];
+
+      if (data == null) {
+        return <CompanyTaskModel>[];
+      }
 
       if (data is! List) {
-        return <CompanyTaskModel>[];
+        throw const ApiException(
+          operation: ApiOperation.task,
+          type: ApiFailureType.invalidResponse,
+        );
       }
 
       return data
@@ -80,125 +100,140 @@ static const Set<String> _allowedTaskStatuses = {
             ),
           )
           .toList();
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.task,
+      );
     }
-
-    throw Exception(
-      decodedBody['message']?.toString() ?? 'تعذر تحميل المهام',
-    );
-  } on FormatException {
-    throw Exception('تعذر قراءة استجابة الخادم');
-  } catch (e) {
-    throw Exception(
-      e.toString().replaceFirst('Exception: ', ''),
-    );
   }
-}
 
-  Future<CompanyTaskModel> createTask(CreateCompanyTaskRequest request) async {
-    final response = await http
-        .post(
-          Uri.parse(ApiLinks.companyTasks),
-          headers: await _headers(),
-          body: jsonEncode(request.toJson()),
-        )
-        .timeout(
-          const Duration(seconds: 15),
-          onTimeout: () => throw Exception('انتهت مهلة الاتصال بالخادم'),
+  Future<CompanyTaskModel> createTask(
+    CreateCompanyTaskRequest request,
+  ) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(ApiLinks.companyTasks),
+            headers: await _headers(),
+            body: jsonEncode(
+              request.toJson(),
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
+
+      final decoded =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.task,
+      );
+
+      final data = decoded['data'];
+
+      if (data is! Map) {
+        throw const ApiException(
+          operation: ApiOperation.task,
+          type: ApiFailureType.invalidResponse,
         );
+      }
 
-    final decodedBody = response.body.isNotEmpty
-        ? jsonDecode(response.body) as Map<String, dynamic>
-        : <String, dynamic>{};
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
       return CompanyTaskModel.fromJson(
-        decodedBody['data'] as Map<String, dynamic>? ?? {},
+        Map<String, dynamic>.from(data),
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.task,
       );
     }
-   print(response.body); 
-    throw Exception(
-      decodedBody['message'] as String? ?? 'تعذر إنشاء المهمة',
-      );
   }
 
-  Future<CompanyTaskModel> publishTask(int taskId) async {
-    final response = await http
-        .patch(
-          Uri.parse(ApiLinks.publishCompanyTask(taskId)),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 15),
-          onTimeout: () => throw Exception('انتهت مهلة الاتصال بالخادم'),
+  Future<CompanyTaskModel> publishTask(
+    int taskId,
+  ) async {
+    try {
+      final response = await http
+          .patch(
+            Uri.parse(
+              ApiLinks.publishCompanyTask(taskId),
+            ),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
+
+      final decoded =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.task,
+      );
+
+      final data = decoded['data'];
+
+      if (data is! Map) {
+        throw const ApiException(
+          operation: ApiOperation.task,
+          type: ApiFailureType.invalidResponse,
         );
+      }
 
-    final decodedBody = response.body.isNotEmpty
-        ? jsonDecode(response.body) as Map<String, dynamic>
-        : <String, dynamic>{};
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
       return CompanyTaskModel.fromJson(
-        decodedBody['data'] as Map<String, dynamic>? ?? {},
+        Map<String, dynamic>.from(data),
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.task,
       );
     }
-
-    throw Exception(
-      decodedBody['message'] as String? ?? 'تعذر نشر المهمة',
-    );
   }
 
- Future<List<AvailableSkillModel>> getAvailableSkills() async {
-  final token = await _authService.getToken();
-  try {
-    final response = await http.get(
-      Uri.parse(ApiLinks.skills),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        if (token != null && token.isNotEmpty)
-          'Authorization': 'Bearer $token',
-      },
-    );
+  Future<List<AvailableSkillModel>>
+      getAvailableSkills() async {
+    try {
+      final response = await http
+          .get(
+            Uri.parse(ApiLinks.skills),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
 
-    final decodedBody = jsonDecode(response.body);
+      final decoded =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.task,
+      );
 
-    if (decodedBody is! Map<String, dynamic>) {
-      throw Exception('استجابة المهارات غير صالحة');
-    }
+      final data = decoded['data'];
 
-    if (response.statusCode < 200 ||
-        response.statusCode >= 300) {
-      throw Exception(
-        decodedBody['message']?.toString() ??
-            'تعذر تحميل المهارات',
+      if (data is! List) {
+        throw const ApiException(
+          operation: ApiOperation.task,
+          type: ApiFailureType.invalidResponse,
+        );
+      }
+
+      return data
+          .whereType<Map>()
+          .map(
+            (item) => AvailableSkillModel.fromJson(
+              Map<String, dynamic>.from(item),
+            ),
+          )
+          .where(
+            (skill) => skill.id > 0,
+          )
+          .toList();
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.task,
       );
     }
-
-    if (decodedBody['status'] != true) {
-      throw Exception(
-        decodedBody['message']?.toString() ??
-            'تعذر تحميل المهارات',
-      );
-    }
-
-    final data = decodedBody['data'];
-
-    if (data is! List) {
-      throw Exception('قائمة المهارات غير صالحة');
-    }
-
-    return data
-        .whereType<Map<String, dynamic>>()
-        .map(AvailableSkillModel.fromJson)
-        .where((skill) => skill.id > 0)
-        .toList();
-  } on FormatException {
-    throw Exception('تعذر قراءة استجابة المهارات');
-  } catch (e) {
-    throw Exception(
-      e.toString().replaceFirst('Exception: ', ''),
-    );
   }
-}
-  
 }

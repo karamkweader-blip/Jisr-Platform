@@ -11,6 +11,9 @@ class JisrLoadingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -24,8 +27,9 @@ class JisrLoadingState extends StatelessWidget {
             Text(
               message!,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style: TextStyle(
+                color:
+                    colorScheme.onSurfaceVariant,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),

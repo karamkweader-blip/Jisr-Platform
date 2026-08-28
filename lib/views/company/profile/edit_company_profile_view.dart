@@ -11,17 +11,19 @@ class EditCompanyProfileView extends GetView<EditCompanyProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+final colorScheme = theme.colorScheme;
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+       backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: AppColors.textDark),
-        title: const Text(
+        iconTheme:  IconThemeData(color: colorScheme.onSurface,),
+        title:  Text(
           'تعديل ملف الشركة',
           style: TextStyle(
-            color: AppColors.textDark,
+            color: colorScheme.onSurface,
             fontWeight: FontWeight.w800,
           ),
         ),

@@ -98,4 +98,7 @@ static const String companyMentorNominationForm =
     '/company/mentor-nominations/create';
 
 static const companyComplaints = '/company/complaints';
+
+static const companyStudentDetails =
+    '/company/students/details';
 }

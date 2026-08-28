@@ -1,23 +1,29 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/api/api_links.dart';
+import 'package:jisr_platform/core/api/api_response_handler.dart';
 import 'package:jisr_platform/models/auth/register_company_request.dart';
 
 class RegisterCompanyService {
-  // static const String _baseUrl = 'http://10.33.50.250:8000/api/register';
-
-  Future<void> register(RegisterCompanyRequest request) async {
+  Future<void> register(
+    RegisterCompanyRequest request,
+  ) async {
     try {
-      final uri = Uri.parse(ApiLinks.register);
+      final multipartRequest = http.MultipartRequest(
+        'POST',
+        Uri.parse(ApiLinks.register),
+      );
 
-      final multipartRequest = http.MultipartRequest('POST', uri);
-multipartRequest.headers.addAll({
-  'Accept': 'application/json',
-});
-      // إضافة الحقول
-      multipartRequest.fields.addAll(request.toFields());
+      multipartRequest.headers.addAll(
+        const {
+          'Accept': 'application/json',
+        },
+      );
 
-      // إضافة الملف
+      multipartRequest.fields.addAll(
+        request.toFields(),
+      );
+
       multipartRequest.files.add(
         await http.MultipartFile.fromPath(
           'documentation_file',
@@ -25,21 +31,27 @@ multipartRequest.headers.addAll({
         ),
       );
 
-      final response = await multipartRequest.send();
+      final streamedResponse =
+          await multipartRequest
+              .send()
+              .timeout(
+                const Duration(seconds: 30),
+              );
 
-      final responseBody = await response.stream.bytesToString();
-      
-print('STATUS CODE: ${response.statusCode}');
-print('RESPONSE BODY: $responseBody'); 
+      final response =
+          await http.Response.fromStream(
+        streamedResponse,
+      );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return;
-      } else {
-        final decoded = jsonDecode(responseBody);
-        throw decoded['message'] ?? 'حدث خطأ أثناء التسجيل';
-      }
-    } catch (e) {
-      throw 'فشل الاتصال بالخادم';
+      ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.registerCompany,
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.registerCompany,
+      );
     }
   }
 }

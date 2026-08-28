@@ -4,6 +4,7 @@ import 'package:jisr_platform/models/company/tasks/company_task_assignment_progr
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_status_chip.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/progress_update_card.dart';
 
+import 'package:get/get.dart';
 class AssignmentProgressTimeline extends StatelessWidget {
   final CompanyTaskAssignmentProgressModel? progressData;
   final bool isLoading;
@@ -65,10 +66,10 @@ class AssignmentProgressTimeline extends StatelessWidget {
           formatDateTime: formatDateTime,
         ),
         const SizedBox(height: 22),
-        const Text(
+         Text(
           'سجل تحديثات التقدم',
           style: TextStyle(
-            color: AppColors.textDark,
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 17,
             fontWeight: FontWeight.w900,
           ),
@@ -121,7 +122,7 @@ class _ProgressSummaryCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(23),
         boxShadow: [
           BoxShadow(
@@ -146,8 +147,8 @@ class _ProgressSummaryCard extends StatelessWidget {
                         taskTitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: AppColors.textDark,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurface,
                           fontSize: 13.5,
                           fontWeight: FontWeight.w900,
                         ),
@@ -163,8 +164,8 @@ class _ProgressSummaryCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   'الطالب: $studentName',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -172,8 +173,8 @@ class _ProgressSummaryCard extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   'الموعد النهائي: $deadlineText',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -183,8 +184,8 @@ class _ProgressSummaryCard extends StatelessWidget {
                   latestUpdateDate == null
                       ? 'لا يوجد تحديث تقدم حتى الآن'
                       : 'آخر تحديث: ${formatDateTime(latestUpdateDate)}',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 10.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -237,10 +238,10 @@ class _ProgressCircle extends StatelessWidget {
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              const Text(
+               Text(
                 'التقدم',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                 ),
@@ -313,10 +314,10 @@ class _ProgressEmptyState extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
       ),
-      child: const Column(
+      child:  Column(
         children: [
           Icon(
             Icons.timeline_outlined,
@@ -327,7 +328,7 @@ class _ProgressEmptyState extends StatelessWidget {
           Text(
             'لا توجد تحديثات تقدم حتى الآن',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
@@ -337,7 +338,7 @@ class _ProgressEmptyState extends StatelessWidget {
             'عند إرسال الطالب تحديثاً جديداً سيظهر هنا ضمن سجل التقدم.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 11.5,
               height: 1.5,
               fontWeight: FontWeight.w600,
@@ -364,7 +365,7 @@ class _ProgressErrorState extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
       ),
       child: Column(
@@ -375,10 +376,10 @@ class _ProgressErrorState extends StatelessWidget {
             size: 42,
           ),
           const SizedBox(height: 10),
-          const Text(
+           Text(
             'تعذر تحميل التقدم',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
@@ -387,8 +388,8 @@ class _ProgressErrorState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 11.5,
               height: 1.5,
             ),

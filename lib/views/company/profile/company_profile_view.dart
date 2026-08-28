@@ -11,9 +11,10 @@ class CompanyProfileView extends GetView<CompanyProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
+  backgroundColor: theme.scaffoldBackgroundColor,
+      body: SafeArea(    
         child: Obx(() {
           if (controller.isLoading.value) {
             return const Center(

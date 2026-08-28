@@ -10,17 +10,17 @@ class CreateCompanyTaskView extends GetView<CreateCompanyTaskController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Get.theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: AppColors.textDark),
+        iconTheme:  IconThemeData(color: Get.theme.colorScheme.onSurface),
       title: Obx(
   () => Text(
     controller.pageTitle,
-    style: const TextStyle(
-      color: AppColors.textDark,
+    style:  TextStyle(
+      color: Get.theme.colorScheme.onSurface,
       fontWeight: FontWeight.w800,
     ),
   ),
@@ -280,8 +280,8 @@ class _FormSectionTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: AppColors.textDark,
+          style:  TextStyle(
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 18,
             fontWeight: FontWeight.w800,
           ),
@@ -289,8 +289,8 @@ class _FormSectionTitle extends StatelessWidget {
         const SizedBox(height: 5),
         Text(
           subtitle,
-          style: const TextStyle(
-            color: AppColors.textGrey,
+          style:  TextStyle(
+            color: Get.theme.colorScheme.onSurfaceVariant,
             fontSize: 13,
             height: 1.5,
           ),
@@ -328,7 +328,7 @@ class _TextInput extends StatelessWidget {
         hintText: label,
         prefixIcon: Icon(icon, color: AppColors.primaryBlue, size: 20),
         filled: true,
-        fillColor: AppColors.cardWhite,
+        fillColor: Get.theme.colorScheme.surface,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
           vertical: 17,
@@ -371,7 +371,7 @@ class _SelectInput<T> extends StatelessWidget {
       decoration: InputDecoration(
         hintText: label,
         filled: true,
-        fillColor: AppColors.cardWhite,
+        fillColor: Get.theme.colorScheme.surface,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
           vertical: 16,
@@ -403,7 +403,7 @@ class _DatePickerCard extends StatelessWidget {
         height: 56,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -419,8 +419,8 @@ class _DatePickerCard extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -453,7 +453,7 @@ class _DynamicTextList extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Column(
@@ -461,18 +461,18 @@ class _DynamicTextList extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 14.5,
               fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(height: 10),
           if (values.isEmpty)
-            const Text(
+             Text(
               'لم تتم إضافة عناصر بعد',
               style: TextStyle(
-                color: AppColors.textGrey,
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 13,
               ),
             )
@@ -486,8 +486,8 @@ class _DynamicTextList extends StatelessWidget {
                     Expanded(
                       child: Text(
                         values[index],
-                        style: const TextStyle(
-                          color: AppColors.textGrey,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurfaceVariant,
                           fontSize: 13,
                           height: 1.4,
                         ),
@@ -495,9 +495,9 @@ class _DynamicTextList extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () => onRemove(index),
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.close_rounded,
-                        color: AppColors.textGrey,
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         size: 20,
                       ),
                     ),
@@ -579,7 +579,7 @@ class _SkillsSelector
         return Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(18),
           ),
           child: Column(
@@ -593,8 +593,8 @@ class _SkillsSelector
               Text(
                 controller.skillsError.value,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                 ),
               ),
@@ -615,21 +615,21 @@ class _SkillsSelector
         return Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(18),
           ),
-          child: const Column(
+          child:  Column(
             children: [
               Icon(
                 Icons.psychology_alt_outlined,
-                color: AppColors.textGrey,
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 size: 32,
               ),
               SizedBox(height: 10),
               Text(
                 'لا توجد مهارات متاحة حاليًا',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13.5,
                   fontWeight: FontWeight.w600,
                 ),
@@ -642,7 +642,7 @@ class _SkillsSelector
       return Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: AppColors.primaryBlue.withOpacity(0.06),
@@ -658,19 +658,19 @@ class _SkillsSelector
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+             Text(
               'إضافة مهارة',
               style: TextStyle(
-                color: AppColors.textDark,
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 15,
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 5),
-            const Text(
+             Text(
               'حدد المهارة ومستواها وأهميتها بالنسبة للمهمة.',
               style: TextStyle(
-                color: AppColors.textGrey,
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 12.5,
                 height: 1.4,
               ),
@@ -699,7 +699,7 @@ class _SkillsSelector
                   size: 20,
                 ),
                 filled: true,
-                fillColor: AppColors.background,
+                fillColor: Get.theme.scaffoldBackgroundColor,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 14,
@@ -749,7 +749,7 @@ class _SkillsSelector
                   size: 20,
                 ),
                 filled: true,
-                fillColor: AppColors.background,
+                fillColor: Get.theme.scaffoldBackgroundColor,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 14,
@@ -779,7 +779,7 @@ class _SkillsSelector
 
             Container(
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: Get.theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: SwitchListTile(
@@ -792,10 +792,10 @@ class _SkillsSelector
                   controller.selectedMandatory.value = value;
                 },
                 activeColor: AppColors.primaryBlue,
-                title: const Text(
+                title:  Text(
                   'مهارة أساسية',
                   style: TextStyle(
-                    color: AppColors.textDark,
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
                   ),
@@ -804,8 +804,8 @@ class _SkillsSelector
                   controller.selectedMandatory.value
                       ? 'يجب أن يمتلك الطالب هذه المهارة'
                       : 'وجود المهارة مفضل لكنه ليس شرطًا',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 12,
                     height: 1.4,
                   ),
@@ -843,15 +843,15 @@ class _SkillsSelector
 
             if (controller.selectedSkills.isNotEmpty) ...[
               const SizedBox(height: 18),
-              const Divider(
-                color: AppColors.background,
+               Divider(
+                color: Get.theme.scaffoldBackgroundColor,
                 thickness: 1.4,
               ),
               const SizedBox(height: 12),
-              const Text(
+               Text(
                 'المهارات المضافة',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 14.5,
                   fontWeight: FontWeight.w900,
                 ),
@@ -899,8 +899,8 @@ class _SkillDropdownItem extends StatelessWidget {
             skill.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 13.5,
               fontWeight: FontWeight.w700,
             ),
@@ -948,21 +948,21 @@ class _SkillWeightSelector extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
         children: [
           Row(
             children: [
-              const Expanded(
+               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'وزن المهارة',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 14,
                         fontWeight: FontWeight.w800,
                       ),
@@ -971,7 +971,7 @@ class _SkillWeightSelector extends StatelessWidget {
                     Text(
                       'مدى تأثير المهارة في مطابقة المرشحين',
                       style: TextStyle(
-                        color: AppColors.textGrey,
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                       ),
                     ),
@@ -1013,20 +1013,20 @@ class _SkillWeightSelector extends StatelessWidget {
                 AppColors.primaryBlue.withOpacity(0.15),
             onChanged: onChanged,
           ),
-          const Row(
+           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'أقل أهمية',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 10.5,
                 ),
               ),
               Text(
                 'أعلى أهمية',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 10.5,
                 ),
               ),
@@ -1068,7 +1068,7 @@ class _SelectedSkillCard extends StatelessWidget {
             height: 38,
             width: 38,
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
@@ -1087,8 +1087,8 @@ class _SelectedSkillCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         item.skill.name,
-                        style: const TextStyle(
-                          color: AppColors.textDark,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurface,
                           fontSize: 14,
                           fontWeight: FontWeight.w900,
                         ),
@@ -1145,9 +1145,9 @@ class _SelectedSkillCard extends StatelessWidget {
           IconButton(
             onPressed: onRemove,
             tooltip: 'حذف المهارة',
-            icon: const Icon(
+            icon:  Icon(
               Icons.close_rounded,
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               size: 20,
             ),
           ),
@@ -1174,7 +1174,7 @@ class _SelectedSkillInfoChip extends StatelessWidget {
         vertical: 5,
       ),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(9),
       ),
       child: Row(
@@ -1188,8 +1188,8 @@ class _SelectedSkillInfoChip extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 10.5,
               fontWeight: FontWeight.w700,
             ),

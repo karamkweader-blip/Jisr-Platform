@@ -4,14 +4,11 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 class AuthHeader extends StatelessWidget {
   final String title;
   final String subtitle;
-
   final double logoSize;
   final double titleFontSize;
   final double subtitleFontSize;
-
   final double spaceAfterLogo;
   final double spaceAfterTitle;
-
   final bool useHero;
   final bool logoWithContainer;
   final double logoContainerSize;
@@ -34,6 +31,10 @@ class AuthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
     Widget logo = Image.asset(
       'assets/images/logo.png',
       height: logoSize,
@@ -46,11 +47,16 @@ class AuthHeader extends StatelessWidget {
         height: logoContainerSize,
         padding: logoPadding,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           shape: BoxShape.circle,
+          border: Border.all(
+            color: colorScheme.outlineVariant,
+          ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryBlue.withOpacity(0.08),
+              color: isDark
+                  ? Colors.black.withOpacity(0.22)
+                  : AppColors.primaryBlue.withOpacity(0.08),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -67,7 +73,9 @@ class AuthHeader extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryBlue.withOpacity(0.10),
+              color: isDark
+                  ? Colors.black.withOpacity(0.24)
+                  : AppColors.primaryBlue.withOpacity(0.10),
               blurRadius: 30,
               offset: const Offset(0, 10),
             ),
@@ -79,7 +87,12 @@ class AuthHeader extends StatelessWidget {
 
     return Column(
       children: [
-        useHero ? Hero(tag: 'logo', child: logo) : logo,
+        useHero
+            ? Hero(
+                tag: 'logo',
+                child: logo,
+              )
+            : logo,
         SizedBox(height: spaceAfterLogo),
         Text(
           title,
@@ -96,7 +109,7 @@ class AuthHeader extends StatelessWidget {
           subtitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: AppColors.textGrey,
+            color: colorScheme.onSurfaceVariant,
             fontSize: subtitleFontSize,
             height: 1.5,
           ),

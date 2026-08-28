@@ -3,6 +3,7 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/mentor/company_mentor_constants.dart';
 import 'package:jisr_platform/models/company/mentor/company_mentor_nomination_model.dart';
 
+import 'package:get/get.dart';
 class CompanyMentorNominationCard extends StatelessWidget {
   final CompanyMentorNominationModel nomination;
   final String createdAtText;
@@ -18,7 +19,7 @@ class CompanyMentorNominationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.cardWhite,
+      color: Get.theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
@@ -28,7 +29,7 @@ class CompanyMentorNominationCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: AppColors.textGrey.withOpacity(0.1),
+              color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.1),
             ),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -70,8 +71,8 @@ class CompanyMentorNominationCard extends StatelessWidget {
                           nomination.fullName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: AppColors.textDark,
+                          style:  TextStyle(
+                            color: Get.theme.colorScheme.onSurface,
                             fontSize: 15.5,
                             fontWeight: FontWeight.w900,
                           ),
@@ -81,8 +82,8 @@ class CompanyMentorNominationCard extends StatelessWidget {
                           nomination.professionalTitle,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: AppColors.textGrey,
+                          style:  TextStyle(
+                            color: Get.theme.colorScheme.onSurfaceVariant,
                             fontSize: 11.5,
                             height: 1.35,
                             fontWeight: FontWeight.w600,
@@ -104,7 +105,7 @@ class CompanyMentorNominationCard extends StatelessWidget {
                   vertical: 9,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: Get.theme.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -122,17 +123,17 @@ class CompanyMentorNominationCard extends StatelessWidget {
                       CompanyMentorSpecializations.label(
                         nomination.specialization,
                       ),
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
                     const Spacer(),
-                    const Text(
+                     Text(
                       'أُرسل في',
                       style: TextStyle(
-                        color: AppColors.textGrey,
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 9.8,
                         fontWeight: FontWeight.w500,
                       ),
@@ -143,8 +144,8 @@ class CompanyMentorNominationCard extends StatelessWidget {
                         createdAtText,
                         textDirection: TextDirection.ltr,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: AppColors.textGrey,
+                        style:  TextStyle(
+                          color: Get.theme.colorScheme.onSurfaceVariant,
                           fontSize: 9.8,
                           fontWeight: FontWeight.w700,
                         ),
@@ -185,7 +186,7 @@ class CompanyMentorNominationCard extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Divider(
-                      color: AppColors.textGrey.withOpacity(0.1),
+                      color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.1),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -284,7 +285,7 @@ Future<void> showCompanyMentorNominationDetails({
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    backgroundColor: AppColors.cardWhite,
+    backgroundColor: Get.theme.colorScheme.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(28),
@@ -313,7 +314,7 @@ Future<void> showCompanyMentorNominationDetails({
                     width: 44,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: AppColors.textGrey.withOpacity(0.22),
+                      color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.22),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -329,9 +330,9 @@ Future<void> showCompanyMentorNominationDetails({
                         gradient: AppColors.primaryGradient,
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      child: const Icon(
+                      child:  Icon(
                         Icons.volunteer_activism_rounded,
-                        color: AppColors.cardWhite,
+                        color: Get.theme.colorScheme.surface,
                         size: 27,
                       ),
                     ),
@@ -343,8 +344,8 @@ Future<void> showCompanyMentorNominationDetails({
                         children: <Widget>[
                           Text(
                             nomination.fullName,
-                            style: const TextStyle(
-                              color: AppColors.textDark,
+                            style:  TextStyle(
+                              color: Get.theme.colorScheme.onSurface,
                               fontSize: 19,
                               fontWeight: FontWeight.w900,
                             ),
@@ -352,8 +353,8 @@ Future<void> showCompanyMentorNominationDetails({
                           const SizedBox(height: 4),
                           Text(
                             nomination.professionalTitle,
-                            style: const TextStyle(
-                              color: AppColors.textGrey,
+                            style:  TextStyle(
+                              color: Get.theme.colorScheme.onSurfaceVariant,
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
@@ -395,8 +396,8 @@ Future<void> showCompanyMentorNominationDetails({
                         const SizedBox(height: 6),
                         Text(
                           nomination.rejectionReason!,
-                          style: const TextStyle(
-                            color: AppColors.textDark,
+                          style:  TextStyle(
+                            color: Get.theme.colorScheme.onSurface,
                             fontSize: 12.5,
                             height: 1.5,
                             fontWeight: FontWeight.w600,
@@ -533,7 +534,7 @@ class _DetailsSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.06),
@@ -592,8 +593,8 @@ class _DetailRow extends StatelessWidget {
                 width: 105,
                 child: Text(
                   label,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
@@ -602,8 +603,8 @@ class _DetailRow extends StatelessWidget {
               Expanded(
                 child: SelectableText(
                   value.isEmpty ? 'غير محدد' : value,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 11.5,
                     height: 1.45,
                     fontWeight: FontWeight.w600,
@@ -616,7 +617,7 @@ class _DetailRow extends StatelessWidget {
         if (showDivider)
           Divider(
             height: 1,
-            color: AppColors.textGrey.withOpacity(0.12),
+            color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.12),
           ),
       ],
     );

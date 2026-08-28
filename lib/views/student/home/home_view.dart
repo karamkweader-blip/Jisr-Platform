@@ -94,7 +94,10 @@ class _HomeViewState extends State<HomeView> {
                   width: 44,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: AppColors.textGrey.withOpacity(.22),
+                   color: Theme.of(context)
+    .colorScheme
+    .onSurfaceVariant
+    .withOpacity(.22),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -264,7 +267,7 @@ class _ApplicationMenuTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      tileColor: Colors.white,
+     tileColor: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       leading: Container(
         width: 43,
@@ -277,15 +280,18 @@ class _ApplicationMenuTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: const TextStyle(
-          color: AppColors.textDark,
-          fontSize: 13,
-          fontWeight: FontWeight.w800,
-        ),
+        style: TextStyle(
+  color: Theme.of(context).colorScheme.onSurface,
+  fontSize: 13,
+  fontWeight: FontWeight.w800,
+),
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(color: AppColors.textGrey, fontSize: 10),
+       style: TextStyle(
+  color: Theme.of(context).colorScheme.onSurfaceVariant,
+  fontSize: 10,
+),
       ),
       trailing: const Icon(
         Icons.arrow_back_ios_new_rounded,
@@ -399,20 +405,20 @@ class _DashboardSectionHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textDark,
-                  fontSize: 15.5,
-                  fontWeight: FontWeight.w900,
-                ),
+                style: TextStyle(
+  color: Theme.of(context).colorScheme.onSurface,
+  fontSize: 15.5,
+  fontWeight: FontWeight.w900,
+),
               ),
               Text(
                 subtitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
-                  fontSize: 10.5,
-                ),
+               style: TextStyle(
+  color: Theme.of(context).colorScheme.onSurfaceVariant,
+  fontSize: 10.5,
+),
               ),
             ],
           ),
@@ -620,7 +626,7 @@ class _ApplicationSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -658,21 +664,21 @@ class _ApplicationSummaryCard extends StatelessWidget {
                       title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w800,
-                      ),
+                     style: TextStyle(
+  color: Theme.of(context).colorScheme.onSurface,
+  fontSize: 13,
+  fontWeight: FontWeight.w800,
+),
                     ),
                     const SizedBox(height: 3),
                     Text(
                       company,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
-                        fontSize: 10,
-                      ),
+                     style: TextStyle(
+  color: Theme.of(context).colorScheme.onSurfaceVariant,
+  fontSize: 10,
+),
                     ),
                   ],
                 ),
@@ -796,7 +802,7 @@ class _DashboardTaskCard extends StatelessWidget {
         width: 226,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Colors.white,
+         color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(23),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
           boxShadow: [
@@ -819,7 +825,7 @@ class _DashboardTaskCard extends StatelessWidget {
                     task.company.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: AppColors.textGrey, fontSize: 10.5),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 10.5),
                   ),
                 ),
                 if (task.matchScore != null)
@@ -834,7 +840,7 @@ class _DashboardTaskCard extends StatelessWidget {
               task.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: AppColors.textDark, fontSize: 14, fontWeight: FontWeight.w900, height: 1.4),
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 14, fontWeight: FontWeight.w900, height: 1.4),
             ),
             const Spacer(),
             Row(
@@ -912,7 +918,7 @@ class _DashboardOpportunityCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
           boxShadow: [
@@ -948,14 +954,14 @@ class _DashboardOpportunityCard extends StatelessWidget {
                     opportunity.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: AppColors.textDark, fontSize: 13.5, fontWeight: FontWeight.w900),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 13.5, fontWeight: FontWeight.w900),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     controller.companyName(opportunity.company),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: AppColors.textGrey, fontSize: 10.5),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 10.5),
                   ),
                   const SizedBox(height: 7),
                   Wrap(
@@ -1026,7 +1032,7 @@ class _HomeLoadingCard extends StatelessWidget {
     return Container(
       height: 112,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
       ),
       child: const Center(
@@ -1055,7 +1061,7 @@ class _HomeEmptyCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.07)),
       ),
@@ -1067,9 +1073,9 @@ class _HomeEmptyCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(color: AppColors.textDark, fontSize: 12.5, fontWeight: FontWeight.w800)),
+                Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 12.5, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 3),
-                Text(subtitle, style: const TextStyle(color: AppColors.textGrey, fontSize: 9.5, height: 1.45)),
+                Text(subtitle, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 9.5, height: 1.45)),
               ],
             ),
           ),
@@ -1101,7 +1107,7 @@ class _RoadmapStrip extends StatelessWidget {
           borderRadius: BorderRadius.circular(23),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
         ),
-        child: const Row(
+        child: Row(
           children: [
             Icon(Icons.route_rounded, color: AppColors.primaryBlue, size: 27),
             SizedBox(width: 12),
@@ -1109,8 +1115,8 @@ class _RoadmapStrip extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('خريطة التطوير', style: TextStyle(color: AppColors.textDark, fontSize: 13.5, fontWeight: FontWeight.w900)),
-                  Text('أكمل خطتك وتابع تقدمك المهني', style: TextStyle(color: AppColors.textGrey, fontSize: 10)),
+                  Text('خريطة التطوير', style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 13.5, fontWeight: FontWeight.w900)),
+                  Text('أكمل خطتك وتابع تقدمك المهني', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 10)),
                 ],
               ),
             ),
@@ -1256,11 +1262,11 @@ class _LegacyHomeView extends GetView<HomeController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           surfaceTintColor: Colors.transparent,
           centerTitle: true,
           title: const Text(
@@ -1485,12 +1491,12 @@ class _HomeFeatureTile extends StatelessWidget {
             vertical: 14,
           ),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
               color: isEnabled
                   ? AppColors.primaryBlue.withOpacity(.08)
-                  : AppColors.textGrey.withOpacity(.07),
+                  : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.07),
             ),
             boxShadow: [
               BoxShadow(
@@ -1518,19 +1524,19 @@ class _HomeFeatureTile extends StatelessWidget {
                       : null,
                   color: isEnabled
                       ? null
-                      : AppColors.textGrey.withOpacity(.07),
+                      : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.07),
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
                     color: isEnabled
                         ? AppColors.primaryBlue.withOpacity(.10)
-                        : AppColors.textGrey.withOpacity(.05),
+                        : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.05),
                   ),
                 ),
                 child: Icon(
                   icon,
                   color: isEnabled
                       ? AppColors.primaryBlue
-                      : AppColors.textGrey,
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 29,
                 ),
               ),
@@ -1548,7 +1554,7 @@ class _HomeFeatureTile extends StatelessWidget {
                         fontFamily: 'Cairo',
                         color: isEnabled
                             ? AppColors.primaryBlue
-                            : AppColors.textGrey,
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1560,7 +1566,7 @@ class _HomeFeatureTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey.withOpacity(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(
                           isEnabled ? .90 : .65,
                         ),
                         fontSize: 12,
@@ -1578,14 +1584,14 @@ class _HomeFeatureTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isEnabled
                       ? softOrange.withOpacity(.10)
-                      : AppColors.textGrey.withOpacity(.06),
+                      : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.06),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.arrow_back_ios_new_rounded,
                   color: isEnabled
                       ? softOrange
-                      : AppColors.textGrey.withOpacity(.55),
+                      : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.55),
                   size: 15,
                 ),
               ),
@@ -1659,8 +1665,8 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                 ),
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(22, 18, 22, 24),
-                  decoration: const BoxDecoration(
-                    color: AppColors.background,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(30),
                     ),
@@ -1672,7 +1678,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                         width: 44,
                         height: 5,
                         decoration: BoxDecoration(
-                          color: AppColors.textGrey.withOpacity(.25),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -1687,12 +1693,12 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         'حدد مدة الخطة وعدد ساعات التعلم أسبوعياً.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 22),
@@ -1797,8 +1803,8 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
               return Container(
                 height: MediaQuery.of(context).size.height * .82,
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 22),
-                decoration: const BoxDecoration(
-                  color: AppColors.background,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(30),
                   ),
@@ -1812,7 +1818,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                         width: 44,
                         height: 5,
                         decoration: BoxDecoration(
-                          color: AppColors.textGrey.withOpacity(.25),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -1828,11 +1834,11 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                       ),
                     ),
                     const SizedBox(height: 7),
-                    const Text(
+                    Text(
                       'حدد مهارة أو أكثر من خريطة التطوير، وبعدها سنبدأ اختبار تحديد مستوى جديد لهذه المهارات فقط.',
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         height: 1.55,
                         fontSize: 12.5,
                       ),
@@ -1862,7 +1868,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                               duration: const Duration(milliseconds: 180),
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(22),
                                 border: Border.all(
                                   color: isSelected
@@ -1918,9 +1924,9 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                                         const SizedBox(height: 4),
                                         Text(
                                           _levelLineText(item),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: 'Cairo',
-                                            color: AppColors.textGrey,
+                                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -1931,7 +1937,10 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                                   _PlanMiniChip(
                                     icon: _roadmapStatusIcon(item),
                                     text: _roadmapStatusText(item),
-                                    color: _roadmapStatusColor(item),
+                                    color: _roadmapStatusColor(
+                                      context,
+                                      item,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -1953,7 +1962,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF16A34A),
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor: AppColors.textGrey.withOpacity(.25),
+                        disabledBackgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                         minimumSize: const Size(double.infinity, 54),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22),
@@ -2017,8 +2026,8 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
           maxHeight: MediaQuery.of(context).size.height * .88,
         ),
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
-        decoration: const BoxDecoration(
-          color: AppColors.background,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(32),
           ),
@@ -2037,7 +2046,7 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                     width: 46,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: AppColors.textGrey.withOpacity(.25),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -2089,9 +2098,9 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                             cache == null
                                 ? 'لا توجد جلسة محفوظة بعد'
                                 : 'جلسة #${cache.assessmentSessionId}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Cairo',
-                              color: AppColors.textGrey,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -2179,14 +2188,14 @@ class _HomeRoadmapSheet extends GetView<HomeController> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(22),
                     ),
-                    child: const Text(
+                    child: Text(
                       'لا توجد خريطة تطوير محفوظة حالياً. أنه الاختبار أولاً ليتم حفظ الرودماب هنا.',
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         height: 1.5,
                       ),
                     ),
@@ -2233,7 +2242,10 @@ class _HomeRoadmapItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isReady = item.targetLevel > 0 && item.currentLevel >= item.targetLevel;
-    final statusColor = _roadmapStatusColor(item);
+    final statusColor = _roadmapStatusColor(
+      context,
+      item,
+    );
     final statusIcon = _roadmapStatusIcon(item);
 
     return Stack(
@@ -2302,7 +2314,7 @@ class _HomeRoadmapItem extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     boxShadow: [
                       BoxShadow(
                         color:
@@ -2339,9 +2351,9 @@ class _HomeRoadmapItem extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         _levelLineText(item),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -2355,7 +2367,7 @@ class _HomeRoadmapItem extends StatelessWidget {
                                   : 'لا توجد مصادر مقترحة حالياً.',
                           style: TextStyle(
                             fontFamily: 'Cairo',
-                            color: isReady ? const Color(0xFF16A34A) : AppColors.textGrey,
+                            color: isReady ? const Color(0xFF16A34A) : Theme.of(context).colorScheme.onSurfaceVariant,
                             height: 1.45,
                             fontWeight: FontWeight.w700,
                           ),
@@ -2394,7 +2406,7 @@ class _HomeResourceTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 9),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
@@ -2434,9 +2446,9 @@ class _HomeResourceTile extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   '${resource.provider.isEmpty ? 'مصدر' : resource.provider} · ${resource.estimatedHours.isEmpty ? 'غير محدد' : resource.estimatedHours} ساعة',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 11,
                   ),
                 ),
@@ -2538,7 +2550,7 @@ class _HomePlanStepper extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
@@ -2573,9 +2585,9 @@ class _HomePlanStepper extends StatelessWidget {
             child: Text(
               '$value',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -2618,14 +2630,14 @@ class _HomeSmallRoundButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: enabled
               ? AppColors.actionYellow.withOpacity(.16)
-              : AppColors.textGrey.withOpacity(.08),
+              : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.08),
           shape: BoxShape.circle,
         ),
         child: Icon(
           icon,
           color: enabled
               ? AppColors.actionYellow
-              : AppColors.textGrey,
+              : Theme.of(context).colorScheme.onSurfaceVariant,
           size: 21,
         ),
       ),
@@ -2665,9 +2677,14 @@ String _roadmapStatusText(AssessmentLearningPathItem item) {
   return _priorityText(item.priority);
 }
 
-Color _roadmapStatusColor(AssessmentLearningPathItem item) {
+Color _roadmapStatusColor(
+  BuildContext context,
+  AssessmentLearningPathItem item,
+) {
   if (_isMarketReadyItem(item)) return const Color(0xFF16A34A);
-  if (_isUnknownLevelItem(item)) return AppColors.textGrey;
+  if (_isUnknownLevelItem(item)) {
+    return Theme.of(context).colorScheme.onSurfaceVariant;
+  }
   return AppColors.actionYellow;
 }
 
@@ -2731,7 +2748,7 @@ class _LatestLearningPlanCard extends GetView<HomeController> {
           width: double.infinity,
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(28),
             border: Border.all(
               color: AppColors.actionYellow.withOpacity(.22),
@@ -2814,9 +2831,9 @@ class _LatestLearningPlanCard extends GetView<HomeController> {
                               ? 'آخر جلسة محفوظة #${cache.assessmentSessionId}'
                               : '${plan.weeks} أسابيع · ${plan.hoursPerWeek} ساعات أسبوعياً'
                           : 'أنه الاختبار وأنشئ Roadmap لتظهر الخطة هنا.',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                         height: 1.45,
                         fontWeight: FontWeight.w600,
@@ -2877,8 +2894,8 @@ class _LatestLearningPlanSheet extends StatelessWidget {
           maxHeight: MediaQuery.of(context).size.height * .86,
         ),
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
-        decoration: const BoxDecoration(
-          color: AppColors.background,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(32),
           ),
@@ -2893,7 +2910,7 @@ class _LatestLearningPlanSheet extends StatelessWidget {
                   width: 46,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: AppColors.textGrey.withOpacity(.25),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -2915,9 +2932,9 @@ class _LatestLearningPlanSheet extends StatelessWidget {
                     : plan!.plan.summaryAr.isNotEmpty
                         ? plan!.plan.summaryAr
                         : plan!.summaryText,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   height: 1.6,
                 ),
               ),
@@ -2999,7 +3016,7 @@ class _LearningPlanMetaCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
@@ -3059,7 +3076,7 @@ class _LearningPlanWeekCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 13),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -3146,9 +3163,9 @@ class _PlanLine extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.5,
               ),
             ),
@@ -3224,7 +3241,7 @@ class _QuickActionCard extends StatelessWidget {
       child: Container(
         height: 128,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(26),
           border: Border.all(
             color: AppColors.primaryBlue.withOpacity(0.08),

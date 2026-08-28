@@ -1,7 +1,8 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/api/api_links.dart';
+import 'package:jisr_platform/core/api/api_response_handler.dart';
 import 'package:jisr_platform/models/student/opportunities/student_opportunity_model.dart';
 import 'package:jisr_platform/services/auth/token&role_manage/auth_service.dart';
 
@@ -12,7 +13,12 @@ class StudentOpportunityService {
     final token = (await _authService.getToken())?.trim();
 
     if (token == null || token.isEmpty) {
-      throw Exception('انتهت الجلسة، يرجى تسجيل الدخول من جديد');
+      throw const ApiException(
+        statusCode: 401,
+        backendMessage:
+            'انتهت الجلسة، يرجى تسجيل الدخول من جديد',
+        operation: ApiOperation.opportunity,
+      );
     }
 
     return {
@@ -22,118 +28,136 @@ class StudentOpportunityService {
     };
   }
 
-  Map<String, dynamic> _decodeBody(http.Response response) {
-    if (response.body.isEmpty) return {};
-
+  Future<StudentOpportunitiesResponse>
+      recommendedOpportunities() async {
     try {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    } catch (_) {
-      return {'message': 'استجابة غير مفهومة من الخادم'};
+      final response = await http
+          .get(
+            Uri.parse(
+              ApiLinks.studentRecommendedOpportunities,
+            ),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
+
+      final data =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.opportunity,
+      );
+
+      return StudentOpportunitiesResponse.fromJson(
+        data,
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.opportunity,
+      );
     }
   }
 
-  Future<StudentOpportunitiesResponse> recommendedOpportunities() async {
-    final response = await http
-        .get(
-          Uri.parse(ApiLinks.studentRecommendedOpportunities),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال بجلب الفرص الموصى بها');
-          },
-        );
+  Future<StudentOpportunitiesResponse>
+      exploreOpportunities() async {
+    try {
+      final response = await http
+          .get(
+            Uri.parse(
+              ApiLinks.studentExploreOpportunities,
+            ),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
 
-    print('RECOMMENDED OPPORTUNITIES STATUS: ${response.statusCode}');
-    print('RECOMMENDED OPPORTUNITIES BODY: ${response.body}');
+      final data =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.opportunity,
+      );
 
-    final data = _decodeBody(response);
-
-    if (response.statusCode == 200) {
-      return StudentOpportunitiesResponse.fromJson(data);
+      return StudentOpportunitiesResponse.fromJson(
+        data,
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.opportunity,
+      );
     }
-
-    throw Exception(data['message'] ?? 'فشل جلب الفرص الموصى بها');
   }
 
-  Future<StudentOpportunitiesResponse> exploreOpportunities() async {
-    final response = await http
-        .get(
-          Uri.parse(ApiLinks.studentExploreOpportunities),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال بجلب فرص الاستكشاف');
-          },
-        );
-
-    print('EXPLORE OPPORTUNITIES STATUS: ${response.statusCode}');
-    print('EXPLORE OPPORTUNITIES BODY: ${response.body}');
-
-    final data = _decodeBody(response);
-
-    if (response.statusCode == 200) {
-      return StudentOpportunitiesResponse.fromJson(data);
-    }
-
-    throw Exception(data['message'] ?? 'فشل جلب فرص الاستكشاف');
-  }
-
-  Future<StudentOpportunityDetailsResponse> opportunityDetails(
+  Future<StudentOpportunityDetailsResponse>
+      opportunityDetails(
     int opportunityId,
   ) async {
-    final response = await http
-        .get(
-          Uri.parse(ApiLinks.studentOpportunityDetails(opportunityId)),
-          headers: await _headers(),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال بجلب تفاصيل الفرصة');
-          },
-        );
+    try {
+      final response = await http
+          .get(
+            Uri.parse(
+              ApiLinks.studentOpportunityDetails(
+                opportunityId,
+              ),
+            ),
+            headers: await _headers(),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
 
-    print('OPPORTUNITY DETAILS STATUS: ${response.statusCode}');
-    print('OPPORTUNITY DETAILS BODY: ${response.body}');
+      final data =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.opportunity,
+      );
 
-    final data = _decodeBody(response);
-
-    if (response.statusCode == 200) {
-      return StudentOpportunityDetailsResponse.fromJson(data);
+      return StudentOpportunityDetailsResponse
+          .fromJson(data);
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.opportunity,
+      );
     }
-
-    throw Exception(data['message'] ?? 'فشل جلب تفاصيل الفرصة');
   }
 
-  Future<StudentOpportunityApplyResponse> applyToOpportunity(
+  Future<StudentOpportunityApplyResponse>
+      applyToOpportunity(
     int opportunityId,
   ) async {
-    final response = await http
-        .post(
-          Uri.parse(ApiLinks.applyToStudentOpportunity(opportunityId)),
-          headers: await _headers(),
-          body: jsonEncode({}),
-        )
-        .timeout(
-          const Duration(seconds: 12),
-          onTimeout: () {
-            throw Exception('انتهت مهلة الاتصال أثناء إرسال طلب التقديم');
-          },
-        );
+    try {
+      final response = await http
+          .post(
+            Uri.parse(
+              ApiLinks.applyToStudentOpportunity(
+                opportunityId,
+              ),
+            ),
+            headers: await _headers(),
+            body: jsonEncode(
+              <String, dynamic>{},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+          );
 
-    print('APPLY OPPORTUNITY STATUS: ${response.statusCode}');
-    print('APPLY OPPORTUNITY BODY: ${response.body}');
+      final data =
+          ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.application,
+      );
 
-    final data = _decodeBody(response);
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return StudentOpportunityApplyResponse.fromJson(data);
+      return StudentOpportunityApplyResponse
+          .fromJson(data);
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.application,
+      );
     }
-
-    throw Exception(data['message'] ?? 'فشل إرسال طلب التقديم');
   }
 }

@@ -40,12 +40,12 @@ class CompanyOpportunityCandidatesView
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: Get.theme.scaffoldBackgroundColor,
           appBar: AppBar(
             elevation: 0,
             scrolledUnderElevation: 0,
             backgroundColor:
-                AppColors.cardWhite,
+                Get.theme.colorScheme.surface,
             surfaceTintColor:
                 Colors.transparent,
             centerTitle: true,
@@ -56,8 +56,8 @@ class CompanyOpportunityCandidatesView
               'مرشحو ${controller.opportunityTitle}',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 16,
                 fontWeight: FontWeight.w900,
               ),
@@ -293,7 +293,7 @@ class _CandidateCard extends StatelessWidget {
         item.student.profilePictureUrl;
 
     return Material(
-      color: AppColors.cardWhite,
+      color: Get.theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(19),
       child: InkWell(
         onTap: onTap,
@@ -304,7 +304,7 @@ class _CandidateCard extends StatelessWidget {
             borderRadius:
                 BorderRadius.circular(19),
             border: Border.all(
-              color: AppColors.textGrey
+              color: Get.theme.colorScheme.onSurfaceVariant
                   .withOpacity(0.10),
             ),
             boxShadow: <BoxShadow>[
@@ -357,9 +357,9 @@ class _CandidateCard extends StatelessWidget {
                       maxLines: 1,
                       overflow:
                           TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         color:
-                            AppColors.textDark,
+                            Get.theme.colorScheme.onSurface,
                         fontSize: 14,
                         fontWeight:
                             FontWeight.w900,
@@ -373,9 +373,9 @@ class _CandidateCard extends StatelessWidget {
                       maxLines: 1,
                       overflow:
                           TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         color:
-                            AppColors.textGrey,
+                            Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 10.5,
                         fontWeight:
                             FontWeight.w600,
@@ -448,9 +448,9 @@ class _CandidateCard extends StatelessWidget {
                   ),
                 )
               else
-                const Icon(
+                 Icon(
                   Icons.chevron_left_rounded,
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                 ),
             ],
           ),
@@ -502,8 +502,8 @@ class _State extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 16,
                 fontWeight: FontWeight.w900,
               ),
@@ -512,8 +512,8 @@ class _State extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 12,
                 height: 1.5,
                 fontWeight: FontWeight.w600,

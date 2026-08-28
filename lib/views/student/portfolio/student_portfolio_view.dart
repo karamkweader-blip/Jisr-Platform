@@ -14,11 +14,11 @@ class StudentPortfolioView extends GetView<StudentPortfolioController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 4),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -230,7 +230,7 @@ class _ProjectCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(28),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
           boxShadow: [
@@ -277,9 +277,9 @@ class _ProjectCard extends StatelessWidget {
                     url.isEmpty ? 'لا يوجد رابط' : url,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
                     ),
                   ),
@@ -300,9 +300,9 @@ class _ProjectCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(
+             Icon(
               Icons.arrow_back_ios_new_rounded,
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               size: 18,
             ),
           ],
@@ -363,7 +363,7 @@ class _EmptyPortfolio extends StatelessWidget {
         margin: const EdgeInsets.all(24),
         padding: const EdgeInsets.all(26),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(34),
           boxShadow: [
             BoxShadow(
@@ -392,12 +392,12 @@ class _EmptyPortfolio extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
+             Text(
               'أضيفي أول مشروع حتى يظهر ضمن إنجازاتك.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.6,
               ),
             ),
@@ -438,10 +438,10 @@ class _ProjectFormSheet extends GetView<StudentPortfolioController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: Text(
@@ -562,7 +562,7 @@ class _SheetField extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surface,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(22),
             borderSide: BorderSide(
@@ -629,10 +629,10 @@ class _DatePickerField extends StatelessWidget {
             builder: (context, child) {
               return Theme(
                 data: Theme.of(context).copyWith(
-                  colorScheme: const ColorScheme.light(
+                  colorScheme:  ColorScheme.light(
                     primary: AppColors.primaryBlue,
                     onPrimary: Colors.white,
-                    onSurface: AppColors.textDark,
+                    onSurface: Theme.of(context).colorScheme.onSurface,
                   ),
                   textButtonTheme: TextButtonThemeData(
                     style: TextButton.styleFrom(
@@ -663,7 +663,7 @@ class _DatePickerField extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surface,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(22),
             borderSide: BorderSide(

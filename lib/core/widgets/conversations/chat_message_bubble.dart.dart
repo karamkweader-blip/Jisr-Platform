@@ -47,7 +47,7 @@ class ChatMessageBubble extends StatelessWidget {
           decoration: BoxDecoration(
             color: isMine
                 ? AppColors.primaryBlue
-                : AppColors.cardWhite,
+                : Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(18),
               topRight: const Radius.circular(18),
@@ -61,11 +61,11 @@ class ChatMessageBubble extends StatelessWidget {
             border: isMine
                 ? null
                 : Border.all(
-                    color: AppColors.textGrey.withOpacity(0.12),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.12),
                   ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.textDark.withOpacity(0.04),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.04),
                 blurRadius: 8,
                 offset: const Offset(0, 3),
               ),
@@ -79,7 +79,7 @@ class ChatMessageBubble extends StatelessWidget {
                 style: TextStyle(
                   color: isMine
                       ? AppColors.cardWhite
-                      : AppColors.textDark,
+                      : Theme.of(context).colorScheme.onSurface,
                   fontSize: 14,
                   height: 1.55,
                 ),
@@ -93,7 +93,7 @@ class ChatMessageBubble extends StatelessWidget {
                     style: TextStyle(
                       color: isMine
                           ? AppColors.cardWhite.withOpacity(0.70)
-                          : AppColors.textGrey,
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 9.5,
                     ),
                   ),
@@ -145,8 +145,8 @@ class _SystemMessage extends StatelessWidget {
         child: Text(
           content,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: AppColors.textGrey,
+          style:  TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontSize: 11.5,
             height: 1.45,
             fontWeight: FontWeight.w500,

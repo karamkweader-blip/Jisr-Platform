@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jisr_platform/core/colors/app_colors.dart';
 
 class JisrPageHeader extends StatelessWidget {
   final String title;
@@ -15,17 +14,22 @@ class JisrPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style: TextStyle(
+                  color: colorScheme.onSurface,
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
                 ),
@@ -34,8 +38,9 @@ class JisrPageHeader extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   subtitle!,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style: TextStyle(
+                    color: colorScheme
+                        .onSurfaceVariant,
                     fontSize: 14,
                     height: 1.4,
                   ),

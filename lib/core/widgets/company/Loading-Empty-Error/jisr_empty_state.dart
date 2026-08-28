@@ -21,8 +21,15 @@ class JisrEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark =
+        theme.brightness == Brightness.dark;
+
     return Padding(
-      padding: const EdgeInsets.all(AppDimensions.paddingXLarge),
+      padding: const EdgeInsets.all(
+        AppDimensions.paddingXLarge,
+      ),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -31,11 +38,16 @@ class JisrEmptyState extends StatelessWidget {
               height: 72,
               width: 72,
               decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.08),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+                color: AppColors.primaryBlue
+                    .withOpacity(
+                      isDark ? 0.18 : 0.08,
+                    ),
+                borderRadius: BorderRadius.circular(
+                  AppDimensions.radiusLarge,
+                ),
               ),
-              child: Icon(
-                icon,
+              child:Icon(
+                 icon,
                 color: AppColors.primaryBlue,
                 size: 34,
               ),
@@ -44,8 +56,8 @@ class JisrEmptyState extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style: TextStyle(
+                color: colorScheme.onSurface,
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
               ),
@@ -54,13 +66,15 @@ class JisrEmptyState extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style: TextStyle(
+                color:
+                    colorScheme.onSurfaceVariant,
                 fontSize: 14,
                 height: 1.5,
               ),
             ),
-            if (actionText != null && onActionPressed != null) ...[
+            if (actionText != null &&
+                onActionPressed != null) ...[
               const SizedBox(height: 22),
               JisrButton(
                 title: actionText!,

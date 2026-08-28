@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/core/decorations/app_decorations.dart';
 
 class JisrTextField extends StatelessWidget {
@@ -27,21 +28,34 @@ class JisrTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: AppDecorations.softShadow,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow:
+              AppDecorations.softShadow(context),
         ),
         child: TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
           obscureText: obscureText,
-          maxLines: maxLines,
+          maxLines: obscureText ? 1 : maxLines,
           validator: validator,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          decoration: AppDecorations.fieldInput(hintText, icon).copyWith(
+          cursorColor: AppColors.primaryBlue,
+          style: TextStyle(
+            color: colorScheme.onSurface,
+          ),
+          autovalidateMode:
+              AutovalidateMode.onUserInteraction,
+          decoration: AppDecorations.fieldInput(
+            context,
+            hintText,
+            icon,
             suffixIcon: suffixIcon,
           ),
         ),

@@ -29,7 +29,7 @@ class CompanyOpportunityInterviewView extends GetView<CompanyOpportunityIntervie
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         appBar: AppBar(title: Text(controller.isReschedule ? 'إعادة جدولة المقابلة' : 'جدولة مقابلة')),
         body: Form(
           key: controller.formKey,
@@ -49,7 +49,7 @@ class CompanyOpportunityInterviewView extends GetView<CompanyOpportunityIntervie
                   )),
               const SizedBox(height: 16),
               Obx(() => ListTile(
-                    tileColor: AppColors.cardWhite,
+                    tileColor: Get.theme.colorScheme.surface,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     leading: const Icon(Icons.schedule_rounded, color: AppColors.primaryBlue),
                     title: const Text('التاريخ والوقت'),
@@ -87,6 +87,6 @@ class CompanyOpportunityInterviewView extends GetView<CompanyOpportunityIntervie
   Widget _field(TextEditingController textController, String label, {String? Function(String?)? validator, int lines = 1, TextInputType? keyboard, Key? key}) => Padding(
     key: key,
     padding: const EdgeInsets.only(bottom: 12),
-    child: TextFormField(controller: textController, maxLines: lines, keyboardType: keyboard, validator: validator, decoration: InputDecoration(labelText: label, filled: true, fillColor: AppColors.cardWhite, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
+    child: TextFormField(controller: textController, maxLines: lines, keyboardType: keyboard, validator: validator, decoration: InputDecoration(labelText: label, filled: true, fillColor: Get.theme.colorScheme.surface, border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
   );
 }

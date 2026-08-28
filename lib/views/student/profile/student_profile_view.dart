@@ -622,8 +622,8 @@ class _DefaultProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ColoredBox(
-      color: Colors.white,
+    return  ColoredBox(
+      color: Theme.of(context).colorScheme.surface,
       child: Center(
         child: Icon(
           Icons.person_rounded,
@@ -678,12 +678,12 @@ class _ProfileTextField extends StatelessWidget {
             color: AppColors.primaryBlue,
             fontWeight: FontWeight.w700,
           ),
-          hintStyle: const TextStyle(
+          hintStyle:  TextStyle(
             fontFamily: 'Cairo',
-            color: AppColors.textGrey,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surface,
           contentPadding: const EdgeInsets.all(18),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(24),

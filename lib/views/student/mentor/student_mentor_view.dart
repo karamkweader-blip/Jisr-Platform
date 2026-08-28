@@ -14,11 +14,11 @@ class StudentMentorView extends GetView<StudentMentorController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           surfaceTintColor: Colors.transparent,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
@@ -129,7 +129,7 @@ class _MentorTabs extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
       ),
@@ -239,12 +239,13 @@ class _MentorApplicationForm extends GetView<StudentMentorController> {
                       value ?? '',
               validator: controller.specializationValidator,
               decoration: _fieldDecoration(
+                context,
                 'التخصص',
                 Icons.category_outlined,
               ),
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 13,
               ),
             ),
@@ -326,7 +327,7 @@ class _MentorApplicationForm extends GetView<StudentMentorController> {
                     fontFamily: 'Cairo',
                     color: selected
                         ? AppColors.primaryBlue
-                        : AppColors.textDark,
+                        : Theme.of(context).colorScheme.onSurface,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -374,19 +375,19 @@ class _CvPicker extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.11)),
         ),
         child: file == null
             ? Row(
                 children: [
-                  const Expanded(
+                   Expanded(
                     child: Text(
                       'السيرة الذاتية: PDF أو DOCX، بحد أقصى 5 MB',
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 11,
                       ),
                     ),
@@ -412,9 +413,9 @@ class _CvPicker extends StatelessWidget {
                     child: Text(
                       file.name,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textDark,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
@@ -454,7 +455,7 @@ class _MentorApplicationStatus
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: statusColor.withOpacity(.2)),
       ),
@@ -543,6 +544,7 @@ class _MentorDiscoveryTab extends GetView<StudentMentorController> {
                 onChanged: controller.onSearchChanged,
                 textInputAction: TextInputAction.search,
                 decoration: _fieldDecoration(
+                  context,
                   'ابحث بالاسم أو البريد الكامل',
                   Icons.search_rounded,
                 ).copyWith(
@@ -577,12 +579,13 @@ class _MentorDiscoveryTab extends GetView<StudentMentorController> {
                   ],
                   onChanged: controller.selectMentorSpecialization,
                   decoration: _fieldDecoration(
+                    context,
                     'تصفية حسب التخصص',
                     Icons.filter_alt_outlined,
                   ),
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 12,
                   ),
                 ),
@@ -733,7 +736,7 @@ class _MentorCard extends GetView<StudentMentorController> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: recommendation.isRecommended
@@ -769,9 +772,9 @@ class _MentorCard extends GetView<StudentMentorController> {
                       ),
                       Text(
                         mentor.professionalTitle,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 10,
                         ),
                       ),
@@ -818,9 +821,9 @@ class _MentorCard extends GetView<StudentMentorController> {
                 recommendation.matchingSkills
                     .map((skill) => skill.name)
                     .join('، '),
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 10,
                 ),
               ),
@@ -896,12 +899,12 @@ class _MentorField extends StatelessWidget {
             FocusScope.of(context).nextFocus();
           }
         },
-        style: const TextStyle(
+        style:  TextStyle(
           fontFamily: 'Cairo',
-          color: AppColors.textDark,
+          color: Theme.of(context).colorScheme.onSurface,
           fontSize: 13,
         ),
-        decoration: _fieldDecoration(label, icon),
+        decoration: _fieldDecoration(context, label, icon),
       ),
     );
   }
@@ -930,9 +933,9 @@ class _SectionTitle extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           subtitle,
-          style: const TextStyle(
+          style:  TextStyle(
             fontFamily: 'Cairo',
-            color: AppColors.textGrey,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontSize: 10,
           ),
         ),
@@ -956,9 +959,9 @@ class _StatusInfo extends StatelessWidget {
         children: [
           Text(
             '$label: ',
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
@@ -966,9 +969,9 @@ class _StatusInfo extends StatelessWidget {
           Expanded(
             child: Text(
               value.isEmpty ? 'غير محدد' : value,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 10,
                 height: 1.45,
               ),
@@ -1010,9 +1013,9 @@ class _MentorError extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 12,
               ),
             ),
@@ -1031,13 +1034,17 @@ class _MentorError extends StatelessWidget {
   }
 }
 
-InputDecoration _fieldDecoration(String label, IconData icon) {
+InputDecoration _fieldDecoration(
+  BuildContext context,
+  String label,
+  IconData icon,
+) {
   return InputDecoration(
     labelText: label,
     labelStyle: const TextStyle(fontFamily: 'Cairo', fontSize: 12),
     prefixIcon: Icon(icon, color: AppColors.primaryBlue),
     filled: true,
-    fillColor: AppColors.cardWhite,
+    fillColor: Theme.of(context).colorScheme.surface,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
       borderSide: BorderSide.none,

@@ -14,10 +14,10 @@ class StudentMentorDetailsView extends GetView<StudentMentorController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -52,9 +52,9 @@ class StudentMentorDetailsView extends GetView<StudentMentorController> {
                     Text(
                       controller.mentorDetailsError.value,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textDark,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -88,13 +88,16 @@ class StudentMentorDetailsView extends GetView<StudentMentorController> {
                   title: 'الخبرات',
                   child: Text(
                     mentor.expertise,
-                    style: _bodyStyle,
+                    style: _bodyStyle(context),
                   ),
                 ),
                 const SizedBox(height: 12),
                 _DetailsSection(
                   title: 'نبذة',
-                  child: Text(mentor.bio, style: _bodyStyle),
+                  child: Text(
+                    mentor.bio,
+                    style: _bodyStyle(context),
+                  ),
                 ),
                 if (mentor.mentoringTopics.isNotEmpty) ...[
                   const SizedBox(height: 12),
@@ -166,12 +169,14 @@ class StudentMentorDetailsView extends GetView<StudentMentorController> {
   }
 }
 
-const TextStyle _bodyStyle = TextStyle(
-  fontFamily: 'Cairo',
-  color: AppColors.textDark,
-  fontSize: 12,
-  height: 1.6,
-);
+TextStyle _bodyStyle(BuildContext context) {
+  return TextStyle(
+    fontFamily: 'Cairo',
+    color: Theme.of(context).colorScheme.onSurface,
+    fontSize: 12,
+    height: 1.6,
+  );
+}
 
 class _MentorProfileHeader extends StatelessWidget {
   final StudentMentorModel mentor;
@@ -276,7 +281,7 @@ class _DetailsSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(19),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
       ),
@@ -389,9 +394,9 @@ class _ContactButton extends StatelessWidget {
       leading: Icon(icon, color: AppColors.actionYellow),
       title: Text(
         label,
-        style: const TextStyle(
+        style:  TextStyle(
           fontFamily: 'Cairo',
-          color: AppColors.textDark,
+          color: Theme.of(context).colorScheme.onSurface,
           fontSize: 11,
         ),
       ),

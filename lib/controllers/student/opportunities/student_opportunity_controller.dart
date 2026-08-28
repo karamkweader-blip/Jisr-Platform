@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/models/student/opportunities/student_opportunity_model.dart';
 import 'package:jisr_platform/services/student/opportunities/student_opportunity_service.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
 
 class StudentOpportunityController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -80,13 +82,13 @@ class StudentOpportunityController extends GetxController
 
       final response = await _service.opportunityDetails(opportunityId);
       selectedOpportunity.value = response.data;
-    } catch (e) {
-      JisrSnackbar.show(
-        title: 'خطأ',
-        message: e.toString().replaceFirst('Exception: ', ''),
-        type: JisrSnackbarType.error,
-      );
-    } finally {
+    } catch (error) {
+  ApiErrorPresenter.show(
+    error,
+    operation: ApiOperation.opportunity,
+  );
+}
+finally {
       isLoadingDetails.value = false;
     }
   }
@@ -115,25 +117,20 @@ class StudentOpportunityController extends GetxController
     try {
       isApplying.value = true;
 
-      final response = await _service.applyToOpportunity(opportunityId);
-
       await fetchOpportunityDetails(opportunityId);
       await refreshOpportunities();
 
       JisrSnackbar.show(
         title: 'تم التقديم',
-        message: response.message.isEmpty
-            ? 'تم إرسال طلب التقديم بنجاح'
-            : response.message,
+       message: 'تم إرسال طلب التقديم بنجاح.',
         type: JisrSnackbarType.success,
       );
-    } catch (e) {
-      JisrSnackbar.show(
-        title: 'فشل التقديم',
-        message: e.toString().replaceFirst('Exception: ', ''),
-        type: JisrSnackbarType.error,
-      );
-    } finally {
+   } catch (error) {
+  ApiErrorPresenter.show(
+    error,
+    operation: ApiOperation.application,
+  );
+} finally {
       isApplying.value = false;
     }
   }

@@ -3,50 +3,110 @@ import 'package:jisr_platform/models/company/tasks/company_task_assignment_model
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_assignments_service.dart';
 
-class CompanyTaskAssignmentsController extends GetxController {
-  final CompanyTaskAssignmentsService _assignmentsService;
+class CompanyTaskAssignmentsController
+    extends GetxController {
+  final CompanyTaskAssignmentsService
+      _assignmentsService;
 
-  CompanyTaskAssignmentsController(this._assignmentsService);
+  CompanyTaskAssignmentsController(
+    this._assignmentsService,
+  );
+
+  static const Set<String>
+      _supportedStatuses = {
+    'all',
+    'working',
+    'submitted',
+    'completed',
+  };
 
   final RxBool isLoading = false.obs;
+
   final RxString errorMessage = ''.obs;
 
-  final RxString selectedStatus = 'all'.obs;
+  final RxString selectedStatus =
+      'all'.obs;
 
-  final RxList<CompanyTaskAssignmentModel> assignments =
+  final RxList<CompanyTaskAssignmentModel>
+      assignments =
       <CompanyTaskAssignmentModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
+
+    _applyInitialStatus();
     fetchAssignments();
   }
 
-  List<CompanyTaskAssignmentModel> get visibleAssignments {
-    final filteredAssignments = assignments.where((assignment) {
+  void _applyInitialStatus() {
+    final arguments = Get.arguments;
+
+    if (arguments is! Map) {
+      return;
+    }
+
+    final initialStatus =
+        arguments['initialStatus']
+            ?.toString();
+
+    if (initialStatus == null ||
+        !_supportedStatuses.contains(
+          initialStatus,
+        )) {
+      return;
+    }
+
+    selectedStatus.value =
+        initialStatus;
+  }
+
+  List<CompanyTaskAssignmentModel>
+      get visibleAssignments {
+    final filteredAssignments =
+        assignments.where((assignment) {
       if (selectedStatus.value == 'all') {
         return true;
       }
 
-      return assignment.status == selectedStatus.value;
+      return assignment.status ==
+          selectedStatus.value;
     }).toList();
 
-    filteredAssignments.sort((first, second) {
-      final firstPriority = _statusPriority(first.status);
-      final secondPriority = _statusPriority(second.status);
+    filteredAssignments.sort(
+      (first, second) {
+        final firstPriority =
+            _statusPriority(
+          first.status,
+        );
 
-      if (firstPriority != secondPriority) {
-        return firstPriority.compareTo(secondPriority);
-      }
+        final secondPriority =
+            _statusPriority(
+          second.status,
+        );
 
-      final firstDeadline =
-          first.task.deadline?.millisecondsSinceEpoch ?? 9999999999999;
+        if (firstPriority !=
+            secondPriority) {
+          return firstPriority.compareTo(
+            secondPriority,
+          );
+        }
 
-      final secondDeadline =
-          second.task.deadline?.millisecondsSinceEpoch ?? 9999999999999;
+        final firstDeadline =
+            first.task.deadline
+                    ?.millisecondsSinceEpoch ??
+                9999999999999;
 
-      return firstDeadline.compareTo(secondDeadline);
-    });
+        final secondDeadline =
+            second.task.deadline
+                    ?.millisecondsSinceEpoch ??
+                9999999999999;
+
+        return firstDeadline.compareTo(
+          secondDeadline,
+        );
+      },
+    );
 
     return filteredAssignments;
   }
@@ -61,10 +121,18 @@ class CompanyTaskAssignmentsController extends GetxController {
 
       errorMessage.value = '';
 
-      final result = await _assignmentsService.getTaskAssignments();
+      final result =
+          await _assignmentsService
+              .getTaskAssignments();
+
       assignments.assignAll(result);
     } catch (e) {
-      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
+      errorMessage.value = e
+          .toString()
+          .replaceFirst(
+            'Exception: ',
+            '',
+          );
     } finally {
       if (showLoading) {
         isLoading.value = false;
@@ -73,10 +141,18 @@ class CompanyTaskAssignmentsController extends GetxController {
   }
 
   Future<void> refreshAssignments() async {
-    await fetchAssignments(showLoading: false);
+    await fetchAssignments(
+      showLoading: false,
+    );
   }
 
   void selectStatus(String status) {
+    if (!_supportedStatuses.contains(
+      status,
+    )) {
+      return;
+    }
+
     selectedStatus.value = status;
   }
 
@@ -85,34 +161,51 @@ class CompanyTaskAssignmentsController extends GetxController {
       return assignments.length;
     }
 
-    return assignments.where((assignment) {
-      return assignment.status == status;
-    }).length;
+    return assignments.where(
+      (assignment) {
+        return assignment.status ==
+            status;
+      },
+    ).length;
   }
 
-  String assignmentStatusLabel(String status) {
+  String assignmentStatusLabel(
+    String status,
+  ) {
     switch (status) {
       case 'working':
         return 'قيد التنفيذ';
+
       case 'submitted':
         return 'بانتظار المراجعة';
+
       case 'completed':
         return 'مكتملة';
+
       default:
-        return status.isEmpty ? 'غير محددة' : status;
+        return status.isEmpty
+            ? 'غير محددة'
+            : status;
     }
   }
 
-  String difficultyLabel(String difficultyLevel) {
+  String difficultyLabel(
+    String difficultyLevel,
+  ) {
     switch (difficultyLevel) {
       case 'beginner':
         return 'مبتدئ';
+
       case 'intermediate':
         return 'متوسط';
+
       case 'advanced':
         return 'متقدم';
+
       default:
-        return difficultyLevel.isEmpty ? 'غير محدد' : difficultyLevel;
+        return difficultyLevel.isEmpty
+            ? 'غير محدد'
+            : difficultyLevel;
     }
   }
 
@@ -123,15 +216,23 @@ class CompanyTaskAssignmentsController extends GetxController {
 
     final localDate = date.toLocal();
 
-    return '${localDate.year}/${_twoDigits(localDate.month)}/${_twoDigits(localDate.day)}';
+    return '${localDate.year}/'
+        '${_twoDigits(localDate.month)}/'
+        '${_twoDigits(localDate.day)}';
   }
 
-  String deadlineHint(DateTime? deadline) {
+  String deadlineHint(
+    DateTime? deadline,
+  ) {
     if (deadline == null) {
       return 'لا يوجد موعد نهائي';
     }
 
-    final difference = deadline.toLocal().difference(DateTime.now());
+    final difference = deadline
+        .toLocal()
+        .difference(
+          DateTime.now(),
+        );
 
     if (difference.isNegative) {
       return 'انتهى الموعد';
@@ -145,39 +246,54 @@ class CompanyTaskAssignmentsController extends GetxController {
       return 'ينتهي غدًا';
     }
 
-    return 'ينتهي خلال ${difference.inDays} أيام';
+    return 'ينتهي خلال '
+        '${difference.inDays} أيام';
   }
 
   int _statusPriority(String status) {
     switch (status) {
       case 'submitted':
         return 0;
+
       case 'working':
         return 1;
+
       case 'completed':
         return 2;
+
       default:
         return 3;
     }
   }
 
   String _twoDigits(int value) {
-    return value.toString().padLeft(2, '0');
+    return value
+        .toString()
+        .padLeft(
+          2,
+          '0',
+        );
   }
-  
-  Future<void> goToAssignmentWorkspace(
-  CompanyTaskAssignmentModel assignment,
-) async {
-  await Get.toNamed(
-    Routes.companyTaskAssignmentWorkspace,
-    arguments: {
-      'assignmentId': assignment.assignmentId,
-      'studentName': assignment.student.name,
-      'studentEmail': assignment.student.email,
-      'studentProfilePictureUrl': assignment.student.profilePictureUrl,
-    },
-  );
 
-  await refreshAssignments();
-}
+  Future<void> goToAssignmentWorkspace(
+    CompanyTaskAssignmentModel assignment,
+  ) async {
+    await Get.toNamed(
+      Routes.companyTaskAssignmentWorkspace,
+      arguments: {
+        'assignmentId':
+            assignment.assignmentId,
+        'studentName':
+            assignment.student.name,
+        'studentEmail':
+            assignment.student.email,
+        'studentProfilePictureUrl':
+            assignment
+                .student
+                .profilePictureUrl,
+      },
+    );
+
+    await refreshAssignments();
+  }
 }

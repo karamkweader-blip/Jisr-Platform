@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
-class RegisterStepActionButton extends StatelessWidget {
+class RegisterStepActionButton
+    extends StatelessWidget {
   final VoidCallback? onPressed;
   final String label;
   final bool isPrimary;
@@ -19,7 +20,11 @@ class RegisterStepActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BorderRadius borderRadius = BorderRadius.circular(18);
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
+    final borderRadius =
+        BorderRadius.circular(18);
 
     if (isPrimary) {
       return Container(
@@ -29,7 +34,8 @@ class RegisterStepActionButton extends StatelessWidget {
           borderRadius: borderRadius,
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryBlue.withOpacity(0.20),
+              color: AppColors.primaryBlue
+                  .withOpacity(0.20),
               blurRadius: 16,
               offset: const Offset(0, 8),
             ),
@@ -41,12 +47,17 @@ class RegisterStepActionButton extends StatelessWidget {
               ? const SizedBox(
                   width: 18,
                   height: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
+                  child:
+                      CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
                 )
-              : Icon(icon ?? Icons.arrow_forward_rounded, color: Colors.white),
+              : Icon(
+                  icon ??
+                      Icons.arrow_forward_rounded,
+                  color: Colors.white,
+                ),
           label: Text(
             label,
             style: const TextStyle(
@@ -57,8 +68,12 @@ class RegisterStepActionButton extends StatelessWidget {
           ),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
+            disabledBackgroundColor:
+                Colors.transparent,
             shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(borderRadius: borderRadius),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius,
+            ),
           ),
         ),
       );
@@ -83,12 +98,14 @@ class RegisterStepActionButton extends StatelessWidget {
         ),
         style: OutlinedButton.styleFrom(
           side: BorderSide(
-            color: AppColors.primaryBlue.withOpacity(0.18),
+            color: AppColors.primaryBlue
+                .withOpacity(0.18),
             width: 1.4,
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: colorScheme.surface,
+          foregroundColor: AppColors.primaryBlue,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: borderRadius,
           ),
         ),
       ),

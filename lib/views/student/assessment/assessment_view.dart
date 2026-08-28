@@ -16,10 +16,10 @@ class AssessmentView extends GetView<AssessmentController> {
       textDirection: TextDirection.rtl,
 
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -75,12 +75,12 @@ class AssessmentView extends GetView<AssessmentController> {
                     style: const TextStyle(fontFamily: 'Cairo'),
                     decoration: InputDecoration(
                       hintText: 'اكتب الإجابة هنا...',
-                      hintStyle: const TextStyle(
+                      hintStyle:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Theme.of(context).colorScheme.surface,
                       contentPadding: const EdgeInsets.all(18),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(26),
@@ -134,10 +134,10 @@ class AssessmentView extends GetView<AssessmentController> {
             return const _LoadingCard(text: 'عم نجيب السؤال...');
           }
 
-          return const Center(
+          return  Center(
             child: Text(
               'لا يوجد سؤال حالياً',
-              style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+              style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           );
         }),
@@ -226,7 +226,7 @@ class _QuestionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(30),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(0.08)),
         boxShadow: [
@@ -258,9 +258,9 @@ class _QuestionCard extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             questionText,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 16,
               height: 1.7,
               fontWeight: FontWeight.w600,
@@ -338,19 +338,19 @@ class _FeedbackCard extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               feedback.isEmpty ? 'تم تقييم الإجابة.' : feedback,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.6,
                 fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
+             Text(
               'سيتم الانتقال للسؤال التالي بعد 1 ثانية.',
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 12,
               ),
             ),
@@ -373,7 +373,7 @@ class _LoadingCard extends StatelessWidget {
         width: 240,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
@@ -624,7 +624,7 @@ class _ReportSection extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
@@ -658,9 +658,9 @@ class _ReportSection extends StatelessWidget {
           if (isEmpty)
             Text(
               emptyText,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             )
           else
@@ -698,7 +698,7 @@ class _SkillResultTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(22),
         ),
         child: Column(
@@ -740,18 +740,18 @@ class _SkillResultTile extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               'المستوى النهائي: ${level.toStringAsFixed(1)} / 5 · الأسئلة: ${skill.questionCount}',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 12,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               'المستوى الأولي: ${skill.initialLevel.toStringAsFixed(1)}',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 12,
               ),
             ),
@@ -809,18 +809,18 @@ class _GapTile extends StatelessWidget {
                     isOk
                         ? '${gap.skillName}: المستوى كافٍ للسوق'
                         : '${gap.skillName}: الفجوة ${gap.gap.toStringAsFixed(1)} مستوى',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'المطلوب: ${gap.requiredLevel.toStringAsFixed(1)} · الحالي: ${gap.actualLevel.toStringAsFixed(1)} · الاعتمادية: ${gap.reliability}',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
                       height: 1.4,
                     ),
@@ -928,10 +928,10 @@ class _LearningPathTile extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(26),
-                      gradient: const LinearGradient(
+                      gradient:  LinearGradient(
                         begin: Alignment.topRight,
                         end: Alignment.bottomLeft,
-                        colors: [Colors.white, Color(0xFFF6FAFF)],
+                        colors: [Theme.of(context).colorScheme.surface, Color(0xFFF6FAFF)],
                       ),
                       border: Border.all(
                         color: AppColors.primaryBlue.withOpacity(.07),
@@ -966,9 +966,9 @@ class _LearningPathTile extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           'من ${item.currentLevel.toStringAsFixed(1)} إلى ${item.targetLevel.toStringAsFixed(1)}',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -1100,7 +1100,7 @@ class _ResourceButton extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.all(13),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: AppColors.actionYellow.withOpacity(.20)),
             boxShadow: [
@@ -1145,9 +1145,9 @@ class _ResourceButton extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       '${resource.provider.isEmpty ? 'مصدر' : resource.provider} · ${resource.estimatedHours.isEmpty ? 'غير محدد' : resource.estimatedHours} ساعة',
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                       ),
                     ),
@@ -1177,14 +1177,14 @@ class _EmptyRoadmapResource extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
       ),
-      child: const Text(
+      child:  Text(
         'لا توجد مصادر مقترحة حالياً.',
         style: TextStyle(
           fontFamily: 'Cairo',
-          color: AppColors.textGrey,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -1260,12 +1260,12 @@ class _EmptyReportBox extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Text(
         text,
-        style: const TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+        style:  TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
     );
   }
@@ -1307,8 +1307,8 @@ class _RoadmapSection extends GetView<AssessmentController> {
             builder: (context, setState) {
               return Container(
                 padding: const EdgeInsets.fromLTRB(22, 18, 22, 24),
-                decoration: const BoxDecoration(
-                  color: AppColors.background,
+                decoration:  BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
                 ),
                 child: Column(
@@ -1318,7 +1318,7 @@ class _RoadmapSection extends GetView<AssessmentController> {
                       width: 44,
                       height: 5,
                       decoration: BoxDecoration(
-                        color: AppColors.textGrey.withOpacity(.25),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -1333,12 +1333,12 @@ class _RoadmapSection extends GetView<AssessmentController> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                     Text(
                       'حدد مدة الخطة وعدد ساعات التعلم أسبوعياً.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 22),
@@ -1399,7 +1399,7 @@ class _RoadmapSection extends GetView<AssessmentController> {
       margin: const EdgeInsets.only(top: 8, bottom: 18),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
@@ -1504,7 +1504,7 @@ class _PlanStepper extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
@@ -1535,9 +1535,9 @@ class _PlanStepper extends StatelessWidget {
             child: Text(
               '$value',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -1573,12 +1573,12 @@ class _SmallRoundButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: enabled
               ? AppColors.actionYellow.withOpacity(.16)
-              : AppColors.textGrey.withOpacity(.08),
+              : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.08),
           shape: BoxShape.circle,
         ),
         child: Icon(
           icon,
-          color: enabled ? AppColors.actionYellow : AppColors.textGrey,
+          color: enabled ? AppColors.actionYellow : Theme.of(context).colorScheme.onSurfaceVariant,
           size: 21,
         ),
       ),
@@ -1656,8 +1656,8 @@ class _AiPlanSheet extends StatelessWidget {
           maxHeight: MediaQuery.of(context).size.height * .86,
         ),
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
-        decoration: const BoxDecoration(
-          color: AppColors.background,
+        decoration:  BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         ),
         child: SingleChildScrollView(
@@ -1670,7 +1670,7 @@ class _AiPlanSheet extends StatelessWidget {
                   width: 46,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: AppColors.textGrey.withOpacity(.25),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -1690,9 +1690,9 @@ class _AiPlanSheet extends StatelessWidget {
                 plan.plan.summaryAr.isEmpty
                     ? plan.summaryText
                     : plan.plan.summaryAr,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   height: 1.6,
                 ),
               ),
@@ -1706,7 +1706,7 @@ class _AiPlanSheet extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 14),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
@@ -1816,9 +1816,9 @@ class _AiPlanLine extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.5,
               ),
             ),

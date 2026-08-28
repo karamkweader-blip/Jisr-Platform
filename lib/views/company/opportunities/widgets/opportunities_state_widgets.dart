@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class OpportunitiesLoadingState extends StatelessWidget {
   const OpportunitiesLoadingState({super.key});
 
@@ -42,7 +43,7 @@ class OpportunitiesPageState extends StatelessWidget {
         vertical: 42,
       ),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.06),
@@ -67,8 +68,8 @@ class OpportunitiesPageState extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 16,
               fontWeight: FontWeight.w900,
             ),
@@ -77,8 +78,8 @@ class OpportunitiesPageState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12.5,
               height: 1.5,
               fontWeight: FontWeight.w500,

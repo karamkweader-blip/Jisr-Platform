@@ -337,4 +337,14 @@ class ApiLinks {
   static const String complaints = '$baseUrl/complaints';
 
   static const String myComplaints = '$baseUrl/complaints/mine';
+//search students
+static const String companyStudents =
+    '$baseUrl/company/students';
+
+static String companyStudentDetails(
+  int studentId,
+) =>
+    '$companyStudents/$studentId';
+
+  
 }
