@@ -7,88 +7,115 @@ import 'package:jisr_platform/core/widgets/auth_header.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 import 'package:jisr_platform/core/widgets/jisr_text_field.dart';
 
-class ResetPasswordView extends GetView<ResetPasswordController> {
-  const ResetPasswordView({super.key});
+class ResetPasswordView
+    extends GetView<ResetPasswordController> {
+  const ResetPasswordView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor:
+          Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding:
+                const EdgeInsets.symmetric(
+              horizontal: 30,
+            ),
             child: Form(
               key: controller.formKey,
               child: Column(
                 children: [
                   const SizedBox(height: 55),
-
                   const AuthHeader(
-                    title: 'كلمة مرور جديدة',
-                    subtitle: 'اختر كلمة مرور آمنة لحسابك',
+                    title:
+                        'كلمة مرور جديدة',
+                    subtitle:
+                        'اختر كلمة مرور آمنة لحسابك',
                     logoSize: 80,
                   ),
-
                   const SizedBox(height: 25),
-
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding:
+                        const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(18),
+                      color: AppColors
+                          .primaryBlue
+                          .withOpacity(0.06),
+                      borderRadius:
+                          BorderRadius.circular(18),
                     ),
                     child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
                       children: [
                         Text(
                           'نصائح لكلمة مرور قوية',
                           style: TextStyle(
-                            color: AppColors.primaryBlue,
+                            color: AppColors
+                                .primaryBlue,
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                            fontWeight:
+                                FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: 12),
-                        _PasswordHint(text: 'استخدم 6 أحرف على الأقل'),
-                        _PasswordHint(text: 'اجمع بين أحرف وأرقام إن أمكن'),
-                        _PasswordHint(text: 'تجنب استخدام كلمة مرور قديمة'),
+                        _PasswordHint(
+                          text:
+                              'استخدم 6 أحرف على الأقل',
+                        ),
+                        _PasswordHint(
+                          text:
+                              'اجمع بين أحرف وأرقام إن أمكن',
+                        ),
+                        _PasswordHint(
+                          text:
+                              'تجنب استخدام كلمة مرور قديمة',
+                        ),
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 25),
-
                   JisrTextField(
-                    controller: controller.passwordController,
-                    hintText: 'كلمة المرور الجديدة',
+                    controller: controller
+                        .passwordController,
+                    hintText:
+                        'كلمة المرور الجديدة',
                     icon: Icons.lock_outline,
                     obscureText: true,
-                    validator: AppValidators.password,
-                    textInputAction: TextInputAction.next,
+                    validator:
+                        AppValidators.password,
+                    textInputAction:
+                        TextInputAction.next,
                   ),
-
                   JisrTextField(
-                    controller: controller.confirmController,
-                    hintText: 'تأكيد كلمة المرور',
+                    controller:
+                        controller.confirmController,
+                    hintText:
+                        'تأكيد كلمة المرور',
                     icon: Icons.lock_outline,
                     obscureText: true,
-                    validator: controller.validateConfirmPassword,
-                    textInputAction: TextInputAction.done,
+                    validator: controller
+                        .validateConfirmPassword,
+                    textInputAction:
+                        TextInputAction.done,
                   ),
-
                   const SizedBox(height: 45),
-
                   Obx(
                     () => JisrPrimaryButton(
-                      text: 'تغيير كلمة المرور',
-                      isLoading: controller.isLoading.value,
-                      onPressed: controller.resetPassword,
+                      text:
+                          'تغيير كلمة المرور',
+                      isLoading:
+                          controller.isLoading.value,
+                      onPressed: controller
+                          .resetPassword,
                     ),
                   ),
-
                   const SizedBox(height: 30),
                 ],
               ),
@@ -100,15 +127,19 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
   }
 }
 
-class _PasswordHint extends StatelessWidget {
+class _PasswordHint
+    extends StatelessWidget {
   final String text;
 
-  const _PasswordHint({required this.text});
+  const _PasswordHint({
+    required this.text,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 7),
+      padding:
+          const EdgeInsets.only(bottom: 7),
       child: Row(
         children: [
           const Icon(
@@ -119,8 +150,10 @@ class _PasswordHint extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             text,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style: TextStyle(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface,
               fontSize: 13,
             ),
           ),

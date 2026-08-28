@@ -120,9 +120,7 @@ class _AppBarAction extends StatelessWidget {
         width: 38,
         height: 38,
         child: Material(
-          color: dark
-              ? const Color(0xFF17283A)
-              : AppColors.cardWhite,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius:
               BorderRadius.circular(13),
           child: InkWell(

@@ -36,7 +36,7 @@ class CompanyOpportunityDetailsView
           if (!didPop) controller.close();
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: Get.theme.scaffoldBackgroundColor,
           body: SafeArea(
             child: Obx(() {
               final opportunity = controller.opportunity.value;
@@ -127,8 +127,8 @@ class CompanyOpportunityDetailsView
                           opportunity.description.trim().isEmpty
                               ? 'لا يوجد وصف مضاف لهذه الفرصة.'
                               : opportunity.description,
-                          style: const TextStyle(
-                            color: AppColors.textDark,
+                          style:  TextStyle(
+                            color: Get.theme.colorScheme.onSurface,
                             fontSize: 14,
                             height: 1.7,
                             fontWeight: FontWeight.w600,
@@ -223,14 +223,14 @@ class _TopBar extends StatelessWidget {
           onTap: onBack,
         ),
         const SizedBox(width: 12),
-        const Expanded(
+         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'تفاصيل الفرصة',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
                 ),
@@ -239,7 +239,7 @@ class _TopBar extends StatelessWidget {
               Text(
                 'إدارة ومراجعة معلومات الفرصة',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -249,7 +249,7 @@ class _TopBar extends StatelessWidget {
         ),
         PopupMenuButton<String>(
           enabled: !isBusy,
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
@@ -344,7 +344,7 @@ class _MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = destructive
         ? Colors.red
-        : AppColors.textDark;
+        : Get.theme.colorScheme.onSurface;
 
     return Row(
       children: [
@@ -378,7 +378,7 @@ class _CircleIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.cardWhite,
+      color: Get.theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
@@ -521,12 +521,12 @@ class _OpportunityHeaderCard extends StatelessWidget {
                 ? ElevatedButton.icon(
                     onPressed: isBusy ? null : onPublish,
                     icon: isBusy
-                        ? const SizedBox(
+                        ?  SizedBox(
                             width: 18,
                             height: 18,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: AppColors.textDark,
+                              color: Get.theme.colorScheme.onSurface,
                             ),
                           )
                         : const Icon(
@@ -539,11 +539,11 @@ class _OpportunityHeaderCard extends StatelessWidget {
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.actionYellow,
-                      foregroundColor: AppColors.textDark,
+                      foregroundColor: Get.theme.colorScheme.onSurface,
                       disabledBackgroundColor:
                           AppColors.actionYellow.withOpacity(0.65),
                       disabledForegroundColor:
-                          AppColors.textDark,
+                          Get.theme.colorScheme.onSurface,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(
                         vertical: 14,
@@ -725,7 +725,7 @@ class _StatusMessageCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: AppColors.actionYellow.withOpacity(0.26),
@@ -757,8 +757,8 @@ class _StatusMessageCard extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 12.5,
                 height: 1.55,
                 fontWeight: FontWeight.w700,
@@ -803,7 +803,7 @@ class _SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -834,8 +834,8 @@ class _SectionCard extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w800,
                 ),
@@ -873,7 +873,7 @@ class _InfoTile extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.06),
@@ -890,8 +890,8 @@ class _InfoTile extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             title,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
@@ -901,8 +901,8 @@ class _InfoTile extends StatelessWidget {
             value,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 13.5,
               height: 1.35,
               fontWeight: FontWeight.w800,
@@ -958,7 +958,7 @@ class _SkillTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.06),
@@ -988,8 +988,8 @@ class _SkillTile extends StatelessWidget {
                   children: [
                     Text(
                       skill.name,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
                       ),
@@ -997,8 +997,8 @@ class _SkillTile extends StatelessWidget {
                     const SizedBox(height: 5),
                     Text(
                       'الوزن ${skill.weight.toStringAsFixed(1)}',
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                       ),
@@ -1037,8 +1037,8 @@ class _SkillTile extends StatelessWidget {
             children: [
               Text(
                 'المستوى المطلوب ${skill.requiredLevel}%',
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
                 ),
@@ -1076,14 +1076,14 @@ class _EmptySkills extends StatelessWidget {
         horizontal: 16,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
       ),
-      child: const Column(
+      child:  Column(
         children: [
           Icon(
             Icons.layers_clear_outlined,
-            color: AppColors.textGrey,
+            color: Get.theme.colorScheme.onSurfaceVariant,
             size: 32,
           ),
           SizedBox(height: 9),
@@ -1091,7 +1091,7 @@ class _EmptySkills extends StatelessWidget {
             'لا توجد مهارات مضافة لهذه الفرصة',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12.5,
               fontWeight: FontWeight.w600,
             ),
@@ -1122,10 +1122,10 @@ class _LoadingView extends StatelessWidget {
                 onTap: onBack,
               ),
               const SizedBox(width: 12),
-              const Text(
+               Text(
                 'تفاصيل الفرصة',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
                 ),
@@ -1169,10 +1169,10 @@ class _ErrorView extends StatelessWidget {
                 onTap: onBack,
               ),
               const SizedBox(width: 12),
-              const Text(
+               Text(
                 'تفاصيل الفرصة',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
                 ),
@@ -1188,7 +1188,7 @@ class _ErrorView extends StatelessWidget {
                   vertical: 38,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.cardWhite,
+                  color: Get.theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Column(
@@ -1208,10 +1208,10 @@ class _ErrorView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 14),
-                    const Text(
+                     Text(
                       'تعذّر تحميل التفاصيل',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 16,
                         fontWeight: FontWeight.w900,
                       ),
@@ -1220,8 +1220,8 @@ class _ErrorView extends StatelessWidget {
                     Text(
                       message,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         height: 1.5,
                         fontWeight: FontWeight.w500,
                       ),

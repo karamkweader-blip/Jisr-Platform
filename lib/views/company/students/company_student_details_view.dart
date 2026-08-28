@@ -18,13 +18,13 @@ class CompanyStudentDetailsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
           scrolledUnderElevation: 0,
           centerTitle: true,
           backgroundColor:
-              AppColors.background,
+              Get.theme.scaffoldBackgroundColor,
           surfaceTintColor:
               Colors.transparent,
           foregroundColor:
@@ -648,7 +648,7 @@ class _SkillCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
           color: AppColors.primaryBlue
@@ -696,9 +696,9 @@ class _SkillCard extends StatelessWidget {
                           ? 'مهارة'
                           : skill.name,
                       style:
-                          const TextStyle(
+                           TextStyle(
                         color:
-                            AppColors.textDark,
+                            Get.theme.colorScheme.onSurface,
                         fontSize: 13,
                         fontWeight:
                             FontWeight.w900,
@@ -753,7 +753,7 @@ class _SkillCard extends StatelessWidget {
                       color: AppColors
                           .actionYellow,
                       backgroundColor:
-                          AppColors.textGrey
+                          Get.theme.colorScheme.onSurfaceVariant
                               .withValues(
                         alpha: 0.1,
                       ),
@@ -781,9 +781,9 @@ class _SkillCard extends StatelessWidget {
 
           Row(
             children: <Widget>[
-              const Icon(
+               Icon(
                 Icons.travel_explore_rounded,
-                color: AppColors.textGrey,
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 size: 14,
               ),
 
@@ -792,9 +792,9 @@ class _SkillCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   sourceLabel,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color:
-                        AppColors.textGrey,
+                        Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 9.5,
                     fontWeight:
                         FontWeight.w600,
@@ -805,9 +805,9 @@ class _SkillCard extends StatelessWidget {
               if (skill.confidenceScore > 0)
                 Text(
                   'الثقة ${(skill.confidenceScore * 100).round()}%',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color:
-                        AppColors.textGrey,
+                        Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 9.5,
                     fontWeight:
                         FontWeight.w700,
@@ -897,7 +897,7 @@ class _CvCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
           color: AppColors.primaryBlue
@@ -997,9 +997,9 @@ class _CvCard extends StatelessWidget {
 
                 Text(
                   'تاريخ الرفع: $uploadedAt',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color:
-                        AppColors.textGrey,
+                        Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 10,
                     fontWeight:
                         FontWeight.w600,
@@ -1107,7 +1107,7 @@ class _ProjectCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
           color: AppColors.primaryBlue
@@ -1149,9 +1149,9 @@ class _ProjectCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   project.title,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color:
-                        AppColors.textDark,
+                        Get.theme.colorScheme.onSurface,
                     fontSize: 12.5,
                     fontWeight:
                         FontWeight.w900,
@@ -1179,8 +1179,8 @@ class _ProjectCard extends StatelessWidget {
 
             Text(
               project.description!,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 11,
                 height: 1.5,
                 fontWeight: FontWeight.w600,
@@ -1260,7 +1260,7 @@ class _DetailsSection
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: AppColors.primaryBlue
@@ -1311,9 +1311,9 @@ class _DetailsSection
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color:
-                        AppColors.textDark,
+                        Get.theme.colorScheme.onSurface,
                     fontSize: 14,
                     fontWeight:
                         FontWeight.w900,
@@ -1380,9 +1380,9 @@ class _InfoRow extends StatelessWidget {
                 width: 90,
                 child: Text(
                   label,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color:
-                        AppColors.textGrey,
+                        Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight:
                         FontWeight.w700,
@@ -1396,8 +1396,8 @@ class _InfoRow extends StatelessWidget {
                   style: TextStyle(
                     color: displayValue ==
                             'غير محدد'
-                        ? AppColors.textGrey
-                        : AppColors.textDark,
+                        ? Get.theme.colorScheme.onSurfaceVariant
+                        : Get.theme.colorScheme.onSurface,
                     fontSize: 11.5,
                     height: 1.4,
                     fontWeight:
@@ -1412,7 +1412,7 @@ class _InfoRow extends StatelessWidget {
         if (showDivider)
           Divider(
             height: 1,
-            color: AppColors.textGrey
+            color: Get.theme.colorScheme.onSurfaceVariant
                 .withValues(
               alpha: 0.1,
             ),
@@ -1472,14 +1472,14 @@ class _CompactEmptyMessage
       width: double.infinity,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(
         children: <Widget>[
           Icon(
             icon,
-            color: AppColors.textGrey
+            color: Get.theme.colorScheme.onSurfaceVariant
                 .withValues(
               alpha: 0.7,
             ),
@@ -1491,8 +1491,8 @@ class _CompactEmptyMessage
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 11.5,
                 height: 1.45,
                 fontWeight: FontWeight.w600,

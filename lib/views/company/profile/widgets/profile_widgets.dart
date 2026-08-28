@@ -12,26 +12,31 @@ class PageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
             children: [
               Text(
                 'ملف الشركة',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: colorScheme.onSurface,
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
                   height: 1.25,
                 ),
               ),
-              SizedBox(height: 6),
+              const SizedBox(height: 6),
               Text(
                 'معلومات الحساب والبيانات الأساسية للشركة',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: colorScheme
+                      .onSurfaceVariant,
                   fontSize: 13.5,
                   fontWeight: FontWeight.w500,
                   height: 1.5,
@@ -41,36 +46,49 @@ class PageTitle extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        InkWell(
-          onTap: onEditPressed,
-          borderRadius: BorderRadius.circular(14),
-          child: Container(
-            height: 42,
-            padding: const EdgeInsets.symmetric(horizontal: 13),
-            decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: AppColors.primaryBlue.withOpacity(0.10),
-              ),
-            ),
-            child: const Row(
-              children: [
-                Icon(
-                  Icons.edit_rounded,
-                  color: AppColors.primaryBlue,
-                  size: 18,
-                ),
-                SizedBox(width: 6),
-                Text(
-                  'تعديل',
-                  style: TextStyle(
-                    color: AppColors.primaryBlue,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w900,
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onEditPressed,
+            borderRadius:
+                BorderRadius.circular(14),
+            child: Container(
+              height: 42,
+              padding:
+                  const EdgeInsets.symmetric(
+                    horizontal: 13,
                   ),
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlue
+                    .withOpacity(0.10),
+                borderRadius:
+                    BorderRadius.circular(14),
+                border: Border.all(
+                  color: AppColors.primaryBlue
+                      .withOpacity(0.18),
                 ),
-              ],
+              ),
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.edit_rounded,
+                    color:
+                        AppColors.primaryBlue,
+                    size: 18,
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    'تعديل',
+                    style: TextStyle(
+                      color:
+                          AppColors.primaryBlue,
+                      fontSize: 13,
+                      fontWeight:
+                          FontWeight.w900,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -304,18 +322,31 @@ class InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cleanValue = value.trim().isEmpty ? 'غير محدد' : value.trim();
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark =
+        theme.brightness == Brightness.dark;
+
+    final cleanValue = value.trim().isEmpty
+        ? 'غير محدد'
+        : value.trim();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(
+        bottom: 12,
+      ),
       child: Row(
         children: [
           Container(
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.075),
-              borderRadius: BorderRadius.circular(14),
+              color: AppColors.primaryBlue
+                  .withOpacity(
+                    isDark ? 0.18 : 0.075,
+                  ),
+              borderRadius:
+                  BorderRadius.circular(14),
             ),
             child: Icon(
               icon,
@@ -326,23 +357,28 @@ class InfoTile extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style: TextStyle(
+                    color: colorScheme
+                        .onSurfaceVariant,
                     fontSize: 12.5,
-                    fontWeight: FontWeight.w600,
+                    fontWeight:
+                        FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   cleanValue,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style: TextStyle(
+                    color:
+                        colorScheme.onSurface,
                     fontSize: 14.2,
-                    fontWeight: FontWeight.w800,
+                    fontWeight:
+                        FontWeight.w800,
                     height: 1.35,
                   ),
                 ),
@@ -355,7 +391,8 @@ class InfoTile extends StatelessWidget {
   }
 }
 
-class ProfileErrorState extends StatelessWidget {
+class ProfileErrorState
+    extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
 
@@ -367,28 +404,36 @@ class ProfileErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(22),
         child: Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
-            borderRadius: BorderRadius.circular(20),
+            color: colorScheme.surface,
+            borderRadius:
+                BorderRadius.circular(20),
+            border: Border.all(
+              color:
+                  colorScheme.outlineVariant,
+            ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(
                 Icons.error_outline_rounded,
-                color: AppColors.primaryBlue,
+                color: AppColors.dangerRed,
                 size: 38,
               ),
               const SizedBox(height: 12),
-              const Text(
+              Text(
                 'تعذر تحميل الملف',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w800,
                 ),
@@ -397,8 +442,9 @@ class ProfileErrorState extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style: TextStyle(
+                  color: colorScheme
+                      .onSurfaceVariant,
                   fontSize: 13.5,
                   height: 1.5,
                 ),
@@ -406,16 +452,11 @@ class ProfileErrorState extends StatelessWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: onRetry,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBlue,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
                 child: const Text(
                   'إعادة المحاولة',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

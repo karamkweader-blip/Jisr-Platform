@@ -7,125 +7,173 @@ import 'package:jisr_platform/core/widgets/auth_header.dart';
 import 'package:jisr_platform/core/widgets/jisr_primary_button.dart';
 import 'package:jisr_platform/core/widgets/jisr_text_field.dart';
 
-class RegisterStudentView extends GetView<RegisterStudentController> {
-  const RegisterStudentView({super.key});
+class RegisterStudentView
+    extends GetView<RegisterStudentController> {
+  const RegisterStudentView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor:
+            Theme.of(context)
+                .scaffoldBackgroundColor,
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding:
+                  const EdgeInsets.symmetric(
+                horizontal: 30,
+              ),
               child: Form(
                 key: controller.formKey,
                 child: Column(
                   children: [
                     const SizedBox(height: 35),
-
                     const AuthHeader(
-                      title: 'إنشاء حساب طالب',
-                      subtitle: 'أدخل بياناتك الأساسية للبدء في منصة جسور',
+                      title:
+                          'إنشاء حساب طالب',
+                      subtitle:
+                          'أدخل بياناتك الأساسية للبدء في منصة جسور',
                       logoSize: 95,
                       titleFontSize: 26,
                       spaceAfterLogo: 28,
                     ),
-
                     const SizedBox(height: 38),
-
                     JisrTextField(
-                      controller: controller.nameController,
+                      controller:
+                          controller.nameController,
                       hintText: 'الاسم الكامل',
                       icon: Icons.person_outline,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) =>
-                          AppValidators.requiredField(value, 'الاسم الكامل'),
+                      textInputAction:
+                          TextInputAction.next,
+                      validator: (value) {
+                        return AppValidators
+                            .requiredField(
+                          value,
+                          'الاسم الكامل',
+                        );
+                      },
                     ),
-
                     JisrTextField(
-                      controller: controller.emailController,
-                      hintText: 'البريد الإلكتروني',
-                      icon: Icons.email_outlined,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      validator: AppValidators.email,
+                      controller:
+                          controller.emailController,
+                      hintText:
+                          'البريد الإلكتروني',
+                      icon:
+                          Icons.email_outlined,
+                      keyboardType: TextInputType
+                          .emailAddress,
+                      textInputAction:
+                          TextInputAction.next,
+                      validator:
+                          AppValidators.email,
                     ),
-
                     Obx(
                       () => JisrTextField(
-                        controller: controller.passwordController,
-                        hintText: 'كلمة المرور',
-                        icon: Icons.lock_outline,
-                        obscureText: !controller.isPasswordVisible.value,
-                        textInputAction: TextInputAction.next,
-                        validator: AppValidators.password,
+                        controller: controller
+                            .passwordController,
+                        hintText:
+                            'كلمة المرور',
+                        icon:
+                            Icons.lock_outline,
+                        obscureText: !controller
+                            .isPasswordVisible
+                            .value,
+                        textInputAction:
+                            TextInputAction.next,
+                        validator:
+                            AppValidators.password,
                         suffixIcon: IconButton(
-                          onPressed: controller.isPasswordVisible.toggle,
+                          onPressed: controller
+                              .isPasswordVisible
+                              .toggle,
                           icon: Icon(
-                            controller.isPasswordVisible.value
+                            controller
+                                    .isPasswordVisible
+                                    .value
                                 ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: AppColors.primaryBlue.withOpacity(0.6),
+                                : Icons
+                                    .visibility_off,
+                            color: AppColors
+                                .primaryBlue
+                                .withOpacity(0.6),
                           ),
                         ),
                       ),
                     ),
-
                     Obx(
                       () => JisrTextField(
-                        controller: controller.confirmPasswordController,
-                        hintText: 'تأكيد كلمة المرور',
-                        icon: Icons.verified_user_outlined,
-                        obscureText: !controller.isConfirmPasswordVisible.value,
-                        textInputAction: TextInputAction.done,
+                        controller: controller
+                            .confirmPasswordController,
+                        hintText:
+                            'تأكيد كلمة المرور',
+                        icon: Icons
+                            .verified_user_outlined,
+                        obscureText: !controller
+                            .isConfirmPasswordVisible
+                            .value,
+                        textInputAction:
+                            TextInputAction.done,
                         validator: (value) {
-                          final passwordError = AppValidators.password(value);
+                          final passwordError =
+                              AppValidators
+                                  .password(value);
 
-                          if (passwordError != null) {
+                          if (passwordError !=
+                              null) {
                             return passwordError;
                           }
 
-                          if (value != controller.passwordController.text) {
+                          if (value !=
+                              controller
+                                  .passwordController
+                                  .text) {
                             return 'كلمتا المرور غير متطابقتين';
                           }
 
                           return null;
                         },
                         suffixIcon: IconButton(
-                          onPressed: controller.isConfirmPasswordVisible.toggle,
+                          onPressed: controller
+                              .isConfirmPasswordVisible
+                              .toggle,
                           icon: Icon(
-                            controller.isConfirmPasswordVisible.value
+                            controller
+                                    .isConfirmPasswordVisible
+                                    .value
                                 ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: AppColors.primaryBlue.withOpacity(0.6),
+                                : Icons
+                                    .visibility_off,
+                            color: AppColors
+                                .primaryBlue
+                                .withOpacity(0.6),
                           ),
                         ),
                       ),
                     ),
-
-                    const SizedBox(height: 4),
-
-                    const SizedBox(height: 32),
-
+                    const SizedBox(height: 36),
                     Obx(
                       () => JisrPrimaryButton(
                         text: 'إنشاء الحساب',
-                        isLoading: controller.isLoading.value,
-                        onPressed: controller.isLoading.value
+                        isLoading: controller
+                            .isLoading.value,
+                        onPressed: controller
+                                .isLoading.value
                             ? null
                             : () {
-                                print('BUTTON FROM VIEW PRESSED');
-                                controller.registerStudent();
+                                print(
+                                  'BUTTON FROM VIEW PRESSED',
+                                );
+                                controller
+                                    .registerStudent();
                               },
                       ),
                     ),
-
-                    const SizedBox(height: 34),
-
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 54),
                   ],
                 ),
               ),

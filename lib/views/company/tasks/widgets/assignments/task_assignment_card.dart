@@ -4,6 +4,7 @@ import 'package:jisr_platform/models/company/tasks/company_task_assignment_model
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_match_score_indicator.dart';
 import 'package:jisr_platform/views/company/tasks/widgets/assignments/assignment_status_chip.dart';
 
+import 'package:get/get.dart';
 class TaskAssignmentCard extends StatelessWidget {
   final CompanyTaskAssignmentModel assignment;
   final String statusLabel;
@@ -29,7 +30,7 @@ class TaskAssignmentCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -57,8 +58,8 @@ class TaskAssignmentCard extends StatelessWidget {
                       assignment.student.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.w900,
                       ),
@@ -70,8 +71,8 @@ class TaskAssignmentCard extends StatelessWidget {
                           : assignment.student.email,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
@@ -91,7 +92,7 @@ class TaskAssignmentCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(13),
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: Get.theme.scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(18),
             ),
             child: Column(
@@ -101,8 +102,8 @@ class TaskAssignmentCard extends StatelessWidget {
                   assignment.task.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 14,
                     height: 1.4,
                     fontWeight: FontWeight.w900,
@@ -138,8 +139,8 @@ class TaskAssignmentCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   'بدأ العمل: $startedAtText',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -150,7 +151,7 @@ class TaskAssignmentCard extends StatelessWidget {
                 style: TextStyle(
                   color: deadlineHint == 'انتهى الموعد'
                       ? Colors.red
-                      : AppColors.textGrey,
+                      : Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
                 ),
@@ -167,10 +168,10 @@ Row(
       color: AppColors.primaryBlue,
     ),
     const SizedBox(width: 7),
-    const Text(
+     Text(
       'توافق المهارات',
       style: TextStyle(
-        color: AppColors.textGrey,
+        color: Get.theme.colorScheme.onSurfaceVariant,
         fontSize: 11,
         fontWeight: FontWeight.w700,
       ),
@@ -280,7 +281,7 @@ class _InfoChip extends StatelessWidget {
         vertical: 7,
       ),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -294,8 +295,8 @@ class _InfoChip extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 10,
               fontWeight: FontWeight.w700,
             ),

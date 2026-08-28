@@ -11,6 +11,8 @@ class StepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: List.generate(
         3,
@@ -19,7 +21,9 @@ class StepIndicator extends StatelessWidget {
 
           return Expanded(
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(
+                milliseconds: 300,
+              ),
               curve: Curves.easeInOut,
               margin: EdgeInsets.only(
                 left: index == 0 ? 0 : 6,
@@ -27,11 +31,14 @@ class StepIndicator extends StatelessWidget {
               ),
               height: 10,
               decoration: BoxDecoration(
-                gradient: isActive ? AppColors.primaryGradient : null,
+                gradient: isActive
+                    ? AppColors.primaryGradient
+                    : null,
                 color: isActive
                     ? null
-                    : AppColors.primaryBlue.withOpacity(0.10),
-                borderRadius: BorderRadius.circular(20),
+                    : colorScheme.outlineVariant,
+                borderRadius:
+                    BorderRadius.circular(20),
               ),
             ),
           );

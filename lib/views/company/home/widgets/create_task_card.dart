@@ -14,11 +14,14 @@ class CreateTaskCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(20),
+        gradient:
+            AppColors.primaryGradient,
+        borderRadius:
+            BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.18),
+            color: AppColors.primaryBlue
+                .withOpacity(0.18),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -28,24 +31,27 @@ class CreateTaskCard extends StatelessWidget {
         children: [
           const Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ابدأ بمهمة جديدة',
+                  'أنشئ فرصة جديدة',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
-                    fontWeight: FontWeight.w800,
+                    fontWeight:
+                        FontWeight.w800,
                     height: 1.3,
                   ),
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'انشر مهمة قصيرة ليستطيع الطلاب المناسبون التقديم عليها.',
+                  'أنشئ مهمة تطبيقية أو انشر فرصة عمل أو تدريب للطلاب.',
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
-                    fontWeight: FontWeight.w500,
+                    fontWeight:
+                        FontWeight.w500,
                     height: 1.5,
                   ),
                 ),
@@ -55,17 +61,22 @@ class CreateTaskCard extends StatelessWidget {
           const SizedBox(width: 12),
           InkWell(
             onTap: onPressed,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius:
+                BorderRadius.circular(14),
             child: Container(
               height: 46,
               width: 46,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius:
+                    BorderRadius.circular(
+                  14,
+                ),
               ),
               child: const Icon(
                 Icons.add_rounded,
-                color: AppColors.primaryBlue,
+                color:
+                    AppColors.primaryBlue,
                 size: 26,
               ),
             ),

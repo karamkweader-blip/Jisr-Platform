@@ -17,7 +17,7 @@ class CvAnalysisView extends GetView<CvAnalysisController> {
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -37,12 +37,12 @@ class CvAnalysisView extends GetView<CvAnalysisController> {
           final analysis = controller.analysis.value;
 
           if (analysis == null) {
-            return const Center(
+            return  Center(
               child: Text(
                 'لم يتم العثور على نتيجة التحليل',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             );
@@ -217,7 +217,7 @@ class _AnalysisLoading extends StatelessWidget {
           width: 220,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
@@ -227,7 +227,7 @@ class _AnalysisLoading extends StatelessWidget {
               ),
             ],
           ),
-          child: const Column(
+          child:  Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               CircularProgressIndicator(color: AppColors.actionYellow),
@@ -245,7 +245,7 @@ class _AnalysisLoading extends StatelessWidget {
                 'استني لحظات',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 12,
                 ),
               ),
@@ -270,7 +270,7 @@ class _SkillCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(28),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(0.08)),
         boxShadow: [
@@ -336,9 +336,9 @@ class _SkillCard extends StatelessWidget {
 
           Text(
             skill.evidence,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 13,
               height: 1.6,
             ),
@@ -389,9 +389,9 @@ class _AnimatedBar extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                 ),

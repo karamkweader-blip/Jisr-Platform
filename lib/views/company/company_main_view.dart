@@ -27,16 +27,18 @@ class CompanyMainView extends GetView<CompanyMainController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor:theme.scaffoldBackgroundColor,
         drawer: const CompanyDrawer(),
         drawerScrimColor: Colors.black.withOpacity(0.32),
         appBar: AppBar(
           elevation: 0,
           scrolledUnderElevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: theme.scaffoldBackgroundColor,
           surfaceTintColor: Colors.transparent,
           centerTitle: true,
           leadingWidth: 92,
@@ -61,12 +63,6 @@ class CompanyMainView extends GetView<CompanyMainController> {
 
                     const SizedBox(width: 4),
 
-                    /*
-                     * زر الإشعارات الجديد.
-                     *
-                     * يعرض عدد الإشعارات غير المقروءة
-                     * ويتحدث فور وصول FCM.
-                     */
                     const NotificationBellButton(),
                   ],
                 ),
@@ -144,13 +140,15 @@ class _CompanyAppBarAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+    Theme.of(context).colorScheme;
     return Tooltip(
       message: tooltip,
       child: SizedBox(
         width: 38,
         height: 38,
         child: Material(
-          color: AppColors.cardWhite,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(13),
           child: InkWell(
             borderRadius: BorderRadius.circular(13),
@@ -159,9 +157,7 @@ class _CompanyAppBarAction extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(13),
                 border: Border.all(
-                  color: AppColors.primaryBlue.withOpacity(
-                    0.08,
-                  ),
+                 color: colorScheme.outlineVariant,
                 ),
               ),
               child: Icon(

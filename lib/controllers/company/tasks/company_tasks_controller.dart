@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_model.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_service.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
+import 'package:jisr_platform/core/api/api_exception.dart';
 
 enum CompanyTaskStatusFilter {
   all,
@@ -116,8 +118,11 @@ class CompanyTasksController extends GetxController {
         return;
       }
 
-      errorMessage.value =
-          e.toString().replaceFirst('Exception: ', '');
+     errorMessage.value =
+    ApiErrorPresenter.messageFor(
+  e,
+  operation: ApiOperation.task,
+);
     } finally {
       if (currentRequest == _fetchSequence) {
         isLoading.value = false;

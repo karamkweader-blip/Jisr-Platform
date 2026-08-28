@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class CompanyBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -386,7 +387,7 @@ class _HomeOrbButton extends StatelessWidget {
                     border: Border.all(
                       color: darkMode
     ? AppColors.darkSurfaceContainer
-    : AppColors.cardWhite,
+    : Get.theme.colorScheme.surface,
                       width: 4,
                     ),
                     boxShadow: [
@@ -544,9 +545,9 @@ class _FloatingDockPainter extends CustomPainter {
         AppColors.darkSurface,
         AppColors.darkBackground,
       ]
-    : const [
-        AppColors.cardWhite,
-        AppColors.background,
+    :  [
+        Get.theme.colorScheme.surface,
+        Get.theme.scaffoldBackgroundColor,
       ],
       ).createShader(rect)
       ..style = PaintingStyle.fill;

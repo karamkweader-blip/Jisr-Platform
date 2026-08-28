@@ -37,12 +37,12 @@ class ConversationCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: hasUnread
                   ? AppColors.primaryBlue.withOpacity(0.22)
-                  : AppColors.textGrey.withOpacity(0.10),
+                  : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.10),
             ),
             boxShadow: [
               BoxShadow(
@@ -72,7 +72,7 @@ class ConversationCard extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: AppColors.textDark,
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 15,
                               fontWeight: hasUnread
                                   ? FontWeight.w800
@@ -84,8 +84,8 @@ class ConversationCard extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             timeText,
-                            style: const TextStyle(
-                              color: AppColors.textGrey,
+                            style:  TextStyle(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
                             ),
@@ -116,22 +116,22 @@ class ConversationCard extends StatelessWidget {
                               vertical: 3,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.textGrey.withOpacity(0.10),
+                              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.10),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: const Row(
+                            child:  Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
                                   Icons.lock_outline_rounded,
                                   size: 12,
-                                  color: AppColors.textGrey,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                                 ),
                                 SizedBox(width: 3),
                                 Text(
                                   'مغلقة',
                                   style: TextStyle(
-                                    color: AppColors.textGrey,
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -152,8 +152,8 @@ class ConversationCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: hasUnread
-                                  ? AppColors.textDark
-                                  : AppColors.textGrey,
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 12.5,
                               fontWeight: hasUnread
                                   ? FontWeight.w700

@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
 import 'package:jisr_platform/services/auth/forget&reset/password_reset_service.dart';
 
 class OtpVerificationController extends GetxController {
-  final PasswordResetService _passwordResetService = PasswordResetService();
+  final PasswordResetService _passwordResetService =
+      PasswordResetService();
 
   final otp = ''.obs;
   final isLoading = false.obs;
@@ -19,24 +21,25 @@ class OtpVerificationController extends GetxController {
   }
 
   Future<void> resendCode() async {
-    if (isResending.value) return;
+    if (isResending.value) {
+      return;
+    }
 
     try {
       isResending.value = true;
 
-      await _passwordResetService.resendOtp(email: email);
+      await _passwordResetService.resendOtp(
+        email: email,
+      );
 
       JisrSnackbar.show(
         title: 'تم الإرسال',
-        message: 'تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني',
+        message:
+            'تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني.',
         type: JisrSnackbarType.success,
       );
-    } catch (_) {
-      JisrSnackbar.show(
-        title: 'تعذر الإرسال',
-        message: 'تعذر إعادة إرسال الرمز، حاول مرة أخرى',
-        type: JisrSnackbarType.error,
-      );
+    } catch (error) {
+      ApiErrorPresenter.show(error);
     } finally {
       isResending.value = false;
     }
@@ -46,8 +49,9 @@ class OtpVerificationController extends GetxController {
     if (otp.value.length != 6) {
       JisrSnackbar.show(
         title: 'رمز غير مكتمل',
-        message: 'يرجى إدخال رمز التحقق المكون من 6 أرقام',
-        type: JisrSnackbarType.error,
+        message:
+            'يرجى إدخال رمز التحقق المكون من 6 أرقام.',
+        type: JisrSnackbarType.warning,
       );
       return;
     }
@@ -67,12 +71,8 @@ class OtpVerificationController extends GetxController {
           'token': token,
         },
       );
-    } catch (_) {
-      JisrSnackbar.show(
-        title: 'رمز غير صحيح',
-        message: 'تعذر التحقق من الرمز، حاول مرة أخرى',
-        type: JisrSnackbarType.error,
-      );
+    } catch (error) {
+      ApiErrorPresenter.show(error);
     } finally {
       isLoading.value = false;
     }

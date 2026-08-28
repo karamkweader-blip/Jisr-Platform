@@ -13,7 +13,7 @@ class CompanyTaskApplicantDetailsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: Obx(() {
             if (controller.isLoading.value) {
@@ -135,7 +135,7 @@ class _ApplicantTopBar extends StatelessWidget {
     return Row(
       children: [
         Material(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
             onTap: Get.back,
@@ -156,10 +156,10 @@ class _ApplicantTopBar extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 'تفاصيل المتقدم',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
                 ),
@@ -169,8 +169,8 @@ class _ApplicantTopBar extends StatelessWidget {
                 '$studentName · $taskTitle',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -230,8 +230,8 @@ class _ApplicantHeaderCard extends StatelessWidget {
                       details.student.displayName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.cardWhite,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.surface,
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
                       ),
@@ -242,7 +242,7 @@ class _ApplicantHeaderCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: AppColors.cardWhite.withOpacity(0.82),
+                        color: Get.theme.colorScheme.surface.withOpacity(0.82),
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -321,11 +321,11 @@ class _ApplicantAvatar extends StatelessWidget {
 
     return CircleAvatar(
       radius: 32,
-      backgroundColor: AppColors.cardWhite.withOpacity(0.18),
+      backgroundColor: Get.theme.colorScheme.surface.withOpacity(0.18),
       child: Text(
         firstLetter,
-        style: const TextStyle(
-          color: AppColors.cardWhite,
+        style:  TextStyle(
+          color: Get.theme.colorScheme.surface,
           fontSize: 24,
           fontWeight: FontWeight.w900,
         ),
@@ -354,7 +354,7 @@ class _ScoreBadge extends StatelessWidget {
           CircularProgressIndicator(
             value: value,
             strokeWidth: 5,
-            backgroundColor: AppColors.cardWhite.withOpacity(0.18),
+            backgroundColor: Get.theme.colorScheme.surface.withOpacity(0.18),
             color: AppColors.actionYellow,
           ),
           Column(
@@ -362,8 +362,8 @@ class _ScoreBadge extends StatelessWidget {
             children: [
               Text(
                 '$score%',
-                style: const TextStyle(
-                  color: AppColors.cardWhite,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.surface,
                   fontSize: 15,
                   fontWeight: FontWeight.w900,
                 ),
@@ -371,7 +371,7 @@ class _ScoreBadge extends StatelessWidget {
               Text(
                 'تطابق',
                 style: TextStyle(
-                  color: AppColors.cardWhite.withOpacity(0.82),
+                  color: Get.theme.colorScheme.surface.withOpacity(0.82),
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                 ),
@@ -400,10 +400,10 @@ class _HeaderInfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite.withOpacity(0.13),
+        color: Get.theme.colorScheme.surface.withOpacity(0.13),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColors.cardWhite.withOpacity(0.10),
+          color: Get.theme.colorScheme.surface.withOpacity(0.10),
         ),
       ),
       child: Row(
@@ -421,7 +421,7 @@ class _HeaderInfoChip extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    color: AppColors.cardWhite.withOpacity(0.72),
+                    color: Get.theme.colorScheme.surface.withOpacity(0.72),
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                   ),
@@ -431,8 +431,8 @@ class _HeaderInfoChip extends StatelessWidget {
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.cardWhite,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.surface,
                     fontSize: 12,
                     fontWeight: FontWeight.w900,
                   ),
@@ -482,8 +482,8 @@ class _ApplicationMessageCard extends StatelessWidget {
             application.message.isEmpty
                 ? 'لا توجد رسالة من الطالب.'
                 : application.message,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 13,
               height: 1.6,
               fontWeight: FontWeight.w600,
@@ -574,8 +574,8 @@ class _RequiredSkillTile extends StatelessWidget {
               children: [
                 Text(
                   requiredSkill.name,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 13,
                     fontWeight: FontWeight.w900,
                   ),
@@ -583,8 +583,8 @@ class _RequiredSkillTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'المطلوب: $requiredLevelLabel · الطالب: $studentLevelLabel',
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -599,10 +599,10 @@ class _RequiredSkillTile extends StatelessWidget {
                 color: AppColors.actionYellow.withOpacity(0.14),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Text(
+              child:  Text(
                 'إلزامية',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                 ),
@@ -710,8 +710,8 @@ class _MatchingReasonsSection extends StatelessWidget {
                 Expanded(
                   child: Text(
                     reason,
-                    style: const TextStyle(
-                      color: AppColors.textDark,
+                    style:  TextStyle(
+                      color: Get.theme.colorScheme.onSurface,
                       fontSize: 12,
                       height: 1.5,
                       fontWeight: FontWeight.w600,
@@ -776,7 +776,7 @@ class _ProjectTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.06),
@@ -787,8 +787,8 @@ class _ProjectTile extends StatelessWidget {
         children: [
           Text(
             project.title,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 14,
               fontWeight: FontWeight.w900,
             ),
@@ -797,8 +797,8 @@ class _ProjectTile extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               project.description,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 12,
                 height: 1.5,
                 fontWeight: FontWeight.w600,
@@ -849,7 +849,7 @@ class _SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -872,8 +872,8 @@ class _SectionCard extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
@@ -911,8 +911,8 @@ class _InfoLine extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           '$label: ',
-          style: const TextStyle(
-            color: AppColors.textGrey,
+          style:  TextStyle(
+            color: Get.theme.colorScheme.onSurfaceVariant,
             fontSize: 12,
             fontWeight: FontWeight.w700,
           ),
@@ -922,8 +922,8 @@ class _InfoLine extends StatelessWidget {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 12,
               fontWeight: FontWeight.w800,
             ),
@@ -983,8 +983,8 @@ class _EmptySectionText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        color: AppColors.textGrey,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurfaceVariant,
         fontSize: 13,
         height: 1.5,
         fontWeight: FontWeight.w600,
@@ -1027,7 +1027,7 @@ class _DecisionBottomBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 22),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         boxShadow: [
           BoxShadow(
             color: AppColors.primaryBlue.withOpacity(0.08),
@@ -1048,8 +1048,8 @@ class _DecisionBottomBar extends StatelessWidget {
                   children: [
                     Text(
                       isAcceptMode ? 'ملاحظات القبول' : 'ملاحظات الرفض',
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 14,
                         fontWeight: FontWeight.w900,
                       ),
@@ -1066,17 +1066,17 @@ class _DecisionBottomBar extends StatelessWidget {
                             : 'اكتب سبب الرفض أو ملاحظة داخلية...',
                         errorText: notesError.isEmpty ? null : notesError,
                         filled: true,
-                        fillColor: AppColors.background,
+                        fillColor: Get.theme.scaffoldBackgroundColor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: BorderSide(
-                            color: AppColors.textGrey.withOpacity(0.18),
+                            color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.18),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: BorderSide(
-                            color: AppColors.textGrey.withOpacity(0.18),
+                            color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.18),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -1094,7 +1094,7 @@ class _DecisionBottomBar extends StatelessWidget {
                           child: OutlinedButton(
                             onPressed: isBusy ? null : onCancel,
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.textDark,
+                              foregroundColor: Get.theme.colorScheme.onSurface,
                               padding: const EdgeInsets.symmetric(vertical: 13),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
@@ -1108,12 +1108,12 @@ class _DecisionBottomBar extends StatelessWidget {
                           child: ElevatedButton.icon(
                             onPressed: isBusy ? null : onSubmit,
                             icon: isBusy
-                                ? const SizedBox(
+                                ?  SizedBox(
                                     width: 18,
                                     height: 18,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: AppColors.cardWhite,
+                                      color: Get.theme.colorScheme.surface,
                                     ),
                                   )
                                 : Icon(
@@ -1133,8 +1133,8 @@ class _DecisionBottomBar extends StatelessWidget {
                                   ? AppColors.primaryBlue
                                   : AppColors.actionYellow,
                               foregroundColor: isAcceptMode
-                                  ? AppColors.cardWhite
-                                  : AppColors.textDark,
+                                  ? Get.theme.colorScheme.surface
+                                  : Get.theme.colorScheme.onSurface,
                               elevation: 0,
                               padding: const EdgeInsets.symmetric(vertical: 13),
                               shape: RoundedRectangleBorder(
@@ -1178,9 +1178,9 @@ class _DecisionBottomBar extends StatelessWidget {
                             icon: const Icon(Icons.close_rounded),
                             label: const Text('رفض'),
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.textDark,
+                              foregroundColor: Get.theme.colorScheme.onSurface,
                               side: BorderSide(
-                                color: AppColors.textGrey.withOpacity(0.25),
+                                color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.25),
                               ),
                               padding: const EdgeInsets.symmetric(vertical: 13),
                               shape: RoundedRectangleBorder(
@@ -1197,7 +1197,7 @@ class _DecisionBottomBar extends StatelessWidget {
                             label: const Text('قبول'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryBlue,
-                              foregroundColor: AppColors.cardWhite,
+                              foregroundColor: Get.theme.colorScheme.surface,
                               elevation: 0,
                               padding: const EdgeInsets.symmetric(vertical: 13),
                               shape: RoundedRectangleBorder(
@@ -1246,7 +1246,7 @@ class _ApplicantDetailsError extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Material(
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(16),
               child: InkWell(
                 onTap: Get.back,
@@ -1268,7 +1268,7 @@ class _ApplicantDetailsError extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
@@ -1286,10 +1286,10 @@ class _ApplicantDetailsError extends StatelessWidget {
                   size: 44,
                 ),
                 const SizedBox(height: 12),
-                const Text(
+                 Text(
                   'تعذر تحميل تفاصيل المتقدم',
                   style: TextStyle(
-                    color: AppColors.textDark,
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
@@ -1298,8 +1298,8 @@ class _ApplicantDetailsError extends StatelessWidget {
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     height: 1.5,
                   ),

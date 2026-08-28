@@ -22,7 +22,7 @@ class CompanyTaskDetailsView extends GetView<CompanyTaskDetailsController> {
           return false;
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: Get.theme.scaffoldBackgroundColor,
           body: SafeArea(
             child: Obx(() {
               if (controller.isLoading.value) {
@@ -169,14 +169,14 @@ class _TopBar extends StatelessWidget {
           onTap: onBack,
         ),
         const SizedBox(width: 12),
-        const Expanded(
+         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'تفاصيل المهمة',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
                 ),
@@ -185,7 +185,7 @@ class _TopBar extends StatelessWidget {
               Text(
                 'إدارة ونظرة كاملة على التاسك',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -195,7 +195,7 @@ class _TopBar extends StatelessWidget {
         ),
         PopupMenuButton<String>(
           onSelected: onSelected,
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
@@ -262,7 +262,7 @@ class _CircleIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.cardWhite,
+      color: Get.theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
@@ -300,7 +300,7 @@ class _SmartActionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: AppColors.actionYellow.withOpacity(0.30),
@@ -335,8 +335,8 @@ class _SmartActionCard extends StatelessWidget {
               isDraft
                   ? 'هذه المهمة ما زالت مسودة. عند النشر سيبدأ الطلاب المناسبون بالتقديم.'
                   : 'المهمة منشورة. الخطوة التالية هي مراجعة الطلاب المتقدمين.',
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 13,
                 height: 1.5,
                 fontWeight: FontWeight.w700,
@@ -373,8 +373,8 @@ class _TaskOverviewSection extends StatelessWidget {
       children: [
         Text(
           task.description,
-          style: const TextStyle(
-            color: AppColors.textDark,
+          style:  TextStyle(
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 14,
             height: 1.6,
             fontWeight: FontWeight.w600,
@@ -511,8 +511,8 @@ class _BulletItem extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 14,
                 height: 1.5,
                 fontWeight: FontWeight.w600,
@@ -534,8 +534,8 @@ class _EmptyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        color: AppColors.textGrey,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurfaceVariant,
         fontSize: 13,
         fontWeight: FontWeight.w600,
       ),
@@ -571,7 +571,7 @@ class _TaskDetailsError extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
@@ -582,10 +582,10 @@ class _TaskDetailsError extends StatelessWidget {
                   size: 44,
                 ),
                 const SizedBox(height: 12),
-                const Text(
+                 Text(
                   'تعذر تحميل التفاصيل',
                   style: TextStyle(
-                    color: AppColors.textDark,
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
@@ -594,8 +594,8 @@ class _TaskDetailsError extends StatelessWidget {
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     height: 1.5,
                   ),

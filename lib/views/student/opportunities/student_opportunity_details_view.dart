@@ -34,10 +34,10 @@ class _StudentOpportunityDetailsViewState
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -59,12 +59,12 @@ class _StudentOpportunityDetailsViewState
           final opportunity = controller.selectedOpportunity.value;
 
           if (opportunity == null) {
-            return const Center(
+            return  Center(
               child: Text(
                 'لم يتم العثور على الفرصة',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             );
@@ -309,7 +309,7 @@ class _InfoCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 13),
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
@@ -339,9 +339,9 @@ class _InfoCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   shownValue,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     height: 1.55,
                   ),
                 ),
@@ -412,7 +412,7 @@ class _MiniInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(23),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.06)),
         boxShadow: [
@@ -431,9 +431,9 @@ class _MiniInfoCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 11,
             ),
           ),
@@ -486,7 +486,7 @@ class _RequiredSkillTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -506,9 +506,9 @@ class _RequiredSkillTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   skill.category.isEmpty ? 'تصنيف غير محدد' : skill.category,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 12,
                   ),
                 ),
@@ -587,9 +587,9 @@ class _ReasonsSection extends StatelessWidget {
                     Expanded(
                       child: Text(
                         reason,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textDark,
+                          color: Theme.of(context).colorScheme.onSurface,
                           height: 1.55,
                           fontSize: 12.5,
                         ),
@@ -651,7 +651,7 @@ class _SectionContainer extends StatelessWidget {
       margin: const EdgeInsets.only(top: 13),
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
@@ -762,7 +762,7 @@ class _ApplyOpportunityButton extends GetView<StudentOpportunityController> {
             : () => controller.applyToOpportunity(opportunity.id),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryBlue,
-          disabledBackgroundColor: AppColors.textGrey.withOpacity(.25),
+          disabledBackgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 56),
           shape: RoundedRectangleBorder(

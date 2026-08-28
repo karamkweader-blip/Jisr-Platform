@@ -4,6 +4,7 @@ import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_assignment_submission_model.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_submission_review_model.dart';
 
+import 'package:get/get.dart';
 class AssignmentEvaluationSection extends StatelessWidget {
   final CompanyTaskAssignmentSubmissionModel? submission;
   final CompanyTaskSubmissionReviewModel? review;
@@ -226,10 +227,10 @@ class _EvaluationForm extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          const Text(
+           Text(
             'القرار النهائي',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 14,
               fontWeight: FontWeight.w900,
             ),
@@ -253,8 +254,8 @@ class _EvaluationForm extends StatelessWidget {
                   'اكتب ملاحظات واضحة تساعد الطالب على فهم سبب التقييم والقرار النهائي.',
               icon: Icons.rate_review_outlined,
             ),
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 13,
               fontWeight: FontWeight.w600,
               height: 1.5,
@@ -441,10 +442,10 @@ class _ReviewDecisionHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 'القرار النهائي',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),
@@ -452,8 +453,8 @@ class _ReviewDecisionHeader extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 decision,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
@@ -517,8 +518,8 @@ class _ScoreResultCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             value,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 20,
               fontWeight: FontWeight.w900,
             ),
@@ -526,8 +527,8 @@ class _ScoreResultCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 11.5,
               fontWeight: FontWeight.w700,
             ),
@@ -586,7 +587,7 @@ class _DecisionSelector extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? AppColors.primaryBlue.withOpacity(0.09)
-                      : AppColors.cardWhite,
+                      : Get.theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: isSelected
@@ -601,7 +602,7 @@ class _DecisionSelector extends StatelessWidget {
                       decision.icon,
                       color: isSelected
                           ? AppColors.primaryBlue
-                          : AppColors.textGrey,
+                          : Get.theme.colorScheme.onSurfaceVariant,
                       size: 21,
                     ),
                     const SizedBox(width: 10),
@@ -611,7 +612,7 @@ class _DecisionSelector extends StatelessWidget {
                         style: TextStyle(
                           color: isSelected
                               ? AppColors.primaryBlue
-                              : AppColors.textDark,
+                              : Get.theme.colorScheme.onSurface,
                           fontSize: 13.5,
                           fontWeight: FontWeight.w900,
                         ),
@@ -629,7 +630,7 @@ class _DecisionSelector extends StatelessWidget {
                         border: Border.all(
                           color: isSelected
                               ? AppColors.primaryBlue
-                              : AppColors.textGrey.withOpacity(0.45),
+                              : Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.45),
                         ),
                       ),
                       child: isSelected
@@ -690,8 +691,8 @@ class _ScoreField extends StatelessWidget {
         hint: hint,
         icon: icon,
       ),
-      style: const TextStyle(
-        color: AppColors.textDark,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurface,
         fontSize: 14,
         fontWeight: FontWeight.w700,
       ),
@@ -731,8 +732,8 @@ class _InfoCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
@@ -740,8 +741,8 @@ class _InfoCard extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   value,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 13,
                     height: 1.6,
                     fontWeight: FontWeight.w700,
@@ -794,8 +795,8 @@ class _SectionHeader extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
                   ),
@@ -803,8 +804,8 @@ class _SectionHeader extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   subtitle,
-                  style: const TextStyle(
-                    color: AppColors.textGrey,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 12.5,
                     height: 1.5,
                     fontWeight: FontWeight.w600,
@@ -858,8 +859,8 @@ class _EvaluationStateCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
@@ -868,8 +869,8 @@ class _EvaluationStateCard extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12.5,
               height: 1.6,
               fontWeight: FontWeight.w600,
@@ -911,8 +912,8 @@ class _EvaluationLoadingState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 13,
               fontWeight: FontWeight.w700,
             ),
@@ -959,8 +960,8 @@ class _EvaluationErrorState extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
@@ -969,8 +970,8 @@ class _EvaluationErrorState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12.5,
               height: 1.6,
               fontWeight: FontWeight.w600,
@@ -1026,17 +1027,17 @@ InputDecoration _inputDecoration({
       size: 21,
     ),
     filled: true,
-    fillColor: AppColors.cardWhite,
+    fillColor: Get.theme.colorScheme.surface,
     contentPadding: const EdgeInsets.symmetric(
       horizontal: 14,
       vertical: 14,
     ),
-    labelStyle: const TextStyle(
-      color: AppColors.textGrey,
+    labelStyle:  TextStyle(
+      color: Get.theme.colorScheme.onSurfaceVariant,
       fontWeight: FontWeight.w700,
     ),
     hintStyle: TextStyle(
-      color: AppColors.textGrey.withOpacity(0.65),
+      color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.65),
       fontSize: 12.5,
       fontWeight: FontWeight.w500,
     ),
@@ -1072,7 +1073,7 @@ BoxDecoration _cardDecoration({
   double radius = 20,
 }) {
   return BoxDecoration(
-    color: AppColors.cardWhite,
+    color: Get.theme.colorScheme.surface,
     borderRadius: BorderRadius.circular(radius),
     border: Border.all(
       color: AppColors.primaryBlue.withOpacity(0.08),

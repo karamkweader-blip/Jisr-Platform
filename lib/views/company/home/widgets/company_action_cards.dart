@@ -14,13 +14,17 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: AppColors.textDark,
+          style: TextStyle(
+            color: colorScheme.onSurface,
             fontSize: 18,
             fontWeight: FontWeight.w800,
           ),
@@ -28,8 +32,9 @@ class SectionHeader extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           subtitle,
-          style: const TextStyle(
-            color: AppColors.textGrey,
+          style: TextStyle(
+            color:
+                colorScheme.onSurfaceVariant,
             fontSize: 13,
             fontWeight: FontWeight.w500,
           ),
@@ -39,7 +44,8 @@ class SectionHeader extends StatelessWidget {
   }
 }
 
-class RequiredActionCard extends StatelessWidget {
+class RequiredActionCard
+    extends StatelessWidget {
   final CompanyRequiredAction action;
   final String buttonLabel;
   final VoidCallback onPressed;
@@ -53,24 +59,36 @@ class RequiredActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark =
+        theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColors.actionYellow.withOpacity(0.22),
+          color: AppColors.actionYellow
+              .withOpacity(
+                isDark ? 0.34 : 0.22,
+              ),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.actionYellow.withOpacity(0.08),
+            color: isDark
+                ? Colors.black.withOpacity(0.16)
+                : AppColors.actionYellow
+                    .withOpacity(0.08),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -78,12 +96,15 @@ class RequiredActionCard extends StatelessWidget {
                 height: 34,
                 width: 34,
                 decoration: BoxDecoration(
-                  color: AppColors.actionYellow.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.actionYellow
+                      .withOpacity(0.12),
+                  borderRadius:
+                      BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.priority_high_rounded,
-                  color: AppColors.actionYellow,
+                  color:
+                      AppColors.actionYellow,
                   size: 20,
                 ),
               ),
@@ -91,10 +112,12 @@ class RequiredActionCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   action.title,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style: TextStyle(
+                    color:
+                        colorScheme.onSurface,
                     fontSize: 15,
-                    fontWeight: FontWeight.w800,
+                    fontWeight:
+                        FontWeight.w800,
                   ),
                 ),
               ),
@@ -103,8 +126,9 @@ class RequiredActionCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             action.description,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style: TextStyle(
+              color:
+                  colorScheme.onSurfaceVariant,
               fontSize: 13.5,
               fontWeight: FontWeight.w500,
               height: 1.5,
@@ -116,19 +140,13 @@ class RequiredActionCard extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryBlue,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
               child: Text(
                 buttonLabel,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
-                  fontWeight: FontWeight.w700,
+                  fontWeight:
+                      FontWeight.w700,
                 ),
               ),
             ),
@@ -139,7 +157,8 @@ class RequiredActionCard extends StatelessWidget {
   }
 }
 
-class RecentActivityCard extends StatelessWidget {
+class RecentActivityCard
+    extends StatelessWidget {
   final CompanyRecentActivity activity;
   final String buttonLabel;
   final VoidCallback onPressed;
@@ -153,71 +172,93 @@ class RecentActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: AppColors.cardWhite,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.primaryBlue.withOpacity(0.05),
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              height: 38,
-              width: 38,
-              decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.07),
-                borderRadius: BorderRadius.circular(13),
-              ),
-              child: const Icon(
-                Icons.notifications_none_rounded,
-                color: AppColors.primaryBlue,
-                size: 21,
-              ),
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark =
+        theme.brightness == Brightness.dark;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius:
+                BorderRadius.circular(16),
+            border: Border.all(
+              color:
+                  colorScheme.outlineVariant,
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    activity.title,
-                    style: const TextStyle(
-                      color: AppColors.textDark,
-                      fontSize: 14.5,
-                      fontWeight: FontWeight.w800,
+          ),
+          child: Row(
+            children: [
+              Container(
+                height: 38,
+                width: 38,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue
+                      .withOpacity(
+                        isDark ? 0.18 : 0.07,
+                      ),
+                  borderRadius:
+                      BorderRadius.circular(13),
+                ),
+                child: const Icon(
+                  Icons
+                      .notifications_none_rounded,
+                  color: AppColors.primaryBlue,
+                  size: 21,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      activity.title,
+                      style: TextStyle(
+                        color: colorScheme
+                            .onSurface,
+                        fontSize: 14.5,
+                        fontWeight:
+                            FontWeight.w800,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    activity.description,
-                    style: const TextStyle(
-                      color: AppColors.textGrey,
-                      fontSize: 12.8,
-                      fontWeight: FontWeight.w500,
-                      height: 1.45,
+                    const SizedBox(height: 5),
+                    Text(
+                      activity.description,
+                      style: TextStyle(
+                        color: colorScheme
+                            .onSurfaceVariant,
+                        fontSize: 12.8,
+                        fontWeight:
+                            FontWeight.w500,
+                        height: 1.45,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                buttonLabel,
+                style: const TextStyle(
+                  color:
+                      AppColors.primaryBlue,
+                  fontSize: 12.5,
+                  fontWeight:
+                      FontWeight.w800,
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(width: 8),
-        Text(
-          buttonLabel,
-          style: const TextStyle(
-            color: AppColors.primaryBlue,
-            fontSize: 12.5,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ],
-    ),
-  ),
-);
-}
+      ),
+    );
+  }
 }

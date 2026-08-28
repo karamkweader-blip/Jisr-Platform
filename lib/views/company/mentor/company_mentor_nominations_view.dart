@@ -33,20 +33,20 @@ class CompanyMentorNominationsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
           scrolledUnderElevation: 0,
-          backgroundColor: AppColors.cardWhite,
+          backgroundColor: Get.theme.colorScheme.surface,
           surfaceTintColor: Colors.transparent,
           centerTitle: true,
           iconTheme: const IconThemeData(
             color: AppColors.primaryBlue,
           ),
-          title: const Text(
+          title:  Text(
             'ترشيحات المرشدين',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 17,
               fontWeight: FontWeight.w900,
             ),
@@ -99,7 +99,7 @@ class CompanyMentorNominationsView
                     const SizedBox(height: 21),
                     Row(
                       children: <Widget>[
-                        const Expanded(
+                         Expanded(
                           child: Column(
                             crossAxisAlignment:
                                 CrossAxisAlignment.start,
@@ -107,7 +107,7 @@ class CompanyMentorNominationsView
                               Text(
                                 'طلبات الترشيح',
                                 style: TextStyle(
-                                  color: AppColors.textDark,
+                                  color: Get.theme.colorScheme.onSurface,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w900,
                                 ),
@@ -116,7 +116,7 @@ class CompanyMentorNominationsView
                               Text(
                                 'اضغط على أي طلب لعرض كامل التفاصيل',
                                 style: TextStyle(
-                                  color: AppColors.textGrey,
+                                  color: Get.theme.colorScheme.onSurfaceVariant,
                                   fontSize: 10.5,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -406,7 +406,7 @@ class _OverviewHeader extends StatelessWidget {
                     onPressed: onCreate,
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      backgroundColor: AppColors.cardWhite,
+                      backgroundColor: Get.theme.colorScheme.surface,
                       foregroundColor: AppColors.primaryBlue,
                       padding: const EdgeInsets.symmetric(
                         vertical: 13,
@@ -464,10 +464,10 @@ class _StatusFilters extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColors.textGrey.withOpacity(0.1),
+          color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.1),
         ),
       ),
       child: SizedBox(
@@ -512,7 +512,7 @@ class _StatusFilters extends StatelessWidget {
                     style: TextStyle(
                       color: selected
                           ? Colors.white
-                          : AppColors.textGrey,
+                          : Get.theme.colorScheme.onSurfaceVariant,
                       fontSize: 10.8,
                       fontWeight: selected
                           ? FontWeight.w800

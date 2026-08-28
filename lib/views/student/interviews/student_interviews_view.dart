@@ -14,11 +14,11 @@ class StudentInterviewsView extends GetView<StudentInterviewController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           surfaceTintColor: Colors.transparent,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
@@ -283,7 +283,7 @@ class _FilterButton extends GetView<StudentInterviewController> {
           duration: const Duration(milliseconds: 220),
           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 11),
           decoration: BoxDecoration(
-            color: selected ? AppColors.primaryBlue : Colors.white,
+            color: selected ? AppColors.primaryBlue : Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
               color: selected
@@ -392,7 +392,7 @@ class _InterviewCard extends GetView<StudentInterviewController> {
     return Container(
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(color: statusColor.withOpacity(.16)),
         boxShadow: [
@@ -440,9 +440,9 @@ class _InterviewCard extends GetView<StudentInterviewController> {
                     const SizedBox(height: 4),
                     Text(
                       controller.companyName(interview.company),
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                       ),
@@ -497,7 +497,7 @@ class _InterviewCard extends GetView<StudentInterviewController> {
                 _SmallChip(
                   icon: Icons.business_center_outlined,
                   text: interview.company.industry,
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
             ],
           ),
@@ -507,7 +507,7 @@ class _InterviewCard extends GetView<StudentInterviewController> {
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(
                   color: AppColors.primaryBlue.withOpacity(.06),
@@ -515,9 +515,9 @@ class _InterviewCard extends GetView<StudentInterviewController> {
               ),
               child: Text(
                 interview.notes,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 11,
                   height: 1.55,
                 ),
@@ -646,18 +646,18 @@ class _InterviewInfoRow extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 9.5,
                 ),
               ),
               const SizedBox(height: 1),
               Text(
                 value,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 11.5,
                   fontWeight: FontWeight.w600,
                   height: 1.45,
@@ -720,7 +720,7 @@ class _InterviewsLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return  Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -730,7 +730,7 @@ class _InterviewsLoading extends StatelessWidget {
             'جاري جلب المقابلات...',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 12,
             ),
           ),
@@ -773,9 +773,9 @@ class _InterviewsError extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 11,
                 height: 1.5,
               ),
@@ -830,9 +830,9 @@ class _EmptyInterviews extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 12,
             ),
           ),

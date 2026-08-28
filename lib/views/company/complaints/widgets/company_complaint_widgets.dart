@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/complaints/company_complaint_model.dart';
 
+import 'package:get/get.dart';
 class CompanyComplaintCard extends StatelessWidget {
   final CompanyComplaintModel complaint;
   final String statusLabel;
@@ -21,7 +22,7 @@ class CompanyComplaintCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.cardWhite,
+      color: Get.theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -31,7 +32,7 @@ class CompanyComplaintCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: AppColors.textGrey.withOpacity(0.10),
+              color: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.10),
             ),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -78,8 +79,8 @@ class CompanyComplaintCard extends StatelessWidget {
                           maxLines: 1,
                           overflow:
                               TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: AppColors.textDark,
+                          style:  TextStyle(
+                            color: Get.theme.colorScheme.onSurface,
                             fontSize: 15,
                             fontWeight:
                                 FontWeight.w900,
@@ -93,7 +94,7 @@ class CompanyComplaintCard extends StatelessWidget {
                                 complaint.context.type,
                               ),
                               color:
-                                  AppColors.textGrey,
+                                  Get.theme.colorScheme.onSurfaceVariant,
                               size: 14,
                             ),
                             const SizedBox(width: 5),
@@ -131,7 +132,7 @@ class CompanyComplaintCard extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: Get.theme.scaffoldBackgroundColor,
                   borderRadius:
                       BorderRadius.circular(13),
                 ),
@@ -139,8 +140,8 @@ class CompanyComplaintCard extends StatelessWidget {
                   complaint.reason,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 11.5,
                     height: 1.55,
                     fontWeight: FontWeight.w600,
@@ -174,17 +175,17 @@ class CompanyComplaintCard extends StatelessWidget {
               const SizedBox(height: 13),
               Row(
                 children: <Widget>[
-                  const Icon(
+                   Icon(
                     Icons.schedule_rounded,
-                    color: AppColors.textGrey,
+                    color: Get.theme.colorScheme.onSurfaceVariant,
                     size: 15,
                   ),
                   const SizedBox(width: 5),
                   Text(
                     createdAtText,
                     textDirection: TextDirection.ltr,
-                    style: const TextStyle(
-                      color: AppColors.textGrey,
+                    style:  TextStyle(
+                      color: Get.theme.colorScheme.onSurfaceVariant,
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                     ),
@@ -275,7 +276,7 @@ Future<void> showCompanyComplaintDetails({
     useRootNavigator: true,
     useSafeArea: true,
     isScrollControlled: true,
-    backgroundColor: AppColors.cardWhite,
+    backgroundColor: Get.theme.colorScheme.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(28),
@@ -309,7 +310,7 @@ Future<void> showCompanyComplaintDetails({
                     width: 44,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: AppColors.textGrey
+                      color: Get.theme.colorScheme.onSurfaceVariant
                           .withOpacity(0.22),
                       borderRadius:
                           BorderRadius.circular(10),
@@ -346,9 +347,9 @@ Future<void> showCompanyComplaintDetails({
                         children: <Widget>[
                           Text(
                             complaint.targetName,
-                            style: const TextStyle(
+                            style:  TextStyle(
                               color:
-                                  AppColors.textDark,
+                                  Get.theme.colorScheme.onSurface,
                               fontSize: 18,
                               fontWeight:
                                   FontWeight.w900,
@@ -357,9 +358,9 @@ Future<void> showCompanyComplaintDetails({
                           const SizedBox(height: 4),
                           Text(
                             contextLabel,
-                            style: const TextStyle(
+                            style:  TextStyle(
                               color:
-                                  AppColors.textGrey,
+                                  Get.theme.colorScheme.onSurfaceVariant,
                               fontSize: 12,
                               fontWeight:
                                   FontWeight.w600,
@@ -384,7 +385,7 @@ Future<void> showCompanyComplaintDetails({
                       icon: const Icon(
                         Icons.close_rounded,
                       ),
-                      color: AppColors.textGrey,
+                      color: Get.theme.colorScheme.onSurfaceVariant,
                     ),
                   ],
                 ),
@@ -394,8 +395,8 @@ Future<void> showCompanyComplaintDetails({
                   title: 'سبب الشكوى',
                   child: SelectableText(
                     complaint.reason,
-                    style: const TextStyle(
-                      color: AppColors.textDark,
+                    style:  TextStyle(
+                      color: Get.theme.colorScheme.onSurface,
                       fontSize: 12.5,
                       height: 1.65,
                       fontWeight:
@@ -464,9 +465,9 @@ Future<void> showCompanyComplaintDetails({
                                   .resolutionNotes!
                                   .trim()
                               : 'لم تضف الإدارة ملاحظات إضافية.',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             color:
-                                AppColors.textDark,
+                                Get.theme.colorScheme.onSurface,
                             fontSize: 12.5,
                             height: 1.65,
                             fontWeight:
@@ -536,13 +537,13 @@ class _ComplaintDetailsSection
         color: highlighted
             ? AppColors.primaryBlue
                 .withOpacity(0.055)
-            : AppColors.background,
+            : Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: highlighted
               ? AppColors.primaryBlue
                   .withOpacity(0.12)
-              : AppColors.textGrey
+              : Get.theme.colorScheme.onSurfaceVariant
                   .withOpacity(0.08),
         ),
       ),
@@ -606,9 +607,9 @@ class _ComplaintDetailRow extends StatelessWidget {
                 width: 105,
                 child: Text(
                   label,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color:
-                        AppColors.textGrey,
+                        Get.theme.colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight:
                         FontWeight.w700,
@@ -618,8 +619,8 @@ class _ComplaintDetailRow extends StatelessWidget {
               Expanded(
                 child: SelectableText(
                   value,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 11.5,
                     height: 1.45,
                     fontWeight:
@@ -633,7 +634,7 @@ class _ComplaintDetailRow extends StatelessWidget {
         if (showDivider)
           Divider(
             height: 1,
-            color: AppColors.textGrey
+            color: Get.theme.colorScheme.onSurfaceVariant
                 .withOpacity(0.11),
           ),
       ],

@@ -1364,25 +1364,25 @@ class _DrawerPalette {
   Color get background {
     return dark
         ? const Color(0xFF0E1822)
-        : AppColors.cardWhite;
+        : Get.theme.colorScheme.surface;
   }
 
   Color get card {
     return dark
         ? const Color(0xFF162430)
-        : AppColors.background;
+        : Get.theme.scaffoldBackgroundColor;
   }
 
   Color get text {
     return dark
         ? const Color(0xFFF3F7FA)
-        : AppColors.textDark;
+        : Get.theme.colorScheme.onSurface;
   }
 
   Color get mutedText {
     return dark
         ? const Color(0xFFA9BAC7)
-        : AppColors.textGrey;
+        : Get.theme.colorScheme.onSurfaceVariant;
   }
 
   Color get border {

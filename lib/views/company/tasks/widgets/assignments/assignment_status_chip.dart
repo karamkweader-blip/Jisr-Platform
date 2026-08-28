@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class AssignmentStatusChip extends StatelessWidget {
   final String status;
   final String label;
@@ -45,7 +46,7 @@ class AssignmentStatusChip extends StatelessWidget {
         return Colors.green.withOpacity(0.12);
 
       default:
-        return AppColors.textGrey.withOpacity(0.10);
+        return Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.10);
     }
   }
 
@@ -55,13 +56,13 @@ class AssignmentStatusChip extends StatelessWidget {
         return AppColors.primaryBlue;
 
       case 'submitted':
-        return AppColors.textDark;
+        return Get.theme.colorScheme.onSurface;
 
       case 'completed':
         return Colors.green.shade700;
 
       default:
-        return AppColors.textGrey;
+        return Get.theme.colorScheme.onSurfaceVariant;
     }
   }
 }

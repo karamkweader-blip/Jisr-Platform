@@ -64,8 +64,8 @@ class ComplaintEntrySheet extends StatelessWidget {
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height * .84,
           ),
-          decoration: const BoxDecoration(
-            color: AppColors.background,
+          decoration:  BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
           ),
           child: Column(
@@ -76,7 +76,7 @@ class ComplaintEntrySheet extends StatelessWidget {
                 width: 46,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: AppColors.textGrey.withOpacity(.25),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.25),
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
@@ -103,7 +103,7 @@ class ComplaintEntrySheet extends StatelessWidget {
                   ],
                 ),
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 22),
                 child: Align(
                   alignment: AlignmentDirectional.centerStart,
@@ -111,7 +111,7 @@ class ComplaintEntrySheet extends StatelessWidget {
                     'اختر مكان الشكوى، ثم حدّد العنصر الحقيقي من بيانات حسابك.',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
                       height: 1.5,
                     ),
@@ -128,7 +128,7 @@ class ComplaintEntrySheet extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final entry = entries[index];
                     return Material(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(22),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(22),
@@ -168,9 +168,9 @@ class ComplaintEntrySheet extends StatelessWidget {
                                     const SizedBox(height: 3),
                                     Text(
                                       entry.subtitle,
-                                      style: const TextStyle(
+                                      style:  TextStyle(
                                         fontFamily: 'Cairo',
-                                        color: AppColors.textGrey,
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                         fontSize: 11,
                                       ),
                                     ),

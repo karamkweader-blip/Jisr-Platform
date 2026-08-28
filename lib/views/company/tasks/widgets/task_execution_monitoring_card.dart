@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class TaskExecutionMonitoringCard extends StatelessWidget {
   final VoidCallback onTap;
 
@@ -19,7 +20,7 @@ class TaskExecutionMonitoringCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(17),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: AppColors.primaryBlue.withOpacity(0.10),
@@ -48,14 +49,14 @@ class TaskExecutionMonitoringCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 14),
-              const Expanded(
+               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'متابعة تنفيذ المهام',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.w900,
                       ),
@@ -64,7 +65,7 @@ class TaskExecutionMonitoringCard extends StatelessWidget {
                     Text(
                       'تابع تقدم الطلاب والتسليمات والمهام بانتظار المراجعة',
                       style: TextStyle(
-                        color: AppColors.textGrey,
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                         height: 1.45,
                         fontWeight: FontWeight.w600,
@@ -78,7 +79,7 @@ class TaskExecutionMonitoringCard extends StatelessWidget {
                 width: 34,
                 height: 34,
                 decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: Get.theme.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(

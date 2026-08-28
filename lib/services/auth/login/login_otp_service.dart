@@ -1,34 +1,40 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/api/api_links.dart';
 import 'package:jisr_platform/core/api/api_response_handler.dart';
-import 'package:jisr_platform/models/auth/register_student_model.dart';
 
-class RegisterStudentService {
-  Future<void> register(
-    RegisterStudentModel model,
-  ) async {
+class LoginOtpService {
+  Future<Map<String, dynamic>> verifyOtp({
+    required String email,
+    required String code,
+  }) async {
     try {
       final response = await http
           .post(
-            Uri.parse(ApiLinks.register),
+            Uri.parse(ApiLinks.verifyLoginOtp),
             headers: const {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-            body: jsonEncode(model.toJson()),
+            body: jsonEncode({
+              'email': email.trim(),
+              'code': code.trim(),
+            }),
           )
-          .timeout(const Duration(seconds: 20));
+          .timeout(
+            const Duration(seconds: 20),
+          );
 
-      ApiResponseHandler.handleResponse(
+      return ApiResponseHandler.handleResponse(
         response,
-        operation: ApiOperation.registerStudent,
+        operation: ApiOperation.loginOtp,
       );
     } catch (error) {
       throw ApiResponseHandler.fromError(
         error,
-        operation: ApiOperation.registerStudent,
+        operation: ApiOperation.loginOtp,
       );
     }
   }

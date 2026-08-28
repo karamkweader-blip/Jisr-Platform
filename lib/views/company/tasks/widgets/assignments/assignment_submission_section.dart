@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_assignment_submission_model.dart';
 
+import 'package:get/get.dart';
 class AssignmentSubmissionSection extends StatelessWidget {
   final CompanyTaskAssignmentSubmissionModel? submission;
   final bool isLoading;
@@ -52,11 +53,11 @@ class AssignmentSubmissionSection extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Expanded(
+             Expanded(
               child: Text(
                 'التسليم النهائي',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w900,
                 ),
@@ -76,10 +77,10 @@ class AssignmentSubmissionSection extends StatelessWidget {
         ),
         const SizedBox(height: 18),
 
-        const Text(
+         Text(
           'الروابط والملفات المرفقة',
           style: TextStyle(
-            color: AppColors.textDark,
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.w900,
           ),
@@ -130,10 +131,10 @@ class AssignmentSubmissionSection extends StatelessWidget {
 
         const SizedBox(height: 18),
 
-        const Text(
+         Text(
           'ملاحظات الطالب',
           style: TextStyle(
-            color: AppColors.textDark,
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.w900,
           ),
@@ -145,10 +146,10 @@ class AssignmentSubmissionSection extends StatelessWidget {
         ),
         const SizedBox(height: 18),
 
-        const Text(
+         Text(
           'إحصاءات المهمة',
           style: TextStyle(
-            color: AppColors.textDark,
+            color: Get.theme.colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.w900,
           ),
@@ -299,8 +300,8 @@ class _SummaryRow extends StatelessWidget {
         const SizedBox(width: 10),
         Text(
           label,
-          style: const TextStyle(
-            color: AppColors.textGrey,
+          style:  TextStyle(
+            color: Get.theme.colorScheme.onSurfaceVariant,
             fontSize: 13,
             fontWeight: FontWeight.w700,
           ),
@@ -310,8 +311,8 @@ class _SummaryRow extends StatelessWidget {
           child: Text(
             value,
             textAlign: TextAlign.left,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 13,
               fontWeight: FontWeight.w800,
             ),
@@ -367,8 +368,8 @@ class _SubmissionLinkCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 14,
                         fontWeight: FontWeight.w900,
                       ),
@@ -376,8 +377,8 @@ class _SubmissionLinkCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 12,
                         height: 1.4,
                         fontWeight: FontWeight.w600,
@@ -426,7 +427,7 @@ class _StudentNotesCard extends StatelessWidget {
       child: Text(
         hasNotes ? notes : 'لم يضف الطالب ملاحظات مع التسليم النهائي.',
         style: TextStyle(
-          color: hasNotes ? AppColors.textDark : AppColors.textGrey,
+          color: hasNotes ? Get.theme.colorScheme.onSurface : Get.theme.colorScheme.onSurfaceVariant,
           fontSize: 13,
           height: 1.6,
           fontWeight: hasNotes ? FontWeight.w600 : FontWeight.w500,
@@ -463,8 +464,8 @@ class _StatCard extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             value,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 22,
               fontWeight: FontWeight.w900,
             ),
@@ -472,8 +473,8 @@ class _StatCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 11.5,
               fontWeight: FontWeight.w700,
             ),
@@ -523,18 +524,18 @@ class _NoLinksState extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: _cardDecoration(radius: 18),
-      child: const Row(
+      child:  Row(
         children: [
           Icon(
             Icons.info_outline_rounded,
-            color: AppColors.textGrey,
+            color: Get.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Expanded(
             child: Text(
               'لم يرفق الطالب روابطاً أو ملفات إضافية.',
               style: TextStyle(
-                color: AppColors.textGrey,
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),
@@ -599,8 +600,8 @@ class _SubmissionStateCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
@@ -609,8 +610,8 @@ class _SubmissionStateCard extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12.5,
               height: 1.6,
               fontWeight: FontWeight.w600,
@@ -634,7 +635,7 @@ class _SubmissionLoadingState extends StatelessWidget {
         vertical: 36,
       ),
       decoration: _cardDecoration(radius: 22),
-      child: const Column(
+      child:  Column(
         children: [
           SizedBox(
             width: 34,
@@ -649,7 +650,7 @@ class _SubmissionLoadingState extends StatelessWidget {
             'جاري تحميل بيانات التسليم النهائي...',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 13,
               fontWeight: FontWeight.w700,
             ),
@@ -691,11 +692,11 @@ class _SubmissionErrorState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          const Text(
+           Text(
             'تعذر تحميل بيانات التسليم',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 15,
               fontWeight: FontWeight.w900,
             ),
@@ -704,8 +705,8 @@ class _SubmissionErrorState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textGrey,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12.5,
               height: 1.6,
               fontWeight: FontWeight.w600,
@@ -751,7 +752,7 @@ BoxDecoration _cardDecoration({
   double radius = 20,
 }) {
   return BoxDecoration(
-    color: AppColors.cardWhite,
+    color: Get.theme.colorScheme.surface,
     borderRadius: BorderRadius.circular(radius),
     border: Border.all(
       color: AppColors.primaryBlue.withOpacity(0.08),

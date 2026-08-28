@@ -16,8 +16,8 @@ class StudentChatView extends GetView<StudentConversationController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: _buildAppBar(),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: _buildAppBar(context),
         body: Obx(() {
           final conversation = controller.selectedConversation.value;
 
@@ -30,9 +30,9 @@ class StudentChatView extends GetView<StudentConversationController> {
 
           return Column(
             children: [
-              _buildTaskContext(),
+              _buildTaskContext(context),
               Expanded(child: _buildMessages(context)),
-              _buildBottomArea(),
+              _buildBottomArea(context),
             ],
           );
         }),
@@ -40,16 +40,16 @@ class StudentChatView extends GetView<StudentConversationController> {
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: AppColors.cardWhite,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       leading: IconButton(
         onPressed: () => Get.back(),
-        icon: const Icon(
+        icon:  Icon(
           Icons.arrow_back_ios_new_rounded,
-          color: AppColors.textDark,
+          color: Theme.of(context).colorScheme.onSurface,
           size: 20,
         ),
       ),
@@ -76,9 +76,9 @@ class StudentChatView extends GetView<StudentConversationController> {
                     companyName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                     ),
@@ -87,9 +87,9 @@ class StudentChatView extends GetView<StudentConversationController> {
                     controller.currentTaskTitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 10.5,
                       fontWeight: FontWeight.w500,
                     ),
@@ -123,7 +123,7 @@ class StudentChatView extends GetView<StudentConversationController> {
     );
   }
 
-  Widget _buildTaskContext() {
+  Widget _buildTaskContext(BuildContext context) {
     return Obx(() {
       final task = controller.conversationContext.value?.task;
       if (task == null) return const SizedBox.shrink();
@@ -167,9 +167,9 @@ class StudentChatView extends GetView<StudentConversationController> {
                     task.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 12.5,
                       fontWeight: FontWeight.w800,
                     ),
@@ -181,9 +181,9 @@ class StudentChatView extends GetView<StudentConversationController> {
                         if (status.isNotEmpty) status,
                         if (deadline.isNotEmpty) 'الموعد: $deadline',
                       ].join(' • '),
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 10.5,
                       ),
                     ),
@@ -214,7 +214,7 @@ class StudentChatView extends GetView<StudentConversationController> {
     }
 
     if (controller.messages.isEmpty) {
-      return const Center(
+      return  Center(
         child: Padding(
           padding: EdgeInsets.all(28),
           child: Column(
@@ -223,14 +223,14 @@ class StudentChatView extends GetView<StudentConversationController> {
               Icon(
                 Icons.chat_bubble_outline_rounded,
                 size: 48,
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               SizedBox(height: 12),
               Text(
                 'ابدأ المحادثة',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ),
@@ -241,7 +241,7 @@ class StudentChatView extends GetView<StudentConversationController> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 12,
                 ),
               ),
@@ -274,7 +274,7 @@ class StudentChatView extends GetView<StudentConversationController> {
     );
   }
 
-  Widget _buildBottomArea() {
+  Widget _buildBottomArea(BuildContext context) {
     if (controller.isConversationClosed) {
       return SafeArea(
         top: false,
@@ -282,18 +282,18 @@ class StudentChatView extends GetView<StudentConversationController> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Theme.of(context).colorScheme.surface,
             border: Border(
-              top: BorderSide(color: AppColors.textGrey.withOpacity(0.10)),
+              top: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.10)),
             ),
           ),
-          child: const Row(
+          child:  Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 Icons.lock_outline_rounded,
                 size: 17,
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               SizedBox(width: 7),
               Flexible(
@@ -302,7 +302,7 @@ class StudentChatView extends GetView<StudentConversationController> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
@@ -319,9 +319,9 @@ class StudentChatView extends GetView<StudentConversationController> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(12, 9, 12, 10),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Theme.of(context).colorScheme.surface,
           border: Border(
-            top: BorderSide(color: AppColors.textGrey.withOpacity(0.10)),
+            top: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.10)),
           ),
         ),
         child: Row(
@@ -337,13 +337,13 @@ class StudentChatView extends GetView<StudentConversationController> {
                 style: const TextStyle(fontFamily: 'Cairo'),
                 decoration: InputDecoration(
                   hintText: 'اكتب رسالة...',
-                  hintStyle: const TextStyle(
+                  hintStyle:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 13,
                   ),
                   filled: true,
-                  fillColor: AppColors.background,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 15,
                     vertical: 11,
@@ -440,9 +440,11 @@ class StudentChatView extends GetView<StudentConversationController> {
             ),
             child: Container(
               padding: const EdgeInsets.fromLTRB(18, 12, 18, 22),
-              decoration: const BoxDecoration(
-                color: AppColors.cardWhite,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(26),
+                ),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -451,12 +453,12 @@ class StudentChatView extends GetView<StudentConversationController> {
                     width: 42,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: AppColors.textGrey.withOpacity(0.25),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.25),
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   const SizedBox(height: 18),
-                  const Row(
+                   Row(
                     children: [
                       Icon(Icons.edit_outlined, color: AppColors.primaryBlue),
                       SizedBox(width: 8),
@@ -464,7 +466,7 @@ class StudentChatView extends GetView<StudentConversationController> {
                         'تعديل الرسالة',
                         style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textDark,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
                         ),
@@ -480,7 +482,7 @@ class StudentChatView extends GetView<StudentConversationController> {
                     style: const TextStyle(fontFamily: 'Cairo'),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: Theme.of(context).scaffoldBackgroundColor,
                       hintText: 'نص الرسالة',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),

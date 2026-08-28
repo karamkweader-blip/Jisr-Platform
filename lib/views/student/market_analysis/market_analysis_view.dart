@@ -21,7 +21,7 @@ class MarketAnalysisView extends GetView<MarketAnalysisController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: isCompanyMode
             ? null
             : const StudentBottomNav(currentIndex: 2),
@@ -270,11 +270,11 @@ class _CareerPathSelector extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'اختر المسار المهني',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.primaryBlue,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -333,7 +333,7 @@ class _CareerPathCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isActive
               ? AppColors.primaryBlue
-              : AppColors.cardWhite,
+              : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: isActive
@@ -380,7 +380,7 @@ class _CareerPathCard extends StatelessWidget {
                       fontFamily: 'Cairo',
                       color: isActive
                           ? Colors.white
-                          : AppColors.primaryBlue,
+                          : Theme.of(context).colorScheme.onSurface,
                       fontSize: 14.5,
                       fontWeight: FontWeight.bold,
                     ),
@@ -395,7 +395,7 @@ class _CareerPathCard extends StatelessWidget {
                       fontFamily: 'Cairo',
                       color: isActive
                           ? Colors.white70
-                          : AppColors.textGrey,
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 11.5,
                       fontWeight: FontWeight.w600,
                     ),
@@ -473,7 +473,7 @@ class _SummaryBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: color.withOpacity(.12),
@@ -505,9 +505,9 @@ class _SummaryBox extends StatelessWidget {
           ),
           Text(
             label,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 11,
               fontWeight: FontWeight.w600,
             ),
@@ -550,7 +550,7 @@ class _MarketTabs extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(7),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: AppColors.primaryBlue.withOpacity(.08),
@@ -585,7 +585,7 @@ class _MarketTabs extends StatelessWidget {
                         tab.icon,
                         color: active
                             ? Colors.white
-                            : AppColors.textGrey,
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                         size: 17,
                       ),
                       const SizedBox(width: 5),
@@ -598,7 +598,7 @@ class _MarketTabs extends StatelessWidget {
                             fontFamily: 'Cairo',
                             color: active
                                 ? Colors.white
-                                : AppColors.textGrey,
+                                : Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 11.5,
                             fontWeight: FontWeight.bold,
                           ),
@@ -706,7 +706,7 @@ class _DemandSkillCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: color.withOpacity(.14),
@@ -747,9 +747,9 @@ class _DemandSkillCard extends StatelessWidget {
                         skill.skillName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -759,9 +759,9 @@ class _DemandSkillCard extends StatelessWidget {
                         skill.skillCategory,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 11.5,
                           fontWeight: FontWeight.w600,
                         ),
@@ -807,10 +807,10 @@ class _DemandSkillCard extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(
+                 Icon(
                   Icons.work_outline_rounded,
                   size: 16,
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 5),
                 Expanded(
@@ -818,9 +818,9 @@ class _DemandSkillCard extends StatelessWidget {
                     'ظهرت في ${skill.jobPostingCount} إعلان',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
@@ -897,7 +897,7 @@ class _TrendsList extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: color.withOpacity(.12),
@@ -936,9 +936,9 @@ class _TrendsList extends StatelessWidget {
                         trend.skillName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontSize: 15.5,
                           fontWeight: FontWeight.bold,
                         ),
@@ -949,9 +949,9 @@ class _TrendsList extends StatelessWidget {
                         '${trend.sourceJobCount} إعلان',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 11.5,
                           fontWeight: FontWeight.w600,
                         ),
@@ -1047,7 +1047,7 @@ class _CategoriesList extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: AppColors.cardWhite,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: AppColors.primaryBlue.withOpacity(.08),
@@ -1085,9 +1085,9 @@ class _CategoriesList extends StatelessWidget {
                         entry.key,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontSize: 15.5,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1184,8 +1184,8 @@ void _showEvidenceSheet(
             18,
             20,
           ),
-          decoration: const BoxDecoration(
-            color: AppColors.background,
+          decoration:  BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(30),
             ),
@@ -1207,7 +1207,7 @@ void _showEvidenceSheet(
                       height: 5,
                       decoration: BoxDecoration(
                         color:
-                            AppColors.textGrey.withOpacity(.24),
+                            Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.24),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -1238,18 +1238,18 @@ void _showEvidenceSheet(
                               'أدلة ظهور ${skill.skillName}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Cairo',
-                                color: AppColors.primaryBlue,
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const Text(
+                             Text(
                               'من إعلانات الوظائف المحللة',
                               style: TextStyle(
                                 fontFamily: 'Cairo',
-                                color: AppColors.textGrey,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -1260,9 +1260,9 @@ void _showEvidenceSheet(
                       IconButton(
                         tooltip: 'إغلاق',
                         onPressed: Get.back,
-                        icon: const Icon(
+                        icon:  Icon(
                           Icons.close_rounded,
-                          color: AppColors.textDark,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ],
@@ -1323,7 +1323,7 @@ class _EvidenceCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(.08),
@@ -1352,9 +1352,9 @@ class _EvidenceCard extends StatelessWidget {
                   job.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.primaryBlue,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 14.5,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1368,9 +1368,9 @@ class _EvidenceCard extends StatelessWidget {
             Text(
               '${job.companyName.isEmpty ? 'شركة غير محددة' : job.companyName}'
               '${job.location.isEmpty ? '' : ' · ${job.location}'}',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),
@@ -1381,16 +1381,16 @@ class _EvidenceCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(18),
             ),
             child: Text(
               evidence.context.isEmpty
                   ? evidence.matchedText
                   : evidence.context,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.55,
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
@@ -1513,7 +1513,7 @@ class _MarketLoading extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey.withOpacity(.85),
+              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.85),
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -1556,9 +1556,9 @@ class _MarketEmpty extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.55,
                 fontWeight: FontWeight.w600,
               ),
@@ -1639,9 +1639,9 @@ class _MarketError extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 8,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         height: 1.55,
                         fontWeight: FontWeight.w600,
                       ),

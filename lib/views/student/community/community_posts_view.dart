@@ -19,7 +19,7 @@ class CommunityPostsView extends GetView<CommunityPostsController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
         floatingActionButton: FloatingActionButton.extended(
           heroTag: 'create-community-post',
@@ -140,7 +140,7 @@ class CommunityPostsView extends GetView<CommunityPostsController> {
       Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
           title: const Text(
             'حذف المنشور؟',
@@ -150,9 +150,9 @@ class CommunityPostsView extends GetView<CommunityPostsController> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
+          content:  Text(
             'هل أنت متأكد؟ ما فينا نرجّع المنشور بعد الحذف.',
-            style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+            style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
           actions: [
             TextButton(
@@ -347,7 +347,7 @@ class _CommunityPointsStrip extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: AppColors.actionYellow.withOpacity(.18)),
                 boxShadow: [
@@ -399,9 +399,9 @@ class _CommunityPointsStrip extends StatelessWidget {
                           pointsController.isLoadingSummary && pointsController.totalPoints == 0
                               ? 'عم نجيب رصيدك...'
                               : 'كل منشور وتعليق وتفاعل بيقربك أكتر',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
                           ),
@@ -438,11 +438,11 @@ class _CommunityPointsStrip extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 4),
-                              const Text(
+                               Text(
                                 'نقطة',
                                 style: TextStyle(
                                   fontFamily: 'Cairo',
-                                  color: AppColors.textGrey,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -451,7 +451,7 @@ class _CommunityPointsStrip extends StatelessWidget {
                           ),
                         ),
                   const SizedBox(width: 6),
-                  const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textGrey, size: 16),
+                   Icon(Icons.arrow_forward_ios_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 16),
                 ],
               ),
             ),
@@ -475,7 +475,7 @@ class _SearchAndFilters extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(22),
               border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
               boxShadow: [
@@ -493,9 +493,9 @@ class _SearchAndFilters extends StatelessWidget {
               style: const TextStyle(fontFamily: 'Cairo'),
               decoration: InputDecoration(
                 hintText: 'ابحث عن Laravel، Flutter، API...',
-                hintStyle: const TextStyle(
+                hintStyle:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 13,
                 ),
                 border: InputBorder.none,
@@ -561,7 +561,7 @@ class _FilterPill extends StatelessWidget {
         duration: const Duration(milliseconds: 240),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
-          color: isActive ? AppColors.primaryBlue : Colors.white,
+          color: isActive ? AppColors.primaryBlue : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(50),
           border: Border.all(
             color: isActive
@@ -615,7 +615,7 @@ class _PostCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(13, 12, 13, 11),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: _typeColor(post.type).withOpacity(.18)),
           boxShadow: [
@@ -645,9 +645,9 @@ class _PostCard extends StatelessWidget {
                               post.author.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 fontFamily: 'Cairo',
-                                color: AppColors.textDark,
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.2,
                               ),
@@ -659,9 +659,9 @@ class _PostCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         controller.formatDate(post.createdAt),
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 11,
                         ),
                       ),
@@ -691,7 +691,7 @@ class _PostCard extends StatelessWidget {
                         ),
                       ),
                     ],
-                    child: const Icon(Icons.more_horiz_rounded, color: AppColors.textGrey),
+                    child:  Icon(Icons.more_horiz_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant),
                   )
                 else
                   IconButton(
@@ -716,9 +716,9 @@ class _PostCard extends StatelessWidget {
               post.content,
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 14,
                 height: 1.48,
                 fontWeight: FontWeight.w600,
@@ -730,14 +730,14 @@ class _PostCard extends StatelessWidget {
                 _ActionButton(
                   icon: post.isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
                   label: '${post.likeCount}',
-                  color: post.isLiked ? const Color(0xFFE11D48) : AppColors.textGrey,
+                  color: post.isLiked ? const Color(0xFFE11D48) : Theme.of(context).colorScheme.onSurfaceVariant,
                   onTap: () => controller.toggleLike(post),
                 ),
                 const SizedBox(width: 10),
                 _ActionButton(
                   icon: Icons.mode_comment_outlined,
                   label: '${post.commentCount}',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   onTap: onDetails,
                 ),
                 const Spacer(),
@@ -780,7 +780,9 @@ class _PostFormSheet extends GetView<CommunityPostsController> {
             child: Container(
               constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * .88),
               padding: const EdgeInsets.fromLTRB(18, 14, 18, 18),
-              decoration: const BoxDecoration(color: Colors.white),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+              ),
               child: GetBuilder<CommunityPostsController>(
                 builder: (_) {
                   final isEdit = controller.selectedPost != null;
@@ -835,11 +837,11 @@ class _PostFormSheet extends GetView<CommunityPostsController> {
                           ],
                         ),
                         const SizedBox(height: 18),
-                        const Text(
+                         Text(
                           'نوع المنشور',
                           style: TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textDark,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -859,7 +861,7 @@ class _PostFormSheet extends GetView<CommunityPostsController> {
                                 decoration: BoxDecoration(
                                   color: active
                                       ? AppColors.primaryBlue
-                                      : AppColors.background,
+                                      : Theme.of(context).scaffoldBackgroundColor,
                                   borderRadius: BorderRadius.circular(18),
                                   border: Border.all(
                                     color: active
@@ -886,7 +888,7 @@ class _PostFormSheet extends GetView<CommunityPostsController> {
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontFamily: 'Cairo',
-                                        color: active ? Colors.white70 : AppColors.textGrey,
+                                        color: active ? Colors.white70 : Theme.of(context).colorScheme.onSurfaceVariant,
                                         fontSize: 10.5,
                                         height: 1.35,
                                       ),
@@ -898,11 +900,11 @@ class _PostFormSheet extends GetView<CommunityPostsController> {
                           }).toList(),
                         ),
                         const SizedBox(height: 18),
-                        const Text(
+                         Text(
                           'المحتوى',
                           style: TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textDark,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -912,20 +914,20 @@ class _PostFormSheet extends GetView<CommunityPostsController> {
                           minLines: 6,
                           maxLines: 9,
                           textInputAction: TextInputAction.newline,
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontFamily: 'Cairo',
                             height: 1.5,
-                            color: AppColors.textDark,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           decoration: InputDecoration(
                             hintText: 'مثلاً: كيف أستخدم Form Request Validation في Laravel API؟',
-                            hintStyle: const TextStyle(
+                            hintStyle:  TextStyle(
                               fontFamily: 'Cairo',
-                              color: AppColors.textGrey,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 13,
                             ),
                             filled: true,
-                            fillColor: AppColors.background,
+                            fillColor: Theme.of(context).scaffoldBackgroundColor,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(22),
                               borderSide: BorderSide.none,
@@ -1011,7 +1013,7 @@ class _PostDetailsSheet extends GetView<CommunityPostsController> {
       child: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         child: Material(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           child: SafeArea(
             top: false,
             child: SizedBox(
@@ -1093,7 +1095,7 @@ class _PostDetailsSheet extends GetView<CommunityPostsController> {
       Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
           title: const Text(
             'حذف التعليق؟',
@@ -1103,9 +1105,9 @@ class _PostDetailsSheet extends GetView<CommunityPostsController> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
+          content:  Text(
             'هل أنت متأكد؟ ما فينا نرجّع التعليق بعد الحذف.',
-            style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+            style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
           actions: [
             TextButton(
@@ -1162,7 +1164,7 @@ class _DetailsTopBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         border: Border(bottom: BorderSide(color: AppColors.primaryBlue.withOpacity(.07))),
       ),
       child: Column(
@@ -1188,18 +1190,18 @@ class _DetailsTopBar extends StatelessWidget {
                       post.author.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textDark,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                         fontSize: 13.5,
                       ),
                     ),
                     Text(
                       controller.formatDate(post.createdAt),
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 11,
                       ),
                     ),
@@ -1234,15 +1236,15 @@ class _PostDetailsHeader extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppColors.background,
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
           ),
           child: Text(
             post.content,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 15,
               height: 1.65,
               fontWeight: FontWeight.w600,
@@ -1255,14 +1257,14 @@ class _PostDetailsHeader extends StatelessWidget {
             _ActionButton(
               icon: post.isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
               label: '${post.likeCount} إعجاب',
-              color: post.isLiked ? const Color(0xFFE11D48) : AppColors.textGrey,
+              color: post.isLiked ? const Color(0xFFE11D48) : Theme.of(context).colorScheme.onSurfaceVariant,
               onTap: () => controller.toggleLike(post),
             ),
             const SizedBox(width: 8),
             _ActionButton(
               icon: Icons.mode_comment_outlined,
               label: '${post.commentCount} تعليق',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               onTap: () {},
             ),
           ],
@@ -1295,7 +1297,7 @@ class _CommentCard extends StatelessWidget {
       margin: EdgeInsetsDirectional.only(start: isReply ? 28 : 0),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isReply ? AppColors.background.withOpacity(.72) : Colors.white,
+        color: isReply ? Theme.of(context).scaffoldBackgroundColor.withOpacity(.72) : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isReply
@@ -1333,7 +1335,7 @@ class _CommentCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontFamily: 'Cairo',
-                              color: AppColors.textDark,
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontWeight: FontWeight.bold,
                               fontSize: isReply ? 12.5 : 13.5,
                             ),
@@ -1341,9 +1343,9 @@ class _CommentCard extends StatelessWidget {
                         ),
                         Text(
                           controller.formatDate(comment.createdAt),
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 10.5,
                           ),
                         ),
@@ -1354,7 +1356,7 @@ class _CommentCard extends StatelessWidget {
                       comment.content,
                       style: TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textDark,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: isReply ? 12.5 : 13.2,
                         height: 1.55,
                         fontWeight: FontWeight.w600,
@@ -1384,7 +1386,7 @@ class _CommentCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                  child: const Icon(Icons.more_horiz_rounded, color: AppColors.textGrey, size: 21),
+                  child:  Icon(Icons.more_horiz_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 21),
                 )
               else
                 IconButton(
@@ -1410,15 +1412,15 @@ class _CommentCard extends StatelessWidget {
               if (comment.likesCount > 0) ...[
                 Icon(
                   comment.isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                  color: comment.isLiked ? const Color(0xFFE11D48) : AppColors.textGrey,
+                  color: comment.isLiked ? const Color(0xFFE11D48) : Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 15,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   '${comment.likesCount}',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1513,7 +1515,7 @@ class _CommentCard extends StatelessWidget {
       Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
           title: const Text(
             'حذف الرد؟',
@@ -1523,9 +1525,9 @@ class _CommentCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
+          content:  Text(
             'هل أنت متأكد من حذف هذا الرد؟',
-            style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+            style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
           actions: [
             TextButton(
@@ -1588,7 +1590,7 @@ class _CommentComposer extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           border: Border(top: BorderSide(color: AppColors.primaryBlue.withOpacity(.08))),
           boxShadow: [
             BoxShadow(
@@ -1627,9 +1629,9 @@ class _CommentComposer extends StatelessWidget {
                               : 'رد على ${controller.replyingTo?.user.name ?? 'تعليق'}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textDark,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
@@ -1637,7 +1639,7 @@ class _CommentComposer extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: isEditing ? controller.cancelEditComment : controller.cancelReply,
-                        child: const Icon(Icons.close_rounded, color: AppColors.textGrey, size: 18),
+                        child:  Icon(Icons.close_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 18),
                       ),
                     ],
                   ),
@@ -1660,13 +1662,13 @@ class _CommentComposer extends StatelessWidget {
                             : isReplying
                                 ? 'اكتب ردك...'
                                 : 'اكتب تعليقك... ',
-                        hintStyle: const TextStyle(
+                        hintStyle:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 12.5,
                         ),
                         filled: true,
-                        fillColor: AppColors.background,
+                        fillColor: Theme.of(context).scaffoldBackgroundColor,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
@@ -1857,7 +1859,7 @@ class _CommunityLoading extends StatelessWidget {
       itemBuilder: (_, __) => Container(
         height: 168,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(28),
           boxShadow: [
             BoxShadow(
@@ -1911,9 +1913,9 @@ class _CommunityEmpty extends StatelessWidget {
                     Text(
                       message,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 13.5,
                         height: 1.5,
                         fontWeight: FontWeight.w600,
@@ -1949,9 +1951,9 @@ class _CommunityError extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.6,
               ),
             ),
@@ -2014,7 +2016,7 @@ class _FastCommentsFilters extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.06)),
       ),
@@ -2038,7 +2040,7 @@ class _FastCommentsFilters extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: active ? Colors.white : AppColors.textGrey,
+                    color: active ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 11.5,
                     fontWeight: FontWeight.bold,
                   ),
@@ -2079,7 +2081,7 @@ class _InlineCommentsEmpty extends StatelessWidget {
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 24),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.06)),
       ),
@@ -2103,9 +2105,9 @@ class _InlineCommentsEmpty extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 13,
               height: 1.5,
               fontWeight: FontWeight.w600,
