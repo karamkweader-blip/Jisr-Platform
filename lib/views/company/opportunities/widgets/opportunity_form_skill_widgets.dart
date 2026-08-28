@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/opportunities/company_opportunity_model.dart';
 
+import 'package:get/get.dart';
 class OpportunitySkillCard extends StatelessWidget {
   final CompanyOpportunitySkill skill;
   final ValueChanged<bool> onMandatoryChanged;
@@ -23,7 +24,7 @@ class OpportunitySkillCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(17),
         border: Border.all(
           color: const Color(0xFFE0E8EE),
@@ -36,17 +37,17 @@ class OpportunitySkillCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   skill.name,
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.onSurface,
                     fontSize: 13.5,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
-              const Text(
+               Text(
                 'إلزامية',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 10.5,
                   fontWeight: FontWeight.w600,
                 ),
@@ -129,8 +130,8 @@ class OpportunitySkillSlider extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
                 ),
@@ -188,7 +189,7 @@ class EmptyOpportunitySkills extends StatelessWidget {
         vertical: 21,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Get.theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFFE0E8EE),
@@ -202,10 +203,10 @@ class EmptyOpportunitySkills extends StatelessWidget {
             size: 31,
           ),
           const SizedBox(height: 8),
-          const Text(
+           Text(
             'أضف مهارة واحدة على الأقل',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 13,
               fontWeight: FontWeight.w900,
             ),
@@ -293,13 +294,13 @@ class SelectOpportunityTypePrompt extends StatelessWidget {
         vertical: 27,
       ),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: const Color(0xFFE4EBF1),
         ),
       ),
-      child: const Column(
+      child:  Column(
         children: [
           Icon(
             Icons.touch_app,
@@ -311,7 +312,7 @@ class SelectOpportunityTypePrompt extends StatelessWidget {
             'اختر وظيفة أو تدريب للمتابعة',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 14.5,
               fontWeight: FontWeight.w900,
             ),
@@ -321,7 +322,7 @@ class SelectOpportunityTypePrompt extends StatelessWidget {
             'ستظهر الحقول بصياغة مناسبة للنوع الذي تختاره.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 11.5,
               fontWeight: FontWeight.w500,
             ),

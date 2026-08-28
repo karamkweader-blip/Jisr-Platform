@@ -26,9 +26,7 @@ class NotificationBellButton
           children: [
             Positioned.fill(
               child: Material(
-                color: isDarkMode
-                    ? const Color(0xFF17283A)
-                    : AppColors.cardWhite,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius:
                     BorderRadius.circular(13),
                 child: InkWell(

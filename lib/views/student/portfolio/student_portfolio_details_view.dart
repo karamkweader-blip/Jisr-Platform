@@ -18,10 +18,10 @@ class StudentPortfolioDetailsView extends GetView<StudentPortfolioController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -43,12 +43,12 @@ class StudentPortfolioDetailsView extends GetView<StudentPortfolioController> {
           final project = controller.selectedProject.value;
 
           if (project == null) {
-            return const Center(
+            return  Center(
               child: Text(
                 'لم يتم العثور على المشروع',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             );
@@ -162,10 +162,10 @@ class StudentPortfolioDetailsView extends GetView<StudentPortfolioController> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
+          content:  Text(
             'هل أنت متأكد من حذف هذا المشروع من البورتفوليو؟',
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+            style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
@@ -300,7 +300,7 @@ class _InfoCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(26),
         boxShadow: [
           BoxShadow(
@@ -330,9 +330,9 @@ class _InfoCard extends StatelessWidget {
                 const SizedBox(height: 7),
                 Text(
                   shownValue,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     height: 1.5,
                   ),
                 ),
@@ -405,10 +405,10 @@ class _EditProjectSheet extends GetView<StudentPortfolioController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -529,7 +529,7 @@ class _SheetField extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surface,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(22),
             borderSide: BorderSide(
@@ -596,10 +596,10 @@ class _DatePickerField extends StatelessWidget {
             builder: (context, child) {
               return Theme(
                 data: Theme.of(context).copyWith(
-                  colorScheme: const ColorScheme.light(
+                  colorScheme:  ColorScheme.light(
                     primary: AppColors.primaryBlue,
                     onPrimary: Colors.white,
-                    onSurface: AppColors.textDark,
+                    onSurface: Theme.of(context).colorScheme.onSurface,
                   ),
                   textButtonTheme: TextButtonThemeData(
                     style: TextButton.styleFrom(
@@ -630,7 +630,7 @@ class _DatePickerField extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surface,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(22),
             borderSide: BorderSide(

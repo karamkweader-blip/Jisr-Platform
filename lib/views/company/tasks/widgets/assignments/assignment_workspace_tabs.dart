@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/controllers/company/tasks/company_task_assignment_workspace_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class AssignmentWorkspaceTabs extends StatelessWidget {
   final AssignmentWorkspaceTab selectedTab;
   final ValueChanged<AssignmentWorkspaceTab> onSelected;
@@ -17,7 +18,7 @@ class AssignmentWorkspaceTabs extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -99,7 +100,7 @@ class _WorkspaceTabItem extends StatelessWidget {
                 Icon(
                   icon,
                   size: 18,
-                  color: isSelected ? Colors.white : AppColors.textGrey,
+                  color: isSelected ? Colors.white : Get.theme.colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 7),
                 Flexible(
@@ -108,7 +109,7 @@ class _WorkspaceTabItem extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: isSelected ? Colors.white : AppColors.textGrey,
+                      color: isSelected ? Colors.white : Get.theme.colorScheme.onSurfaceVariant,
                       fontSize: 12,
                       fontWeight: FontWeight.w900,
                     ),

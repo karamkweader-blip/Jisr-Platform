@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:jisr_platform/controllers/company/company_main_controller.dart';
+import 'package:jisr_platform/controllers/company/opportunities/company_opportunities_controller.dart';
 import 'package:jisr_platform/models/company/company_home_model.dart';
 import 'package:jisr_platform/models/company/tasks/company_task_assignment_model.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
@@ -6,17 +8,22 @@ import 'package:jisr_platform/services/company/company_home_service.dart';
 import 'package:jisr_platform/services/company/tasks/company_task_assignments_service.dart';
 
 class CompanyHomeController extends GetxController {
- final CompanyHomeService _homeService;
-final CompanyTaskAssignmentsService _assignmentsService;
+  final CompanyHomeService _homeService;
 
-CompanyHomeController(
-  this._homeService,
-  this._assignmentsService,
-);
+  final CompanyTaskAssignmentsService
+      _assignmentsService;
+
+  CompanyHomeController(
+    this._homeService,
+    this._assignmentsService,
+  );
 
   final RxBool isLoading = false.obs;
+
   final RxString errorMessage = ''.obs;
-  final Rxn<CompanyHomeModel> homeData = Rxn<CompanyHomeModel>();
+
+  final Rxn<CompanyHomeModel> homeData =
+      Rxn<CompanyHomeModel>();
 
   @override
   void onInit() {
@@ -29,14 +36,125 @@ CompanyHomeController(
       isLoading.value = true;
       errorMessage.value = '';
 
-      final result = await _homeService.getCompanyHome();
+      final result =
+          await _homeService.getCompanyHome();
+
       homeData.value = result;
     } catch (e) {
-      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
+      errorMessage.value = e
+          .toString()
+          .replaceFirst(
+            'Exception: ',
+            '',
+          );
     } finally {
       isLoading.value = false;
     }
   }
+
+  // =========================================================
+  // Home statistics cards
+  // =========================================================
+
+ Future<void>
+    onActiveOpportunitiesPressed() async {
+  final mainController =
+      Get.find<CompanyMainController>();
+
+  final opportunitiesController =
+      Get.find<CompanyOpportunitiesController>();
+
+  // يبدأ تجهيز فلتر المهام المنشورة أولاً.
+  final refreshFuture =
+      opportunitiesController
+          .showPublishedTasks();
+
+  // الانتقال إلى تبويب المهام والفرص.
+  mainController.changeTab(
+    CompanyMainController
+        .opportunitiesPageIndex,
+  );
+
+  await refreshFuture;
+}
+
+  Future<void>
+      onNewApplicantsPressed() async {
+    await _openOpportunitiesTab(
+      type: CompanyOpportunityTypeFilter.task,
+    );
+  }
+
+  Future<void>
+      onPendingReviewsPressed() async {
+    await _openAssignments(
+      initialStatus: 'submitted',
+    );
+  }
+
+  Future<void>
+      onActiveAssignmentsPressed() async {
+    await _openAssignments(
+      initialStatus: 'working',
+    );
+  }
+
+  Future<void> _openOpportunitiesTab({
+    required CompanyOpportunityTypeFilter type,
+  }) async {
+    try {
+      final mainController =
+          Get.find<CompanyMainController>();
+
+      final opportunitiesController =
+          Get.find<
+              CompanyOpportunitiesController>();
+
+      opportunitiesController.applyHomePreset(
+        type: type,
+        status:
+            CompanyOpportunityStatusFilter.all,
+      );
+
+      mainController.changeTab(
+        CompanyMainController
+            .opportunitiesPageIndex,
+      );
+
+      await opportunitiesController.fetchItems();
+    } catch (_) {
+      Get.snackbar(
+        'تنبيه',
+        'تعذر فتح قسم الفرص حاليًا',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> _openAssignments({
+    required String initialStatus,
+  }) async {
+    try {
+      await Get.toNamed(
+        Routes.companyTaskAssignments,
+        arguments: {
+          'initialStatus': initialStatus,
+        },
+      );
+
+      await fetchCompanyHome();
+    } catch (_) {
+      Get.snackbar(
+        'تنبيه',
+        'تعذر فتح المهام قيد المتابعة حاليًا',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  // =========================================================
+  // Creation
+  // =========================================================
 
   Future<void> onCreateTaskPressed() async {
     final shouldRefresh = await Get.toNamed(
@@ -48,14 +166,24 @@ CompanyHomeController(
     }
   }
 
-  Future<void> onRequiredActionPressed(CompanyRequiredAction action) async {
-//     debugPrint(
-//   'HOME REQUIRED ACTION => '
-//   'targetType: ${action.targetType}, '
-//   'targetId: ${action.targetId}, '
-//   'taskId: ${action.taskId}, '
-//   'actionLabel: ${action.actionLabel}',
-// );
+  Future<void>
+      onCreateOpportunityPressed() async {
+    final shouldRefresh = await Get.toNamed(
+      Routes.companyOpportunityForm,
+    );
+
+    if (shouldRefresh == true) {
+      await fetchCompanyHome();
+    }
+  }
+
+  // =========================================================
+  // Required actions
+  // =========================================================
+
+  Future<void> onRequiredActionPressed(
+    CompanyRequiredAction action,
+  ) async {
     switch (action.targetType) {
       case 'task_application':
         await _openApplicantDetails(
@@ -74,100 +202,137 @@ CompanyHomeController(
           taskId: action.targetId,
         );
         break;
-case 'task_submission':
-  await _openSubmittedTaskWorkspace(action);
-  break;
+
+      case 'task_submission':
+        await _openSubmittedTaskWorkspace(
+          action,
+        );
+        break;
+
       default:
         _showUnsupportedAction();
     }
   }
-Future<void> _openSubmittedTaskWorkspace(
-  CompanyRequiredAction action,
-) async {
-  final assignment = await _findAssignmentForSubmissionAction(action);
 
-  if (assignment == null) {
-    Get.snackbar(
-      'تنبيه',
-      'تعذر تحديد مساحة العمل المرتبطة بهذا التسليم',
-      snackPosition: SnackPosition.BOTTOM,
-    );
-    return;
-  }
-
-  await Get.toNamed(
-    Routes.companyTaskAssignmentWorkspace,
-    arguments: {
-      'assignmentId': assignment.assignmentId,
-      'studentName': assignment.student.name,
-      'studentEmail': assignment.student.email,
-      'studentProfilePictureUrl': assignment.student.profilePictureUrl,
-      'initialTab': 'submission',
-    },
-  );
-
-  await fetchCompanyHome();
-}
-
-Future<CompanyTaskAssignmentModel?> _findAssignmentForSubmissionAction(
-  CompanyRequiredAction action,
-) async {
-  final taskId = action.taskId ?? 0;
-  final studentUserId = action.studentUserId ?? 0;
-
-  if (taskId <= 0) {
-    return null;
-  }
-
-  try {
-    final assignments = await _assignmentsService.getTaskAssignments();
-
-    final submittedMatch = _firstMatchingAssignment(
-      assignments,
-      taskId: taskId,
-      studentUserId: studentUserId,
-      requireSubmitted: true,
+  Future<void> _openSubmittedTaskWorkspace(
+    CompanyRequiredAction action,
+  ) async {
+    final assignment =
+        await _findAssignmentForSubmissionAction(
+      action,
     );
 
-    if (submittedMatch != null) {
-      return submittedMatch;
+    if (assignment == null) {
+      Get.snackbar(
+        'تنبيه',
+        'تعذر تحديد مساحة العمل المرتبطة بهذا التسليم',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
+      return;
     }
 
-    return _firstMatchingAssignment(
-      assignments,
-      taskId: taskId,
-      studentUserId: studentUserId,
-      requireSubmitted: false,
+    await Get.toNamed(
+      Routes.companyTaskAssignmentWorkspace,
+      arguments: {
+        'assignmentId':
+            assignment.assignmentId,
+        'studentName':
+            assignment.student.name,
+        'studentEmail':
+            assignment.student.email,
+        'studentProfilePictureUrl':
+            assignment
+                .student
+                .profilePictureUrl,
+        'initialTab': 'submission',
+      },
     );
-  } catch (_) {
-    return null;
+
+    await fetchCompanyHome();
   }
-}
 
-CompanyTaskAssignmentModel? _firstMatchingAssignment(
-  List<CompanyTaskAssignmentModel> assignments, {
-  required int taskId,
-  required int studentUserId,
-  required bool requireSubmitted,
-}) {
-  for (final assignment in assignments) {
-    final isSameTask = assignment.task.id == taskId;
+  Future<CompanyTaskAssignmentModel?>
+      _findAssignmentForSubmissionAction(
+    CompanyRequiredAction action,
+  ) async {
+    final taskId = action.taskId ?? 0;
 
-    final isSameStudent =
-        studentUserId <= 0 || assignment.student.id == studentUserId;
+    final studentUserId =
+        action.studentUserId ?? 0;
 
-    final isSubmitted = assignment.isSubmitted || assignment.submittedAt != null;
+    if (taskId <= 0) {
+      return null;
+    }
 
-    if (isSameTask &&
-        isSameStudent &&
-        (!requireSubmitted || isSubmitted)) {
-      return assignment;
+    try {
+      final assignments =
+          await _assignmentsService
+              .getTaskAssignments();
+
+      final submittedMatch =
+          _firstMatchingAssignment(
+        assignments,
+        taskId: taskId,
+        studentUserId: studentUserId,
+        requireSubmitted: true,
+      );
+
+      if (submittedMatch != null) {
+        return submittedMatch;
+      }
+
+      return _firstMatchingAssignment(
+        assignments,
+        taskId: taskId,
+        studentUserId: studentUserId,
+        requireSubmitted: false,
+      );
+    } catch (_) {
+      return null;
     }
   }
 
-  return null;
-}
-  Future<void> onRecentActivityPressed(CompanyRecentActivity activity) async {
+  CompanyTaskAssignmentModel?
+      _firstMatchingAssignment(
+    List<CompanyTaskAssignmentModel>
+        assignments, {
+    required int taskId,
+    required int studentUserId,
+    required bool requireSubmitted,
+  }) {
+    for (final assignment
+        in assignments) {
+      final isSameTask =
+          assignment.task.id == taskId;
+
+      final isSameStudent =
+          studentUserId <= 0 ||
+          assignment.student.id ==
+              studentUserId;
+
+      final isSubmitted =
+          assignment.isSubmitted ||
+          assignment.submittedAt != null;
+
+      if (isSameTask &&
+          isSameStudent &&
+          (!requireSubmitted ||
+              isSubmitted)) {
+        return assignment;
+      }
+    }
+
+    return null;
+  }
+
+  // =========================================================
+  // Recent activities
+  // =========================================================
+
+  Future<void> onRecentActivityPressed(
+    CompanyRecentActivity activity,
+  ) async {
     switch (activity.targetType) {
       case 'task_applications':
         await _openTaskApplicants(
@@ -201,6 +366,7 @@ CompanyTaskAssignmentModel? _firstMatchingAssignment(
         'رقم طلب التقديم غير صالح',
         snackPosition: SnackPosition.BOTTOM,
       );
+
       return;
     }
 
@@ -226,6 +392,7 @@ CompanyTaskAssignmentModel? _firstMatchingAssignment(
         'رقم المهمة غير صالح',
         snackPosition: SnackPosition.BOTTOM,
       );
+
       return;
     }
 
@@ -233,12 +400,14 @@ CompanyTaskAssignmentModel? _firstMatchingAssignment(
       Routes.companyTaskApplicants,
       arguments: {
         'taskId': taskId,
-        'taskTitle': 'المهمة رقم $taskId',
+        'taskTitle':
+            'المهمة رقم $taskId',
       },
     );
 
     await fetchCompanyHome();
   }
+
   Future<void> _openTaskDetails({
     required int taskId,
   }) async {
@@ -248,6 +417,7 @@ CompanyTaskAssignmentModel? _firstMatchingAssignment(
         'رقم المهمة غير صالح',
         snackPosition: SnackPosition.BOTTOM,
       );
+
       return;
     }
 
@@ -276,18 +446,25 @@ CompanyTaskAssignmentModel? _firstMatchingAssignment(
     switch (targetType) {
       case 'task_application':
         return 'مراجعة الطلب';
+
       case 'task_applications':
         return 'عرض الطلبات';
+
       case 'task':
         return 'عرض المهمة';
-      case 'task_submission':
-      return 'مراجعة التسليم';
 
-    case 'conversation':
-      return 'فتح المحادثة';
+      case 'task_submission':
+        return 'مراجعة التسليم';
+
+      case 'conversation':
+        return 'فتح المحادثة';
 
       default:
-        return fallbackLabel.trim().isNotEmpty ? fallbackLabel : 'عرض التفاصيل';
+        return fallbackLabel
+                .trim()
+                .isNotEmpty
+            ? fallbackLabel
+            : 'عرض التفاصيل';
     }
   }
 }

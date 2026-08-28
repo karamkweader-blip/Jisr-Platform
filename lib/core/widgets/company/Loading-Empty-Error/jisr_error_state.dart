@@ -17,8 +17,13 @@ class JisrErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return Padding(
-      padding: const EdgeInsets.all(AppDimensions.paddingXLarge),
+      padding: const EdgeInsets.all(
+        AppDimensions.paddingXLarge,
+      ),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -27,12 +32,15 @@ class JisrErrorState extends StatelessWidget {
               height: 72,
               width: 72,
               decoration: BoxDecoration(
-                color: AppColors.actionYellow.withOpacity(0.14),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+                color: AppColors.dangerRed
+                    .withOpacity(0.14),
+                borderRadius: BorderRadius.circular(
+                  AppDimensions.radiusLarge,
+                ),
               ),
               child: const Icon(
                 Icons.error_outline_rounded,
-                color: AppColors.actionYellow,
+                color: AppColors.dangerRed,
                 size: 36,
               ),
             ),
@@ -40,8 +48,8 @@ class JisrErrorState extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style: TextStyle(
+                color: colorScheme.onSurface,
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
               ),
@@ -50,8 +58,9 @@ class JisrErrorState extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style: TextStyle(
+                color:
+                    colorScheme.onSurfaceVariant,
                 fontSize: 14,
                 height: 1.5,
               ),

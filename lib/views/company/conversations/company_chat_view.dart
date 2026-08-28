@@ -20,7 +20,7 @@ class CompanyChatView
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor:
-            AppColors.background,
+            Get.theme.scaffoldBackgroundColor,
         appBar: _buildAppBar(),
         body: Obx(
           () {
@@ -59,14 +59,14 @@ class CompanyChatView
     return AppBar(
       elevation: 0,
       backgroundColor:
-          AppColors.cardWhite,
+          Get.theme.colorScheme.surface,
       surfaceTintColor:
           Colors.transparent,
       leading: IconButton(
         onPressed: () => Get.back(),
-        icon: const Icon(
+        icon:  Icon(
           Icons.arrow_back_ios_new_rounded,
-          color: AppColors.textDark,
+          color: Get.theme.colorScheme.onSurface,
           size: 20,
         ),
       ),
@@ -243,8 +243,8 @@ class CompanyChatView
                     opportunity?.title ?? task?.title ?? 'المحادثة',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.textDark,
+                    style:  TextStyle(
+                      color: Get.theme.colorScheme.onSurface,
                       fontSize: 12.5,
                       fontWeight: FontWeight.w800,
                     ),
@@ -253,8 +253,8 @@ class CompanyChatView
                     const SizedBox(height: 3),
                     Text(
                       details.join(' • '),
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 10.5,
                       ),
                     ),
@@ -304,7 +304,7 @@ class CompanyChatView
     }
 
     if (controller.messages.isEmpty) {
-      return const Center(
+      return  Center(
         child: Padding(
           padding: EdgeInsets.all(28),
           child: Column(
@@ -316,14 +316,14 @@ class CompanyChatView
                     .chat_bubble_outline_rounded,
                 size: 48,
                 color:
-                    AppColors.textGrey,
+                    Get.theme.colorScheme.onSurfaceVariant,
               ),
               SizedBox(height: 12),
               Text(
                 'ابدأ المحادثة',
                 style: TextStyle(
                   color:
-                      AppColors.textDark,
+                      Get.theme.colorScheme.onSurface,
                   fontSize: 16,
                   fontWeight:
                       FontWeight.w700,
@@ -336,7 +336,7 @@ class CompanyChatView
                     TextAlign.center,
                 style: TextStyle(
                   color:
-                      AppColors.textGrey,
+                      Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 12,
                 ),
               ),
@@ -413,7 +413,7 @@ class CompanyChatView
           ),
           decoration: BoxDecoration(
             color:
-                AppColors.cardWhite,
+                Get.theme.colorScheme.surface,
             border: Border(
               top: BorderSide(
                 color: AppColors
@@ -422,7 +422,7 @@ class CompanyChatView
               ),
             ),
           ),
-          child: const Row(
+          child:  Row(
             mainAxisAlignment:
                 MainAxisAlignment.center,
             children: [
@@ -431,7 +431,7 @@ class CompanyChatView
                     .lock_outline_rounded,
                 size: 17,
                 color:
-                    AppColors.textGrey,
+                    Get.theme.colorScheme.onSurfaceVariant,
               ),
               SizedBox(width: 7),
               Flexible(
@@ -465,10 +465,10 @@ class CompanyChatView
           10,
         ),
         decoration: BoxDecoration(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           border: Border(
             top: BorderSide(
-              color: AppColors.textGrey
+              color: Get.theme.colorScheme.onSurfaceVariant
                   .withOpacity(0.10),
             ),
           ),
@@ -671,9 +671,9 @@ class CompanyChatView
                 22,
               ),
               decoration:
-                  const BoxDecoration(
+                   BoxDecoration(
                 color:
-                    AppColors.cardWhite,
+                    Get.theme.colorScheme.surface,
                 borderRadius:
                     BorderRadius
                         .vertical(

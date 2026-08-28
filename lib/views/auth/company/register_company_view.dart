@@ -9,63 +9,100 @@ import 'package:jisr_platform/views/auth/company/company-components/register_com
 import 'package:jisr_platform/views/auth/company/company-components/register_company_step_three.dart';
 import 'package:jisr_platform/views/auth/company/company-components/register_company_step_two.dart';
 
-
-class RegisterCompanyView extends GetView<RegisterCompanyController> {
-  const RegisterCompanyView({super.key});
+class RegisterCompanyView
+    extends GetView<RegisterCompanyController> {
+  const RegisterCompanyView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark =
+        theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor:
+          theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding:
+              const EdgeInsets.symmetric(
+            horizontal: 24,
+          ),
           child: Column(
             children: [
               const SizedBox(height: 18),
               const AuthHeader(
-  title: 'إنشاء حساب شركة',
-  subtitle: 'أكمل الخطوات التالية لإنشاء حساب شركتك على منصة جسور.',
-  logoWithContainer: true,
-  logoContainerSize: 78,
-  logoSize: 58,
-  titleFontSize: 24,
-  spaceAfterLogo: 18,
-),
+                title:
+                    'إنشاء حساب شركة',
+                subtitle:
+                    'أكمل الخطوات التالية لإنشاء حساب شركتك على منصة جسور.',
+                logoWithContainer: true,
+                logoContainerSize: 78,
+                logoSize: 58,
+                titleFontSize: 24,
+                spaceAfterLogo: 18,
+              ),
               const SizedBox(height: 24),
               Obx(
                 () => StepIndicator(
-                  current: controller.currentStep.value,
+                  current: controller
+                      .currentStep.value,
                 ),
               ),
               const SizedBox(height: 24),
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(20, 22, 20, 20),
+                  padding:
+                      const EdgeInsets.fromLTRB(
+                    20,
+                    22,
+                    20,
+                    20,
+                  ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.92),
-                    borderRadius: BorderRadius.circular(28),
+                    color:
+                        colorScheme.surface,
+                    borderRadius:
+                        BorderRadius.circular(28),
+                    border: Border.all(
+                      color: colorScheme
+                          .outlineVariant,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primaryBlue.withOpacity(0.06),
+                        color: isDark
+                            ? Colors.black
+                                .withOpacity(0.20)
+                            : AppColors
+                                .primaryBlue
+                                .withOpacity(0.06),
                         blurRadius: 24,
-                        offset: const Offset(0, 10),
+                        offset:
+                            const Offset(0, 10),
                       ),
                     ],
                   ),
                   child: PageView(
-                    controller: controller.pageController,
-                    onPageChanged: controller.onPageChanged,
+                    controller:
+                        controller.pageController,
+                    onPageChanged:
+                        controller.onPageChanged,
                     children: const [
                       SingleChildScrollView(
-                        child: RegisterCompanyStepOne(),
+                        child:
+                            RegisterCompanyStepOne(),
                       ),
                       SingleChildScrollView(
-                        child: RegisterCompanyStepTwo(),
+                        child:
+                            RegisterCompanyStepTwo(),
                       ),
                       SingleChildScrollView(
-                        child: RegisterCompanyStepThree(),
+                        child:
+                            RegisterCompanyStepThree(),
                       ),
                     ],
                   ),
@@ -75,35 +112,60 @@ class RegisterCompanyView extends GetView<RegisterCompanyController> {
               Obx(
                 () => Row(
                   children: [
-                    if (controller.currentStep.value > 0)
+                    if (controller
+                            .currentStep.value >
+                        0)
                       Expanded(
-                        child: RegisterStepActionButton(
-                          onPressed: controller.isLoading.value
+                        child:
+                            RegisterStepActionButton(
+                          onPressed: controller
+                                  .isLoading.value
                               ? null
-                              : () => controller.prevStep(),
+                              : controller
+                                  .prevStep,
                           label: 'رجوع',
                           isPrimary: false,
-                          icon: Icons.arrow_back_rounded,
+                          icon: Icons
+                              .arrow_back_rounded,
                         ),
                       ),
-                    if (controller.currentStep.value > 0)
+                    if (controller
+                            .currentStep.value >
+                        0)
                       const SizedBox(width: 12),
                     Expanded(
-                      flex: controller.currentStep.value > 0 ? 1 : 2,
-                      child: RegisterStepActionButton(
-                        onPressed: controller.isLoading.value
+                      flex: controller.currentStep
+                                  .value >
+                              0
+                          ? 1
+                          : 2,
+                      child:
+                          RegisterStepActionButton(
+                        onPressed: controller
+                                .isLoading.value
                             ? null
-                            : controller.currentStep.value == 2
-                                ? () => controller.submit()
-                                : () => controller.nextStep(),
-                        label: controller.currentStep.value == 2
+                            : controller
+                                        .currentStep
+                                        .value ==
+                                    2
+                                ? controller.submit
+                                : controller.nextStep,
+                        label: controller
+                                    .currentStep
+                                    .value ==
+                                2
                             ? 'إرسال الطلب'
                             : 'التالي',
                         isPrimary: true,
-                        isLoading: controller.isLoading.value,
-                        icon: controller.currentStep.value == 2
+                        isLoading: controller
+                            .isLoading.value,
+                        icon: controller
+                                    .currentStep
+                                    .value ==
+                                2
                             ? Icons.check_rounded
-                            : Icons.arrow_forward_rounded,
+                            : Icons
+                                .arrow_forward_rounded,
                       ),
                     ),
                   ],

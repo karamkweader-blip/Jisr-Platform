@@ -13,7 +13,8 @@ class EditHeader extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.16),
+            color: AppColors.primaryBlue
+                .withOpacity(0.16),
             blurRadius: 22,
             offset: const Offset(0, 12),
           ),
@@ -29,14 +30,16 @@ class EditHeader extends StatelessWidget {
           SizedBox(width: 14),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 Text(
                   'حدّث بيانات شركتك',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
-                    fontWeight: FontWeight.w900,
+                    fontWeight:
+                        FontWeight.w900,
                   ),
                 ),
                 SizedBox(height: 6),
@@ -45,7 +48,8 @@ class EditHeader extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
-                    fontWeight: FontWeight.w500,
+                    fontWeight:
+                        FontWeight.w500,
                     height: 1.45,
                   ),
                 ),
@@ -76,49 +80,66 @@ class ProfileInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      cursorColor: AppColors.primaryBlue,
+      style: TextStyle(
+        color: colorScheme.onSurface,
+      ),
+      autovalidateMode:
+          AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         hintText: label,
         prefixIcon: Icon(
           icon,
-          color: AppColors.primaryBlue.withOpacity(0.75),
+          color: AppColors.primaryBlue
+              .withOpacity(0.75),
           size: 20,
         ),
         filled: true,
-        fillColor: AppColors.background,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 17,
+        fillColor:
+            colorScheme.surfaceContainer,
+        contentPadding:
+            const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 17,
+            ),
+        border: _border(
+          colorScheme.outlineVariant,
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
+        enabledBorder: _border(
+          colorScheme.outlineVariant,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: AppColors.primaryBlue,
-            width: 1.4,
-          ),
+        focusedBorder: _border(
+          AppColors.primaryBlue,
+          width: 1.4,
         ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: Colors.red.shade400,
-            width: 1.2,
-          ),
+        errorBorder: _border(
+          AppColors.dangerRed,
+          width: 1.2,
         ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: Colors.red.shade600,
-            width: 1.3,
-          ),
+        focusedErrorBorder: _border(
+          AppColors.dangerRed,
+          width: 1.3,
         ),
+      ),
+    );
+  }
+
+  OutlineInputBorder _border(
+    Color color, {
+    double width = 1,
+  }) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(
+        color: color,
+        width: width,
       ),
     );
   }

@@ -189,7 +189,7 @@ class _SectionLoading extends StatelessWidget {
           height: 120,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
@@ -281,12 +281,15 @@ class _SearchBox extends GetView<StudentTaskController> {
     return TextField(
       controller: controller.searchController,
       onChanged: controller.onSearchChanged,
-      style: const TextStyle(fontFamily: 'Cairo'),
+      style: TextStyle(
+        fontFamily: 'Cairo',
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       decoration: InputDecoration(
         hintText: 'ابحث عن تاسك حسب العنوان...',
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontFamily: 'Cairo',
-          color: AppColors.textGrey,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         prefixIcon: const Icon(
           Icons.search_rounded,
@@ -297,7 +300,7 @@ class _SearchBox extends GetView<StudentTaskController> {
           icon: const Icon(Icons.close_rounded, color: AppColors.actionYellow),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Theme.of(context).colorScheme.surface,
         contentPadding: const EdgeInsets.all(18),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(24),
@@ -332,9 +335,9 @@ class _SectionTitle extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.primaryBlue,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -376,7 +379,7 @@ class _RecommendedTaskCard extends GetView<StudentTaskController> {
         child: Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(30),
             border: Border.all(color: AppColors.actionYellow.withOpacity(.30)),
             boxShadow: [
@@ -407,9 +410,9 @@ class _RecommendedTaskCard extends GetView<StudentTaskController> {
                       ),
                     ),
                   ),
-                  const Icon(
+                  Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     size: 16,
                   ),
                 ],
@@ -419,9 +422,9 @@ class _RecommendedTaskCard extends GetView<StudentTaskController> {
                 task.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.primaryBlue,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -431,9 +434,9 @@ class _RecommendedTaskCard extends GetView<StudentTaskController> {
                 task.company.industry.isEmpty
                     ? task.company.name
                     : task.company.industry,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 12,
                 ),
               ),
@@ -467,7 +470,7 @@ class _ExploreTaskCard extends GetView<StudentTaskController> {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(28),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
           boxShadow: [
@@ -502,9 +505,9 @@ class _ExploreTaskCard extends GetView<StudentTaskController> {
                     task.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.primaryBlue,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -514,9 +517,9 @@ class _ExploreTaskCard extends GetView<StudentTaskController> {
                     task.company.industry.isEmpty
                         ? task.company.name
                         : task.company.industry,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
                     ),
                   ),
@@ -531,9 +534,9 @@ class _ExploreTaskCard extends GetView<StudentTaskController> {
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_back_ios_new_rounded,
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               size: 18,
             ),
           ],
@@ -582,7 +585,7 @@ class _EmptyTasks extends StatelessWidget {
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.all(26),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
@@ -592,7 +595,7 @@ class _EmptyTasks extends StatelessWidget {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         children: [
           Icon(
             Icons.search_off_rounded,
@@ -604,7 +607,7 @@ class _EmptyTasks extends StatelessWidget {
             'لا توجد تاسكات حالياً',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.primaryBlue,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -613,7 +616,10 @@ class _EmptyTasks extends StatelessWidget {
           Text(
             'جرّب البحث بعنوان مختلف أو اسحب لتحديث الصفحة.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),

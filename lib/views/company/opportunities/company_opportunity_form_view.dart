@@ -37,16 +37,16 @@ class CompanyOpportunityFormView
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
        appBar: AppBar(
-  backgroundColor: AppColors.background,
-  foregroundColor: AppColors.textDark,
+  backgroundColor: Get.theme.scaffoldBackgroundColor,
+  foregroundColor: Get.theme.colorScheme.onSurface,
   elevation: 0,
   centerTitle: true,
   title: Text(
     controller.pageTitle,
-    style: const TextStyle(
-      color: AppColors.textDark,
+    style:  TextStyle(
+      color: Get.theme.colorScheme.onSurface,
       fontSize: 18,
       fontWeight: FontWeight.w900,
     ),
@@ -446,7 +446,7 @@ class CompanyOpportunityFormView
         await showModalBottomSheet<AvailableSkillModel>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.cardWhite,
+      backgroundColor: Get.theme.colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(28),
@@ -481,7 +481,7 @@ class CompanyOpportunityFormView
                       ),
                     ),
                   ),
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.fromLTRB(
                       20,
                       0,
@@ -495,7 +495,7 @@ class CompanyOpportunityFormView
                         Text(
                           'إضافة مهارة',
                           style: TextStyle(
-                            color: AppColors.textDark,
+                            color: Get.theme.colorScheme.onSurface,
                             fontSize: 19,
                             fontWeight:
                                 FontWeight.w900,
@@ -505,7 +505,7 @@ class CompanyOpportunityFormView
                         Text(
                           'اختر مهارة ثم حدّد مستواها وأهميتها.',
                           style: TextStyle(
-                            color: AppColors.textGrey,
+                            color: Get.theme.colorScheme.onSurfaceVariant,
                             fontSize: 12,
                             fontWeight:
                                 FontWeight.w500,
@@ -546,12 +546,12 @@ class CompanyOpportunityFormView
                             .toList();
 
                         if (items.isEmpty) {
-                          return const Center(
+                          return  Center(
                             child: Text(
                               'لا توجد مهارات أخرى متاحة.',
                               style: TextStyle(
                                 color:
-                                    AppColors.textGrey,
+                                    Get.theme.colorScheme.onSurfaceVariant,
                                 fontWeight:
                                     FontWeight.w700,
                               ),
@@ -584,7 +584,7 @@ class CompanyOpportunityFormView
 
                             return ListTile(
                               tileColor:
-                                  AppColors.background,
+                                  Get.theme.scaffoldBackgroundColor,
                               shape:
                                   RoundedRectangleBorder(
                                 borderRadius:
@@ -613,9 +613,9 @@ class CompanyOpportunityFormView
                               ),
                               title: Text(
                                 item.name,
-                                style: const TextStyle(
+                                style:  TextStyle(
                                   color:
-                                      AppColors.textDark,
+                                      Get.theme.colorScheme.onSurface,
                                   fontWeight:
                                       FontWeight.w800,
                                 ),

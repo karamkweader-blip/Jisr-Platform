@@ -109,7 +109,7 @@ class _FormSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: const Color(0xFFE7EDF2)),
         boxShadow: [
@@ -142,8 +142,8 @@ class _FormSection extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        color: AppColors.textDark,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.w900,
                       ),
@@ -151,8 +151,8 @@ class _FormSection extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
+                      style:  TextStyle(
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.3,
                         height: 1.5,
                         fontWeight: FontWeight.w500,
@@ -261,7 +261,7 @@ class _TypeCard extends StatelessWidget {
           duration: const Duration(milliseconds: 220),
           padding: const EdgeInsets.all(13),
           decoration: BoxDecoration(
-            color: selected ? color.withOpacity(0.08) : AppColors.background,
+            color: selected ? color.withOpacity(0.08) : Get.theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(17),
             border: Border.all(
               color: selected ? color : const Color(0xFFE0E8EE),
@@ -311,7 +311,7 @@ class _TypeCard extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  color: selected ? color : AppColors.textDark,
+                  color: selected ? color : Get.theme.colorScheme.onSurface,
                   fontSize: 14.5,
                   fontWeight: FontWeight.w900,
                 ),
@@ -319,8 +319,8 @@ class _TypeCard extends StatelessWidget {
               const SizedBox(height: 3),
               Text(
                 subtitle,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 10.7,
                   height: 1.5,
                   fontWeight: FontWeight.w500,

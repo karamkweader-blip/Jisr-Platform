@@ -20,7 +20,7 @@ class CompanyTaskAssignmentWorkspaceView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: Obx(() {
             final details = controller.assignmentDetails.value;
@@ -90,10 +90,10 @@ AssignmentWorkspaceTabs(
                   const SizedBox(height: 24),
            if (controller.selectedTab.value ==
     AssignmentWorkspaceTab.overview) ...[
-  const Text(
+   Text(
     'نظرة عامة',
     style: TextStyle(
-      color: AppColors.textDark,
+      color: Get.theme.colorScheme.onSurface,
       fontSize: 17,
       fontWeight: FontWeight.w900,
     ),
@@ -193,7 +193,7 @@ class _WorkspaceErrorState extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
           ),
           child: Column(
@@ -205,10 +205,10 @@ class _WorkspaceErrorState extends StatelessWidget {
                 size: 46,
               ),
               const SizedBox(height: 12),
-              const Text(
+               Text(
                 'تعذر تحميل مساحة العمل',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w900,
                 ),
@@ -217,8 +217,8 @@ class _WorkspaceErrorState extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   height: 1.5,
                 ),

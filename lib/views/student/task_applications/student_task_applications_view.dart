@@ -17,11 +17,11 @@ class StudentTaskApplicationsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -116,14 +116,14 @@ class StudentTaskApplicationsView
                   final tasks = controller.currentTasks;
 
                   if (tasks.isEmpty) {
-                    return const Padding(
+                    return  Padding(
                       padding: EdgeInsets.only(top: 40),
                       child: Center(
                         child: Text(
                           'لا يوجد تاسكات في هذا القسم حالياً',
                           style: TextStyle(
                             fontFamily: 'Cairo',
-                            color: AppColors.textGrey,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontSize: 14,
                           ),
                         ),
@@ -266,7 +266,7 @@ class _OpportunityApplicationsEntryCard extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(26),
           border: Border.all(
             color: AppColors.actionYellow.withOpacity(.35),
@@ -300,7 +300,7 @@ class _OpportunityApplicationsEntryCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 14),
-            const Expanded(
+             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -318,7 +318,7 @@ class _OpportunityApplicationsEntryCard extends StatelessWidget {
                     'اعرض طلبات الوظائف والتدريبات، تابع حالتها، أو اسحب الطلب.',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
                       height: 1.45,
                     ),
@@ -467,7 +467,7 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(30),
         border: Border.all(color: statusColor.withOpacity(.15)),
         boxShadow: [
@@ -511,9 +511,9 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
                     const SizedBox(height: 4),
                     Text(
                       controller.companyName(item),
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                       ),
                     ),
@@ -529,9 +529,9 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
             task.description,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               height: 1.5,
               fontSize: 13,
             ),
@@ -561,7 +561,7 @@ class _ApplicationTaskCard extends GetView<StudentTaskApplicationController> {
               _ApplicationBadge(
                 icon: Icons.event_rounded,
                 text: controller.dateOnly(task.deadline),
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ],
           ),

@@ -16,10 +16,10 @@ class CvUploadView extends GetView<CvUploadController> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         bottomNavigationBar: const StudentBottomNav(currentIndex: 2),
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -124,7 +124,7 @@ class CvUploadView extends GetView<CvUploadController> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(22),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
                           width: 1.4,
@@ -259,11 +259,11 @@ class _EmptyFileState extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 7),
-        const Text(
+         Text(
           '',
           style: TextStyle(
             fontFamily: 'Cairo',
-            color: AppColors.textGrey,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontSize: 13,
           ),
         ),
@@ -301,9 +301,9 @@ class _SelectedFileState extends StatelessWidget {
             fileName,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
@@ -311,7 +311,7 @@ class _SelectedFileState extends StatelessWidget {
         ),
         IconButton(
           onPressed: onRemove,
-          icon: const Icon(Icons.close_rounded, color: AppColors.textGrey),
+          icon:  Icon(Icons.close_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
       ],
     );

@@ -17,12 +17,19 @@ class CompanyAccountMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme =
+        Theme.of(context).colorScheme;
+
     return PopupMenuButton<_CompanyMenuAction>(
       tooltip: 'إعدادات الحساب',
-      color: Colors.white,
+      color: colorScheme.surface,
       elevation: 10,
+      surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
+        side: BorderSide(
+          color: colorScheme.outlineVariant,
+        ),
       ),
       icon: const Icon(
         Icons.settings_rounded,
@@ -30,25 +37,25 @@ class CompanyAccountMenu extends StatelessWidget {
       ),
       onSelected: (value) {
         if (value == _CompanyMenuAction.logout) {
-          _showLogoutDialog();
+          _showLogoutDialog(context);
         }
       },
       itemBuilder: (context) {
         return [
-          const PopupMenuItem<_CompanyMenuAction>(
+          PopupMenuItem<_CompanyMenuAction>(
             value: _CompanyMenuAction.logout,
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.logout_rounded,
-                  color: Colors.redAccent,
+                  color: AppColors.dangerRed,
                   size: 20,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   'تسجيل الخروج',
                   style: TextStyle(
-                    color: AppColors.textDark,
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -60,24 +67,47 @@ class CompanyAccountMenu extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog() {
+  void _showLogoutDialog(BuildContext context) {
     final logoutAllSessions = false.obs;
+    final colorScheme =
+        Theme.of(context).colorScheme;
 
     Get.dialog(
       Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: colorScheme.surface,
+          surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
+            side: BorderSide(
+              color: colorScheme.outlineVariant,
+            ),
           ),
-          titlePadding: const EdgeInsets.fromLTRB(22, 22, 22, 8),
-          contentPadding: const EdgeInsets.fromLTRB(22, 10, 22, 0),
-          actionsPadding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
-          title: const Text(
+          titlePadding: const EdgeInsets.fromLTRB(
+            22,
+            22,
+            22,
+            8,
+          ),
+          contentPadding:
+              const EdgeInsets.fromLTRB(
+                22,
+                10,
+                22,
+                0,
+              ),
+          actionsPadding:
+              const EdgeInsets.fromLTRB(
+                14,
+                6,
+                14,
+                14,
+              ),
+          title: Text(
             'تأكيد تسجيل الخروج',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: colorScheme.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.w800,
             ),
@@ -85,12 +115,14 @@ class CompanyAccountMenu extends StatelessWidget {
           content: Obx(
             () => Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'هل تريد تسجيل الخروج من حساب الشركة؟',
                   style: TextStyle(
-                    color: AppColors.textGrey,
+                    color: colorScheme
+                        .onSurfaceVariant,
                     fontSize: 14,
                     height: 1.5,
                   ),
@@ -98,37 +130,51 @@ class CompanyAccountMenu extends StatelessWidget {
                 const SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: BorderRadius.circular(16),
+                    color: colorScheme
+                        .surfaceContainer,
+                    borderRadius:
+                        BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppColors.primaryBlue.withOpacity(.08),
+                      color: colorScheme
+                          .outlineVariant,
                     ),
                   ),
                   child: CheckboxListTile(
-                    value: logoutAllSessions.value,
-                    onChanged: controller.isLoading.value
+                    value:
+                        logoutAllSessions.value,
+                    onChanged:
+                        controller.isLoading.value
                         ? null
                         : (value) {
-                            logoutAllSessions.value = value ?? false;
+                            logoutAllSessions
+                                    .value =
+                                value ?? false;
                           },
-                    activeColor: AppColors.primaryBlue,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 2,
-                    ),
-                    title: const Text(
+                    activeColor:
+                        AppColors.primaryBlue,
+                    controlAffinity:
+                        ListTileControlAffinity
+                            .leading,
+                    contentPadding:
+                        const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                    title: Text(
                       'تسجيل الخروج من جميع الجلسات',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color:
+                            colorScheme.onSurface,
                         fontSize: 13,
-                        fontWeight: FontWeight.w700,
+                        fontWeight:
+                            FontWeight.w700,
                       ),
                     ),
-                    subtitle: const Text(
+                    subtitle: Text(
                       'فعّلها إذا أردت إنهاء الجلسة من كل الأجهزة.',
                       style: TextStyle(
-                        color: AppColors.textGrey,
+                        color: colorScheme
+                            .onSurfaceVariant,
                         fontSize: 12,
                         height: 1.4,
                       ),
@@ -141,52 +187,50 @@ class CompanyAccountMenu extends StatelessWidget {
           actions: [
             Obx(
               () => TextButton(
-                onPressed: controller.isLoading.value
+                onPressed:
+                    controller.isLoading.value
                     ? null
-                    : () => Get.back(),
-                child: const Text(
+                    : Get.back,
+                child: Text(
                   'إلغاء',
                   style: TextStyle(
-                    color: AppColors.textGrey,
-                    fontWeight: FontWeight.w700,
+                    color: colorScheme
+                        .onSurfaceVariant,
+                    fontWeight:
+                        FontWeight.w700,
                   ),
                 ),
               ),
             ),
             Obx(
               () => ElevatedButton(
-                onPressed: controller.isLoading.value
+                onPressed:
+                    controller.isLoading.value
                     ? null
                     : () async {
-                        await controller.companyLogout(
-                          logoutAllSessions: logoutAllSessions.value,
-                        );
+                        await controller
+                            .companyLogout(
+                              logoutAllSessions:
+                                  logoutAllSessions
+                                      .value,
+                            );
                       },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBlue,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 10,
-                  ),
-                ),
-                child: controller.isLoading.value
+                child:
+                    controller.isLoading.value
                     ? const SizedBox(
                         width: 18,
                         height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
+                        child:
+                            CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
                       )
                     : const Text(
                         'تأكيد',
                         style: TextStyle(
-                          fontWeight: FontWeight.w800,
+                          fontWeight:
+                              FontWeight.w800,
                         ),
                       ),
               ),

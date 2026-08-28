@@ -108,7 +108,7 @@ class _CompanyComplaintFormSheetState
           padding:
               EdgeInsets.only(bottom: keyboardInset),
           child: Material(
-            color: AppColors.background,
+            color: Get.theme.scaffoldBackgroundColor,
             borderRadius:
                 const BorderRadius.vertical(
               top: Radius.circular(30),
@@ -141,7 +141,7 @@ class _CompanyComplaintFormSheetState
                           width: 44,
                           height: 5,
                           decoration: BoxDecoration(
-                            color: AppColors.textGrey
+                            color: Get.theme.colorScheme.onSurfaceVariant
                                 .withOpacity(0.20),
                             borderRadius:
                                 BorderRadius.circular(
@@ -231,7 +231,7 @@ class _CompanyComplaintFormSheetState
                             icon: const Icon(
                               Icons.close_rounded,
                             ),
-                            color: AppColors.textGrey,
+                            color: Get.theme.colorScheme.onSurfaceVariant,
                           ),
                         ],
                       ),
@@ -305,19 +305,19 @@ class _CompanyComplaintFormSheetState
                         ),
                       ),
                       const SizedBox(height: 18),
-                      const Text(
+                       Text(
                         'سبب الشكوى',
                         style: TextStyle(
-                          color: AppColors.textDark,
+                          color: Get.theme.colorScheme.onSurface,
                           fontSize: 14,
                           fontWeight: FontWeight.w900,
                         ),
                       ),
                       const SizedBox(height: 7),
-                      const Text(
+                       Text(
                         'اشرح المشكلة بوضوح لتساعد الإدارة على مراجعتها.',
                         style: TextStyle(
-                          color: AppColors.textGrey,
+                          color: Get.theme.colorScheme.onSurfaceVariant,
                           fontSize: 11.5,
                           height: 1.45,
                         ),
@@ -349,16 +349,16 @@ class _CompanyComplaintFormSheetState
                           errorText: _reasonError,
                           filled: true,
                           fillColor:
-                              AppColors.cardWhite,
+                              Get.theme.colorScheme.surface,
                           alignLabelWithHint: true,
                           counterStyle:
-                              const TextStyle(
+                               TextStyle(
                             color:
-                                AppColors.textGrey,
+                                Get.theme.colorScheme.onSurfaceVariant,
                             fontSize: 10,
                           ),
                           hintStyle: TextStyle(
-                            color: AppColors.textGrey
+                            color: Get.theme.colorScheme.onSurfaceVariant
                                 .withOpacity(0.68),
                             fontSize: 12.5,
                             height: 1.5,
@@ -368,11 +368,11 @@ class _CompanyComplaintFormSheetState
                             15,
                           ),
                           enabledBorder: _border(
-                            AppColors.textGrey
+                            Get.theme.colorScheme.onSurfaceVariant
                                 .withOpacity(0.16),
                           ),
                           disabledBorder: _border(
-                            AppColors.textGrey
+                            Get.theme.colorScheme.onSurfaceVariant
                                 .withOpacity(0.10),
                           ),
                           focusedBorder: _border(

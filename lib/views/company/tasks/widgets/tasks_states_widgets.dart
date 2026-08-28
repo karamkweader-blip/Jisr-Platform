@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class EmptyTasksState extends StatelessWidget {
   final VoidCallback onCreatePressed;
   final String title;
@@ -17,7 +18,7 @@ class EmptyTasksState extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(0.06)),
       ),
@@ -40,7 +41,7 @@ class EmptyTasksState extends StatelessWidget {
            Text(
             title,
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 17,
               fontWeight: FontWeight.w800,
             ),
@@ -50,7 +51,7 @@ class EmptyTasksState extends StatelessWidget {
              message,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 13.5,
               height: 1.5,
             ),
@@ -107,10 +108,10 @@ class TasksErrorState extends StatelessWidget {
               size: 40,
             ),
             const SizedBox(height: 12),
-            const Text(
+             Text(
               'تعذر تحميل المهام',
               style: TextStyle(
-                color: AppColors.textDark,
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
               ),
@@ -119,8 +120,8 @@ class TasksErrorState extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textGrey,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
             ),

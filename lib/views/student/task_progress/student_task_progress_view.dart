@@ -27,10 +27,10 @@ class StudentTaskProgressView extends GetView<StudentTaskProgressController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -74,12 +74,12 @@ class StudentTaskProgressView extends GetView<StudentTaskProgressController> {
           final assignment = controller.assignment.value;
 
           if (assignment == null) {
-            return const Center(
+            return  Center(
               child: Text(
                 'لا توجد بيانات لهذا التاسك',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             );
@@ -373,7 +373,7 @@ class _ProgressUpdateCard extends GetView<StudentTaskProgressController> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(30),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
         boxShadow: [
@@ -421,9 +421,9 @@ class _ProgressUpdateCard extends GetView<StudentTaskProgressController> {
                     const SizedBox(height: 5),
                     Text(
                       '${controller.dateOnly(update.createdAt)} ${controller.timeOnly(update.createdAt)}',
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                       ),
                     ),
@@ -454,9 +454,9 @@ class _ProgressUpdateCard extends GetView<StudentTaskProgressController> {
           const SizedBox(height: 14),
           Text(
             update.progress.description,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               height: 1.6,
               fontSize: 13,
             ),
@@ -552,10 +552,10 @@ class _EmptyProgress extends StatelessWidget {
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(34),
       ),
-      child: const Column(
+      child:  Column(
         children: [
           Icon(
             Icons.hourglass_empty_rounded,
@@ -576,7 +576,7 @@ class _EmptyProgress extends StatelessWidget {
           Text(
             'ابدئ بإضافة أول تحديث للتقدم في التاسك.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+            style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
         ],
       ),
@@ -730,10 +730,10 @@ class _ProgressFormPageWrapper extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: Text(
@@ -786,7 +786,7 @@ class _SheetField extends StatelessWidget {
           hintText: hint,
           prefixIcon: Icon(icon, color: AppColors.primaryBlue),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surface,
           labelStyle: const TextStyle(
             fontFamily: 'Cairo',
             color: AppColors.primaryBlue,
@@ -826,7 +826,7 @@ class _AttachmentPicker extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
         ),
@@ -847,7 +847,7 @@ class _AttachmentPicker extends StatelessWidget {
                 ),
               ),
             ),
-            const Icon(Icons.upload_file_rounded, color: AppColors.textGrey),
+             Icon(Icons.upload_file_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant),
           ],
         ),
       ),

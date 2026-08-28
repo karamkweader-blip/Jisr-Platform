@@ -13,7 +13,7 @@ class CompanyTaskAssignmentsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Get.theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: Obx(() {
             final visibleAssignments = controller.visibleAssignments;
@@ -113,7 +113,7 @@ class _AssignmentsTopBar extends StatelessWidget {
     return Row(
       children: [
         Material(
-          color: AppColors.cardWhite,
+          color: Get.theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
             onTap: Get.back,
@@ -130,14 +130,14 @@ class _AssignmentsTopBar extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        const Expanded(
+         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'المهام قيد المتابعة',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
                 ),
@@ -146,7 +146,7 @@ class _AssignmentsTopBar extends StatelessWidget {
               Text(
                 'تابع الطلاب الذين تم قبولهم في مهام شركتك',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
@@ -191,12 +191,12 @@ class _AssignmentsSummaryCard extends StatelessWidget {
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: AppColors.cardWhite.withOpacity(0.16),
+              color: Get.theme.colorScheme.surface.withOpacity(0.16),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Icon(
+            child:  Icon(
               Icons.track_changes_rounded,
-              color: AppColors.cardWhite,
+              color: Get.theme.colorScheme.surface,
               size: 29,
             ),
           ),
@@ -207,8 +207,8 @@ class _AssignmentsSummaryCard extends StatelessWidget {
               children: [
                 Text(
                   '$totalAssignments تكليف نشط',
-                  style: const TextStyle(
-                    color: AppColors.cardWhite,
+                  style:  TextStyle(
+                    color: Get.theme.colorScheme.surface,
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
                   ),
@@ -217,7 +217,7 @@ class _AssignmentsSummaryCard extends StatelessWidget {
                 Text(
                   '$workingAssignments قيد التنفيذ · $submittedAssignments بانتظار المراجعة',
                   style: TextStyle(
-                    color: AppColors.cardWhite.withOpacity(0.84),
+                    color: Get.theme.colorScheme.surface.withOpacity(0.84),
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
@@ -268,16 +268,16 @@ class _AssignmentsFilters extends StatelessWidget {
           selected: isSelected,
           onSelected: (_) => onSelected(filter.$1),
           selectedColor: AppColors.primaryBlue.withOpacity(0.14),
-          backgroundColor: AppColors.cardWhite,
+          backgroundColor: Get.theme.colorScheme.surface,
           side: BorderSide(
             color: isSelected
                 ? AppColors.primaryBlue.withOpacity(0.40)
-                : AppColors.textGrey.withOpacity(0.14),
+                : Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.14),
           ),
           labelStyle: TextStyle(
             color: isSelected
                 ? AppColors.primaryBlue
-                : AppColors.textGrey,
+                : Get.theme.colorScheme.onSurfaceVariant,
             fontSize: 11,
             fontWeight: FontWeight.w800,
           ),
@@ -296,7 +296,7 @@ class _AssignmentsEmpty extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(26),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -306,7 +306,7 @@ class _AssignmentsEmpty extends StatelessWidget {
           ),
         ],
       ),
-      child: const Column(
+      child:  Column(
         children: [
           Icon(
             Icons.assignment_outlined,
@@ -317,7 +317,7 @@ class _AssignmentsEmpty extends StatelessWidget {
           Text(
             'لا توجد مهام ضمن هذا القسم',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 16,
               fontWeight: FontWeight.w900,
             ),
@@ -327,7 +327,7 @@ class _AssignmentsEmpty extends StatelessWidget {
             'عند قبول طالب وبدء تنفيذ المهمة ستظهر هنا لمتابعة تقدمه.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textGrey,
+              color: Get.theme.colorScheme.onSurfaceVariant,
               fontSize: 12,
               height: 1.5,
             ),
@@ -369,8 +369,8 @@ class _InlineErrorBanner extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(
-                color: AppColors.textDark,
+              style:  TextStyle(
+                color: Get.theme.colorScheme.onSurface,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),
@@ -407,7 +407,7 @@ class _AssignmentsError extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: AppColors.cardWhite,
+            color: Get.theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
           ),
           child: Column(
@@ -419,10 +419,10 @@ class _AssignmentsError extends StatelessWidget {
                 size: 46,
               ),
               const SizedBox(height: 12),
-              const Text(
+               Text(
                 'تعذر تحميل التكليفات',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 17,
                   fontWeight: FontWeight.w900,
                 ),
@@ -431,8 +431,8 @@ class _AssignmentsError extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13,
                   height: 1.5,
                 ),

@@ -38,7 +38,7 @@ class CompanyOpportunityCandidateDetailsView extends GetView<CompanyOpportunityC
           if (!didPop) controller.close();
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: Get.theme.scaffoldBackgroundColor,
           appBar: AppBar(leading: IconButton(onPressed: controller.close, icon: const Icon(Icons.arrow_back_ios_new_rounded)), title: const Text('تفاصيل المرشح')),
           body: Obx(() {
             if (controller.isLoading.value) return const Center(child: CircularProgressIndicator());
@@ -80,10 +80,10 @@ class CompanyOpportunityCandidateDetailsView extends GetView<CompanyOpportunityC
 
   Widget _profile(CompanyOpportunityCandidate item) => Card(
     elevation: 0,
-    color: AppColors.cardWhite,
+    color: Get.theme.colorScheme.surface,
     child: Padding(padding: const EdgeInsets.all(18), child: Column(children: [
       CircleAvatar(radius: 34, backgroundImage: item.student.profilePictureUrl?.isNotEmpty == true ? NetworkImage(item.student.profilePictureUrl!) : null, child: item.student.profilePictureUrl?.isNotEmpty == true ? null : Text(item.student.name.isEmpty ? '؟' : item.student.name[0], style: const TextStyle(fontSize: 22))),
-      const SizedBox(height: 10), Text(item.student.name, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900)), Text(item.student.email, style: const TextStyle(color: AppColors.textGrey)),
+      const SizedBox(height: 10), Text(item.student.name, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900)), Text(item.student.email, style:  TextStyle(color: Get.theme.colorScheme.onSurfaceVariant)),
       if (item.student.university.isNotEmpty || item.student.major.isNotEmpty) Text('${item.student.major} • ${item.student.university}', textAlign: TextAlign.center),
       if (item.matchScore != null) Padding(padding: const EdgeInsets.only(top: 10), child: Chip(label: Text('التطابق ${item.matchScore!.round()}%'))),
     ])),
@@ -142,8 +142,8 @@ class CompanyOpportunityCandidateDetailsView extends GetView<CompanyOpportunityC
     ]));
   }
 
-  Widget _section(String title, Widget child) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Card(elevation: 0, color: AppColors.cardWhite, child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)), const SizedBox(height: 10), child]))));
-  Widget _line(String label, String value) => Padding(padding: const EdgeInsets.only(bottom: 7), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [SizedBox(width: 75, child: Text(label, style: const TextStyle(color: AppColors.textGrey))), Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w700)))]));
+  Widget _section(String title, Widget child) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Card(elevation: 0, color: Get.theme.colorScheme.surface, child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)), const SizedBox(height: 10), child]))));
+  Widget _line(String label, String value) => Padding(padding: const EdgeInsets.only(bottom: 7), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [SizedBox(width: 75, child: Text(label, style:  TextStyle(color: Get.theme.colorScheme.onSurfaceVariant))), Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w700)))]));
 
   Future<void> _openUrl(String value, String label) async {
     final uri = Uri.tryParse(value);

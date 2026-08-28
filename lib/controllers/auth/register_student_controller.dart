@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:jisr_platform/core/api/api_links.dart';
+import 'package:jisr_platform/core/api/api_error_presenter.dart';
+import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
+import 'package:jisr_platform/models/auth/register_student_model.dart';
 import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/services/auth/register/register_student_service.dart';
 
 class RegisterStudentController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -12,11 +12,15 @@ class RegisterStudentController extends GetxController {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final confirmPasswordController =
+      TextEditingController();
 
   final isPasswordVisible = false.obs;
   final isConfirmPasswordVisible = false.obs;
   final isLoading = false.obs;
+
+  final RegisterStudentService _service =
+      RegisterStudentService();
 
   late final String role;
 
@@ -26,74 +30,40 @@ class RegisterStudentController extends GetxController {
     role = Get.arguments?['role'] ?? 'student';
   }
 
-  Future registerStudent() async {
+  Future<void> registerStudent() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    print('REGISTER BUTTON CLICKED');
-
     if (!(formKey.currentState?.validate() ?? false)) {
-      print('VALIDATION FAILED');
       return;
     }
 
     try {
       isLoading.value = true;
 
-      final body = {
-        'name': nameController.text.trim(),
-        'email': emailController.text.trim(),
-        'password': passwordController.text,
-        'password_confirmation': confirmPasswordController.text,
-        'role': role,
-      };
-
-      print('REGISTER URL: ${ApiLinks.register}');
-      print('REGISTER BODY: $body');
-
-      final response = await http
-          .post(
-            Uri.parse(ApiLinks.register),
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode(body),
-          )
-          .timeout(
-            const Duration(seconds: 15),
-            onTimeout: () {
-              throw Exception('Request timeout: الخادم ما رد خلال 15 ثانية');
-            },
-          );
-
-      print('STATUS CODE: ${response.statusCode}');
-      print('RESPONSE BODY: ${response.body}');
-
-      final data = jsonDecode(response.body);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Get.offAllNamed(Routes.login);
-
-        Get.snackbar(
-          'تم إنشاء الحساب بنجاح',
-          'قم الآن بتسجيل الدخول',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      } else {
-        Get.snackbar(
-          'فشل إنشاء الحساب',
-          data['message']?.toString() ?? response.body,
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      }
-    } catch (e) {
-      print('REGISTER ERROR: $e');
-
-      Get.snackbar(
-        'خطأ بالاتصال',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
+      final model = RegisterStudentModel(
+        name: nameController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text,
+        passwordConfirmation:
+            confirmPasswordController.text,
+        role: role,
       );
+
+      await _service.register(model);
+
+      Get.until(
+        (route) =>
+            route.settings.name == Routes.login,
+      );
+
+      JisrSnackbar.show(
+        title: 'تم إنشاء الحساب',
+        message:
+            'تم إنشاء حساب الطالب بنجاح. يمكنك تسجيل الدخول الآن.',
+        type: JisrSnackbarType.success,
+      );
+    } catch (error) {
+      ApiErrorPresenter.show(error);
     } finally {
       isLoading.value = false;
     }

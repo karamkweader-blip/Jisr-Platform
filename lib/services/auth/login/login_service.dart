@@ -1,41 +1,33 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jisr_platform/core/api/api_exception.dart';
 import 'package:jisr_platform/core/api/api_links.dart';
+import 'package:jisr_platform/core/api/api_response_handler.dart';
 import 'package:jisr_platform/models/auth/login_request.dart';
 
 class LoginService {
-  Future<String> login(LoginRequest request) async {
+  Future<void> login(LoginRequest request) async {
     try {
       final response = await http
           .post(
             Uri.parse(ApiLinks.login),
-            headers: {
+            headers: const {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
             body: jsonEncode(request.toJson()),
           )
-          .timeout(
-            const Duration(seconds: 35),
-            onTimeout: () {
-              throw Exception('انتهت مهلة الاتصال بالخادم');
-            },
-          );
+          .timeout(const Duration(seconds: 20));
 
-      print('LOGIN STATUS CODE: ${response.statusCode}');
-      print('LOGIN RESPONSE BODY: ${response.body}');
-
-      final data = jsonDecode(response.body);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return data['message']?.toString() ??
-            'تم تسجيل الدخول، تحقق من الرمز المرسل إلى بريدك';
-      }
-
-      throw data['message']?.toString() ?? 'فشل تسجيل الدخول';
-    } catch (e) {
-      print('LOGIN ERROR: $e');
-      throw e.toString().replaceFirst('Exception: ', '');
+      ApiResponseHandler.handleResponse(
+        response,
+        operation: ApiOperation.login,
+      );
+    } catch (error) {
+      throw ApiResponseHandler.fromError(
+        error,
+        operation: ApiOperation.login,
+      );
     }
   }
 }

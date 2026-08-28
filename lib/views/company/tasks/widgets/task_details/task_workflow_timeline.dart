@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class TaskWorkflowTimeline extends StatelessWidget {
   final int currentIndex;
 
@@ -27,7 +28,7 @@ class TaskWorkflowTimeline extends StatelessWidget {
         horizontal: 14,
       ),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
@@ -59,7 +60,7 @@ class TaskWorkflowTimeline extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 6),
                     color: isActive
                         ? AppColors.primaryBlue.withOpacity(0.55)
-                        : AppColors.textGrey.withOpacity(0.18),
+                        : Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.18),
                   ),
               ],
             );
@@ -90,7 +91,7 @@ class _StepItem extends StatelessWidget {
           width: isCurrent ? 34 : 28,
           height: isCurrent ? 34 : 28,
           decoration: BoxDecoration(
-            color: isActive ? AppColors.primaryBlue : AppColors.background,
+            color: isActive ? AppColors.primaryBlue : Get.theme.scaffoldBackgroundColor,
             shape: BoxShape.circle,
             border: Border.all(
               color: isCurrent
@@ -102,14 +103,14 @@ class _StepItem extends StatelessWidget {
           child: Icon(
             isActive ? Icons.check_rounded : Icons.circle_outlined,
             size: isCurrent ? 18 : 14,
-            color: isActive ? AppColors.cardWhite : AppColors.textGrey,
+            color: isActive ? Get.theme.colorScheme.surface : Get.theme.colorScheme.onSurfaceVariant,
           ),
         ),
         const SizedBox(height: 7),
         Text(
           label,
           style: TextStyle(
-            color: isCurrent ? AppColors.primaryBlue : AppColors.textGrey,
+            color: isCurrent ? AppColors.primaryBlue : Get.theme.colorScheme.onSurfaceVariant,
             fontSize: 11,
             fontWeight: isCurrent ? FontWeight.w800 : FontWeight.w600,
           ),

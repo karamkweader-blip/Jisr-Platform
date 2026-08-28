@@ -18,11 +18,11 @@ class StudentAssignedTasksView extends GetView<StudentAssignedTaskController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 0),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -266,7 +266,7 @@ class _ProjectAssignmentEvaluationCard
       return Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
           boxShadow: [
@@ -336,11 +336,11 @@ class _ProjectAssignmentEvaluationCard
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text(
+                 Text(
                   'نسبة التقدم',
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -452,7 +452,7 @@ class _NoProjectEvaluation extends StatelessWidget {
         color: AppColors.primaryBlue.withOpacity(.05),
         borderRadius: BorderRadius.circular(18),
       ),
-      child: const Row(
+      child:  Row(
         children: [
           Icon(Icons.info_outline_rounded, color: AppColors.primaryBlue),
           SizedBox(width: 10),
@@ -461,7 +461,7 @@ class _NoProjectEvaluation extends StatelessWidget {
               'لم يصدر تقييم للمشروع بعد.',
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 12,
               ),
             ),
@@ -580,9 +580,9 @@ class _ProjectEvaluationDetails extends GetView<StudentAssignedTaskController> {
           const SizedBox(height: 7),
           Text(
             comment,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               height: 1.6,
               fontSize: 12,
             ),
@@ -648,15 +648,15 @@ class _ProjectEvaluationDetails extends GetView<StudentAssignedTaskController> {
             width: double.infinity,
             padding: const EdgeInsets.all(13),
             decoration: BoxDecoration(
-              color: AppColors.textGrey.withOpacity(.08),
+              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.08),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Text(
+            child:  Text(
               'انتهت مهلة الاعتراض أو أن حالة التقييم لا تسمح بتقديم اعتراض.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 11,
               ),
             ),
@@ -700,9 +700,9 @@ class _EvaluationInfoRow extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           '$label: ',
-          style: const TextStyle(
+          style:  TextStyle(
             fontFamily: 'Cairo',
-            color: AppColors.textGrey,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontSize: 11,
             fontWeight: FontWeight.bold,
           ),
@@ -710,9 +710,9 @@ class _EvaluationInfoRow extends StatelessWidget {
         Expanded(
           child: Text(
             value,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 11,
             ),
           ),
@@ -768,9 +768,9 @@ class _EvaluationItemTile extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               item.comment!,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.45,
                 fontSize: 11,
               ),
@@ -780,9 +780,9 @@ class _EvaluationItemTile extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               'الدليل: ${item.evidence}',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.45,
                 fontSize: 10,
               ),
@@ -834,9 +834,9 @@ class _AppealTile extends GetView<StudentAssignedTaskController> {
           const SizedBox(height: 9),
           Text(
             appeal.reason,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               height: 1.55,
               fontSize: 11,
             ),
@@ -845,9 +845,9 @@ class _AppealTile extends GetView<StudentAssignedTaskController> {
             const SizedBox(height: 7),
             Text(
               'تاريخ الإرسال: ${controller.dateTimeText(appeal.createdAt)}',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 10,
               ),
             ),
@@ -856,9 +856,9 @@ class _AppealTile extends GetView<StudentAssignedTaskController> {
             const SizedBox(height: 7),
             Text(
               'ملاحظات المراجعة: ${appeal.reviewNotes}',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.45,
                 fontSize: 10,
               ),
@@ -868,9 +868,9 @@ class _AppealTile extends GetView<StudentAssignedTaskController> {
             const SizedBox(height: 5),
             Text(
               'تاريخ المراجعة: ${controller.dateTimeText(appeal.reviewedAt)}',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 10,
               ),
             ),
@@ -911,11 +911,11 @@ class _AppealSubmissionDialog extends GetView<StudentAssignedTaskController> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                   Text(
                     'وضح سبب اعتراضك بشكل واضح. سيتم حفظ نسخة من التقييم الحالي مع الاعتراض.',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       height: 1.55,
                       fontSize: 12,
                     ),
@@ -961,7 +961,7 @@ class _AppealSubmissionDialog extends GetView<StudentAssignedTaskController> {
                               ? null
                               : () => Get.back(),
                           style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.textGrey,
+                            foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
                             minimumSize: const Size.fromHeight(48),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -1091,7 +1091,7 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(30),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.08)),
         boxShadow: [
@@ -1142,9 +1142,9 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
                         'المشروع: ${task.assignment.projectTemplate.title}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1155,9 +1155,9 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
                       'الفرع: ${task.githubBranchOrLink ?? 'غير محدد'}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                       ),
                     ),
@@ -1171,9 +1171,9 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
 
           Text(
             task.description,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textDark,
+              color: Theme.of(context).colorScheme.onSurface,
               height: 1.6,
               fontSize: 13,
             ),
@@ -1191,9 +1191,9 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
               ),
               child: Text(
                 'ملاحظات المشرف: ${task.supervisorFeedback}',
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textDark,
+                  color: Theme.of(context).colorScheme.onSurface,
                   height: 1.5,
                   fontSize: 11,
                 ),
@@ -1226,12 +1226,12 @@ class _AssignedTaskCard extends GetView<StudentAssignedTaskController> {
               _SmallStatusBadge(
                 icon: Icons.play_circle_rounded,
                 text: 'بدأ: ${controller.dateOnly(task.startedAt)}',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               _SmallStatusBadge(
                 icon: Icons.upload_rounded,
                 text: 'رفع: ${controller.dateOnly(task.submittedAt)}',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ],
           ),
@@ -1417,7 +1417,7 @@ class _TaskTimeline extends StatelessWidget {
                     child: Icon(
                       active ? Icons.check_rounded : Icons.circle_outlined,
                       size: 16,
-                      color: active ? Colors.white : AppColors.textGrey,
+                      color: active ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                   if (index != labels.length - 1)
@@ -1443,9 +1443,9 @@ class _TaskTimeline extends StatelessWidget {
                   child: Text(
                     label,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 11,
                     ),
                   ),
@@ -1475,7 +1475,7 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonColor = isEnabled ? color : AppColors.textGrey.withOpacity(.45);
+    final buttonColor = isEnabled ? color : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.45);
 
     return InkWell(
       borderRadius: BorderRadius.circular(22),
@@ -1526,7 +1526,7 @@ class _EmptyAssignedTasks extends StatelessWidget {
         margin: const EdgeInsets.all(24),
         padding: const EdgeInsets.all(26),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(34),
           boxShadow: [
             BoxShadow(
@@ -1536,7 +1536,7 @@ class _EmptyAssignedTasks extends StatelessWidget {
             ),
           ],
         ),
-        child: const Column(
+        child:  Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
@@ -1561,7 +1561,7 @@ class _EmptyAssignedTasks extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: AppColors.textGrey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.6,
               ),
             ),

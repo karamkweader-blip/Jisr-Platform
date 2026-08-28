@@ -15,7 +15,7 @@ class CompanyTasksView extends GetView<CompanyTasksController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Get.theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Obx(() {
           if (controller.isLoading.value) {
@@ -59,8 +59,8 @@ const SizedBox(height: 24),
 
 Text(
   controller.tasksSectionTitle,
-  style: const TextStyle(
-    color: AppColors.textDark,
+  style:  TextStyle(
+    color: Get.theme.colorScheme.onSurface,
     fontSize: 17,
     fontWeight: FontWeight.w900,
   ),

@@ -54,7 +54,7 @@ class ComplaintDialog extends GetView<ComplaintController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28),
@@ -101,19 +101,19 @@ class ComplaintDialog extends GetView<ComplaintController> {
                 children: [
                   Text(
                     'الشكوى على: $subjectLabel',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
+                   Text(
                     'اكتب السبب بوضوح. سيتم تحديد الجهة المبلّغ عنها تلقائياً من السياق المختار.',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 11.5,
                       height: 1.55,
                     ),
@@ -127,21 +127,21 @@ class ComplaintDialog extends GetView<ComplaintController> {
                     maxLines: 8,
                     maxLength: 5000,
                     textInputAction: TextInputAction.newline,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 13,
                       height: 1.55,
                     ),
                     decoration: InputDecoration(
                       hintText: 'اكتب سبب الشكوى (10 أحرف على الأقل)',
-                      hintStyle: const TextStyle(
+                      hintStyle:  TextStyle(
                         fontFamily: 'Cairo',
-                        color: AppColors.textGrey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                       ),
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: Theme.of(context).scaffoldBackgroundColor,
                       counterText: '',
                       contentPadding: const EdgeInsets.all(15),
                       border: OutlineInputBorder(
@@ -168,9 +168,9 @@ class ComplaintDialog extends GetView<ComplaintController> {
                       alignment: AlignmentDirectional.centerEnd,
                       child: Text(
                         '${controller.reasonLength.value}/5000',
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 10.5,
                         ),
                       ),
@@ -230,11 +230,11 @@ class ComplaintDialog extends GetView<ComplaintController> {
                             context,
                             rootNavigator: true,
                           ).pop(false),
-                  child: const Text(
+                  child:  Text(
                     'إلغاء',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -307,12 +307,12 @@ class ComplaintActionButton extends StatelessWidget {
         ),
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color(0xFFDC2626),
-          disabledForegroundColor: AppColors.textGrey.withOpacity(.45),
+          disabledForegroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.45),
           minimumSize: const Size.fromHeight(50),
           side: BorderSide(
             color: contextId > 0
                 ? const Color(0xFFDC2626).withOpacity(.28)
-                : AppColors.textGrey.withOpacity(.12),
+                : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.12),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),

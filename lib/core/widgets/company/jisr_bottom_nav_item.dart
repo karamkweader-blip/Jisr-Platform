@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class JisrBottomNavItem {
   final String label;
   final IconData icon;
@@ -28,11 +29,11 @@ class JisrBottomNavItem {
   static BottomNavigationBarThemeData theme() {
     return BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: AppColors.cardWhite,
+      backgroundColor: Get.theme.colorScheme.surface,
       elevation: 0,
       selectedItemColor: AppColors.primaryBlue,
       unselectedItemColor:
-          AppColors.textGrey.withOpacity(0.78),
+          Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.78),
       selectedLabelStyle: const TextStyle(
         fontFamily: 'Cairo',
         fontSize: 11,

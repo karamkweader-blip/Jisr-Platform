@@ -16,11 +16,11 @@ class StudentOpportunityApplicationsView
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         bottomNavigationBar: const StudentBottomNav(currentIndex: 1),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -338,7 +338,7 @@ class _OpportunityApplicationCard
       child: Container(
         padding: const EdgeInsets.all(17),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(29),
           border: Border.all(color: statusColor.withOpacity(.14)),
           boxShadow: [
@@ -383,9 +383,9 @@ class _OpportunityApplicationCard
                       const SizedBox(height: 4),
                       Text(
                         controller.companyName(opportunity.company),
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textGrey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 12,
                         ),
                       ),
@@ -417,7 +417,7 @@ class _OpportunityApplicationCard
                 _ApplicationChip(
                   icon: Icons.event_rounded,
                   text: controller.dateOnly(opportunity.deadline),
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ],
             ),
@@ -479,7 +479,7 @@ class _EmptyOpportunityApplications extends StatelessWidget {
       margin: const EdgeInsets.only(top: 38),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(26),
       ),
       child: const Column(

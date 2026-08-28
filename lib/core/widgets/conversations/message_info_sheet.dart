@@ -30,9 +30,9 @@ class MessageInfoSheet extends StatelessWidget {
             20,
             24,
           ),
-          decoration: const BoxDecoration(
-            color: AppColors.cardWhite,
-            borderRadius: BorderRadius.vertical(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(28),
             ),
           ),
@@ -43,12 +43,12 @@ class MessageInfoSheet extends StatelessWidget {
                 width: 42,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppColors.textGrey.withOpacity(0.25),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.25),
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
               const SizedBox(height: 20),
-              const Row(
+               Row(
                 children: [
                   Icon(
                     Icons.info_outline_rounded,
@@ -58,7 +58,7 @@ class MessageInfoSheet extends StatelessWidget {
                   Text(
                     'معلومات الرسالة',
                     style: TextStyle(
-                      color: AppColors.textDark,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 17,
                       fontWeight: FontWeight.w800,
                     ),
@@ -164,8 +164,8 @@ class _InfoRow extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textGrey,
+                style:  TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                 ),
@@ -173,8 +173,8 @@ class _InfoRow extends StatelessWidget {
               const SizedBox(height: 3),
               Text(
                 value,
-                style: const TextStyle(
-                  color: AppColors.textDark,
+                style:  TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                 ),

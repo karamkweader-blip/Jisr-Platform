@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jisr_platform/controllers/company/opportunities/company_opportunities_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 
+import 'package:get/get.dart';
 class OpportunitiesHeader extends StatelessWidget {
   final VoidCallback onCreate;
 
@@ -14,14 +15,14 @@ class OpportunitiesHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
+         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'الفرص',
                 style: TextStyle(
-                  color: AppColors.textDark,
+                  color: Get.theme.colorScheme.onSurface,
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
                 ),
@@ -30,7 +31,7 @@ class OpportunitiesHeader extends StatelessWidget {
               Text(
                 'تابع المهام وفرص التدريب والعمل',
                 style: TextStyle(
-                  color: AppColors.textGrey,
+                  color: Get.theme.colorScheme.onSurfaceVariant,
                   fontSize: 13.5,
                   fontWeight: FontWeight.w500,
                 ),
@@ -80,23 +81,23 @@ class OpportunitiesSearchField extends StatelessWidget {
     return TextField(
       onChanged: onSearchChanged,
       textInputAction: TextInputAction.search,
-      style: const TextStyle(
-        color: AppColors.textDark,
+      style:  TextStyle(
+        color: Get.theme.colorScheme.onSurface,
         fontSize: 13.5,
         fontWeight: FontWeight.w600,
       ),
       decoration: InputDecoration(
         hintText: 'ابحث بعنوان الفرصة أو موقعها...',
-        hintStyle: const TextStyle(
-          color: AppColors.textGrey,
+        hintStyle:  TextStyle(
+          color: Get.theme.colorScheme.onSurfaceVariant,
           fontSize: 13,
         ),
-        prefixIcon: const Icon(
+        prefixIcon:  Icon(
           Icons.search_rounded,
-          color: AppColors.textGrey,
+          color: Get.theme.colorScheme.onSurfaceVariant,
         ),
         filled: true,
-        fillColor: AppColors.cardWhite,
+        fillColor: Get.theme.colorScheme.surface,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 15,
         ),
@@ -140,7 +141,7 @@ class OpportunitiesDisplayFilterPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.07),
@@ -171,14 +172,14 @@ class OpportunitiesDisplayFilterPanel extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              const Expanded(
+               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'خيارات العرض',
                       style: TextStyle(
-                        color: AppColors.textDark,
+                        color: Get.theme.colorScheme.onSurface,
                         fontSize: 14.5,
                         fontWeight: FontWeight.w900,
                       ),
@@ -187,7 +188,7 @@ class OpportunitiesDisplayFilterPanel extends StatelessWidget {
                     Text(
                       'اختر النوع والحالة',
                       style: TextStyle(
-                        color: AppColors.textGrey,
+                        color: Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                       ),
@@ -199,7 +200,7 @@ class OpportunitiesDisplayFilterPanel extends StatelessWidget {
               Material(
                 color: hasStatusFilter
                     ? AppColors.primaryBlue
-                    : AppColors.background,
+                    : Get.theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(14),
                 child: InkWell(
                   onTap: onStatusPressed,
@@ -237,7 +238,7 @@ class OpportunitiesDisplayFilterPanel extends StatelessWidget {
                               style: TextStyle(
                                 color: hasStatusFilter
                                     ? Colors.white70
-                                    : AppColors.textGrey,
+                                    : Get.theme.colorScheme.onSurfaceVariant,
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -247,7 +248,7 @@ class OpportunitiesDisplayFilterPanel extends StatelessWidget {
                               style: TextStyle(
                                 color: hasStatusFilter
                                     ? Colors.white
-                                    : AppColors.textDark,
+                                    : Get.theme.colorScheme.onSurface,
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -296,7 +297,7 @@ class OpportunitiesTypeSelector extends StatelessWidget {
       height: 48,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.cardWhite,
+        color: Get.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryBlue.withOpacity(0.08),
@@ -331,7 +332,7 @@ class OpportunitiesTypeSelector extends StatelessWidget {
                       style: TextStyle(
                         color: isSelected
                             ? Colors.white
-                            : AppColors.textGrey,
+                            : Get.theme.colorScheme.onSurfaceVariant,
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
                       ),
@@ -364,8 +365,8 @@ class OpportunitiesSectionTitle extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
-              color: AppColors.textDark,
+            style:  TextStyle(
+              color: Get.theme.colorScheme.onSurface,
               fontSize: 17,
               fontWeight: FontWeight.w900,
             ),

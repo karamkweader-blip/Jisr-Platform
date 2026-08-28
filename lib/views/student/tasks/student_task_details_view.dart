@@ -31,10 +31,10 @@ class _StudentTaskDetailsViewState extends State<StudentTaskDetailsView> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -56,12 +56,12 @@ class _StudentTaskDetailsViewState extends State<StudentTaskDetailsView> {
           final task = controller.selectedTask.value;
 
           if (task == null) {
-            return const Center(
+            return  Center(
               child: Text(
                 'لم يتم العثور على التاسك',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             );
@@ -260,7 +260,7 @@ class _InfoCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(26),
         boxShadow: [
           BoxShadow(
@@ -290,9 +290,9 @@ class _InfoCard extends StatelessWidget {
                 const SizedBox(height: 7),
                 Text(
                   shownValue,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textDark,
+                    color: Theme.of(context).colorScheme.onSurface,
                     height: 1.6,
                   ),
                 ),
@@ -363,7 +363,7 @@ class _MiniInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.07)),
         boxShadow: [
@@ -382,9 +382,9 @@ class _MiniInfoCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style:  TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textGrey,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 12,
             ),
           ),
@@ -435,7 +435,7 @@ class _ListSection extends StatelessWidget {
       margin: const EdgeInsets.only(top: 14),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(26),
         boxShadow: [
           BoxShadow(
@@ -465,9 +465,9 @@ class _ListSection extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           if (normalized.isEmpty)
-            const Text(
+             Text(
               'غير محدد',
-              style: TextStyle(fontFamily: 'Cairo', color: AppColors.textGrey),
+              style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
             )
           else
             ...normalized.map(
@@ -485,9 +485,9 @@ class _ListSection extends StatelessWidget {
                     Expanded(
                       child: Text(
                         item,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.textDark,
+                          color: Theme.of(context).colorScheme.onSurface,
                           height: 1.5,
                         ),
                       ),
@@ -518,7 +518,7 @@ class _SkillsSection extends StatelessWidget {
       margin: const EdgeInsets.only(top: 14),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(26),
         boxShadow: [
           BoxShadow(
@@ -567,7 +567,7 @@ class _SkillRequirement extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 13),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.primaryBlue.withOpacity(.06)),
       ),
@@ -613,18 +613,18 @@ class _SkillRequirement extends StatelessWidget {
               Expanded(
                 child: Text(
                   skill.category,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textGrey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 12,
                   ),
                 ),
               ),
               Text(
                 'الوزن ${skill.weight}%',
-                style: const TextStyle(
+                style:  TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 12,
                 ),
               ),
@@ -723,10 +723,10 @@ class _ApplyTaskSheet extends GetView<StudentTaskController> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.primaryBlue),
           title: const Text(
@@ -840,12 +840,12 @@ class _ApplyField extends StatelessWidget {
             color: AppColors.primaryBlue,
             fontWeight: FontWeight.w700,
           ),
-          hintStyle: const TextStyle(
+          hintStyle:  TextStyle(
             fontFamily: 'Cairo',
-            color: AppColors.textGrey,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surface,
           contentPadding: const EdgeInsets.all(18),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(22),
