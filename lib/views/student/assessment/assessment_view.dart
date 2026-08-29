@@ -14,25 +14,35 @@ class AssessmentView extends GetView<AssessmentController> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
+      child: Obx(() {
+        final isLocked = controller.isAssessmentLocked.value;
 
-      child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          centerTitle: true,
-          iconTheme: const IconThemeData(color: AppColors.primaryBlue),
-          title: const Text(
-            'اختبار تحديد المستوى',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              color: AppColors.primaryBlue,
-              fontWeight: FontWeight.bold,
+        return PopScope(
+          canPop: !isLocked,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop && isLocked) {
+              controller.showBlockedExitMessage();
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: !isLocked,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              centerTitle: true,
+              iconTheme: const IconThemeData(color: AppColors.primaryBlue),
+              title: const Text(
+                'اختبار تحديد المستوى',
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.primaryBlue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
-        ),
-        body: Obx(() {
-          final question = controller.currentQuestion.value;
+            body: Obx(() {
+              final question = controller.currentQuestion.value;
 
           if (question != null) {
             return SingleChildScrollView(
@@ -134,14 +144,19 @@ class AssessmentView extends GetView<AssessmentController> {
             return const _LoadingCard(text: 'عم نجيب السؤال...');
           }
 
-          return  Center(
-            child: Text(
-              'لا يوجد سؤال حالياً',
-              style: TextStyle(fontFamily: 'Cairo', color: Theme.of(context).colorScheme.onSurfaceVariant),
-            ),
-          );
-        }),
-      ),
+              return Center(
+                child: Text(
+                  'لا يوجد سؤال حالياً',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      }),
     );
   }
 }

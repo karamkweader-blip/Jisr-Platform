@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jisr_platform/core/widgets/jisr_snackbar.dart';
@@ -124,6 +126,25 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
     );
   }
 
+  Future<void> _activateAssessmentLock() async {
+    isAssessmentLocked.value = true;
+    final nativeLockStarted = await _lockService.startLock();
+
+    if (!nativeLockStarted) {
+      JisrSnackbar.show(
+        title: 'تنبيه قفل الاختبار',
+        message:
+            'تعذر تشغيل تثبيت شاشة Android. أعيدي تشغيل التطبيق كاملاً وتأكدي من تفعيل "تثبيت الشاشة" من إعدادات الهاتف.',
+        type: JisrSnackbarType.warning,
+      );
+    }
+  }
+
+  Future<void> _deactivateAssessmentLock() async {
+    isAssessmentLocked.value = false;
+    await _lockService.stopLock();
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!isAssessmentLocked.value || isCompleted.value) return;
@@ -137,6 +158,10 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
 
     if (state == AppLifecycleState.resumed && _leftAppWhileAssessmentActive) {
       _leftAppWhileAssessmentActive = false;
+
+      // POCO/MIUI may temporarily reveal the navigation bar after a system
+      // overlay. Re-apply the lock as soon as the assessment regains focus.
+      unawaited(_lockService.refreshLock());
 
       JisrSnackbar.show(
         title: 'تنبيه',
@@ -171,7 +196,7 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
       isLoadingQuestion.value = false;
       isCompleted.value = false;
       isCompleting.value = false;
-      isAssessmentLocked.value = true;
+      isAssessmentLocked.value = false;
 
       if (isRetest) {
         await _sessionCache.clear();
@@ -196,6 +221,7 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
         exitAttempts.value = cached.exitAttempts;
 
         isStarting.value = false;
+        await _activateAssessmentLock();
         await loadNextQuestion();
         return;
       }
@@ -212,11 +238,12 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
       await _saveActiveSession();
 
       isStarting.value = false;
+      await _activateAssessmentLock();
       await loadNextQuestion();
     } catch (e) {
       isStarting.value = false;
       isLoadingQuestion.value = false;
-      isAssessmentLocked.value = false;
+      await _deactivateAssessmentLock();
 
       JisrSnackbar.show(
         title: 'فشل بدء الاختبار',
@@ -418,8 +445,7 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
         return;
       }
 
-      isAssessmentLocked.value = false;
-      await _lockService.stopLock();
+      await _deactivateAssessmentLock();
       await _sessionCache.clear();
 
       await fetchAssessmentReport();
@@ -640,6 +666,12 @@ class AssessmentController extends GetxController with WidgetsBindingObserver {
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
+    // Safety net: PopScope prevents a normal exit while the assessment is
+    // active. If the route is nevertheless destroyed programmatically, never
+    // leave the entire phone pinned without an assessment screen.
+    if (isAssessmentLocked.value) {
+      unawaited(_lockService.stopLock());
+    }
     answerController.dispose();
     super.onClose();
   }
