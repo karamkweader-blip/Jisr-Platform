@@ -93,14 +93,32 @@ class StudentTaskApplicationModel {
   });
 
   factory StudentTaskApplicationModel.fromJson(Map<String, dynamic> json) {
-    final application = json['application'] is Map<String, dynamic>
-        ? TaskApplicationReviewModel.fromJson(json['application'])
+    final applicationJson = json['application'] is Map<String, dynamic>
+        ? Map<String, dynamic>.from(json['application'])
+        : null;
+    final assignmentJson = json['assignment'] is Map<String, dynamic>
+        ? Map<String, dynamic>.from(json['assignment'])
         : null;
 
+    final application = applicationJson == null
+        ? null
+        : TaskApplicationReviewModel.fromJson(applicationJson);
+
+    int? parseNullableInt(dynamic value) {
+      if (value == null) return null;
+      final parsed = int.tryParse(value.toString());
+      return parsed != null && parsed > 0 ? parsed : null;
+    }
+
+    final assignmentId =
+        parseNullableInt(json['assignment_id']) ??
+        parseNullableInt(json['task_assignment_id']) ??
+        parseNullableInt(assignmentJson?['id']) ??
+        parseNullableInt(applicationJson?['assignment_id']) ??
+        parseNullableInt(applicationJson?['task_assignment_id']);
+
     return StudentTaskApplicationModel(
-      assignmentId: json['assignment_id'] == null
-          ? null
-          : int.tryParse(json['assignment_id'].toString()),
+      assignmentId: assignmentId,
       applicationId: json['application_id'] == null
           ? null
           : int.tryParse(json['application_id'].toString()),
