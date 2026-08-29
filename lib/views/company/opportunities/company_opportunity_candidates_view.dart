@@ -188,18 +188,15 @@ class CompanyOpportunityCandidatesView
           return CompanySmartRankingCard(
             candidate: candidate,
             onTap: () {
-              showCompanySmartRankingDetails(
-                context: context,
-                candidate: candidate,
-                weights: controller
-                    .rankingMeta.value.weights,
-                onOpenCandidate: () {
-                  controller
-                      .openRankedCandidate(
-                    candidate,
-                  );
-                },
-              );
+             showCompanySmartRankingDetails(
+  context: context,
+  candidate: candidate,
+  onOpenCandidate: () {
+    controller.openRankedCandidate(
+      candidate,
+    );
+  },
+);
             },
           );
         },

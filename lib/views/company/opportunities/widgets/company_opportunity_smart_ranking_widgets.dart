@@ -408,10 +408,8 @@ class CompanySmartRankingCard
 }
 
 Future<void> showCompanySmartRankingDetails({
-  required BuildContext context,
-  required CompanyOpportunityRankedCandidate
-      candidate,
-  required CompanyOpportunityRankingWeights weights,
+   required BuildContext context,
+  required CompanyOpportunityRankedCandidate candidate,
   required VoidCallback onOpenCandidate,
 }) {
   return showModalBottomSheet<void>(
@@ -531,37 +529,27 @@ Future<void> showCompanySmartRankingDetails({
                   title: 'تفصيل النتيجة الذكية',
                   child: Column(
                     children: <Widget>[
-                      _ScoreProgressRow(
-                        label: 'المهارات',
-                        score: candidate
-                            .scores.skillScore,
-                        weight: weights.skills,
-                      ),
-                      _ScoreProgressRow(
-                        label: 'المشاريع',
-                        score: candidate
-                            .scores.projectScore,
-                        weight: weights.projects,
-                      ),
-                      _ScoreProgressRow(
-                        label: 'الوسوم',
-                        score:
-                            candidate.scores.tagScore,
-                        weight: weights.tags,
-                      ),
-                      _ScoreProgressRow(
-                        label: 'النشاط',
-                        score: candidate
-                            .scores.activityScore,
-                        weight: weights.activity,
-                      ),
-                      _ScoreProgressRow(
-                        label: 'حداثة الحساب',
-                        score: candidate
-                            .scores.freshnessScore,
-                        weight: weights.freshness,
-                        showDivider: false,
-                      ),
+                   _ScoreProgressRow(
+  label: 'المهارات',
+  score: candidate.scores.skillScore,
+),
+_ScoreProgressRow(
+  label: 'المشاريع',
+  score: candidate.scores.projectScore,
+),
+_ScoreProgressRow(
+  label: 'الوسوم',
+  score: candidate.scores.tagScore,
+),
+_ScoreProgressRow(
+  label: 'النشاط',
+  score: candidate.scores.activityScore,
+),
+_ScoreProgressRow(
+  label: 'حداثة الحساب',
+  score: candidate.scores.freshnessScore,
+  showDivider: false,
+),
                     ],
                   ),
                 ),
@@ -926,7 +914,7 @@ class _FinalScoreBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            _numberText(score),
+            '${_numberText(score)}%',
             textDirection: TextDirection.ltr,
             style: TextStyle(
               color: AppColors.primaryBlue,
@@ -972,7 +960,7 @@ class _SmallScoreItem extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            _numberText(score),
+           '${_numberText(score)}%',
             textDirection: TextDirection.ltr,
             style: const TextStyle(
               color: AppColors.primaryBlue,
@@ -1058,16 +1046,15 @@ class _DetailsSection extends StatelessWidget {
   }
 }
 
-class _ScoreProgressRow extends StatelessWidget {
+class _ScoreProgressRow
+    extends StatelessWidget {
   final String label;
   final double score;
-  final double weight;
   final bool showDivider;
 
   const _ScoreProgressRow({
     required this.label,
     required this.score,
-    required this.weight,
     this.showDivider = true,
   });
 
@@ -1080,7 +1067,9 @@ class _ScoreProgressRow extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding:
-              const EdgeInsets.symmetric(vertical: 8),
+              const EdgeInsets.symmetric(
+            vertical: 8,
+          ),
           child: Column(
             children: <Widget>[
               Row(
@@ -1088,28 +1077,20 @@ class _ScoreProgressRow extends StatelessWidget {
                   Expanded(
                     child: Text(
                       label,
-                      style:  TextStyle(
-                        color: Get.theme.colorScheme.onSurface,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface,
                         fontSize: 11.5,
                         fontWeight:
                             FontWeight.w800,
                       ),
                     ),
                   ),
-                  Text(
-                    'الوزن ${_numberText(weight)}%',
-                    style:  TextStyle(
-                      color: Get.theme.colorScheme.onSurfaceVariant,
-                      fontSize: 9.5,
-                      fontWeight:
-                          FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(width: 9),
                   SizedBox(
-                    width: 43,
+                    width: 52,
                     child: Text(
-                      _numberText(score),
+                      '${_numberText(score)}%',
                       textAlign: TextAlign.end,
                       textDirection:
                           TextDirection.ltr,
@@ -1128,13 +1109,15 @@ class _ScoreProgressRow extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     BorderRadius.circular(20),
-                child: LinearProgressIndicator(
+                child:
+                    LinearProgressIndicator(
                   value: normalizedScore,
                   minHeight: 6,
-                  color: AppColors.primaryBlue,
-                  backgroundColor:
-                      AppColors.primaryBlue
-                          .withOpacity(0.09),
+                  color:
+                      AppColors.primaryBlue,
+                  backgroundColor: AppColors
+                      .primaryBlue
+                      .withOpacity(0.09),
                 ),
               ),
             ],
@@ -1143,7 +1126,9 @@ class _ScoreProgressRow extends StatelessWidget {
         if (showDivider)
           Divider(
             height: 1,
-            color: Get.theme.colorScheme.onSurfaceVariant
+            color: Theme.of(context)
+                .colorScheme
+                .onSurfaceVariant
                 .withOpacity(0.10),
           ),
       ],
