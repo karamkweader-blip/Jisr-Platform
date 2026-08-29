@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:jisr_platform/controllers/company/opportunities/company_opportunities_controller.dart';
 import 'package:jisr_platform/core/colors/app_colors.dart';
 import 'package:jisr_platform/models/company/opportunities/company_opportunity_feed_item.dart';
-
+import 'package:jisr_platform/routes/app_routes.dart';
+import 'package:jisr_platform/views/company/tasks/widgets/task_execution_monitoring_card.dart';
 class CompanyOpportunitiesView extends GetView<CompanyOpportunitiesController> {
   const CompanyOpportunitiesView({super.key});
 
@@ -54,6 +55,17 @@ class CompanyOpportunitiesView extends GetView<CompanyOpportunitiesController> {
                     onTypeChanged: controller.selectType,
                     onStatusPressed: () => _showStatusSheet(context),
                   ),
+                  if (controller.selectedType.value ==
+    CompanyOpportunityTypeFilter.task) ...[
+  const SizedBox(height: 16),
+  TaskExecutionMonitoringCard(
+    onTap: () {
+      Get.toNamed(
+        Routes.companyTaskAssignments,
+      );
+    },
+  ),
+],
                   if (controller.isLoading.value) ...[
                     const SizedBox(height: 14),
                     const ClipRRect(

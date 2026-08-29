@@ -129,7 +129,9 @@ class CompanySearchView
                         color:
                             AppColors.primaryBlue,
                         backgroundColor:
-                            Theme.of(context).colorScheme.onSurfaceVariant
+                            Theme.of(context)
+                                .colorScheme
+                                .onSurfaceVariant
                                 .withValues(
                           alpha: 0.1,
                         ),
@@ -291,15 +293,13 @@ class CompanySearchView
   Future<void> _showSkillsSheet(
     BuildContext context,
   ) async {
-    final filterController =
-        TextEditingController();
-
     var query = '';
 
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor:
+          Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(28),
@@ -338,7 +338,9 @@ class CompanySearchView
                             height: 4,
                             decoration:
                                 BoxDecoration(
-                              color: Theme.of(context)
+                              color: Theme.of(
+                                context,
+                              )
                                   .colorScheme
                                   .onSurfaceVariant
                                   .withValues(
@@ -353,11 +355,12 @@ class CompanySearchView
 
                         const SizedBox(height: 17),
 
-                         Text(
+                        Text(
                           'فلترة الطلاب حسب المهارة',
                           style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface,
                             fontSize: 18,
                             fontWeight:
                                 FontWeight.w900,
@@ -366,12 +369,15 @@ class CompanySearchView
 
                         const SizedBox(height: 5),
 
-                         Text(
+                        Text(
                           'اختر مهارة واحدة لعرض '
                           'الطلاب الذين يمتلكونها.',
                           style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            )
+                                .colorScheme
+                                .onSurfaceVariant,
                             fontSize: 12.5,
                             height: 1.45,
                             fontWeight:
@@ -382,8 +388,6 @@ class CompanySearchView
                         const SizedBox(height: 14),
 
                         TextField(
-                          controller:
-                              filterController,
                           textInputAction:
                               TextInputAction.search,
                           onChanged: (value) {
@@ -502,7 +506,9 @@ class CompanySearchView
                                           TextAlign
                                               .center,
                                       style: TextStyle(
-                                        color: Theme.of(context)
+                                        color: Theme.of(
+                                          context,
+                                        )
                                             .colorScheme
                                             .onSurfaceVariant,
                                         fontSize: 13,
@@ -567,8 +573,6 @@ class CompanySearchView
         );
       },
     );
-
-    filterController.dispose();
   }
 }
 
@@ -684,8 +688,9 @@ class _StudentNameSearchField
               controller.onNameChanged,
           textInputAction:
               TextInputAction.search,
-          style:  TextStyle(
-            color: Theme.of(context).colorScheme.onSurface,
+          style: TextStyle(
+            color:
+                Theme.of(context).colorScheme.onSurface,
             fontSize: 13.5,
             fontWeight: FontWeight.w600,
           ),
@@ -699,10 +704,13 @@ class _StudentNameSearchField
                     tooltip: 'مسح الاسم',
                     onPressed:
                         controller.clearName,
-                    icon:  Icon(
+                    icon: Icon(
                       Icons.close_rounded,
-                      color:
-                          Theme.of(context).colorScheme.onSurfaceVariant,
+                      color: Theme.of(
+                        context,
+                      )
+                          .colorScheme
+                          .onSurfaceVariant,
                     ),
                   ),
           ),
@@ -761,10 +769,12 @@ class _SkillFilterTile
                       .withValues(
                       alpha: 0.28,
                     )
-                  : Theme.of(context).colorScheme.onSurfaceVariant
+                  : Theme.of(context)
+                      .colorScheme
+                      .onSurfaceVariant
                       .withValues(
-                      alpha: 0.14,
-                    ),
+                        alpha: 0.14,
+                      ),
             ),
           ),
           child: Row(
@@ -801,11 +811,14 @@ class _SkillFilterTile
                   mainAxisSize:
                       MainAxisSize.min,
                   children: <Widget>[
-                     Text(
+                    Text(
                       'المهارة',
                       style: TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onSurfaceVariant,
+                        color: Theme.of(
+                          context,
+                        )
+                            .colorScheme
+                            .onSurfaceVariant,
                         fontSize: 10.5,
                         fontWeight:
                             FontWeight.w600,
@@ -823,9 +836,11 @@ class _SkillFilterTile
                         color: isSelected
                             ? AppColors
                                 .primaryBlue
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSurface,
+                            : Theme.of(
+                                context,
+                              )
+                                  .colorScheme
+                                  .onSurface,
                         fontSize: 13,
                         fontWeight:
                             FontWeight.w800,
@@ -839,10 +854,13 @@ class _SkillFilterTile
                   tooltip:
                       'إزالة فلتر المهارة',
                   onPressed: onClear,
-                  icon:  Icon(
+                  icon: Icon(
                     Icons.close_rounded,
-                    color:
-                        Theme.of(context).colorScheme.onSurfaceVariant,
+                    color: Theme.of(
+                      context,
+                    )
+                        .colorScheme
+                        .onSurfaceVariant,
                     size: 20,
                   ),
                 )
@@ -879,11 +897,13 @@ class _ResultsHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-         Expanded(
+        Expanded(
           child: Text(
             'نتائج البحث',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface,
               fontSize: 17,
               fontWeight: FontWeight.w900,
             ),
@@ -977,9 +997,10 @@ class _StudentCard extends StatelessWidget {
                       overflow:
                           TextOverflow.ellipsis,
                       style:
-                           TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onSurface,
+                          TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface,
                         fontSize: 15,
                         fontWeight:
                             FontWeight.w900,
@@ -988,11 +1009,14 @@ class _StudentCard extends StatelessWidget {
                     const SizedBox(height: 5),
                     Row(
                       children: <Widget>[
-                         Icon(
+                        Icon(
                           Icons
                               .alternate_email_rounded,
-                          color:
-                              Theme.of(context).colorScheme.onSurfaceVariant,
+                          color: Theme.of(
+                            context,
+                          )
+                              .colorScheme
+                              .onSurfaceVariant,
                           size: 15,
                         ),
                         const SizedBox(width: 5),
@@ -1009,7 +1033,9 @@ class _StudentCard extends StatelessWidget {
                             textAlign:
                                 TextAlign.right,
                             style: TextStyle(
-                              color: Theme.of(context)
+                              color: Theme.of(
+                                context,
+                              )
                                   .colorScheme
                                   .onSurfaceVariant,
                               fontSize: 11.5,
@@ -1141,7 +1167,8 @@ class _SkillOption extends StatelessWidget {
           ? AppColors.primaryBlue.withValues(
               alpha: 0.07,
             )
-          : Theme.of(context).scaffoldBackgroundColor,
+          : Theme.of(context)
+              .scaffoldBackgroundColor,
       borderRadius: BorderRadius.circular(16),
       child: ListTile(
         onTap: onTap,
@@ -1154,10 +1181,12 @@ class _SkillOption extends StatelessWidget {
                     .withValues(
                     alpha: 0.2,
                   )
-                : Theme.of(context).colorScheme.onSurfaceVariant
+                : Theme.of(context)
+                    .colorScheme
+                    .onSurfaceVariant
                     .withValues(
-                    alpha: 0.08,
-                  ),
+                      alpha: 0.08,
+                    ),
           ),
         ),
         leading: Container(
@@ -1189,7 +1218,9 @@ class _SkillOption extends StatelessWidget {
           style: TextStyle(
             color: selected
                 ? AppColors.primaryBlue
-                : Theme.of(context).colorScheme.onSurface,
+                : Theme.of(context)
+                    .colorScheme
+                    .onSurface,
             fontSize: 13,
             fontWeight: FontWeight.w800,
           ),
@@ -1198,8 +1229,10 @@ class _SkillOption extends StatelessWidget {
           subtitle,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style:  TextStyle(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          style: TextStyle(
+            color: Theme.of(context)
+                .colorScheme
+                .onSurfaceVariant,
             fontSize: 10.5,
             fontWeight: FontWeight.w500,
           ),
@@ -1210,9 +1243,12 @@ class _SkillOption extends StatelessWidget {
               : Icons.circle_outlined,
           color: selected
               ? AppColors.primaryBlue
-              : Theme.of(context).colorScheme.onSurfaceVariant.withValues(
-                  alpha: 0.35,
-                ),
+              : Theme.of(context)
+                  .colorScheme
+                  .onSurfaceVariant
+                  .withValues(
+                    alpha: 0.35,
+                  ),
           size: 21,
         ),
       ),
@@ -1260,8 +1296,10 @@ class _InlineMessage extends StatelessWidget {
               message,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style:  TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
+              style: TextStyle(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface,
                 fontSize: 11,
                 height: 1.4,
                 fontWeight: FontWeight.w600,
@@ -1287,16 +1325,21 @@ InputDecoration _fieldDecoration(
   final border = OutlineInputBorder(
     borderRadius: BorderRadius.circular(17),
     borderSide: BorderSide(
-      color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(
-        alpha: 0.14,
-      ),
+      color: Theme.of(context)
+          .colorScheme
+          .onSurfaceVariant
+          .withValues(
+            alpha: 0.14,
+          ),
     ),
   );
 
   return InputDecoration(
     hintText: hint,
-    hintStyle:  TextStyle(
-      color: Theme.of(context).colorScheme.onSurfaceVariant,
+    hintStyle: TextStyle(
+      color: Theme.of(context)
+          .colorScheme
+          .onSurfaceVariant,
       fontSize: 13,
       fontWeight: FontWeight.w500,
     ),
@@ -1307,7 +1350,8 @@ InputDecoration _fieldDecoration(
     ),
     suffixIcon: suffixIcon,
     filled: true,
-    fillColor: Theme.of(context).colorScheme.surface,
+    fillColor:
+        Theme.of(context).colorScheme.surface,
     contentPadding:
         const EdgeInsets.symmetric(
       horizontal: 15,
